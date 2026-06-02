@@ -851,13 +851,28 @@
         .rp-empty { text-align: center; color: #94a3b8; font-size: 13px; padding: 8px 0 4px; }
 
         /* Reasoning steps */
-        .reasoning-block { margin-bottom: 18px; }
+        /* Reasoning accordion (shown after generation completes) */
+        .reasoning-acc { border: 1px solid #e2e8f0; border-radius: 10px; overflow: hidden; margin-bottom: 16px; }
+        .reasoning-acc-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 10px 14px; cursor: pointer; user-select: none;
+            background: #fafafa; font-size: 13px; font-weight: 500; color: #64748b;
+        }
+        .reasoning-acc-header:hover { background: #f1f5f9; }
+        .reasoning-chevron { flex-shrink: 0; transition: transform 0.25s ease; }
+        .reasoning-chevron.open { transform: rotate(180deg); }
+        .reasoning-acc-body {
+            overflow: hidden; max-height: 0;
+            transition: max-height 0.38s cubic-bezier(0.4,0,0.2,1);
+        }
+        .reasoning-acc-body.open { max-height: 900px; }
+        .reasoning-acc-inner { padding: 4px 14px 12px; }
 
+        /* Inline reasoning while generating */
+        .reasoning-block { margin-bottom: 18px; }
         .reasoning-heading {
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.07em;
+            font-size: 13px;
+            font-weight: 500;
             color: #64748b;
             margin-bottom: 12px;
         }
@@ -922,7 +937,7 @@
             gap: 8px;
         }
 
-        .gen-label { font-size: 12px; font-weight: 700; color: #4f46e5; }
+        .gen-label { font-size: 12px; font-weight: 400; color: #4f46e5; }
 
         .meta-tags { display: flex; gap: 7px; }
 
@@ -1944,13 +1959,22 @@ function renderStoredResponse(id) {
     document.getElementById('rp-body').innerHTML = buildResponseHTML(generatedCache[id], id, 'copy-main');
 }
 
+// ---- REASONING ACCORDION TOGGLE ----
+function toggleReasoningAcc(header) {
+    const body    = header.nextElementSibling;
+    const chevron = header.querySelector('.reasoning-chevron');
+    const isOpen  = body.classList.contains('open');
+    body.classList.toggle('open', !isOpen);
+    chevron.classList.toggle('open', !isOpen);
+}
+
 // ---- SHARED REASONING FLOW ----
 async function runReasoningFlow(bodyId, steps, responseText, cacheKey, onDone) {
     const rpBody = document.getElementById(bodyId);
 
     rpBody.innerHTML = `
         <div class="reasoning-block">
-            <div class="reasoning-heading">Agent Reasoning</div>
+            <div class="reasoning-heading">Agent reasoning</div>
             <div id="steps-${cacheKey}"></div>
         </div>
         <div class="progress-block">
@@ -2006,10 +2030,18 @@ async function runReasoningFlow(bodyId, steps, responseText, cacheKey, onDone) {
 
     const stepsSnap = container.innerHTML;
 
+    // Replace live reasoning with collapsed accordion + response
     rpBody.innerHTML = `
-        <div class="reasoning-block" style="margin-bottom:18px;">
-            <div class="reasoning-heading">Agent Reasoning</div>
-            <div>${stepsSnap}</div>
+        <div class="reasoning-acc">
+            <div class="reasoning-acc-header" onclick="toggleReasoningAcc(this)">
+                <span>Agent reasoning</span>
+                <svg class="reasoning-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none">
+                    <path d="M3 5l4 4 4-4" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <div class="reasoning-acc-body">
+                <div class="reasoning-acc-inner">${stepsSnap}</div>
+            </div>
         </div>
         ${buildResponseHTML(responseText, cacheKey, 'copy-' + cacheKey)}
     `;
