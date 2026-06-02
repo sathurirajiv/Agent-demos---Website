@@ -1103,8 +1103,55 @@
         .roi-bar { height: 100%; border-radius: 4px; width: 0; transition: width 1.2s cubic-bezier(0.4,0,0.2,1); background: #cbd5e1; }
         .roi-bar.b-blue, .roi-bar.b-green, .roi-bar.b-purple, .roi-bar.b-teal { background: #cbd5e1; }
 
+        /* ===== WHY BIRDEYE BANNER ===== */
+        .why-birdeye {
+            background: #eeedf7;
+            padding: 72px 40px;
+            text-align: center;
+        }
+        .why-birdeye-inner { max-width: 760px; margin: 0 auto; }
+        .why-birdeye h2 {
+            font-size: 48px;
+            font-weight: 700;
+            color: #1a0a2e;
+            line-height: 1.15;
+            margin-bottom: 20px;
+            letter-spacing: -0.5px;
+        }
+        .why-birdeye-accent {
+            font-style: italic;
+            color: #4c1d95;
+        }
+        .why-birdeye p {
+            font-size: 16px;
+            color: #64748b;
+            line-height: 1.7;
+            max-width: 520px;
+            margin: 0 auto 32px;
+        }
+        .btn-watch-demo {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #5b21b6;
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+        }
+        .btn-watch-demo:hover { background: #4c1d95; transform: translateY(-1px); }
+        @media (max-width: 640px) {
+            .why-birdeye h2 { font-size: 30px; }
+            .why-birdeye { padding: 48px 20px; }
+        }
+
         /* ===== COMPETITION ===== */
-        .competition-section { background: #0f172a; padding: 64px 40px; text-align: center; margin-top: 48px; }
+        .competition-section { background: #0f172a; padding: 64px 40px; text-align: center; margin-top: 0; }
         .competition-title { font-size: 30px; font-weight: 700; color: white; margin-bottom: 22px; }
         .star-block { display: flex; flex-direction: column; align-items: center; gap: 6px; margin-bottom: 28px; }
         .stars-row-lg { font-size: 28px; color: #f59e0b; letter-spacing: 3px; }
@@ -1154,7 +1201,7 @@
         <img src="birdeye-logo.png" class="logo-icon" alt="Birdeye">
         <span class="logo-text">Birdeye</span>
     </a>
-    <button class="btn-schedule">Schedule Demo</button>
+    <button class="btn-schedule">Watch Demo ↗</button>
 </header>
 
 <!-- ===== HERO BANNER ===== -->
@@ -1498,6 +1545,15 @@
 
 </main>
 
+<!-- ===== WHY BIRDEYE ===== -->
+<section class="why-birdeye">
+    <div class="why-birdeye-inner">
+        <h2>Learn why Birdeye is the<br><span class="why-birdeye-accent">#1 Agentic Marketing Platform</span></h2>
+        <p>Watch a guided demo or let us scan your brand's health across search, social, and reputation in under 60 seconds.</p>
+        <button class="btn-watch-demo">Watch Demo &nbsp;↗</button>
+    </div>
+</section>
+
 <!-- ===== COMPETITION ===== -->
 <div class="competition-section">
     <h2 class="competition-title">Birdeye outranks the competition</h2>
@@ -1829,23 +1885,12 @@ function runContinue() {
 
     document.getElementById('output-placeholder').style.display = 'none';
     document.getElementById('output-live').style.display  = 'block';
-    document.getElementById('outcome-placeholder').style.display = 'none';
-    document.getElementById('outcome-live').style.display = 'block';
-
     document.getElementById('reviews-subtext').textContent =
         `Recent reviews for ${biz} — select one to generate an agent response`;
 
     renderReviews();
-    recalcROI();
 
     forceOpenAcc('output');
-    forceOpenAcc('outcome');
-
-    setTimeout(() => {
-        document.querySelectorAll('.roi-bar[data-target]').forEach(bar => {
-            bar.style.width = bar.dataset.target + '%';
-        });
-    }, 300);
 
     setTimeout(() => {
         document.getElementById('acc-output').scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -1948,6 +1993,23 @@ async function generateResponse() {
             isGenerating = false;
             genBtn.innerHTML = '↺ Regenerate';
             genBtn.disabled = false;
+
+            // Open Outcome accordion the first time a response is generated
+            const outcomeBody = document.getElementById('body-outcome');
+            if (outcomeBody.classList.contains('collapsed')) {
+                document.getElementById('outcome-placeholder').style.display = 'none';
+                document.getElementById('outcome-live').style.display = 'block';
+                recalcROI();
+                forceOpenAcc('outcome');
+                setTimeout(() => {
+                    document.querySelectorAll('.roi-bar[data-target]').forEach(bar => {
+                        bar.style.width = bar.dataset.target + '%';
+                    });
+                }, 300);
+                setTimeout(() => {
+                    document.getElementById('acc-outcome').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 150);
+            }
         }
     );
 }
