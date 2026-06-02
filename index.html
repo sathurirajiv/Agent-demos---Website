@@ -1488,27 +1488,35 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-row" style="margin-bottom:16px;">
-                        <div class="form-group">
-                            <label class="form-label">Posts per week</label>
-                            <input type="number" class="form-input" id="sp-posts-per-week" value="14" min="1" max="50">
+                    <div style="margin-top:4px;">
+                        <div class="more-options-toggle" onclick="toggleSpMoreOptions()">
+                            <span class="more-options-label">More options</span>
+                            <span class="more-options-chevron" id="sp-mo-chevron"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5l4 4 4-4" stroke="#93c5fd" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                         </div>
-                        <div class="form-group">
-                            <label class="form-label">Custom hashtags</label>
-                            <input type="text" class="form-input" id="sp-hashtags" placeholder="#dentist #dentalcare #smile">
+                        <div id="sp-more-options-body" style="display:none;padding-top:14px;">
+                            <div class="form-row" style="margin-bottom:16px;">
+                                <div class="form-group">
+                                    <label class="form-label">Posts per week</label>
+                                    <input type="number" class="form-input" id="sp-posts-per-week" value="14" min="1" max="50">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Custom hashtags</label>
+                                    <input type="text" class="form-input" id="sp-hashtags" placeholder="#dentist #dentalcare #smile">
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-bottom:16px;">
+                                <label class="form-label">Image / creative <span style="font-weight:400;color:#94a3b8;">(optional)</span></label>
+                                <div class="img-upload-area" onclick="document.getElementById('sp-img-input').click()">
+                                    <div class="img-upload-icon">🖼</div>
+                                    <div class="img-upload-hint">Click to upload a brand image or logo</div>
+                                    <input type="file" class="img-upload-input" id="sp-img-input" accept="image/*">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Custom analysis rule <span style="font-weight:400;color:#94a3b8;">(optional)</span></label>
+                                <input type="text" class="form-input" id="sp-custom-rule" placeholder="e.g. Always include a call-to-action and use first-person brand voice">
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group" style="margin-bottom:16px;">
-                        <label class="form-label">Image / creative (optional)</label>
-                        <div class="img-upload-area" onclick="document.getElementById('sp-img-input').click()">
-                            <div class="img-upload-icon">🖼</div>
-                            <div class="img-upload-hint">Click to upload a brand image or logo</div>
-                            <input type="file" class="img-upload-input" id="sp-img-input" accept="image/*">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Custom analysis rule</label>
-                        <input type="text" class="form-input" id="sp-custom-rule" placeholder="e.g. Always include a call-to-action and use first-person brand voice">
                     </div>
                 </div>
 
@@ -2232,6 +2240,14 @@ function toggleImpact(suffix) {
 function toggleMoreOptions() {
     const body    = document.getElementById('more-options-body');
     const chevron = document.getElementById('mo-chevron');
+    const isOpen  = body.style.display === 'block';
+    body.style.display = isOpen ? 'none' : 'block';
+    chevron.classList.toggle('open', !isOpen);
+}
+
+function toggleSpMoreOptions() {
+    const body    = document.getElementById('sp-more-options-body');
+    const chevron = document.getElementById('sp-mo-chevron');
     const isOpen  = body.style.display === 'block';
     body.style.display = isOpen ? 'none' : 'block';
     chevron.classList.toggle('open', !isOpen);
