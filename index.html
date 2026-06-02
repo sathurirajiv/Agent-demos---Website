@@ -1197,8 +1197,8 @@
         .btn-drawer-action:hover { background: linear-gradient(135deg,#6d28d9,#5b21b6); transform: translateY(-1px); }
 
         /* ===== SOCIAL FORM FIELDS ===== */
-        .content-focus-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-        .cf-opt { display: flex; align-items: center; gap: 8px; padding: 10px 12px; border: 1.5px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: border-color 0.15s; user-select: none; }
+        .content-focus-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+        .cf-opt { display: flex; align-items: center; gap: 7px; padding: 7px 10px; border: 1.5px solid #e2e8f0; border-radius: 7px; cursor: pointer; transition: border-color 0.15s; user-select: none; }
         .cf-opt:hover { border-color: #cbd5e1; }
         .cf-opt.checked { border-color: #e2e8f0; }
         .cf-opt .ao-checkbox { flex-shrink: 0; margin-top: 0; }
@@ -1451,7 +1451,7 @@
 
                 <!-- ── Social Publishing fields ── -->
                 <div id="social-pub-fields" style="display:none;">
-                    <div class="form-group" style="margin-bottom:16px;">
+                    <div class="form-group" style="margin-bottom:12px;">
                         <label class="form-label">Content tone <span class="req">*</span></label>
                         <select class="form-select" id="sp-tone">
                             <option>Professional and engaging</option>
@@ -1460,7 +1460,7 @@
                             <option>Promotional and action-oriented</option>
                         </select>
                     </div>
-                    <div class="form-group" style="margin-bottom:16px;">
+                    <div class="form-group" style="margin-bottom:12px;">
                         <label class="form-label">Content focus <span class="req">*</span></label>
                         <div class="content-focus-grid">
                             <div class="cf-opt checked" onclick="toggleCfOpt(this)"><div class="ao-checkbox checked"></div><span class="cf-opt-label">Promotions &amp; Offers</span></div>
@@ -1471,7 +1471,7 @@
                             <div class="cf-opt" onclick="toggleCfOpt(this)"><div class="ao-checkbox"></div><span class="cf-opt-label">Customer Stories</span></div>
                         </div>
                     </div>
-                    <div class="form-group" style="margin-bottom:16px;">
+                    <div class="form-group" style="margin-bottom:12px;">
                         <label class="form-label">Target platforms <span class="req">*</span></label>
                         <div class="plat-check-row">
                             <div class="plat-check-opt checked" onclick="togglePlatCheck(this)">
@@ -1488,33 +1488,47 @@
                             </div>
                         </div>
                     </div>
-                    <div style="margin-top:4px;">
-                        <div class="more-options-toggle" onclick="toggleSpMoreOptions()">
-                            <span class="more-options-label">More options</span>
-                            <span class="more-options-chevron" id="sp-mo-chevron"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5l4 4 4-4" stroke="#93c5fd" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                    <div class="more-options-toggle" onclick="toggleSpMoreOptions()" style="margin-top:8px;">
+                        <span class="more-options-label">More options</span>
+                        <span class="more-options-chevron" id="sp-mo-chevron"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5l4 4 4-4" stroke="#93c5fd" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                    </div>
+                    <div class="more-options-body" id="sp-more-options-body" style="display:none;">
+                        <div class="ao-item" id="sp-ppw-item" onclick="toggleSpOpt(this)">
+                            <div class="ao-checkbox checked"></div>
+                            <div class="ao-text">
+                                <div class="ao-label">Posts per week</div>
+                                <div class="ao-desc">Number of posts the agent schedules across all platforms each week</div>
+                                <input type="number" class="ao-custom-input" id="sp-posts-per-week" value="14" min="1" max="50" onclick="event.stopPropagation()">
+                            </div>
                         </div>
-                        <div id="sp-more-options-body" style="display:none;padding-top:14px;">
-                            <div class="form-row" style="margin-bottom:16px;">
-                                <div class="form-group">
-                                    <label class="form-label">Posts per week</label>
-                                    <input type="number" class="form-input" id="sp-posts-per-week" value="14" min="1" max="50">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Custom hashtags</label>
-                                    <input type="text" class="form-input" id="sp-hashtags" placeholder="#dentist #dentalcare #smile">
+                        <div class="ao-item" id="sp-ht-item" onclick="toggleSpOpt(this)">
+                            <div class="ao-checkbox"></div>
+                            <div class="ao-text">
+                                <div class="ao-label">Brand hashtags</div>
+                                <div class="ao-desc">Include specific hashtags in every generated post</div>
+                                <input type="text" class="ao-custom-input" id="sp-hashtags" placeholder="#dentist #dentalcare #smile" style="display:none;" onclick="event.stopPropagation()">
+                            </div>
+                        </div>
+                        <div class="ao-item" id="sp-img-item" onclick="toggleSpOpt(this)">
+                            <div class="ao-checkbox"></div>
+                            <div class="ao-text">
+                                <div class="ao-label">Brand image / creative</div>
+                                <div class="ao-desc">Upload a logo or creative the agent can reference when generating visuals</div>
+                                <div id="sp-img-upload" style="display:none;margin-top:8px;">
+                                    <div class="img-upload-area" onclick="event.stopPropagation();document.getElementById('sp-img-input').click()">
+                                        <div class="img-upload-icon">🖼</div>
+                                        <div class="img-upload-hint">Click to upload a brand image or logo</div>
+                                        <input type="file" class="img-upload-input" id="sp-img-input" accept="image/*">
+                                    </div>
                                 </div>
                             </div>
-                            <div class="form-group" style="margin-bottom:16px;">
-                                <label class="form-label">Image / creative <span style="font-weight:400;color:#94a3b8;">(optional)</span></label>
-                                <div class="img-upload-area" onclick="document.getElementById('sp-img-input').click()">
-                                    <div class="img-upload-icon">🖼</div>
-                                    <div class="img-upload-hint">Click to upload a brand image or logo</div>
-                                    <input type="file" class="img-upload-input" id="sp-img-input" accept="image/*">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Custom analysis rule <span style="font-weight:400;color:#94a3b8;">(optional)</span></label>
-                                <input type="text" class="form-input" id="sp-custom-rule" placeholder="e.g. Always include a call-to-action and use first-person brand voice">
+                        </div>
+                        <div class="ao-item" id="sp-rule-item" onclick="toggleSpOpt(this)">
+                            <div class="ao-checkbox"></div>
+                            <div class="ao-text">
+                                <div class="ao-label">Custom analysis rule</div>
+                                <div class="ao-desc">A specific instruction the agent follows when generating all content</div>
+                                <input type="text" class="ao-custom-input" id="sp-custom-rule" placeholder="e.g. Always include a call-to-action and use first-person brand voice" style="display:none;" onclick="event.stopPropagation()">
                             </div>
                         </div>
                     </div>
@@ -2251,6 +2265,17 @@ function toggleSpMoreOptions() {
     const isOpen  = body.style.display === 'block';
     body.style.display = isOpen ? 'none' : 'block';
     chevron.classList.toggle('open', !isOpen);
+}
+
+function toggleSpOpt(item) {
+    const box = item.querySelector('.ao-checkbox');
+    const isChecked = box.classList.toggle('checked');
+    // reveal/hide any collapsible inside this item
+    item.querySelectorAll('.ao-custom-input, .img-upload-area').forEach(el => {
+        el.style.display = isChecked ? '' : 'none';
+    });
+    const imgWrap = item.querySelector('[id$="-upload"]');
+    if (imgWrap) imgWrap.style.display = isChecked ? '' : 'none';
 }
 
 // ---- ANALYSIS OPTIONS CHECKBOX ----
