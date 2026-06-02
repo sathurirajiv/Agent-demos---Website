@@ -1,0 +1,2200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birdeye AI Agents – Review Response Agent</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f8fafc;
+            color: #0f172a;
+            min-height: 100vh;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 0 40px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 200;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+        }
+
+        .logo { display: flex; align-items: center; gap: 8px; text-decoration: none; }
+        .logo-icon { height: 26px; width: auto; display: block; }
+        .logo-text { font-size: 20px; font-weight: 700; color: #1e293b; letter-spacing: -0.3px; }
+
+        .btn-schedule {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background 0.2s, transform 0.15s;
+        }
+        .btn-schedule:hover { background: #1d4ed8; transform: translateY(-1px); }
+
+        /* ===== HERO BANNER ===== */
+        .hero-banner {
+            position: relative;
+            width: 100%;
+            background: linear-gradient(160deg, #ddd6fe 0%, #e8e4ff 35%, #ede9fe 60%, #f3f0ff 100%);
+            padding-bottom: 340px;
+        }
+        .hero-banner::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 120px;
+            background: linear-gradient(to bottom, transparent, #f8f7ff);
+            pointer-events: none;
+            z-index: 0;
+        }
+        .hero-banner::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(109,40,217,0.07) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(109,40,217,0.07) 1px, transparent 1px);
+            background-size: 56px 56px;
+            pointer-events: none;
+        }
+
+        .hero {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 52px 40px 16px;
+            max-width: 860px;
+            margin: 0 auto;
+        }
+
+        .hero-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: rgba(255,255,255,0.65);
+            border: 1px solid rgba(139,92,246,0.25);
+            border-radius: 999px;
+            padding: 6px 16px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            color: #5b21b6;
+            text-transform: uppercase;
+            margin-bottom: 24px;
+        }
+        .hero-eyebrow svg { flex-shrink: 0; }
+
+        .hero h1 {
+            font-size: 52px;
+            font-weight: 600;
+            color: #0f172a;
+            line-height: 1.12;
+            margin-bottom: 14px;
+            letter-spacing: -0.6px;
+        }
+        .hero-purple { color: #5b21b6; }
+
+        .hero-accent {
+            font-style: italic;
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #6d28d9 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 17px;
+            color: #4b4566;
+            line-height: 1.65;
+            max-width: 560px;
+            margin: 0 auto;
+        }
+
+        /* ===== AGENT SELECTOR ===== */
+        .agent-selector-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            margin: 16px auto 0;
+            padding-bottom: 0;
+            position: relative;
+            z-index: 10;
+        }
+
+        .agent-selector-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, #ede9fe, #e0e7ff);
+            border: 1.5px solid #c4b5fd;
+            padding: 11px 20px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            color: #4c1d95;
+            transition: all 0.2s;
+            user-select: none;
+            position: relative;
+        }
+
+        .agent-selector-pill:hover { background: linear-gradient(135deg, #ddd6fe, #c7d2fe); }
+        .agent-selector-pill .chevron { font-size: 11px; opacity: 0.65; margin-left: 2px; transition: transform 0.2s; }
+        .agent-selector-pill.open .chevron { transform: rotate(180deg); }
+
+        /* Dropdown */
+        .pill-anchor { position: relative; display: inline-flex; justify-content: center; }
+
+        .agent-dropdown {
+            position: absolute;
+            top: calc(100% + 6px);
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            box-shadow: 0 8px 28px rgba(0,0,0,0.12);
+            min-width: 280px;
+            z-index: 300;
+            overflow: hidden;
+            display: none;
+        }
+
+        .agent-dropdown.open { display: block; animation: dropFade 0.18s ease; }
+
+        @keyframes dropFade {
+            from { opacity: 0; transform: translateX(-50%) translateY(-6px); }
+            to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+
+        .dd-category {
+            padding: 12px 16px 6px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.09em;
+            color: #94a3b8;
+        }
+
+        .dd-option {
+            padding: 9px 16px 9px 24px;
+            font-size: 13.5px;
+            color: #374151;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            transition: background 0.12s;
+        }
+
+        .dd-option:hover { background: #f8fafc; }
+
+        .dd-option.selected {
+            background: #eff6ff;
+            color: #2563eb;
+            font-weight: 600;
+        }
+
+        .dd-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #d1d5db;
+            flex-shrink: 0;
+        }
+
+        .dd-option.selected .dd-dot { background: #2563eb; }
+
+        .dd-divider { height: 1px; background: #f1f5f9; margin: 6px 0; }
+
+        .agent-hint {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 13px;
+            color: #64748b;
+            margin-bottom: 40px;
+        }
+
+        .info-circle {
+            width: 17px;
+            height: 17px;
+            border-radius: 50%;
+            border: 1.5px solid #94a3b8;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 700;
+            color: #64748b;
+            flex-shrink: 0;
+        }
+
+        /* ===== MAIN ===== */
+        .main { max-width: 720px; margin: -340px auto 0; padding: 0 20px 72px; position: relative; z-index: 2; }
+
+        /* ===== ACCORDION ===== */
+        .accordion {
+            background: white;
+            border-radius: 14px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 14px;
+            overflow: hidden;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+            transition: box-shadow 0.2s;
+        }
+
+        .accordion:hover { box-shadow: 0 3px 10px rgba(0,0,0,0.09); }
+
+        .acc-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 24px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .acc-header-content { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+        .acc-title { font-size: 16px; font-weight: 600; color: #0f172a; }
+        .acc-subtitle { font-size: 12px; color: #94a3b8; font-weight: 400; display: none; line-height: 1.4; margin-top: 1px; }
+        .accordion.is-closed .acc-subtitle { display: block; }
+
+        .acc-toggle {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #f1f5f9;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 20px;
+            font-weight: 300;
+            color: #475569;
+            line-height: 1;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .acc-toggle:hover { background: #e2e8f0; color: #1e293b; }
+
+        .acc-body {
+            padding: 0 24px 24px;
+            border-top: 1px solid #f1f5f9;
+            overflow: hidden;
+            transition: max-height 0.42s cubic-bezier(0.4,0,0.2,1),
+                        padding 0.35s ease,
+                        border-top-color 0.3s ease;
+        }
+        .acc-body.collapsed {
+            padding-top: 0;
+            padding-bottom: 0;
+            border-top-color: transparent;
+        }
+
+        /* ===== FORM ===== */
+        .form-grid { display: flex; flex-direction: column; gap: 16px; padding-top: 20px; }
+
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+        .form-group { display: flex; flex-direction: column; gap: 7px; }
+        .form-label { font-size: 13px; font-weight: 500; color: #374151; }
+        .req { color: #ef4444; margin-left: 2px; }
+
+        .form-select, .form-input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #0f172a;
+            background: white;
+            font-family: inherit;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+
+        .form-select {
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2364748b' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 13px center;
+            padding-right: 36px;
+        }
+
+        .form-input { cursor: text; }
+
+        .input-wrap { position: relative; }
+        .input-wrap .form-input { padding-right: 38px; }
+        .input-ext-icon { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 13px; pointer-events: none; }
+
+        .form-select:focus, .form-input:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+        }
+
+        .slider-label-row { display: flex; justify-content: space-between; font-size: 11px; color: #94a3b8; margin-top: 7px; }
+
+        input[type="range"] {
+            width: 100%;
+            height: 5px;
+            border-radius: 3px;
+            background: linear-gradient(to right, #2563eb 40%, #e2e8f0 40%);
+            outline: none;
+            appearance: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 19px;
+            height: 19px;
+            border-radius: 50%;
+            background: white;
+            border: 2.5px solid #2563eb;
+            cursor: pointer;
+            box-shadow: 0 1px 5px rgba(37,99,235,0.25);
+        }
+
+        /* ===== MORE OPTIONS (analysis options) ===== */
+        .more-options-toggle {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            padding: 2px 0;
+            user-select: none;
+            width: fit-content;
+        }
+
+        .more-options-toggle:hover .more-options-label { color: #1d4ed8; }
+
+        .more-options-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: #2563eb;
+        }
+
+        .more-options-chevron {
+            font-size: 10px;
+            color: #93c5fd;
+            transition: transform 0.2s;
+            line-height: 1;
+        }
+
+        .more-options-chevron.open { transform: rotate(180deg); }
+
+        .more-options-body {
+            padding-top: 14px;
+            margin-top: 2px;
+        }
+
+        .ao-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 12px;
+            cursor: pointer;
+        }
+
+        .ao-item:last-child { margin-bottom: 0; }
+
+        .ao-checkbox {
+            width: 16px;
+            height: 16px;
+            border: 1.5px solid #d1d5db;
+            border-radius: 3px;
+            flex-shrink: 0;
+            margin-top: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s;
+            cursor: pointer;
+        }
+
+        .ao-checkbox.checked {
+            background: #2563eb;
+            border-color: #2563eb;
+        }
+
+        .ao-checkbox.checked::after {
+            content: '';
+            width: 9px;
+            height: 5px;
+            border-left: 1.5px solid white;
+            border-bottom: 1.5px solid white;
+            transform: rotate(-45deg) translateY(-1px);
+            display: block;
+        }
+
+        .ao-text { flex: 1; }
+        .ao-label { font-size: 13px; font-weight: 400; color: #374151; margin-bottom: 1px; }
+        .ao-desc { font-size: 12px; color: #94a3b8; line-height: 1.5; }
+
+        .ao-custom-input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 7px;
+            font-size: 13px;
+            font-family: inherit;
+            color: #374151;
+            background: white;
+            margin-top: 8px;
+            transition: border-color 0.2s;
+            display: none;
+        }
+
+        .ao-custom-input.visible { display: block; }
+        .ao-custom-input:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,0.08); }
+        .ao-custom-input::placeholder { color: #d1d5db; }
+
+        /* ===== RESPONSE LENGTH TOGGLE ===== */
+        .resp-length-group {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+
+        .resp-opt {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 7px;
+            padding: 14px 10px 12px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 10px;
+            background: white;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.15s;
+            color: #94a3b8;
+            text-align: center;
+        }
+
+        .resp-opt:hover { border-color: #93c5fd; color: #2563eb; }
+
+        .resp-opt.selected {
+            border-color: #2563eb;
+            background: #eff6ff;
+            color: #2563eb;
+        }
+
+        .resp-opt-name {
+            font-size: 13px;
+            font-weight: 500;
+            color: #374151;
+            line-height: 1;
+        }
+
+        .resp-opt.selected .resp-opt-name { color: #2563eb; }
+
+        .resp-opt-desc {
+            font-size: 11px;
+            color: #94a3b8;
+            line-height: 1.3;
+        }
+
+        .resp-opt.selected .resp-opt-desc { color: #93c5fd; }
+
+        /* Continue button — right-aligned, auto-width */
+        .continue-row {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 4px;
+        }
+
+        .btn-continue {
+            padding: 11px 28px;
+            background: linear-gradient(135deg, #7c3aed, #6d28d9);
+            color: white;
+            border: none;
+            border-radius: 9px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            white-space: nowrap;
+        }
+
+        .btn-continue:hover {
+            background: linear-gradient(135deg, #6d28d9, #5b21b6);
+            transform: translateY(-1px);
+            box-shadow: 0 5px 14px rgba(37,99,235,0.3);
+        }
+
+        /* ===== PLACEHOLDERS ===== */
+        .acc-placeholder { padding: 24px 0 8px; text-align: center; color: #94a3b8; font-size: 14px; }
+
+        /* ===== OUTPUT ===== */
+        .output-wrap { padding-top: 20px; }
+
+        .output-top { margin-bottom: 6px; }
+        .output-section-title { font-size: 14px; font-weight: 600; color: #0f172a; }
+        .output-subtext { font-size: 13px; color: #64748b; margin-top: 4px; margin-bottom: 16px; line-height: 1.5; }
+
+        .reviews-list { display: flex; flex-direction: column; gap: 10px; }
+
+        /* Review Card */
+        .review-card {
+            border: 1.5px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.18s;
+            position: relative;
+            background: white;
+        }
+
+        .review-card:hover { border-color: #93c5fd; box-shadow: 0 2px 10px rgba(37,99,235,0.07); transform: translateY(-1px); }
+        .review-card.selected { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,0.12); background: #fafbff; }
+
+        .review-card-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; }
+        .reviewer-left { display: flex; align-items: center; gap: 10px; }
+
+        .avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 700;
+            color: white;
+            flex-shrink: 0;
+            letter-spacing: 0.5px;
+        }
+
+        .reviewer-name { font-size: 14px; font-weight: 600; color: #0f172a; }
+        .reviewer-meta { font-size: 11px; color: #94a3b8; margin-top: 1px; }
+
+        .stars-row { display: flex; gap: 2px; }
+        .star { font-size: 13px; }
+        .star.on { color: #f59e0b; }
+        .star.off { color: #d1d5db; }
+
+        .review-text { font-size: 13px; color: #374151; line-height: 1.65; margin-bottom: 10px; }
+
+        .review-footer-row { display: flex; align-items: center; justify-content: space-between; }
+
+        .platform-tag {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 11px;
+            color: #64748b;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 3px 9px;
+            border-radius: 5px;
+            font-weight: 500;
+        }
+
+        .platform-g { color: #4285F4; font-weight: 800; }
+        .platform-y { color: #d32323; font-weight: 800; }
+        .platform-f { color: #1877F2; font-weight: 800; }
+
+        .sentiment-tag { font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 5px; }
+        .s-positive { background: #dcfce7; color: #15803d; }
+        .s-neutral  { background: #fef9c3; color: #854d0e; }
+        .s-negative { background: #fee2e2; color: #dc2626; }
+
+        .select-check {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: #2563eb;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .review-card.selected .select-check { display: flex; }
+
+        /* ===== CUSTOM REVIEW ===== */
+        .custom-review-trigger {
+            margin-top: 10px;
+            border: 1.5px dashed #d1d5db;
+            border-radius: 12px;
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            color: #94a3b8;
+            font-size: 13px;
+            transition: all 0.2s;
+            background: white;
+        }
+
+        .custom-review-trigger:hover { border-color: #93c5fd; color: #2563eb; background: #fafbff; }
+        .custom-review-trigger.expanded { border-style: solid; border-color: #93c5fd; color: #374151; background: #fafbff; border-bottom-left-radius: 0; border-bottom-right-radius: 0; border-bottom: none; }
+
+        .cr-plus {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 1.5px dashed #d1d5db;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 1;
+            flex-shrink: 0;
+            transition: all 0.2s;
+        }
+
+        .custom-review-trigger:hover .cr-plus,
+        .custom-review-trigger.expanded .cr-plus { border-color: #93c5fd; color: #2563eb; }
+
+        .cr-hint { margin-left: auto; font-size: 11px; color: #cbd5e1; }
+        .custom-review-trigger.expanded .cr-hint { color: #94a3b8; }
+
+        .custom-review-form {
+            border: 1.5px solid #93c5fd;
+            border-top: none;
+            border-radius: 0 0 12px 12px;
+            padding: 16px;
+            background: #fafbff;
+            display: none;
+        }
+
+        .custom-review-form.open { display: block; animation: fadeUp 0.25s ease; }
+
+        .cr-field { margin-bottom: 14px; }
+        .cr-field:last-of-type { margin-bottom: 16px; }
+
+        .cr-label {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #64748b;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .cr-label-soft {
+            font-size: 12px;
+            font-weight: 500;
+            color: #94a3b8;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .cr-stars { display: flex; gap: 4px; }
+
+        .cr-star {
+            font-size: 22px;
+            color: #d1d5db;
+            cursor: pointer;
+            transition: color 0.15s, transform 0.1s;
+            user-select: none;
+        }
+
+        .cr-star:hover { transform: scale(1.15); }
+        .cr-star.lit { color: #f59e0b; }
+
+        .cr-textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 13.5px;
+            font-family: inherit;
+            color: #374151;
+            background: white;
+            resize: vertical;
+            min-height: 80px;
+            line-height: 1.55;
+            transition: border-color 0.2s;
+        }
+
+        .cr-textarea:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,0.08); }
+        .cr-textarea::placeholder { color: #cbd5e1; }
+
+        .cr-name-input {
+            width: 100%;
+            padding: 9px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 13.5px;
+            font-family: inherit;
+            color: #374151;
+            background: white;
+            transition: border-color 0.2s;
+        }
+
+        .cr-name-input:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,0.08); }
+        .cr-name-input::placeholder { color: #cbd5e1; }
+
+        .btn-cr-generate {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #7c3aed, #6d28d9);
+            color: white;
+            border: none;
+            border-radius: 9px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-cr-generate:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 5px 14px rgba(124,58,237,0.3); }
+        .btn-cr-generate:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+
+        .cr-response-area { margin-top: 16px; }
+
+        /* ===== RESPONSE PANEL ===== */
+        .response-panel {
+            margin-top: 22px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 14px;
+            overflow: hidden;
+            transition: border-color 0.2s;
+        }
+
+        .response-panel.active { border-color: #c4b5fd; }
+
+        .rp-header {
+            padding: 14px 20px;
+            background: #f8fafc;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .rp-title { font-size: 14px; font-weight: 600; color: #0f172a; }
+
+        .btn-generate {
+            background: linear-gradient(135deg, #7c3aed, #6d28d9);
+            color: white;
+            border: none;
+            padding: 9px 18px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .btn-generate:hover:not(:disabled) {
+            background: linear-gradient(135deg, #6d28d9, #5b21b6);
+            transform: translateY(-1px);
+            box-shadow: 0 5px 14px rgba(124,58,237,0.3);
+        }
+
+        .btn-generate:disabled { opacity: 0.55; cursor: not-allowed; transform: none; box-shadow: none; }
+
+        .rp-body { padding: 20px; }
+
+        .rp-empty { text-align: center; color: #94a3b8; font-size: 13px; padding: 8px 0 4px; }
+
+        /* Reasoning steps */
+        .reasoning-block { margin-bottom: 18px; }
+
+        .reasoning-heading {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            color: #64748b;
+            margin-bottom: 12px;
+        }
+
+        .reason-step {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 7px 0;
+            font-size: 13px;
+            color: #374151;
+            opacity: 0;
+            transform: translateY(5px);
+            transition: opacity 0.35s ease, transform 0.35s ease;
+        }
+
+        .reason-step.show { opacity: 1; transform: translateY(0); }
+
+        .step-dot {
+            width: 21px;
+            height: 21px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .step-dot.spinning { background: #dbeafe; color: #2563eb; animation: dotSpin 0.8s linear infinite; }
+        .step-dot.done     { background: #dcfce7; color: #16a34a; }
+
+        @keyframes dotSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        /* Progress bar */
+        .progress-block { margin-bottom: 20px; }
+
+        .progress-meta { display: flex; justify-content: space-between; font-size: 12px; color: #64748b; margin-bottom: 7px; }
+
+        .progress-track { height: 7px; background: #f1f5f9; border-radius: 4px; overflow: hidden; }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #7c3aed, #2563eb);
+            border-radius: 4px;
+            width: 0%;
+            transition: width 0.55s cubic-bezier(0.4,0,0.2,1);
+        }
+
+        /* Generated response */
+        .gen-response { border: 1.5px solid #e0e7ff; border-radius: 12px; overflow: hidden; }
+
+        .gen-response-head {
+            background: linear-gradient(135deg, #f0f4ff, #faf5ff);
+            padding: 12px 16px;
+            border-bottom: 1px solid #e0e7ff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .gen-label { font-size: 12px; font-weight: 700; color: #4f46e5; }
+
+        .meta-tags { display: flex; gap: 7px; }
+
+        .meta-tag {
+            font-size: 11px;
+            background: white;
+            border: 1px solid #e0e7ff;
+            color: #6366f1;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .gen-response-body { padding: 16px; font-size: 14px; color: #374151; line-height: 1.72; min-height: 60px; }
+
+        .gen-response-foot {
+            padding: 11px 16px;
+            background: #fafbff;
+            border-top: 1px solid #e0e7ff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .time-saved-label { font-size: 12px; color: #16a34a; font-weight: 600; }
+
+        .btn-copy {
+            background: transparent;
+            border: 1px solid #d1d5db;
+            color: #374151;
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+
+        .btn-copy:hover { background: #f1f5f9; border-color: #94a3b8; }
+
+        /* ===== OUTCOMES ===== */
+        .outcomes-wrap { padding-top: 20px; }
+
+        .outcomes-intro { font-size: 14px; color: #64748b; margin-bottom: 20px; line-height: 1.6; }
+
+        /* ROI Calculator — no card box */
+        .roi-calc-card {
+            margin-bottom: 24px;
+        }
+
+        .roi-calc-header {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            margin-bottom: 4px;
+        }
+
+        .roi-calc-icon { display: none; }
+
+        .roi-calc-title { font-size: 13px; font-weight: 600; color: #374151; }
+
+        .roi-calc-sub { font-size: 12px; color: #94a3b8; margin-bottom: 14px; }
+
+        .roi-calc-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            gap: 12px;
+            align-items: flex-end;
+        }
+
+        .roi-input-group { display: flex; flex-direction: column; gap: 5px; }
+
+        .roi-input-label {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #64748b;
+        }
+
+        .roi-input {
+            padding: 9px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #0f172a;
+            background: white;
+            font-family: inherit;
+            width: 100%;
+            transition: border-color 0.2s;
+        }
+
+        .roi-input:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,0.08); }
+
+        .btn-calculate {
+            padding: 9px 20px;
+            background: linear-gradient(135deg, #7c3aed, #6d28d9);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            white-space: nowrap;
+            transition: all 0.2s;
+            height: 40px;
+        }
+
+        .btn-calculate:hover { background: linear-gradient(135deg, #6d28d9, #5b21b6); }
+
+        /* Metric cards — uniform subtle style */
+        .metrics-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 24px; }
+
+        .metric-card { border-radius: 12px; padding: 18px 16px; text-align: left; background: #f8fafc; border: 1px solid #e2e8f0; }
+        .metric-card.blue, .metric-card.green, .metric-card.purple { background: #f8fafc; border-color: #e2e8f0; }
+
+        .metric-val { font-size: 22px; font-weight: 600; line-height: 1; margin-bottom: 5px; color: #374151; }
+        .metric-card.blue .metric-val, .metric-card.green .metric-val, .metric-card.purple .metric-val { color: #374151; }
+
+        .metric-lbl { font-size: 12px; font-weight: 400; color: #64748b; }
+        .metric-card.blue .metric-lbl, .metric-card.green .metric-lbl, .metric-card.purple .metric-lbl { color: #64748b; }
+        .metric-sub { font-size: 11px; color: #94a3b8; margin-top: 3px; }
+        .metric-card.blue .metric-sub, .metric-card.green .metric-sub, .metric-card.purple .metric-sub { color: #94a3b8; }
+
+        /* Assumptions — same heading style as impact breakdown */
+        .assumptions-box { margin-bottom: 24px; }
+        .assumptions-title { font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 12px; }
+
+        .assumption-item { font-size: 12px; color: #94a3b8; display: flex; align-items: flex-start; gap: 8px; margin-bottom: 6px; }
+        .assumption-item:last-child { margin-bottom: 0; }
+        .dot-bullet { width: 4px; height: 4px; border-radius: 50%; background: #cbd5e1; flex-shrink: 0; margin-top: 6px; }
+
+        /* Impact breakdown collapsible */
+        .impact-acc { border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; margin-top: 20px; }
+        .impact-acc-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 14px 18px; cursor: pointer; user-select: none;
+            background: #fafafa;
+        }
+        .impact-acc-header:hover { background: #f4f4f5; }
+        .impact-acc-title { font-size: 13px; font-weight: 600; color: #374151; }
+        .impact-acc-chevron { font-size: 18px; color: #94a3b8; line-height: 1; transition: transform 0.3s; }
+        .impact-acc-chevron.open { transform: rotate(45deg); }
+        .impact-acc-body {
+            padding: 0 18px 18px;
+            overflow: hidden;
+            max-height: 600px;
+            transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1), padding 0.3s ease;
+        }
+        .impact-acc-body.collapsed { max-height: 0; padding-top: 0; padding-bottom: 0; }
+        .roi-chart-title { display: none; }
+
+        .roi-row { margin-bottom: 14px; }
+        .roi-row:last-child { margin-bottom: 0; }
+
+        .roi-row-top { display: flex; justify-content: space-between; font-size: 12px; color: #94a3b8; margin-bottom: 6px; }
+        .roi-row-top strong { font-weight: 500; color: #64748b; }
+
+        .roi-track { height: 6px; background: #f1f5f9; border-radius: 4px; overflow: hidden; }
+
+        .roi-bar { height: 100%; border-radius: 4px; width: 0; transition: width 1.2s cubic-bezier(0.4,0,0.2,1); background: #cbd5e1; }
+        .roi-bar.b-blue, .roi-bar.b-green, .roi-bar.b-purple, .roi-bar.b-teal { background: #cbd5e1; }
+
+        /* ===== COMPETITION ===== */
+        .competition-section { background: #0f172a; padding: 64px 40px; text-align: center; margin-top: 48px; }
+        .competition-title { font-size: 30px; font-weight: 700; color: white; margin-bottom: 22px; }
+        .star-block { display: flex; flex-direction: column; align-items: center; gap: 6px; margin-bottom: 28px; }
+        .stars-row-lg { font-size: 28px; color: #f59e0b; letter-spacing: 3px; }
+        .rating-sub { font-size: 13px; color: #64748b; }
+        .platform-logos-row { display: flex; align-items: center; justify-content: center; gap: 40px; flex-wrap: wrap; }
+
+        /* ===== FOOTER ===== */
+        footer { background: #0f172a; padding: 40px 60px 32px; border-top: 1px solid #1e293b; }
+        .footer-inner { max-width: 1100px; margin: 0 auto; }
+        .footer-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 28px; margin-bottom: 32px; }
+        .footer-col h4 { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #475569; margin-bottom: 10px; }
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { margin-bottom: 7px; }
+        .footer-col ul li a { font-size: 13px; color: #64748b; text-decoration: none; transition: color 0.2s; }
+        .footer-col ul li a:hover { color: #cbd5e1; }
+        .footer-bottom { padding-top: 22px; border-top: 1px solid #1e293b; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px; }
+        .footer-links { display: flex; gap: 18px; flex-wrap: wrap; }
+        .footer-links a { font-size: 12px; color: #475569; text-decoration: none; }
+        .footer-links a:hover { color: #94a3b8; }
+        .footer-copy { font-size: 12px; color: #334155; }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-up { animation: fadeUp 0.4s ease forwards; }
+
+        @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+        .pulsing { animation: pulse 1.1s ease infinite; }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 640px) {
+            .hero h1 { font-size: 30px; letter-spacing: -0.4px; }
+            .hero { padding: 36px 20px 12px; }
+            .main { margin-top: -160px; }
+            .metrics-row { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+            .form-row { grid-template-columns: 1fr; }
+            .header { padding: 0 20px; }
+            .roi-calc-inputs { grid-template-columns: 1fr 1fr; }
+            .roi-calc-inputs .btn-calculate { grid-column: 1 / -1; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header class="header">
+    <a href="#" class="logo">
+        <img src="birdeye-logo.png" class="logo-icon" alt="Birdeye">
+        <span class="logo-text">Birdeye</span>
+    </a>
+    <button class="btn-schedule">Schedule Demo</button>
+</header>
+
+<!-- ===== HERO BANNER ===== -->
+<div class="hero-banner">
+
+<section class="hero">
+    <div class="hero-eyebrow">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1l1.12 3.44H10.9L7.89 6.56 9 10 6 7.88 3 10l1.11-3.44L1.09 4.44H4.88L6 1z" fill="#7c3aed"/></svg>
+        THE AGENTIC MARKETING PLATFORM
+    </div>
+    <h1>Try our <span class="hero-purple">AI agents</span> for<br>your business growth</h1>
+    <p>Choose from a list of 6 agents that automate your reputation, listings and social presence with measurable outcomes.</p>
+</section>
+
+<!-- ===== AGENT SELECTOR ===== -->
+<div class="agent-selector-wrap" id="agent-selector-wrap">
+    <div class="pill-anchor">
+    <div class="agent-selector-pill" id="agent-pill" onclick="toggleDropdown(event)">
+        <span>✦</span>
+        <span id="pill-label">Review Response Agent</span>
+        <span class="chevron">▾</span>
+    </div>
+    <div class="agent-dropdown" id="agent-dropdown">
+        <div class="dd-category">Review</div>
+        <div class="dd-option selected" onclick="selectAgent('Review Response Agent', this)">
+            <div class="dd-dot"></div>Review Response Agent
+        </div>
+        <div class="dd-option" onclick="selectAgent('Review Generation Agent', this)">
+            <div class="dd-dot"></div>Review Generation Agent
+        </div>
+        <div class="dd-divider"></div>
+        <div class="dd-category">Social</div>
+        <div class="dd-option" onclick="selectAgent('Social Publishing Agent', this)">
+            <div class="dd-dot"></div>Social Publishing Agent
+        </div>
+        <div class="dd-option" onclick="selectAgent('Social Engagement Agent', this)">
+            <div class="dd-dot"></div>Social Engagement Agent
+        </div>
+        <div class="dd-divider"></div>
+        <div class="dd-category">Listings</div>
+        <div class="dd-option" onclick="selectAgent('Listings Optimization Agent', this)">
+            <div class="dd-dot"></div>Listings Optimization Agent
+        </div>
+        <div class="dd-option" onclick="selectAgent('Listings Verify Agent', this)">
+            <div class="dd-dot"></div>Listings Verify Agent
+        </div>
+    </div>
+    </div><!-- /.pill-anchor -->
+    <div class="agent-hint">
+        <span class="info-circle">i</span>
+        <span id="agent-hint-text">The AI review response agent analyzes reviews and creates proactive responses.</span>
+    </div>
+</div>
+
+</div><!-- /.hero-banner -->
+
+<!-- ===== MAIN ===== -->
+<main class="main">
+
+    <!-- ACCORDION 1: BASIC DETAILS -->
+    <div class="accordion" id="acc-basic">
+        <div class="acc-header" onclick="toggleAcc('basic')">
+            <div class="acc-header-content">
+                <span class="acc-title">Basic details</span>
+                <span class="acc-subtitle">Business profile, brand voice, and response preferences</span>
+            </div>
+            <button class="acc-toggle" id="toggle-basic">−</button>
+        </div>
+        <div class="acc-body" id="body-basic">
+            <div class="form-grid">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Business name <span class="req">*</span></label>
+                        <select class="form-select" id="biz-name">
+                            <option>Aspen Dental Group</option>
+                            <option>Bright Smiles Dental</option>
+                            <option>Austin Family Dentistry</option>
+                            <option>Premier Dental Care</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Industry <span class="req">*</span></label>
+                        <select class="form-select" id="industry">
+                            <option>Dental</option>
+                            <option>Healthcare</option>
+                            <option>Real Estate</option>
+                            <option>Automotive</option>
+                            <option>Restaurants</option>
+                            <option>Legal</option>
+                            <option>Retail</option>
+                            <option>Hospitality</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Website <span class="req">*</span></label>
+                    <div class="input-wrap">
+                        <input type="text" class="form-input" id="website" value="https://www.aspendental.com/">
+                        <span class="input-ext-icon">↗</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Brand voice <span class="req">*</span></label>
+                    <select class="form-select" id="brand-voice">
+                        <option>Professional and empathetic</option>
+                        <option>Friendly and casual</option>
+                        <option>Formal and concise</option>
+                        <option>Warm and personal</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Response length</label>
+                    <div class="resp-length-group">
+                        <button class="resp-opt" data-val="concise" onclick="selectRespLen(this)">
+                            <svg width="26" height="14" viewBox="0 0 26 14" fill="none">
+                                <rect x="0" y="0" width="18" height="2" rx="1" fill="currentColor"/>
+                                <rect x="0" y="6" width="12" height="2" rx="1" fill="currentColor"/>
+                            </svg>
+                            <span class="resp-opt-name">Concise</span>
+                            <span class="resp-opt-desc">1–2 lines</span>
+                        </button>
+                        <button class="resp-opt selected" data-val="balanced" onclick="selectRespLen(this)">
+                            <svg width="26" height="18" viewBox="0 0 26 18" fill="none">
+                                <rect x="0" y="0" width="24" height="2" rx="1" fill="currentColor"/>
+                                <rect x="0" y="6" width="20" height="2" rx="1" fill="currentColor"/>
+                                <rect x="0" y="12" width="16" height="2" rx="1" fill="currentColor"/>
+                            </svg>
+                            <span class="resp-opt-name">Balanced</span>
+                            <span class="resp-opt-desc">3 lines</span>
+                        </button>
+                        <button class="resp-opt" data-val="detailed" onclick="selectRespLen(this)">
+                            <svg width="26" height="28" viewBox="0 0 26 28" fill="none">
+                                <rect x="0" y="0" width="24" height="2" rx="1" fill="currentColor"/>
+                                <rect x="0" y="6" width="26" height="2" rx="1" fill="currentColor"/>
+                                <rect x="0" y="12" width="20" height="2" rx="1" fill="currentColor"/>
+                                <rect x="0" y="18" width="24" height="2" rx="1" fill="currentColor"/>
+                                <rect x="0" y="24" width="14" height="2" rx="1" fill="currentColor"/>
+                            </svg>
+                            <span class="resp-opt-name">Detailed</span>
+                            <span class="resp-opt-desc">4–5 lines</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- MORE OPTIONS -->
+                <div>
+                    <div class="more-options-toggle" onclick="toggleMoreOptions()">
+                        <span class="more-options-label">More options</span>
+                        <span class="more-options-chevron" id="mo-chevron">▾</span>
+                    </div>
+                    <div class="more-options-body" id="more-options-body" style="display:none;">
+                        <div class="ao-item" onclick="toggleCheck(this)">
+                            <div class="ao-checkbox checked"></div>
+                            <div class="ao-text">
+                                <div class="ao-label">Identify relevant mentions</div>
+                                <div class="ao-desc">Detect service or product references for contextual response tailoring</div>
+                            </div>
+                        </div>
+                        <div class="ao-item" onclick="toggleCheck(this)">
+                            <div class="ao-checkbox checked"></div>
+                            <div class="ao-text">
+                                <div class="ao-label">Extract custom token references</div>
+                                <div class="ao-desc">Find employee names, location names, cities, or other custom data</div>
+                            </div>
+                        </div>
+                        <div class="ao-item" onclick="toggleCheck(this)">
+                            <div class="ao-checkbox checked"></div>
+                            <div class="ao-text">
+                                <div class="ao-label">Apply response generation rules</div>
+                                <div class="ao-desc">Natural tone · Acknowledge negatives first · Max 2 custom tokens · Skip legal/spam</div>
+                            </div>
+                        </div>
+                        <div class="ao-item" id="custom-rule-item" onclick="toggleCheck(this)">
+                            <div class="ao-checkbox" id="custom-rule-check"></div>
+                            <div class="ao-text">
+                                <div class="ao-label">Custom analysis rule</div>
+                                <div class="ao-desc">Write your own instruction the agent will follow when generating responses</div>
+                                <input type="text" class="ao-custom-input" id="custom-rule-input" placeholder="e.g. Always mention our satisfaction guarantee" onclick="event.stopPropagation()">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="continue-row">
+                    <button class="btn-continue" onclick="runContinue()">
+                        Continue &nbsp;→
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ACCORDION 2: OUTPUT -->
+    <div class="accordion is-closed" id="acc-output">
+        <div class="acc-header" onclick="toggleAcc('output')">
+            <div class="acc-header-content">
+                <span class="acc-title">Output</span>
+                <span class="acc-subtitle">Sample reviews with AI-generated responses</span>
+            </div>
+            <button class="acc-toggle" id="toggle-output">+</button>
+        </div>
+        <div class="acc-body collapsed" id="body-output">
+            <div id="output-placeholder" class="acc-placeholder">
+                Check out the example reviews and agent responses here
+            </div>
+            <div id="output-live" style="display:none;">
+                <div class="output-wrap">
+                    <div class="output-top">
+                        <div class="output-subtext" id="reviews-subtext">Recent reviews for Aspen Dental Group — select one to generate an agent response</div>
+                    </div>
+
+                    <div class="reviews-list" id="reviews-list"></div>
+
+                    <!-- Custom review expander -->
+                    <div class="custom-review-trigger" id="custom-trigger" onclick="toggleCustomReview()">
+                        <div class="cr-plus">+</div>
+                        <span>Try with your own review</span>
+                        <span class="cr-hint">Any review, any industry</span>
+                    </div>
+                    <div class="custom-review-form" id="custom-form">
+                        <div class="cr-field">
+                            <label class="cr-label">Star Rating</label>
+                            <div class="cr-stars" id="cr-stars">
+                                <span class="cr-star" data-val="1" onmouseenter="hoverStars(1)" onmouseleave="unhoverStars()" onclick="setCustomStars(1)">★</span>
+                                <span class="cr-star" data-val="2" onmouseenter="hoverStars(2)" onmouseleave="unhoverStars()" onclick="setCustomStars(2)">★</span>
+                                <span class="cr-star" data-val="3" onmouseenter="hoverStars(3)" onmouseleave="unhoverStars()" onclick="setCustomStars(3)">★</span>
+                                <span class="cr-star" data-val="4" onmouseenter="hoverStars(4)" onmouseleave="unhoverStars()" onclick="setCustomStars(4)">★</span>
+                                <span class="cr-star" data-val="5" onmouseenter="hoverStars(5)" onmouseleave="unhoverStars()" onclick="setCustomStars(5)">★</span>
+                            </div>
+                        </div>
+                        <div class="cr-field">
+                            <label class="cr-label">Review Text</label>
+                            <textarea class="cr-textarea" id="cr-text" placeholder="Paste or type a review here... e.g. 'Great service but the wait time was too long. Staff was friendly though.'"></textarea>
+                        </div>
+                        <div class="cr-field">
+                            <label class="cr-label-soft">Reviewer name (optional)</label>
+                            <input type="text" class="cr-name-input" id="cr-name" placeholder="e.g. Alex K.">
+                        </div>
+                        <button class="btn-cr-generate" id="btn-cr-gen" onclick="generateCustomResponse()">
+                            ✦ Generate AI Response
+                        </button>
+                        <div class="cr-response-area" id="cr-response-area"></div>
+                    </div>
+
+                    <!-- Response Panel (for the 3 fixed reviews) -->
+                    <div class="response-panel" id="response-panel" style="display:none;">
+                        <div class="rp-header">
+                            <span class="rp-title" id="rp-label">Generate AI Response</span>
+                            <button class="btn-generate" id="btn-gen" onclick="generateResponse()">
+                                ✦ Generate Response
+                            </button>
+                        </div>
+                        <div class="rp-body" id="rp-body">
+                            <p class="rp-empty">Select a review above and click "Generate Response" to see the agent in action.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ACCORDION 3: OUTCOMES -->
+    <div class="accordion is-closed" id="acc-outcome">
+        <div class="acc-header" onclick="toggleAcc('outcome')">
+            <div class="acc-header-content">
+                <span class="acc-title">Outcome</span>
+                <span class="acc-subtitle">Estimated time savings and cost impact</span>
+            </div>
+            <button class="acc-toggle" id="toggle-outcome">+</button>
+        </div>
+        <div class="acc-body collapsed" id="body-outcome">
+            <div id="outcome-placeholder" class="acc-placeholder">
+                View all ROI outcomes like time saved, cost saved and more
+            </div>
+            <div id="outcome-live" style="display:none;">
+                <div class="outcomes-wrap">
+                    <p class="outcomes-intro">Here are some key outcomes of this agent.</p>
+
+                    <!-- Inputs -->
+                    <div class="roi-calc-inputs" style="margin-bottom:20px;">
+                        <div class="form-group">
+                            <label class="form-label">Monthly Review Volume</label>
+                            <input type="number" class="form-input" id="roi-volume" value="200" min="1" max="10000" oninput="recalcROI()">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Staff Cost ($/hr)</label>
+                            <input type="number" class="form-input" id="roi-rate" value="25" min="1" max="500" oninput="recalcROI()">
+                        </div>
+                        <button class="btn-calculate" onclick="recalcROI()">Recalculate</button>
+                    </div>
+
+                    <div class="metrics-row">
+                        <div class="metric-card blue">
+                            <div class="metric-val" id="m-time-per">6 min</div>
+                            <div class="metric-lbl">Saved per response</div>
+                            <div class="metric-sub">vs. manual average</div>
+                        </div>
+                        <div class="metric-card green">
+                            <div class="metric-val" id="m-hours">20 hrs</div>
+                            <div class="metric-lbl">Saved monthly</div>
+                            <div class="metric-sub" id="m-hours-sub">~200 reviews/month</div>
+                        </div>
+                        <div class="metric-card purple">
+                            <div class="metric-val" id="m-cost">$500</div>
+                            <div class="metric-lbl">Cost saved/month</div>
+                            <div class="metric-sub" id="m-cost-sub">@ $25/hr staff rate</div>
+                        </div>
+                    </div>
+
+                    <!-- Impact Breakdown collapsible -->
+                    <div class="impact-acc">
+                        <div class="impact-acc-header" onclick="toggleImpact()">
+                            <span class="impact-acc-title">Impact Breakdown</span>
+                            <span class="impact-acc-chevron" id="impact-chevron">+</span>
+                        </div>
+                        <div class="impact-acc-body collapsed" id="impact-body">
+                            <div class="roi-row" style="margin-top:4px;">
+                                <div class="roi-row-top"><span>Response Rate Improvement</span><strong>+82%</strong></div>
+                                <div class="roi-track"><div class="roi-bar b-blue" data-target="82"></div></div>
+                            </div>
+                            <div class="roi-row">
+                                <div class="roi-row-top"><span>Brand Voice Consistency</span><strong>97%</strong></div>
+                                <div class="roi-track"><div class="roi-bar b-green" data-target="97"></div></div>
+                            </div>
+                            <div class="roi-row">
+                                <div class="roi-row-top"><span>Time Efficiency Gain</span><strong>92%</strong></div>
+                                <div class="roi-track"><div class="roi-bar b-purple" data-target="92"></div></div>
+                            </div>
+                            <div class="roi-row">
+                                <div class="roi-row-top"><span>Customer Satisfaction Lift</span><strong>+34%</strong></div>
+                                <div class="roi-track"><div class="roi-bar b-teal" data-target="34"></div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<!-- ===== COMPETITION ===== -->
+<div class="competition-section">
+    <h2 class="competition-title">Birdeye outranks the competition</h2>
+    <div class="star-block">
+        <div class="stars-row-lg">★★★★★</div>
+        <div class="rating-sub">Based on 5,387 reviews</div>
+    </div>
+    <div class="platform-logos-row">
+        <span style="font-size:22px;font-weight:800;">
+            <span style="color:#4285F4">G</span><span style="color:#EA4335">o</span><span style="color:#FBBC04">o</span><span style="color:#4285F4">g</span><span style="color:#34A853">l</span><span style="color:#EA4335">e</span>
+        </span>
+        <span style="font-size:22px;font-weight:800;color:#ff492c;">G2</span>
+        <span style="font-size:20px;font-weight:700;color:#ff9d28;">Capterra</span>
+    </div>
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+    <div class="footer-inner">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4>Attract</h4>
+                <ul>
+                    <li><a href="#">Listings</a></li>
+                    <li><a href="#">Reviews</a></li>
+                    <li><a href="#">Referrals</a></li>
+                    <li><a href="#">Pages</a></li>
+                    <li><a href="#">Google Seller Ratings</a></li>
+                </ul>
+                <h4 style="margin-top:18px;">Objectives</h4>
+                <ul>
+                    <li><a href="#">Online Reputation Management</a></li>
+                    <li><a href="#">Google Reviews</a></li>
+                    <li><a href="#">Business Listings Management</a></li>
+                    <li><a href="#">Customer Experience</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Convert</h4>
+                <ul>
+                    <li><a href="#">Messaging</a></li>
+                    <li><a href="#">Webchat</a></li>
+                    <li><a href="#">Social</a></li>
+                    <li><a href="#">Texting</a></li>
+                    <li><a href="#">Appointments</a></li>
+                    <li><a href="#">Payments</a></li>
+                </ul>
+                <h4 style="margin-top:18px;">Platform</h4>
+                <ul>
+                    <li><a href="#">BirdAI</a></li>
+                    <li><a href="#">Analytics</a></li>
+                    <li><a href="#">Integrations</a></li>
+                    <li><a href="#">Google Partnership</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Delight</h4>
+                <ul>
+                    <li><a href="#">Surveys</a></li>
+                    <li><a href="#">Insights</a></li>
+                    <li><a href="#">Benchmarking</a></li>
+                    <li><a href="#">Ticketing</a></li>
+                </ul>
+                <h4 style="margin-top:18px;">Solutions</h4>
+                <ul>
+                    <li><a href="#">Small Business</a></li>
+                    <li><a href="#">Enterprise</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Industries</h4>
+                <ul>
+                    <li><a href="#">Dental</a></li>
+                    <li><a href="#">Healthcare</a></li>
+                    <li><a href="#">Real Estate</a></li>
+                    <li><a href="#">Financial Services</a></li>
+                    <li><a href="#">Legal</a></li>
+                    <li><a href="#">Automotive</a></li>
+                    <li><a href="#">Retail</a></li>
+                    <li><a href="#">Restaurants</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Leadership Team</a></li>
+                    <li><a href="#">Watch Demo</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                </ul>
+                <h4 style="margin-top:18px;">Services</h4>
+                <ul>
+                    <li><a href="#">Managed Services</a></li>
+                    <li><a href="#">Professional Services</a></li>
+                    <li><a href="#">Birdeye Support</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="footer-links">
+                <a href="#">Terms &amp; Conditions</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Security</a>
+                <a href="#">Site Map</a>
+                <a href="#">HIPAA</a>
+            </div>
+            <span class="footer-copy">© 2021 Birdeye Inc.</span>
+        </div>
+    </div>
+</footer>
+
+<script>
+// ---- AGENT HINT TEXT ----
+const AGENT_HINTS = {
+    'Review Response Agent':    'The AI review response agent analyzes reviews and creates proactive responses.',
+    'Review Generation Agent':  'The AI review generation agent helps request and generate authentic reviews from customers.',
+    'Social Publishing Agent':  'The AI social publishing agent creates and schedules brand-consistent posts across platforms.',
+    'Social Engagement Agent':  'The AI social engagement agent monitors and responds to comments and messages automatically.',
+    'Listings Optimization Agent': 'The AI listings agent audits and optimizes your business listings across 50+ directories.',
+    'Listings Verify Agent':    'The AI listings verify agent ensures NAP consistency and flags discrepancies across directories.'
+};
+
+// ---- REVIEWS DATA (3 only: positive, neutral, negative) ----
+const REVIEWS = [
+    {
+        id: 3,
+        name: "Mike R.",
+        initials: "MR",
+        color: "#10b981",
+        stars: 5,
+        platform: "Google",
+        pClass: "platform-g",
+        pLetter: "G",
+        date: "2 weeks ago",
+        text: "Best dental experience in Austin! Dr. Kim and the entire team are incredibly professional and caring. The office is modern and spotless. I actually look forward to my dental appointments now — something I never thought I'd say!",
+        sentiment: "positive"
+    },
+    {
+        id: 2,
+        name: "Sarah M.",
+        initials: "SM",
+        color: "#f59e0b",
+        stars: 4,
+        platform: "Google",
+        pClass: "platform-g",
+        pLetter: "G",
+        date: "1 week ago",
+        text: "Dr. Patel and hygienist Lisa were wonderful — thorough, gentle, and took the time to explain everything clearly. My only feedback is the waiting area feels a bit dated. The clinical care itself was genuinely excellent.",
+        sentiment: "neutral"
+    },
+    {
+        id: 1,
+        name: "John D.",
+        initials: "JD",
+        color: "#ef4444",
+        stars: 1,
+        platform: "Google",
+        pClass: "platform-g",
+        pLetter: "G",
+        date: "2 days ago",
+        text: "I waited over 45 minutes past my appointment time with absolutely no explanation from the staff. When I asked the front desk about the delay, they were dismissive and seemed annoyed. Very disappointing, especially as a first-time patient.",
+        sentiment: "negative"
+    }
+];
+
+// ---- RESPONSE DATA ----
+const RESPONSES = {
+    3: {
+        label: "Responding to Mike R.",
+        steps: [
+            { txt: "Detecting review sentiment — 5-star positive signal identified", ms: 550 },
+            { txt: "Identifying highlights: Dr. Kim, team culture, facility quality", ms: 650 },
+            { txt: "Extracting location mention: Austin — local SEO opportunity flagged", ms: 600 },
+            { txt: "Applying brand voice: Professional and empathetic", ms: 600 },
+            { txt: "Generating enthusiastic positive affirmation response…", ms: 750 }
+        ],
+        text: "Wow, Mike — thank you so much! Reviews like yours genuinely make our day. Dr. Kim and the entire team pour their heart into every patient interaction, and it means the world to hear that it shows. We believe a dental visit should feel comfortable — even enjoyable — so knowing you actually look forward to coming in is the highest compliment we could receive. We're lucky to have patients like you, and we'll see you at your next visit!"
+    },
+    2: {
+        label: "Responding to Sarah M.",
+        steps: [
+            { txt: "Detecting review sentiment — 4-star mixed-positive signal", ms: 550 },
+            { txt: "Identifying key highlights: Dr. Patel, hygienist Lisa — names flagged", ms: 650 },
+            { txt: "Flagging constructive feedback: waiting area (non-clinical)", ms: 600 },
+            { txt: "Applying brand voice: Professional and empathetic, personal touch", ms: 650 },
+            { txt: "Generating balanced acknowledgment response…", ms: 750 }
+        ],
+        text: "Thank you so much for the kind words, Sarah! We're thrilled to hear that Dr. Patel and Lisa made such a positive impression — we'll be sure to pass along your feedback to them directly. Your point about the waiting area is well taken and something we're actively working to improve. We want every aspect of your visit to feel as welcoming as the clinical care itself. We look forward to seeing you at your next appointment!"
+    },
+    1: {
+        label: "Responding to John D.",
+        steps: [
+            { txt: "Detecting review sentiment — 1-star negative signal identified", ms: 600 },
+            { txt: "Extracting pain points: excessive wait time, front-desk communication", ms: 700 },
+            { txt: "Checking brand voice profile: Professional and empathetic", ms: 550 },
+            { txt: "Applying de-escalation and empathy response framework", ms: 700 },
+            { txt: "Drafting personalized, HIPAA-safe response…", ms: 800 }
+        ],
+        text: "Dear John, thank you for taking the time to share your experience with us. We sincerely apologize for the lengthy wait and for how our front desk team handled your inquiry — that is not the standard of care or courtesy we hold ourselves to, especially for a first visit. We take your feedback seriously and would like the opportunity to make this right. Please reach out to our office manager directly at your earliest convenience so we can address your concerns and ensure your next visit is everything it should be."
+    }
+};
+
+// ---- STATE ----
+let selectedId    = null;
+let isGenerating  = false;
+let generatedCache = {};
+let customStarVal = 0;
+let crIsGenerating = false;
+
+// ---- DROPDOWN ----
+function toggleDropdown(e) {
+    e.stopPropagation();
+    const pill = document.getElementById('agent-pill');
+    const dd   = document.getElementById('agent-dropdown');
+    const isOpen = dd.classList.toggle('open');
+    pill.classList.toggle('open', isOpen);
+}
+
+function selectAgent(name, el) {
+    document.getElementById('pill-label').textContent = name;
+    document.getElementById('agent-hint-text').textContent = AGENT_HINTS[name] || '';
+    document.querySelectorAll('.dd-option').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+    document.getElementById('agent-dropdown').classList.remove('open');
+    document.getElementById('agent-pill').classList.remove('open');
+}
+
+document.addEventListener('click', () => {
+    document.getElementById('agent-dropdown').classList.remove('open');
+    document.getElementById('agent-pill').classList.remove('open');
+});
+
+// ---- ACCORDION ----
+function toggleAcc(id) {
+    const body = document.getElementById('body-' + id);
+    const btn  = document.getElementById('toggle-' + id);
+    const isOpen = !body.classList.contains('collapsed');
+
+    if (isOpen) {
+        body.style.maxHeight = body.scrollHeight + 'px';
+        body.classList.add('collapsed');
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+            body.style.maxHeight = '0';
+        }));
+        btn.textContent = '+';
+        document.getElementById('acc-' + id).classList.add('is-closed');
+    } else {
+        body.classList.remove('collapsed');
+        body.style.maxHeight = body.scrollHeight + 'px';
+        body.addEventListener('transitionend', function h(e) {
+            if (e.propertyName === 'max-height') {
+                body.style.maxHeight = 'none';
+                body.removeEventListener('transitionend', h);
+            }
+        });
+        btn.textContent = '−';
+        document.getElementById('acc-' + id).classList.remove('is-closed');
+    }
+}
+
+function openAcc(id) {
+    const body = document.getElementById('body-' + id);
+    body.classList.remove('collapsed');
+    body.style.maxHeight = body.scrollHeight + 'px';
+    body.addEventListener('transitionend', function h(e) {
+        if (e.propertyName === 'max-height') {
+            body.style.maxHeight = 'none';
+            body.removeEventListener('transitionend', h);
+        }
+    });
+    document.getElementById('toggle-' + id).textContent = '−';
+    document.getElementById('acc-' + id).classList.remove('is-closed');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.acc-body.collapsed').forEach(el => {
+        el.style.maxHeight = '0';
+    });
+});
+
+// ---- RESPONSE LENGTH ----
+function selectRespLen(btn) {
+    document.querySelectorAll('.resp-opt').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+}
+
+// ---- IMPACT BREAKDOWN TOGGLE ----
+function toggleImpact() {
+    const body    = document.getElementById('impact-body');
+    const chevron = document.getElementById('impact-chevron');
+    const isOpen  = !body.classList.contains('collapsed');
+    body.classList.toggle('collapsed', isOpen);
+    chevron.classList.toggle('open', !isOpen);
+    chevron.textContent = isOpen ? '+' : '×';
+}
+
+// ---- MORE OPTIONS TOGGLE ----
+function toggleMoreOptions() {
+    const body    = document.getElementById('more-options-body');
+    const chevron = document.getElementById('mo-chevron');
+    const isOpen  = body.style.display === 'block';
+    body.style.display = isOpen ? 'none' : 'block';
+    chevron.classList.toggle('open', !isOpen);
+}
+
+// ---- ANALYSIS OPTIONS CHECKBOX ----
+function toggleCheck(item) {
+    const box = item.querySelector('.ao-checkbox');
+    box.classList.toggle('checked');
+    // Custom rule: show input only when checked
+    if (item.id === 'custom-rule-item') {
+        const input = document.getElementById('custom-rule-input');
+        input.classList.toggle('visible', box.classList.contains('checked'));
+    }
+}
+
+// ---- CONTINUE ----
+function forceOpenAcc(id) {
+    const body = document.getElementById('body-' + id);
+    body.classList.remove('collapsed');
+    body.style.maxHeight = 'none';
+    document.getElementById('toggle-' + id).textContent = '−';
+    document.getElementById('acc-' + id).classList.remove('is-closed');
+}
+
+function runContinue() {
+    const biz = document.getElementById('biz-name').value.trim() || 'your business';
+
+    document.getElementById('output-placeholder').style.display = 'none';
+    document.getElementById('output-live').style.display  = 'block';
+    document.getElementById('outcome-placeholder').style.display = 'none';
+    document.getElementById('outcome-live').style.display = 'block';
+
+    document.getElementById('reviews-subtext').textContent =
+        `Recent reviews for ${biz} — select one to generate an agent response`;
+
+    renderReviews();
+    recalcROI();
+
+    forceOpenAcc('output');
+    forceOpenAcc('outcome');
+
+    setTimeout(() => {
+        document.querySelectorAll('.roi-bar[data-target]').forEach(bar => {
+            bar.style.width = bar.dataset.target + '%';
+        });
+    }, 300);
+
+    setTimeout(() => {
+        document.getElementById('acc-output').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 80);
+}
+
+// ---- RENDER REVIEWS ----
+function renderReviews() {
+    const list = document.getElementById('reviews-list');
+    list.innerHTML = '';
+
+    REVIEWS.forEach((r, idx) => {
+        const stars = Array(5).fill(0).map((_,i) =>
+            `<span class="star ${i < r.stars ? 'on' : 'off'}">★</span>`
+        ).join('');
+
+        const sentLabel = r.sentiment.charAt(0).toUpperCase() + r.sentiment.slice(1);
+        const isSelected = r.id === selectedId;
+
+        const card = document.createElement('div');
+        card.className = 'review-card fade-up' + (isSelected ? ' selected' : '');
+        card.style.animationDelay = (idx * 55) + 'ms';
+        card.dataset.id = r.id;
+        card.onclick = () => selectReview(r.id);
+
+        card.innerHTML = `
+            <div class="select-check">✓</div>
+            <div class="review-card-header">
+                <div class="reviewer-left">
+                    <div class="avatar" style="background:${r.color}">${r.initials}</div>
+                    <div>
+                        <div class="reviewer-name">${r.name}</div>
+                        <div class="reviewer-meta">${r.date}</div>
+                    </div>
+                </div>
+                <div class="stars-row">${stars}</div>
+            </div>
+            <p class="review-text">${r.text}</p>
+            <div class="review-footer-row">
+                <div class="platform-tag">
+                    <svg width="11" height="11" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0">
+                        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+                        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                    </svg>
+                    ${r.platform}
+                </div>
+                <span class="sentiment-tag s-${r.sentiment}">${sentLabel}</span>
+            </div>
+        `;
+        list.appendChild(card);
+    });
+}
+
+// ---- SELECT REVIEW ----
+function selectReview(id) {
+    selectedId = id;
+    renderReviews();
+
+    const panel = document.getElementById('response-panel');
+    panel.style.display = 'block';
+    panel.classList.add('active');
+
+    document.getElementById('rp-label').textContent = RESPONSES[id].label;
+
+    const genBtn = document.getElementById('btn-gen');
+
+    if (generatedCache[id]) {
+        renderStoredResponse(id);
+        genBtn.innerHTML = '↺ Regenerate';
+        genBtn.disabled = false;
+    } else {
+        document.getElementById('rp-body').innerHTML = `
+            <p class="rp-empty">Click "Generate Response" to have the AI craft a personalized, brand-consistent reply to this review.</p>
+        `;
+        genBtn.innerHTML = '✦ Generate Response';
+        genBtn.disabled = false;
+    }
+
+    setTimeout(() => panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 80);
+}
+
+// ---- GENERATE RESPONSE ----
+async function generateResponse() {
+    if (!selectedId || isGenerating) return;
+    isGenerating = true;
+
+    const genBtn = document.getElementById('btn-gen');
+    genBtn.disabled = true;
+    genBtn.innerHTML = '<span class="pulsing">⚙</span>&nbsp;Analyzing…';
+
+    await runReasoningFlow(
+        'rp-body',
+        RESPONSES[selectedId].steps,
+        RESPONSES[selectedId].text,
+        selectedId,
+        () => {
+            generatedCache[selectedId] = RESPONSES[selectedId].text;
+            isGenerating = false;
+            genBtn.innerHTML = '↺ Regenerate';
+            genBtn.disabled = false;
+        }
+    );
+}
+
+// ---- SHOW STORED RESPONSE ----
+function renderStoredResponse(id) {
+    document.getElementById('rp-body').innerHTML = buildResponseHTML(generatedCache[id], id, 'copy-main');
+}
+
+// ---- SHARED REASONING FLOW ----
+async function runReasoningFlow(bodyId, steps, responseText, cacheKey, onDone) {
+    const rpBody = document.getElementById(bodyId);
+
+    rpBody.innerHTML = `
+        <div class="reasoning-block">
+            <div class="reasoning-heading">Agent Reasoning</div>
+            <div id="steps-${cacheKey}"></div>
+        </div>
+        <div class="progress-block">
+            <div class="progress-meta">
+                <span id="prog-label-${cacheKey}">Starting analysis…</span>
+                <span id="prog-pct-${cacheKey}">0%</span>
+            </div>
+            <div class="progress-track">
+                <div class="progress-fill" id="prog-fill-${cacheKey}"></div>
+            </div>
+        </div>
+    `;
+
+    const container = document.getElementById(`steps-${cacheKey}`);
+    const progFill  = document.getElementById(`prog-fill-${cacheKey}`);
+    const progLabel = document.getElementById(`prog-label-${cacheKey}`);
+    const progPct   = document.getElementById(`prog-pct-${cacheKey}`);
+    const total     = steps.length;
+
+    for (let i = 0; i < total; i++) {
+        const step = steps[i];
+        await pause(step.ms);
+
+        container.querySelectorAll('.step-dot.spinning').forEach(d => {
+            d.classList.replace('spinning', 'done');
+            d.textContent = '✓';
+        });
+
+        const pct = Math.round(((i + 1) / total) * 88);
+        const el = document.createElement('div');
+        el.className = 'reason-step';
+        el.innerHTML = `<div class="step-dot spinning">↻</div><span>${step.txt}</span>`;
+        container.appendChild(el);
+        requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('show')));
+
+        progFill.style.width  = pct + '%';
+        progPct.textContent   = pct + '%';
+        progLabel.textContent = step.txt;
+    }
+
+    await pause(400);
+
+    container.querySelectorAll('.step-dot.spinning').forEach(d => {
+        d.classList.replace('spinning', 'done');
+        d.textContent = '✓';
+    });
+
+    progFill.style.width  = '100%';
+    progPct.textContent   = '100%';
+    progLabel.textContent = 'Response ready!';
+
+    await pause(320);
+
+    const stepsSnap = container.innerHTML;
+
+    rpBody.innerHTML = `
+        <div class="reasoning-block" style="margin-bottom:18px;">
+            <div class="reasoning-heading">Agent Reasoning</div>
+            <div>${stepsSnap}</div>
+        </div>
+        ${buildResponseHTML(responseText, cacheKey, 'copy-' + cacheKey)}
+    `;
+
+    await typeOut(`resp-body-${cacheKey}`, responseText, 14);
+
+    if (onDone) onDone();
+}
+
+function buildResponseHTML(text, cacheKey, copyId) {
+    return `
+        <div class="gen-response fade-up">
+            <div class="gen-response-head">
+                <span class="gen-label">AI-Generated Response</span>
+                <div class="meta-tags">
+                    <span class="meta-tag">Brand-consistent</span>
+                    <span class="meta-tag">HIPAA-safe</span>
+                </div>
+            </div>
+            <div class="gen-response-body" id="resp-body-${cacheKey}">${text || ''}</div>
+            <div class="gen-response-foot">
+                <span class="time-saved-label">⏱ 6 min saved this response</span>
+                <button class="btn-copy" id="${copyId}" onclick="copyText('${cacheKey}', this, '${copyId}')">Copy Response</button>
+            </div>
+        </div>
+    `;
+}
+
+// ---- CUSTOM REVIEW SECTION ----
+function toggleCustomReview() {
+    const trigger = document.getElementById('custom-trigger');
+    const form    = document.getElementById('custom-form');
+    const isOpen  = form.classList.toggle('open');
+    trigger.classList.toggle('expanded', isOpen);
+}
+
+// Star hover/select
+function hoverStars(val) {
+    document.querySelectorAll('.cr-star').forEach(s => {
+        s.classList.toggle('lit', parseInt(s.dataset.val) <= val);
+    });
+}
+
+function unhoverStars() {
+    document.querySelectorAll('.cr-star').forEach(s => {
+        s.classList.toggle('lit', parseInt(s.dataset.val) <= customStarVal);
+    });
+}
+
+function setCustomStars(val) {
+    customStarVal = val;
+    unhoverStars();
+}
+
+async function generateCustomResponse() {
+    if (crIsGenerating) return;
+    const text    = document.getElementById('cr-text').value.trim();
+    const name    = document.getElementById('cr-name').value.trim();
+    const stars   = customStarVal;
+
+    if (!text) {
+        document.getElementById('cr-text').style.borderColor = '#fca5a5';
+        document.getElementById('cr-text').placeholder = 'Please enter a review to generate a response.';
+        setTimeout(() => { document.getElementById('cr-text').style.borderColor = ''; }, 2000);
+        return;
+    }
+
+    if (!stars) {
+        hoverStars(0);
+        document.querySelector('.cr-stars').style.outline = '2px solid #fca5a5';
+        document.querySelector('.cr-stars').style.borderRadius = '4px';
+        setTimeout(() => { document.querySelector('.cr-stars').style.outline = ''; }, 2000);
+        return;
+    }
+
+    crIsGenerating = true;
+    const btn = document.getElementById('btn-cr-gen');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="pulsing">⚙</span>&nbsp;Analyzing…';
+
+    const reviewer = name || 'there';
+    const firstName = reviewer.split(' ')[0];
+
+    const sentiment = stars >= 4 ? 'positive' : stars === 3 ? 'neutral' : 'negative';
+    const sentLabel = stars >= 4 ? `${stars}-star positive` : stars === 3 ? '3-star neutral' : `${stars}-star negative`;
+
+    const customSteps = [
+        { txt: `Detecting review sentiment — ${sentLabel} signal identified`, ms: 600 },
+        { txt: "Extracting key themes and mentions from review content", ms: 700 },
+        { txt: `Checking brand voice profile: ${document.getElementById('brand-voice')?.value || 'Professional and empathetic'}`, ms: 600 },
+        { txt: `Applying ${sentiment} response generation framework`, ms: 700 },
+        { txt: "Drafting personalized, brand-consistent response…", ms: 800 }
+    ];
+
+    const responseText = buildCustomResponseText(stars, firstName, text);
+    const cacheKey = 'custom';
+
+    document.getElementById('cr-response-area').innerHTML = `<div id="cr-response-area-inner" style="margin-top:16px;"></div>`;
+
+    // Temporarily point the rendering to the custom area
+    const originalContent = document.getElementById('cr-response-area').innerHTML;
+    document.getElementById('cr-response-area').innerHTML = `<div id="rp-body-custom" style="margin-top:16px;"></div>`;
+
+    await runReasoningFlow(
+        'rp-body-custom',
+        customSteps,
+        responseText,
+        'custom-' + Date.now(),
+        () => {
+            crIsGenerating = false;
+            btn.innerHTML = '↺ Regenerate Response';
+            btn.disabled = false;
+        }
+    );
+}
+
+function buildCustomResponseText(stars, firstName, reviewText) {
+    if (stars === 5) {
+        return `Thank you so much, ${firstName}! Your kind words genuinely mean the world to our team. We put our heart into every patient experience, and hearing such wonderful feedback reminds us exactly why we do what we do. We look forward to welcoming you back very soon!`;
+    } else if (stars === 4) {
+        return `Thank you for the thoughtful feedback, ${firstName}! We're so glad your experience was a positive one overall. We take every piece of feedback seriously and are always looking for ways to improve. We look forward to seeing you again and making your next visit even better!`;
+    } else if (stars === 3) {
+        return `Thank you for taking the time to share your experience, ${firstName}. We appreciate the honest feedback and take it to heart. We'd love the opportunity to learn more about what we can improve. Please don't hesitate to reach out to us directly — we're committed to earning your full satisfaction on your next visit.`;
+    } else if (stars === 2) {
+        return `${firstName}, we sincerely apologize that your experience didn't meet the standard we hold ourselves to. Your feedback is important to us, and we want to make this right. Please reach out to our office directly so we can address your concerns personally and ensure your next visit is a much better one.`;
+    } else {
+        return `We're truly sorry to hear about your experience, ${firstName}. This is not the level of service we strive to deliver, and we take your feedback very seriously. We would very much appreciate the opportunity to make this right. Please contact our office directly — we're committed to showing you the care and quality you deserve.`;
+    }
+}
+
+// ---- ROI CALCULATOR ----
+function recalcROI() {
+    const volume = parseInt(document.getElementById('roi-volume').value) || 200;
+    const rate   = parseInt(document.getElementById('roi-rate').value) || 25;
+
+    const minutesPerReview = 6;
+    const totalMinutes = volume * minutesPerReview;
+    const totalHours   = Math.round(totalMinutes / 60);
+    const totalCost    = Math.round(totalHours * rate);
+
+    document.getElementById('m-time-per').textContent = '6 min';
+    document.getElementById('m-hours').textContent    = `${totalHours} hrs`;
+    document.getElementById('m-hours-sub').textContent = `~${volume} reviews/month`;
+    document.getElementById('m-cost').textContent     = `$${totalCost.toLocaleString()}`;
+    document.getElementById('m-cost-sub').textContent = `@ $${rate}/hr staff rate`;
+
+    document.getElementById('assump-volume').textContent = `~${volume} reviews responded to per month`;
+    document.getElementById('assump-rate').textContent   = `$${rate}/hour average staff rate`;
+}
+
+// ---- COPY ----
+function copyText(cacheKey, btn, btnId) {
+    let text = '';
+    const el = document.getElementById(`resp-body-${cacheKey}`);
+    if (el) text = el.textContent;
+    if (!text) return;
+
+    navigator.clipboard.writeText(text).then(() => {
+        btn.textContent = 'Copied!';
+        btn.style.cssText = 'background:#dcfce7;color:#15803d;border-color:#86efac;';
+        setTimeout(() => {
+            btn.textContent = 'Copy Response';
+            btn.style.cssText = '';
+        }, 2200);
+    });
+}
+
+// ---- TYPEWRITER ----
+function typeOut(id, text, speed) {
+    return new Promise(res => {
+        const el = document.getElementById(id);
+        if (!el) { res(); return; }
+        el.textContent = '';
+        let i = 0;
+        const t = setInterval(() => {
+            el.textContent += text[i++];
+            if (i >= text.length) { clearInterval(t); res(); }
+        }, speed);
+    });
+}
+
+// ---- UTIL ----
+function pause(ms) { return new Promise(r => setTimeout(r, ms)); }
+</script>
+</body>
+</html>
