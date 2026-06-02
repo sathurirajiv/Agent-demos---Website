@@ -588,7 +588,16 @@
 
         /* Review card — Google-style layout */
         .review-card-header { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; }
-        .review-glogo { flex-shrink: 0; margin-top: 2px; }
+        .review-glogo {
+            flex-shrink: 0;
+            align-self: flex-end;
+            margin-bottom: 1px;
+        }
+        .review-glogo svg {
+            width: 24px;
+            height: 24px;
+            display: block;
+        }
 
         .review-meta-block { display: flex; flex-direction: column; gap: 4px; }
         .stars-row { display: flex; gap: 2px; }
@@ -1175,7 +1184,7 @@
 
 <!-- ===== HEADER ===== -->
 <header class="header">
-    <a href="https://birdeye.com/" target="_blank" rel="noopener" class="logo">
+    <a href="https://birdeye.com/" class="logo">
         <img src="birdeye-logo.png" class="logo-icon" alt="Birdeye">
         <span class="logo-text">Birdeye</span>
     </a>
