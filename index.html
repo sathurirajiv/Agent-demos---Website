@@ -158,7 +158,7 @@
             background: linear-gradient(135deg, #ede9fe, #e0e7ff);
             border: 1.5px solid #c4b5fd;
             padding: 11px 20px;
-            border-radius: 40px;
+            border-radius: 10px;
             cursor: pointer;
             font-size: 15px;
             font-weight: 600;
@@ -207,7 +207,7 @@
         }
 
         .dd-option {
-            padding: 9px 16px 9px 24px;
+            padding: 9px 16px;
             font-size: 13.5px;
             color: #374151;
             cursor: pointer;
@@ -216,6 +216,7 @@
             gap: 9px;
             transition: background 0.12s;
         }
+        .dd-dot { display: none; }
 
         .dd-option:hover { background: #f8fafc; }
 
@@ -1167,9 +1168,59 @@
         @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
         .pulsing { animation: pulse 1.1s ease infinite; }
 
+        /* ===== WEEK NAV ===== */
+        .week-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+        .week-nav-btn { width: 32px; height: 32px; border: 1px solid #e2e8f0; border-radius: 8px; background: white; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #374151; transition: all 0.15s; font-family: inherit; flex-shrink: 0; }
+        .week-nav-btn:hover { background: #f8fafc; border-color: #94a3b8; }
+        .week-nav-label { font-size: 13px; font-weight: 600; color: #0f172a; }
+
+        /* ===== POST DRAWER ===== */
+        .drawer-overlay { position: fixed; inset: 0; background: rgba(15,23,42,0.4); z-index: 499; display: none; }
+        .drawer-overlay.visible { display: block; animation: fadeIn 0.2s ease; }
+        .post-drawer { position: fixed; top: 0; right: -480px; width: 440px; height: 100vh; background: white; box-shadow: -8px 0 40px rgba(0,0,0,0.18); z-index: 500; transition: right 0.35s cubic-bezier(0.4,0,0.2,1); overflow-y: auto; display: flex; flex-direction: column; }
+        .post-drawer.open { right: 0; }
+        .drawer-header { display: flex; align-items: center; justify-content: space-between; padding: 18px 22px; border-bottom: 1px solid #f1f5f9; flex-shrink: 0; position: sticky; top: 0; background: white; z-index: 1; }
+        .drawer-title { font-size: 15px; font-weight: 600; color: #0f172a; }
+        .drawer-close { width: 30px; height: 30px; border: none; background: #f1f5f9; border-radius: 8px; cursor: pointer; font-size: 18px; color: #475569; display: flex; align-items: center; justify-content: center; transition: background 0.15s; padding: 0; font-family: inherit; line-height: 1; }
+        .drawer-close:hover { background: #e2e8f0; }
+        .drawer-post-img { width: 100%; height: 220px; object-fit: cover; display: block; background: #e2e8f0; }
+        .drawer-body-content { padding: 20px 22px 28px; }
+        .drawer-tag-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+        .drawer-day-lbl { font-size: 12px; color: #94a3b8; font-weight: 500; }
+        .drawer-plats-row { display: flex; gap: 4px; }
+        .drawer-copy { font-size: 14px; color: #374151; line-height: 1.7; margin: 12px 0 20px; }
+        .drawer-meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px; }
+        .drawer-meta-cell { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px 14px; }
+        .drawer-meta-lbl { font-size: 10px; text-transform: uppercase; letter-spacing: 0.07em; color: #94a3b8; font-weight: 700; margin-bottom: 4px; }
+        .drawer-meta-val { font-size: 13px; font-weight: 600; color: #0f172a; }
+        .btn-drawer-action { width: 100%; padding: 12px; background: linear-gradient(135deg,#7c3aed,#6d28d9); color: white; border: none; border-radius: 9px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; transition: all 0.2s; }
+        .btn-drawer-action:hover { background: linear-gradient(135deg,#6d28d9,#5b21b6); transform: translateY(-1px); }
+
+        /* ===== SOCIAL FORM FIELDS ===== */
+        .content-focus-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .cf-opt { display: flex; align-items: center; gap: 8px; padding: 10px 12px; border: 1.5px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.15s; user-select: none; }
+        .cf-opt:hover { border-color: #93c5fd; background: #fafbff; }
+        .cf-opt.checked { border-color: #2563eb; background: #eff6ff; }
+        .cf-opt .ao-checkbox { flex-shrink: 0; margin-top: 0; }
+        .cf-opt-label { font-size: 13px; color: #374151; }
+        .cf-opt.checked .cf-opt-label { color: #2563eb; font-weight: 500; }
+        .plat-check-row { display: flex; gap: 10px; }
+        .plat-check-opt { display: flex; align-items: center; gap: 7px; padding: 9px 12px; border: 1.5px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.15s; flex: 1; user-select: none; }
+        .plat-check-opt:hover { border-color: #93c5fd; }
+        .plat-check-opt.checked { border-color: #2563eb; background: #eff6ff; }
+        .plat-check-opt .ao-checkbox { flex-shrink: 0; margin-top: 0; }
+        .plat-check-name { font-size: 12px; font-weight: 500; color: #374151; }
+        .plat-check-opt.checked .plat-check-name { color: #2563eb; }
+        .form-section-label { font-size: 13px; font-weight: 500; color: #374151; margin-bottom: 8px; }
+        .img-upload-area { border: 1.5px dashed #d1d5db; border-radius: 8px; padding: 16px; text-align: center; cursor: pointer; transition: all 0.2s; background: white; }
+        .img-upload-area:hover { border-color: #93c5fd; background: #fafbff; }
+        .img-upload-icon { font-size: 22px; margin-bottom: 6px; color: #94a3b8; }
+        .img-upload-hint { font-size: 12px; color: #94a3b8; }
+        .img-upload-input { display: none; }
+
         /* ===== SOCIAL CALENDAR ===== */
         .cal-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-        .cal-inner { min-width: 700px; }
+        .cal-inner { min-width: 980px; }
         .cal-hdr-row { display: grid; grid-template-columns: repeat(7,1fr); gap: 6px; padding-bottom: 10px; margin-bottom: 8px; border-bottom: 1px solid #f1f5f9; }
         .cal-day-hd { text-align: center; font-size: 12px; color: #64748b; font-weight: 500; line-height: 1.7; }
         .cal-day-hd.today-hd { color: #2563eb; font-weight: 700; }
@@ -1305,6 +1356,7 @@
         </div>
         <div class="acc-body" id="body-basic">
             <div class="form-grid">
+                <!-- ── Common fields (all agents) ── -->
                 <div class="form-row">
                     <div class="form-group">
                         <label class="form-label">Business name <span class="req">*</span></label>
@@ -1338,93 +1390,157 @@
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label class="form-label">Brand voice <span class="req">*</span></label>
-                    <select class="form-select" id="brand-voice">
-                        <option>Professional and empathetic</option>
-                        <option>Friendly and casual</option>
-                        <option>Formal and concise</option>
-                        <option>Warm and personal</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Response length</label>
-                    <div class="resp-length-group">
-                        <button class="resp-opt" data-val="concise" onclick="selectRespLen(this)">
-                            <svg width="26" height="14" viewBox="0 0 26 14" fill="none">
-                                <rect x="0" y="0" width="18" height="2" rx="1" fill="currentColor"/>
-                                <rect x="0" y="6" width="12" height="2" rx="1" fill="currentColor"/>
-                            </svg>
-                            <span class="resp-opt-name">Concise</span>
-                            <span class="resp-opt-desc">1–2 lines</span>
-                        </button>
-                        <button class="resp-opt selected" data-val="balanced" onclick="selectRespLen(this)">
-                            <svg width="26" height="18" viewBox="0 0 26 18" fill="none">
-                                <rect x="0" y="0" width="24" height="2" rx="1" fill="currentColor"/>
-                                <rect x="0" y="6" width="20" height="2" rx="1" fill="currentColor"/>
-                                <rect x="0" y="12" width="16" height="2" rx="1" fill="currentColor"/>
-                            </svg>
-                            <span class="resp-opt-name">Balanced</span>
-                            <span class="resp-opt-desc">3 lines</span>
-                        </button>
-                        <button class="resp-opt" data-val="detailed" onclick="selectRespLen(this)">
-                            <svg width="26" height="28" viewBox="0 0 26 28" fill="none">
-                                <rect x="0" y="0" width="24" height="2" rx="1" fill="currentColor"/>
-                                <rect x="0" y="6" width="26" height="2" rx="1" fill="currentColor"/>
-                                <rect x="0" y="12" width="20" height="2" rx="1" fill="currentColor"/>
-                                <rect x="0" y="18" width="24" height="2" rx="1" fill="currentColor"/>
-                                <rect x="0" y="24" width="14" height="2" rx="1" fill="currentColor"/>
-                            </svg>
-                            <span class="resp-opt-name">Detailed</span>
-                            <span class="resp-opt-desc">4–5 lines</span>
-                        </button>
+                <!-- ── Review agent fields ── -->
+                <div id="review-fields">
+                    <div class="form-group" style="margin-bottom:16px;">
+                        <label class="form-label">Brand voice <span class="req">*</span></label>
+                        <select class="form-select" id="brand-voice">
+                            <option>Professional and empathetic</option>
+                            <option>Friendly and casual</option>
+                            <option>Formal and concise</option>
+                            <option>Warm and personal</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="margin-bottom:16px;">
+                        <label class="form-label">Response length</label>
+                        <div class="resp-length-group">
+                            <button class="resp-opt" data-val="concise" onclick="selectRespLen(this)">
+                                <svg width="26" height="14" viewBox="0 0 26 14" fill="none"><rect x="0" y="0" width="18" height="2" rx="1" fill="currentColor"/><rect x="0" y="6" width="12" height="2" rx="1" fill="currentColor"/></svg>
+                                <span class="resp-opt-name">Concise</span>
+                                <span class="resp-opt-desc">1–2 lines</span>
+                            </button>
+                            <button class="resp-opt selected" data-val="balanced" onclick="selectRespLen(this)">
+                                <svg width="26" height="18" viewBox="0 0 26 18" fill="none"><rect x="0" y="0" width="24" height="2" rx="1" fill="currentColor"/><rect x="0" y="6" width="20" height="2" rx="1" fill="currentColor"/><rect x="0" y="12" width="16" height="2" rx="1" fill="currentColor"/></svg>
+                                <span class="resp-opt-name">Balanced</span>
+                                <span class="resp-opt-desc">3 lines</span>
+                            </button>
+                            <button class="resp-opt" data-val="detailed" onclick="selectRespLen(this)">
+                                <svg width="26" height="28" viewBox="0 0 26 28" fill="none"><rect x="0" y="0" width="24" height="2" rx="1" fill="currentColor"/><rect x="0" y="6" width="26" height="2" rx="1" fill="currentColor"/><rect x="0" y="12" width="20" height="2" rx="1" fill="currentColor"/><rect x="0" y="18" width="24" height="2" rx="1" fill="currentColor"/><rect x="0" y="24" width="14" height="2" rx="1" fill="currentColor"/></svg>
+                                <span class="resp-opt-name">Detailed</span>
+                                <span class="resp-opt-desc">4–5 lines</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="more-options-toggle" onclick="toggleMoreOptions()">
+                            <span class="more-options-label">More options</span>
+                            <span class="more-options-chevron" id="mo-chevron"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5l4 4 4-4" stroke="#93c5fd" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                        </div>
+                        <div class="more-options-body" id="more-options-body" style="display:none;">
+                            <div class="ao-item" onclick="toggleCheck(this)">
+                                <div class="ao-checkbox checked"></div>
+                                <div class="ao-text"><div class="ao-label">Identify relevant mentions</div><div class="ao-desc">Detect service or product references for contextual response tailoring</div></div>
+                            </div>
+                            <div class="ao-item" onclick="toggleCheck(this)">
+                                <div class="ao-checkbox checked"></div>
+                                <div class="ao-text"><div class="ao-label">Extract custom token references</div><div class="ao-desc">Find employee names, location names, cities, or other custom data</div></div>
+                            </div>
+                            <div class="ao-item" onclick="toggleCheck(this)">
+                                <div class="ao-checkbox checked"></div>
+                                <div class="ao-text"><div class="ao-label">Apply response generation rules</div><div class="ao-desc">Natural tone · Acknowledge negatives first · Max 2 custom tokens · Skip legal/spam</div></div>
+                            </div>
+                            <div class="ao-item" id="custom-rule-item" onclick="toggleCheck(this)">
+                                <div class="ao-checkbox" id="custom-rule-check"></div>
+                                <div class="ao-text">
+                                    <div class="ao-label">Custom analysis rule</div>
+                                    <div class="ao-desc">Write your own instruction the agent will follow when generating responses</div>
+                                    <input type="text" class="ao-custom-input" id="custom-rule-input" placeholder="e.g. Always mention our satisfaction guarantee" onclick="event.stopPropagation()">
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- MORE OPTIONS -->
-                <div>
-                    <div class="more-options-toggle" onclick="toggleMoreOptions()">
-                        <span class="more-options-label">More options</span>
-                        <span class="more-options-chevron" id="mo-chevron"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5l4 4 4-4" stroke="#93c5fd" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                <!-- ── Social Publishing fields ── -->
+                <div id="social-pub-fields" style="display:none;">
+                    <div class="form-group" style="margin-bottom:16px;">
+                        <label class="form-label">Content tone <span class="req">*</span></label>
+                        <select class="form-select" id="sp-tone">
+                            <option>Professional and engaging</option>
+                            <option>Friendly and casual</option>
+                            <option>Educational and informative</option>
+                            <option>Promotional and action-oriented</option>
+                        </select>
                     </div>
-                    <div class="more-options-body" id="more-options-body" style="display:none;">
-                        <div class="ao-item" onclick="toggleCheck(this)">
-                            <div class="ao-checkbox checked"></div>
-                            <div class="ao-text">
-                                <div class="ao-label">Identify relevant mentions</div>
-                                <div class="ao-desc">Detect service or product references for contextual response tailoring</div>
+                    <div class="form-group" style="margin-bottom:16px;">
+                        <label class="form-label">Content focus <span class="req">*</span></label>
+                        <div class="content-focus-grid">
+                            <div class="cf-opt checked" onclick="toggleCfOpt(this)"><div class="ao-checkbox checked"></div><span class="cf-opt-label">Promotions &amp; Offers</span></div>
+                            <div class="cf-opt checked" onclick="toggleCfOpt(this)"><div class="ao-checkbox checked"></div><span class="cf-opt-label">Tips &amp; Education</span></div>
+                            <div class="cf-opt checked" onclick="toggleCfOpt(this)"><div class="ao-checkbox checked"></div><span class="cf-opt-label">Product Highlights</span></div>
+                            <div class="cf-opt checked" onclick="toggleCfOpt(this)"><div class="ao-checkbox checked"></div><span class="cf-opt-label">Company News</span></div>
+                            <div class="cf-opt" onclick="toggleCfOpt(this)"><div class="ao-checkbox"></div><span class="cf-opt-label">Community &amp; Events</span></div>
+                            <div class="cf-opt" onclick="toggleCfOpt(this)"><div class="ao-checkbox"></div><span class="cf-opt-label">Customer Stories</span></div>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:16px;">
+                        <label class="form-label">Target platforms <span class="req">*</span></label>
+                        <div class="plat-check-row">
+                            <div class="plat-check-opt checked" onclick="togglePlatCheck(this)">
+                                <div class="ao-checkbox checked"></div>
+                                <div class="cplt cplt-fb" style="width:18px;height:18px;">${'<svg width="9" height="9" viewBox="0 0 24 24" fill="white"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>'}</div>
+                                <span class="plat-check-name">Facebook</span>
+                            </div>
+                            <div class="plat-check-opt checked" onclick="togglePlatCheck(this)">
+                                <div class="ao-checkbox checked"></div>
+                                <div class="cplt cplt-ig" style="width:18px;height:18px;"></div>
+                                <span class="plat-check-name">Instagram</span>
+                            </div>
+                            <div class="plat-check-opt checked" onclick="togglePlatCheck(this)">
+                                <div class="ao-checkbox checked"></div>
+                                <div class="cplt cplt-li" style="width:18px;height:18px;"></div>
+                                <span class="plat-check-name">LinkedIn</span>
                             </div>
                         </div>
-                        <div class="ao-item" onclick="toggleCheck(this)">
-                            <div class="ao-checkbox checked"></div>
-                            <div class="ao-text">
-                                <div class="ao-label">Extract custom token references</div>
-                                <div class="ao-desc">Find employee names, location names, cities, or other custom data</div>
-                            </div>
+                    </div>
+                    <div class="form-row" style="margin-bottom:16px;">
+                        <div class="form-group">
+                            <label class="form-label">Posts per week</label>
+                            <input type="number" class="form-input" id="sp-posts-per-week" value="14" min="1" max="50">
                         </div>
-                        <div class="ao-item" onclick="toggleCheck(this)">
-                            <div class="ao-checkbox checked"></div>
-                            <div class="ao-text">
-                                <div class="ao-label">Apply response generation rules</div>
-                                <div class="ao-desc">Natural tone · Acknowledge negatives first · Max 2 custom tokens · Skip legal/spam</div>
-                            </div>
+                        <div class="form-group">
+                            <label class="form-label">Custom hashtags</label>
+                            <input type="text" class="form-input" id="sp-hashtags" placeholder="#dentist #dentalcare #smile">
                         </div>
-                        <div class="ao-item" id="custom-rule-item" onclick="toggleCheck(this)">
-                            <div class="ao-checkbox" id="custom-rule-check"></div>
-                            <div class="ao-text">
-                                <div class="ao-label">Custom analysis rule</div>
-                                <div class="ao-desc">Write your own instruction the agent will follow when generating responses</div>
-                                <input type="text" class="ao-custom-input" id="custom-rule-input" placeholder="e.g. Always mention our satisfaction guarantee" onclick="event.stopPropagation()">
-                            </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:16px;">
+                        <label class="form-label">Image / creative (optional)</label>
+                        <div class="img-upload-area" onclick="document.getElementById('sp-img-input').click()">
+                            <div class="img-upload-icon">🖼</div>
+                            <div class="img-upload-hint">Click to upload a brand image or logo</div>
+                            <input type="file" class="img-upload-input" id="sp-img-input" accept="image/*">
                         </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Custom analysis rule</label>
+                        <input type="text" class="form-input" id="sp-custom-rule" placeholder="e.g. Always include a call-to-action and use first-person brand voice">
+                    </div>
+                </div>
+
+                <!-- ── Social Engagement fields ── -->
+                <div id="social-eng-fields" style="display:none;">
+                    <div class="form-group" style="margin-bottom:16px;">
+                        <label class="form-label">Response tone <span class="req">*</span></label>
+                        <select class="form-select" id="se-tone">
+                            <option>Professional and empathetic</option>
+                            <option>Friendly and casual</option>
+                            <option>Formal and concise</option>
+                            <option>Warm and personal</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Auto response span</label>
+                        <select class="form-select" id="se-span">
+                            <option>24/7 — Monitor and respond around the clock</option>
+                            <option>Business hours — 9 AM to 6 PM (Mon–Fri)</option>
+                            <option>Extended hours — 8 AM to 8 PM (Mon–Sat)</option>
+                            <option>Custom schedule</option>
+                        </select>
                     </div>
                 </div>
 
                 <div class="continue-row">
-                    <button class="btn-continue" onclick="runContinue()">
-                        Continue →
-                    </button>
+                    <button class="btn-continue" onclick="runContinue()">Continue →</button>
                 </div>
             </div>
         </div>
@@ -1495,14 +1611,19 @@
                 <div id="output-social-pub" style="display:none;">
                     <div class="output-wrap">
                         <div class="output-top">
-                            <div class="output-subtext">AI-generated content calendar for <span id="cal-biz-name">Aspen Dental Group</span> — week of June 1–7, 2026</div>
-                        </div>
-                        <div class="cal-gen-bar">
-                            <span class="cal-gen-hint">Generate a week of brand-consistent posts across Facebook, Instagram &amp; LinkedIn</span>
-                            <button class="btn-generate" id="btn-pub-gen" onclick="runSocialPubGenerate()">✦ Generate Calendar</button>
+                            <div class="output-subtext">AI-generated content calendar for <span id="cal-biz-name">Aspen Dental Group</span></div>
                         </div>
                         <div id="pub-gen-area" style="display:none;"></div>
                         <div id="cal-view" style="display:none; margin-top:16px;">
+                            <div class="week-nav">
+                                <button class="week-nav-btn" onclick="prevWeek()">
+                                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 3L5 7l4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                </button>
+                                <span class="week-nav-label" id="week-label">Jun 1–7, 2026</span>
+                                <button class="week-nav-btn" onclick="nextWeek()">
+                                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                </button>
+                            </div>
                             <div class="cal-scroll">
                                 <div class="cal-inner">
                                     <div class="cal-hdr-row" id="cal-hdr-row"></div>
@@ -1613,21 +1734,31 @@
                 <div id="outcome-social-pub" style="display:none;">
                     <div class="outcomes-wrap">
                         <p class="outcomes-intro">Here are some key outcomes of the Social Publishing Agent.</p>
+                        <div class="roi-calc-inputs" style="margin-bottom:20px;">
+                            <div class="form-group">
+                                <label class="form-label">Posts per week</label>
+                                <input type="number" class="form-input" id="sp-posts-pw" value="14" min="1" max="100" oninput="recalcSocialPub()">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Staff Cost ($/hr)</label>
+                                <input type="number" class="form-input" id="sp-rate" value="25" min="1" max="500" oninput="recalcSocialPub()">
+                            </div>
+                        </div>
                         <div class="metrics-row">
                             <div class="metric-card blue">
-                                <div class="metric-val">14</div>
-                                <div class="metric-lbl">Posts scheduled</div>
-                                <div class="metric-sub">per week · 3 platforms</div>
+                                <div class="metric-val" id="sp-m-time">45 min</div>
+                                <div class="metric-lbl">Saved per post</div>
+                                <div class="metric-sub">vs. manual creation</div>
                             </div>
                             <div class="metric-card green">
-                                <div class="metric-val">8 hrs</div>
-                                <div class="metric-lbl">Saved per week</div>
-                                <div class="metric-sub">vs. manual content creation</div>
+                                <div class="metric-val" id="sp-m-hours">42 hrs</div>
+                                <div class="metric-lbl">Saved monthly</div>
+                                <div class="metric-sub" id="sp-m-hours-sub">~56 posts/month</div>
                             </div>
                             <div class="metric-card purple">
-                                <div class="metric-val">$800</div>
+                                <div class="metric-val" id="sp-m-cost">$1,050</div>
                                 <div class="metric-lbl">Cost saved/month</div>
-                                <div class="metric-sub">@ $25/hr staff rate</div>
+                                <div class="metric-sub" id="sp-m-cost-sub">@ $25/hr staff rate</div>
                             </div>
                         </div>
                         <div class="impact-acc">
@@ -1661,21 +1792,31 @@
                 <div id="outcome-social-eng" style="display:none;">
                     <div class="outcomes-wrap">
                         <p class="outcomes-intro">Here are some key outcomes of the Social Engagement Agent.</p>
+                        <div class="roi-calc-inputs" style="margin-bottom:20px;">
+                            <div class="form-group">
+                                <label class="form-label">Daily Comment Volume</label>
+                                <input type="number" class="form-input" id="se-comments-day" value="8" min="1" max="1000" oninput="recalcSocialEng()">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Staff Cost ($/hr)</label>
+                                <input type="number" class="form-input" id="se-rate" value="25" min="1" max="500" oninput="recalcSocialEng()">
+                            </div>
+                        </div>
                         <div class="metrics-row">
                             <div class="metric-card blue">
-                                <div class="metric-val">3 min</div>
+                                <div class="metric-val" id="se-m-time">3 min</div>
                                 <div class="metric-lbl">Saved per response</div>
                                 <div class="metric-sub">vs. manual reply average</div>
                             </div>
                             <div class="metric-card green">
-                                <div class="metric-val">12 hrs</div>
+                                <div class="metric-val" id="se-m-hours">12 hrs</div>
                                 <div class="metric-lbl">Saved monthly</div>
-                                <div class="metric-sub">~240 comments/month</div>
+                                <div class="metric-sub" id="se-m-hours-sub">~240 comments/month</div>
                             </div>
                             <div class="metric-card purple">
-                                <div class="metric-val">$300</div>
+                                <div class="metric-val" id="se-m-cost">$300</div>
                                 <div class="metric-lbl">Cost saved/month</div>
-                                <div class="metric-sub">@ $25/hr staff rate</div>
+                                <div class="metric-sub" id="se-m-cost-sub">@ $25/hr staff rate</div>
                             </div>
                         </div>
                         <div class="impact-acc">
@@ -1833,6 +1974,16 @@
     </div>
 </footer>
 
+<!-- ===== POST DRAWER ===== -->
+<div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
+<div class="post-drawer" id="post-drawer">
+    <div class="drawer-header">
+        <span class="drawer-title">Post Details</span>
+        <button class="drawer-close" onclick="closeDrawer()">×</button>
+    </div>
+    <div id="drawer-body"></div>
+</div>
+
 <script>
 // ---- AGENT HINT TEXT ----
 const AGENT_HINTS = {
@@ -1981,20 +2132,32 @@ function selectAgent(name, el) {
     selectedCommentId = null;
     scIsGenerating = false;
 
-    // Update accordion subtitles
-    const outSub = document.querySelector('#acc-output .acc-subtitle');
-    const outcomeSub = document.querySelector('#acc-outcome .acc-subtitle');
+    // Show/hide agent-specific form sections
     const type = getAgentType();
+    document.getElementById('review-fields').style.display      = type === 'review'     ? 'block' : 'none';
+    document.getElementById('social-pub-fields').style.display  = type === 'social-pub' ? 'block' : 'none';
+    document.getElementById('social-eng-fields').style.display  = type === 'social-eng' ? 'block' : 'none';
+
+    // Update subtitles
+    const bdSub     = document.querySelector('#acc-basic .acc-subtitle');
+    const outSub    = document.querySelector('#acc-output .acc-subtitle');
+    const outcomeSub = document.querySelector('#acc-outcome .acc-subtitle');
     if (type === 'social-pub') {
-        outSub.textContent = 'AI-generated weekly content calendar';
+        bdSub.textContent    = 'Business profile, content strategy, and platform settings';
+        outSub.textContent   = 'AI-generated weekly content calendar';
         outcomeSub.textContent = 'Content output and efficiency metrics';
     } else if (type === 'social-eng') {
-        outSub.textContent = 'Social comments with AI-generated responses';
+        bdSub.textContent    = 'Business profile, tone, and engagement preferences';
+        outSub.textContent   = 'Social comments with AI-generated responses';
         outcomeSub.textContent = 'Engagement metrics and time savings';
     } else {
-        outSub.textContent = 'Sample reviews with AI-generated responses';
+        bdSub.textContent    = 'Business profile, brand voice, and response preferences';
+        outSub.textContent   = 'Sample reviews with AI-generated responses';
         outcomeSub.textContent = 'Estimated time savings and cost impact';
     }
+
+    // Reset week offset
+    weekOffset = 0;
 }
 
 document.addEventListener('click', () => {
@@ -2122,6 +2285,12 @@ function runContinue() {
     setTimeout(() => {
         document.getElementById('acc-output').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 80);
+
+    // Auto-generate for social publishing
+    if (type === 'social-pub') {
+        socialPubGenerated = false;
+        setTimeout(() => runSocialPubGenerate(), 400);
+    }
 }
 
 // ---- RENDER REVIEWS ----
@@ -2512,6 +2681,46 @@ function typeOut(id, text, speed) {
     });
 }
 
+// ---- SOCIAL PUBLISHING ROI ----
+function recalcSocialPub() {
+    const posts = parseInt(document.getElementById('sp-posts-pw')?.value) || 14;
+    const rate  = parseInt(document.getElementById('sp-rate')?.value) || 25;
+    const monthlyPosts = posts * 4;
+    const totalHours = Math.round((monthlyPosts * 45) / 60);
+    const totalCost  = Math.round(totalHours * rate);
+    const sp = id => document.getElementById(id);
+    if (sp('sp-m-time'))  sp('sp-m-time').textContent  = '45 min';
+    if (sp('sp-m-hours')) sp('sp-m-hours').textContent = `${totalHours} hrs`;
+    if (sp('sp-m-hours-sub')) sp('sp-m-hours-sub').textContent = `~${monthlyPosts} posts/month`;
+    if (sp('sp-m-cost'))  sp('sp-m-cost').textContent  = `$${totalCost.toLocaleString()}`;
+    if (sp('sp-m-cost-sub')) sp('sp-m-cost-sub').textContent = `@ $${rate}/hr staff rate`;
+}
+
+// ---- SOCIAL ENGAGEMENT ROI ----
+function recalcSocialEng() {
+    const comments = parseInt(document.getElementById('se-comments-day')?.value) || 8;
+    const rate     = parseInt(document.getElementById('se-rate')?.value) || 25;
+    const monthly  = comments * 30;
+    const totalHours = Math.round((monthly * 3) / 60);
+    const totalCost  = Math.round(totalHours * rate);
+    const se = id => document.getElementById(id);
+    if (se('se-m-time'))  se('se-m-time').textContent  = '3 min';
+    if (se('se-m-hours')) se('se-m-hours').textContent = `${totalHours} hrs`;
+    if (se('se-m-hours-sub')) se('se-m-hours-sub').textContent = `~${monthly} comments/month`;
+    if (se('se-m-cost'))  se('se-m-cost').textContent  = `$${totalCost.toLocaleString()}`;
+    if (se('se-m-cost-sub')) se('se-m-cost-sub').textContent = `@ $${rate}/hr staff rate`;
+}
+
+// ---- CONTENT FOCUS & PLATFORM TOGGLES ----
+function toggleCfOpt(el) {
+    el.classList.toggle('checked');
+    el.querySelector('.ao-checkbox').classList.toggle('checked');
+}
+function togglePlatCheck(el) {
+    el.classList.toggle('checked');
+    el.querySelector('.ao-checkbox').classList.toggle('checked');
+}
+
 // ---- UTIL ----
 function pause(ms) { return new Promise(r => setTimeout(r, ms)); }
 
@@ -2570,31 +2779,120 @@ function getPlatIconSVG(p) {
     return '';
 }
 
+// ---- WEEK OFFSET STATE ----
+let weekOffset = 0;
+
+function getWeekDates(offset) {
+    const base = new Date(2026, 5, 1); // June 1, 2026 = Sunday
+    const dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const result = [];
+    for (let i = 0; i < 7; i++) {
+        const d = new Date(base);
+        d.setDate(base.getDate() + offset * 7 + i);
+        result.push({
+            day: dayNames[d.getDay()],
+            date: d.getDate(),
+            month: monthNames[d.getMonth()],
+            year: d.getFullYear(),
+            isToday: offset === 0 && i === 3
+        });
+    }
+    return result;
+}
+
 function renderCalendar() {
-    const hdrRow   = document.getElementById('cal-hdr-row');
+    const dates = getWeekDates(weekOffset);
+    const first = dates[0], last = dates[6];
+    const lbl = document.getElementById('week-label');
+    if (lbl) {
+        lbl.textContent = first.month === last.month
+            ? `${first.month} ${first.date}–${last.date}, ${first.year}`
+            : `${first.month} ${first.date} – ${last.month} ${last.date}, ${first.year}`;
+    }
+
+    const hdrRow = document.getElementById('cal-hdr-row');
+    if (hdrRow) {
+        hdrRow.innerHTML = dates.map(d =>
+            `<div class="cal-day-hd${d.isToday ? ' today-hd' : ''}">
+                ${d.day}<br><span class="cal-day-num">${d.date}</span>
+             </div>`
+        ).join('');
+    }
+
     const postsRow = document.getElementById('cal-posts-row');
+    if (postsRow) {
+        postsRow.innerHTML = SOCIAL_WEEK.map((dayData, colIdx) =>
+            `<div class="cal-col">${dayData.posts.map((p, pIdx) => {
+                const seed = (Math.abs(weekOffset) * 14) + colIdx * 2 + pIdx + 10;
+                return `<div class="cal-post-card" style="cursor:pointer;" onclick="openPostDrawer(${colIdx},${pIdx})">
+                    <div class="cal-tag tag-${p.tag.toLowerCase()}">${p.tag}</div>
+                    <div class="cal-plats">${p.platforms.map(plt =>
+                        `<div class="cplt cplt-${plt}">${getPlatIconSVGSmall(plt)}</div>`
+                    ).join('')}</div>
+                    <div class="cal-time">${p.time}</div>
+                    <div class="cal-copy">${p.copy}</div>
+                    <div class="cal-img" style="overflow:hidden;border-radius:7px;height:54px;background:${p.imgBg};">
+                        <img src="https://picsum.photos/seed/${seed}/300/110"
+                             alt="" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy">
+                    </div>
+                </div>`;
+            }).join('')}</div>`
+        ).join('');
+    }
+}
 
-    hdrRow.innerHTML = SOCIAL_WEEK.map(d =>
-        `<div class="cal-day-hd${d.isToday ? ' today-hd' : ''}">
-            ${d.day}<br><span class="cal-day-num">${d.date}</span>
-         </div>`
-    ).join('');
+function prevWeek() { weekOffset--; renderCalendar(); }
+function nextWeek() { weekOffset++; renderCalendar(); }
 
-    postsRow.innerHTML = SOCIAL_WEEK.map(d =>
-        `<div class="cal-col">${d.posts.map(p =>
-            `<div class="cal-post-card">
-                <div class="cal-tag tag-${p.tag.toLowerCase()}">${p.tag}</div>
-                <div class="cal-plats">${p.platforms.map(plt =>
+function openPostDrawer(colIdx, pIdx) {
+    const p = SOCIAL_WEEK[colIdx].posts[pIdx];
+    const dates = getWeekDates(weekOffset);
+    const d = dates[colIdx];
+    const seed = (Math.abs(weekOffset) * 14) + colIdx * 2 + pIdx + 10;
+    const platNames = p.platforms.map(plt => plt === 'fb' ? 'Facebook' : plt === 'ig' ? 'Instagram' : 'LinkedIn').join(', ');
+
+    document.getElementById('drawer-body').innerHTML = `
+        <img src="https://picsum.photos/seed/${seed}/600/280"
+             class="drawer-post-img" alt="Post image"
+             onerror="this.style.background='${p.imgBg}';this.removeAttribute('src');">
+        <div class="drawer-body-content">
+            <div class="drawer-tag-row">
+                <div class="cal-tag tag-${p.tag.toLowerCase()}" style="margin-bottom:0;">${p.tag}</div>
+                <div class="drawer-plats-row">${p.platforms.map(plt =>
                     `<div class="cplt cplt-${plt}">${getPlatIconSVGSmall(plt)}</div>`
                 ).join('')}</div>
-                <div class="cal-time">${p.time}</div>
-                <div class="cal-copy">${p.copy}</div>
-                <div class="cal-img" style="background:${p.imgBg};">
-                    <div class="cal-img-txt">${p.imgLabel}</div>
+                <span class="drawer-day-lbl">${d.day}, ${d.month} ${d.date}, ${d.year} · ${p.time}</span>
+            </div>
+            <p class="drawer-copy">${p.copy}</p>
+            <div class="drawer-meta-grid">
+                <div class="drawer-meta-cell">
+                    <div class="drawer-meta-lbl">Platforms</div>
+                    <div class="drawer-meta-val">${platNames}</div>
                 </div>
-             </div>`
-        ).join('')}</div>`
-    ).join('');
+                <div class="drawer-meta-cell">
+                    <div class="drawer-meta-lbl">Scheduled</div>
+                    <div class="drawer-meta-val">${p.time}</div>
+                </div>
+                <div class="drawer-meta-cell">
+                    <div class="drawer-meta-lbl">Content type</div>
+                    <div class="drawer-meta-val">${p.tag}</div>
+                </div>
+                <div class="drawer-meta-cell">
+                    <div class="drawer-meta-lbl">Date</div>
+                    <div class="drawer-meta-val">${d.month} ${d.date}, ${d.year}</div>
+                </div>
+            </div>
+            <button class="btn-drawer-action" onclick="closeDrawer()">✦ Schedule Post</button>
+        </div>`;
+
+    document.getElementById('drawer-overlay').classList.add('visible');
+    document.getElementById('post-drawer').classList.add('open');
+}
+
+function closeDrawer() {
+    document.getElementById('drawer-overlay').classList.remove('visible');
+    document.getElementById('post-drawer').classList.remove('open');
 }
 
 async function runSocialPubGenerate() {
@@ -2671,6 +2969,7 @@ async function runSocialPubGenerate() {
         document.getElementById('outcome-review').style.display = 'none';
         document.getElementById('outcome-social-pub').style.display = 'block';
         document.getElementById('outcome-social-eng').style.display = 'none';
+        recalcSocialPub();
         forceOpenAcc('outcome');
         setTimeout(() => {
             document.querySelectorAll('.roi-bar[data-target]').forEach(bar => { bar.style.width = bar.dataset.target + '%'; });
@@ -2827,6 +3126,7 @@ async function generateSocialResponse() {
                 document.getElementById('outcome-review').style.display = 'none';
                 document.getElementById('outcome-social-pub').style.display = 'none';
                 document.getElementById('outcome-social-eng').style.display = 'block';
+                recalcSocialEng();
                 forceOpenAcc('outcome');
                 setTimeout(() => {
                     document.querySelectorAll('.roi-bar[data-target]').forEach(bar => { bar.style.width = bar.dataset.target + '%'; });
