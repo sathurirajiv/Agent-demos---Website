@@ -1198,19 +1198,17 @@
 
         /* ===== SOCIAL FORM FIELDS ===== */
         .content-focus-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-        .cf-opt { display: flex; align-items: center; gap: 8px; padding: 10px 12px; border: 1.5px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.15s; user-select: none; }
-        .cf-opt:hover { border-color: #93c5fd; background: #fafbff; }
-        .cf-opt.checked { border-color: #2563eb; background: #eff6ff; }
+        .cf-opt { display: flex; align-items: center; gap: 8px; padding: 10px 12px; border: 1.5px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: border-color 0.15s; user-select: none; }
+        .cf-opt:hover { border-color: #cbd5e1; }
+        .cf-opt.checked { border-color: #e2e8f0; }
         .cf-opt .ao-checkbox { flex-shrink: 0; margin-top: 0; }
         .cf-opt-label { font-size: 13px; color: #374151; }
-        .cf-opt.checked .cf-opt-label { color: #2563eb; font-weight: 500; }
         .plat-check-row { display: flex; gap: 10px; }
-        .plat-check-opt { display: flex; align-items: center; gap: 7px; padding: 9px 12px; border: 1.5px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.15s; flex: 1; user-select: none; }
-        .plat-check-opt:hover { border-color: #93c5fd; }
-        .plat-check-opt.checked { border-color: #2563eb; background: #eff6ff; }
+        .plat-check-opt { display: flex; align-items: center; gap: 7px; padding: 9px 12px; border: 1.5px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: border-color 0.15s; flex: 1; user-select: none; }
+        .plat-check-opt:hover { border-color: #cbd5e1; }
+        .plat-check-opt.checked { border-color: #e2e8f0; }
         .plat-check-opt .ao-checkbox { flex-shrink: 0; margin-top: 0; }
-        .plat-check-name { font-size: 12px; font-weight: 500; color: #374151; }
-        .plat-check-opt.checked .plat-check-name { color: #2563eb; }
+        .plat-check-name { font-size: 13px; color: #374151; }
         .form-section-label { font-size: 13px; font-weight: 500; color: #374151; margin-bottom: 8px; }
         .img-upload-area { border: 1.5px dashed #d1d5db; border-radius: 8px; padding: 16px; text-align: center; cursor: pointer; transition: all 0.2s; background: white; }
         .img-upload-area:hover { border-color: #93c5fd; background: #fafbff; }
@@ -1478,23 +1476,14 @@
                         <div class="plat-check-row">
                             <div class="plat-check-opt checked" onclick="togglePlatCheck(this)">
                                 <div class="ao-checkbox checked"></div>
-                                <div class="cplt cplt-fb" style="width:18px;height:18px;display:flex;align-items:center;justify-content:center;background:#1877F2;border-radius:4px;">
-                                    <svg width="10" height="10" viewBox="0 0 24 24" fill="white"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-                                </div>
                                 <span class="plat-check-name">Facebook</span>
                             </div>
                             <div class="plat-check-opt checked" onclick="togglePlatCheck(this)">
                                 <div class="ao-checkbox checked"></div>
-                                <div class="cplt cplt-ig" style="width:18px;height:18px;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 30% 107%,#fdf497 0%,#fd5949 45%,#d6249f 60%,#285AEB 90%);border-radius:4px;">
-                                    <svg width="10" height="10" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-                                </div>
                                 <span class="plat-check-name">Instagram</span>
                             </div>
                             <div class="plat-check-opt checked" onclick="togglePlatCheck(this)">
                                 <div class="ao-checkbox checked"></div>
-                                <div class="cplt cplt-li" style="width:18px;height:18px;display:flex;align-items:center;justify-content:center;background:#0A66C2;border-radius:4px;">
-                                    <svg width="10" height="10" viewBox="0 0 24 24" fill="white"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-                                </div>
                                 <span class="plat-check-name">LinkedIn</span>
                             </div>
                         </div>
@@ -2299,6 +2288,7 @@ function runContinue() {
     // Auto-generate for social publishing
     if (type === 'social-pub') {
         socialPubGenerated = false;
+        socialPubIsGenerating = false;
         setTimeout(() => runSocialPubGenerate(), 400);
     }
 }
@@ -2909,60 +2899,67 @@ async function runSocialPubGenerate() {
     if (socialPubIsGenerating || socialPubGenerated) return;
     socialPubIsGenerating = true;
 
+    const showCalendar = () => {
+        renderCalendar();
+        const calView = document.getElementById('cal-view');
+        if (calView) { calView.style.display = 'block'; calView.classList.add('fade-up'); }
+    };
 
-    const genArea = document.getElementById('pub-gen-area');
-    genArea.style.display = 'block';
-    genArea.innerHTML = `
-        <div class="reasoning-block" style="margin-top:16px;">
-            <div class="reasoning-heading">Agent reasoning</div>
-            <div id="steps-pub"></div>
-        </div>
-        <div class="progress-block">
-            <div class="progress-meta">
-                <span id="prog-label-pub">Starting analysis…</span>
-                <span id="prog-pct-pub">0%</span>
+    try {
+        const genArea = document.getElementById('pub-gen-area');
+        genArea.style.display = 'block';
+        genArea.innerHTML = `
+            <div class="reasoning-block" style="margin-top:16px;">
+                <div class="reasoning-heading">Agent reasoning</div>
+                <div id="steps-pub"></div>
             </div>
-            <div class="progress-track"><div class="progress-fill" id="prog-fill-pub"></div></div>
-        </div>`;
+            <div class="progress-block">
+                <div class="progress-meta">
+                    <span id="prog-label-pub">Starting analysis…</span>
+                    <span id="prog-pct-pub">0%</span>
+                </div>
+                <div class="progress-track"><div class="progress-fill" id="prog-fill-pub"></div></div>
+            </div>`;
 
-    const container = document.getElementById('steps-pub');
-    const total = SOCIAL_PUB_STEPS.length;
+        const container = document.getElementById('steps-pub');
+        const total = SOCIAL_PUB_STEPS.length;
 
-    for (let i = 0; i < total; i++) {
-        const step = SOCIAL_PUB_STEPS[i];
-        await pause(step.ms);
+        for (let i = 0; i < total; i++) {
+            const step = SOCIAL_PUB_STEPS[i];
+            await pause(step.ms);
+            container.querySelectorAll('.step-dot.spinning').forEach(d => { d.classList.replace('spinning','done'); d.textContent='✓'; });
+            const pct = Math.round(((i+1)/total)*88);
+            const el = document.createElement('div');
+            el.className = 'reason-step';
+            el.innerHTML = `<div class="step-dot spinning">↻</div><span>${step.txt}</span>`;
+            container.appendChild(el);
+            requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('show')));
+            document.getElementById('prog-fill-pub').style.width = pct + '%';
+            document.getElementById('prog-pct-pub').textContent  = pct + '%';
+            document.getElementById('prog-label-pub').textContent = step.txt;
+        }
+
+        await pause(400);
         container.querySelectorAll('.step-dot.spinning').forEach(d => { d.classList.replace('spinning','done'); d.textContent='✓'; });
-        const pct = Math.round(((i+1)/total)*88);
-        const el = document.createElement('div');
-        el.className = 'reason-step';
-        el.innerHTML = `<div class="step-dot spinning">↻</div><span>${step.txt}</span>`;
-        container.appendChild(el);
-        requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('show')));
-        document.getElementById('prog-fill-pub').style.width = pct + '%';
-        document.getElementById('prog-pct-pub').textContent  = pct + '%';
-        document.getElementById('prog-label-pub').textContent = step.txt;
+        document.getElementById('prog-fill-pub').style.width  = '100%';
+        document.getElementById('prog-pct-pub').textContent   = '100%';
+        document.getElementById('prog-label-pub').textContent = 'Content calendar ready!';
+        await pause(320);
+
+        const stepsSnap = container.innerHTML;
+        genArea.innerHTML = `
+            <div class="reasoning-acc" style="margin-top:16px;">
+                <div class="reasoning-acc-header" onclick="toggleReasoningAcc(this)">
+                    <span>Agent reasoning</span>
+                    <svg class="reasoning-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5l4 4 4-4" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <div class="reasoning-acc-body"><div class="reasoning-acc-inner">${stepsSnap}</div></div>
+            </div>`;
+
+        showCalendar();
+    } catch(e) {
+        showCalendar();
     }
-
-    await pause(400);
-    container.querySelectorAll('.step-dot.spinning').forEach(d => { d.classList.replace('spinning','done'); d.textContent='✓'; });
-    document.getElementById('prog-fill-pub').style.width  = '100%';
-    document.getElementById('prog-pct-pub').textContent   = '100%';
-    document.getElementById('prog-label-pub').textContent = 'Content calendar ready!';
-    await pause(320);
-
-    const stepsSnap = container.innerHTML;
-    genArea.innerHTML = `
-        <div class="reasoning-acc" style="margin-top:16px;">
-            <div class="reasoning-acc-header" onclick="toggleReasoningAcc(this)">
-                <span>Agent reasoning</span>
-                <svg class="reasoning-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5l4 4 4-4" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </div>
-            <div class="reasoning-acc-body"><div class="reasoning-acc-inner">${stepsSnap}</div></div>
-        </div>`;
-
-    const calView = document.getElementById('cal-view');
-    calView.style.display = 'block';
-    calView.classList.add('fade-up');
 
     socialPubGenerated = true;
     socialPubIsGenerating = false;
