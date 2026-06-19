@@ -1179,22 +1179,46 @@
         .drawer-overlay.visible { display: block; animation: fadeIn 0.2s ease; }
         .post-drawer { position: fixed; top: 0; right: -480px; width: 440px; height: 100vh; background: white; box-shadow: -8px 0 40px rgba(0,0,0,0.18); z-index: 500; transition: right 0.35s cubic-bezier(0.4,0,0.2,1); overflow-y: auto; display: flex; flex-direction: column; }
         .post-drawer.open { right: 0; }
-        .drawer-header { display: flex; align-items: center; justify-content: space-between; padding: 18px 22px; border-bottom: 1px solid #f1f5f9; flex-shrink: 0; position: sticky; top: 0; background: white; z-index: 1; }
+        /* Drawer header — back arrow + title only */
+        .drawer-header { display: flex; align-items: center; gap: 10px; padding: 16px 20px; border-bottom: 1px solid #f1f5f9; flex-shrink: 0; position: sticky; top: 0; background: white; z-index: 1; }
+        .drawer-back { width: 30px; height: 30px; border: none; background: none; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #374151; padding: 0; border-radius: 6px; transition: background 0.15s; flex-shrink: 0; }
+        .drawer-back:hover { background: #f1f5f9; }
         .drawer-title { font-size: 15px; font-weight: 600; color: #0f172a; }
-        .drawer-close { width: 30px; height: 30px; border: none; background: #f1f5f9; border-radius: 8px; cursor: pointer; font-size: 18px; color: #475569; display: flex; align-items: center; justify-content: center; transition: background 0.15s; padding: 0; font-family: inherit; line-height: 1; }
-        .drawer-close:hover { background: #e2e8f0; }
-        .drawer-post-img { width: 100%; height: 220px; object-fit: cover; display: block; background: #e2e8f0; }
-        .drawer-body-content { padding: 20px 22px 28px; }
-        .drawer-tag-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
-        .drawer-day-lbl { font-size: 12px; color: #94a3b8; font-weight: 500; }
-        .drawer-plats-row { display: flex; gap: 4px; }
-        .drawer-copy { font-size: 14px; color: #374151; line-height: 1.7; margin: 12px 0 20px; }
-        .drawer-meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px; }
-        .drawer-meta-cell { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px 14px; }
-        .drawer-meta-lbl { font-size: 10px; text-transform: uppercase; letter-spacing: 0.07em; color: #94a3b8; font-weight: 700; margin-bottom: 4px; }
-        .drawer-meta-val { font-size: 13px; font-weight: 600; color: #0f172a; }
-        .btn-drawer-action { width: 100%; padding: 12px; background: linear-gradient(135deg,#7c3aed,#6d28d9); color: white; border: none; border-radius: 9px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; transition: all 0.2s; }
-        .btn-drawer-action:hover { background: linear-gradient(135deg,#6d28d9,#5b21b6); transform: translateY(-1px); }
+        /* Platform tabs */
+        .drawer-tabs { display: flex; border-bottom: 1px solid #e2e8f0; flex-shrink: 0; padding: 0 20px; position: sticky; top: 63px; background: white; z-index: 1; }
+        .drawer-tab { padding: 11px 14px; font-size: 13px; font-weight: 500; color: #64748b; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all 0.15s; user-select: none; white-space: nowrap; }
+        .drawer-tab:hover { color: #2563eb; }
+        .drawer-tab.active { color: #2563eb; border-bottom-color: #2563eb; }
+        /* Drawer body */
+        .drawer-body-content { padding: 20px 20px 28px; }
+        .drawer-post-img { width: 100%; height: 200px; object-fit: cover; display: block; background: #e2e8f0; }
+        .drawer-img-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; background: #e2e8f0; }
+        .drawer-img-grid img { width: 100%; height: 140px; object-fit: cover; display: block; }
+        .drawer-img-grid img:first-child { grid-row: span 2; height: 283px; }
+        .drawer-datetime { font-size: 12px; color: #64748b; margin-bottom: 10px; }
+        .drawer-datetime strong { color: #0f172a; }
+        .drawer-copy { font-size: 14px; color: #1e293b; line-height: 1.7; margin: 10px 0 18px; }
+        .drawer-tag-row { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
+        /* Best practices */
+        .drawer-bp { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px 16px; margin-bottom: 20px; }
+        .drawer-bp-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: #94a3b8; margin-bottom: 10px; }
+        .drawer-bp-item { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #475569; line-height: 1.4; padding: 4px 0; }
+        .drawer-bp-check { width: 16px; height: 16px; background: #dcfce7; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .drawer-bp-check svg { width: 9px; height: 9px; }
+        /* Refresh button */
+        .btn-drawer-refresh { width: 100%; padding: 12px; background: white; color: #2563eb; border: 1.5px solid #2563eb; border-radius: 9px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 7px; }
+        .btn-drawer-refresh:hover { background: #eff6ff; }
+        /* Post length for social publishing */
+        .post-len-group { display: flex; gap: 8px; }
+        .post-len-opt { flex: 1; display: flex; flex-direction: column; gap: 4px; padding: 12px 10px; border: 1.5px solid #e2e8f0; border-radius: 10px; background: white; cursor: pointer; font-family: inherit; transition: all 0.15s; text-align: left; }
+        .post-len-opt:hover { border-color: #93c5fd; }
+        .post-len-opt.selected { border-color: #2563eb; background: #eff6ff; }
+        .post-len-name { font-size: 13px; font-weight: 600; color: #374151; }
+        .post-len-opt.selected .post-len-name { color: #2563eb; }
+        .post-len-desc { font-size: 11px; color: #94a3b8; line-height: 1.3; }
+        .post-len-eng { font-size: 10px; font-weight: 600; color: #16a34a; margin-top: 2px; }
+        .post-len-eng.med { color: #d97706; }
+        .post-len-eng.low { color: #94a3b8; }
 
         /* ===== SOCIAL FORM FIELDS ===== */
         .content-focus-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
@@ -1459,6 +1483,26 @@
                             <option>Educational and informative</option>
                             <option>Promotional and action-oriented</option>
                         </select>
+                    </div>
+                    <div class="form-group" style="margin-bottom:12px;">
+                        <label class="form-label">Post length</label>
+                        <div class="post-len-group">
+                            <button class="post-len-opt" data-val="crisp" onclick="selectPostLen(this)">
+                                <span class="post-len-name">Crisp</span>
+                                <span class="post-len-desc">1–2 lines · punchy hook</span>
+                                <span class="post-len-eng low">Avg engagement</span>
+                            </button>
+                            <button class="post-len-opt selected" data-val="standard" onclick="selectPostLen(this)">
+                                <span class="post-len-name">Standard</span>
+                                <span class="post-len-desc">3–4 lines · clear message</span>
+                                <span class="post-len-eng med">Good engagement</span>
+                            </button>
+                            <button class="post-len-opt" data-val="story" onclick="selectPostLen(this)">
+                                <span class="post-len-name">Story</span>
+                                <span class="post-len-desc">5–7 lines · narrative arc</span>
+                                <span class="post-len-eng">Highest engagement ↑</span>
+                            </button>
+                        </div>
                     </div>
                     <div class="form-group" style="margin-bottom:12px;">
                         <label class="form-label">Content focus <span class="req">*</span></label>
@@ -1999,9 +2043,12 @@
 <div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
 <div class="post-drawer" id="post-drawer">
     <div class="drawer-header">
-        <span class="drawer-title">Post Details</span>
-        <button class="drawer-close" onclick="closeDrawer()">×</button>
+        <button class="drawer-back" onclick="closeDrawer()">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M11 4L6 9l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <span class="drawer-title">Post details</span>
     </div>
+    <div class="drawer-tabs" id="drawer-tabs"></div>
     <div id="drawer-body"></div>
 </div>
 
@@ -2237,6 +2284,11 @@ document.addEventListener('DOMContentLoaded', () => {
 // ---- RESPONSE LENGTH ----
 function selectRespLen(btn) {
     document.querySelectorAll('.resp-opt').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+}
+
+function selectPostLen(btn) {
+    document.querySelectorAll('.post-len-opt').forEach(b => b.classList.remove('selected'));
     btn.classList.add('selected');
 }
 
@@ -2886,49 +2938,112 @@ function renderCalendar() {
 function prevWeek() { weekOffset--; renderCalendar(); }
 function nextWeek() { weekOffset++; renderCalendar(); }
 
+let drawerState = { colIdx: 0, pIdx: 0, activePlt: null };
+
 function openPostDrawer(colIdx, pIdx) {
+    drawerState = { colIdx, pIdx, activePlt: null };
+    renderDrawerContent();
+    document.getElementById('drawer-overlay').classList.add('visible');
+    document.getElementById('post-drawer').classList.add('open');
+    document.getElementById('post-drawer').scrollTop = 0;
+}
+
+function renderDrawerContent() {
+    const { colIdx, pIdx } = drawerState;
     const p = SOCIAL_WEEK[colIdx].posts[pIdx];
     const dates = getWeekDates(weekOffset);
     const d = dates[colIdx];
     const seed = (Math.abs(weekOffset) * 14) + colIdx * 2 + pIdx + 10;
-    const platNames = p.platforms.map(plt => plt === 'fb' ? 'Facebook' : plt === 'ig' ? 'Instagram' : 'LinkedIn').join(', ');
+    const platMap = { fb: 'Facebook', ig: 'Instagram', li: 'LinkedIn' };
+
+    // Active platform tab (default to first platform)
+    if (!drawerState.activePlt) drawerState.activePlt = p.platforms[0];
+    const active = drawerState.activePlt;
+
+    // Build tabs — "Initial content" + one per platform
+    const allTabs = ['initial', ...p.platforms];
+    document.getElementById('drawer-tabs').innerHTML = allTabs.map(t =>
+        `<div class="drawer-tab${t === active ? ' active' : ''}" onclick="switchDrawerTab('${t}')">${
+            t === 'initial' ? 'Initial content' : platMap[t]
+        }</div>`
+    ).join('');
+
+    // Best practices for this post
+    const bpItems = [
+        { text: 'Image attached to maximize visual engagement' },
+        { text: `Optimal posting time for ${platMap[active] || 'this platform'} — ${p.time}` },
+        { text: `${p.tag} format drives higher ${p.tag === 'Tip' ? 'saves & shares' : p.tag === 'Promo' ? 'click-throughs' : 'reach'}` },
+        { text: 'Copy length within recommended character limit' },
+        { text: 'Call-to-action included for audience engagement' },
+    ];
+
+    // Platform-specific copy variations
+    const copies = {
+        initial: p.copy,
+        fb: p.copy,
+        ig: p.copy.replace(/[.!]$/, '') + ' 📸 Save this for later!',
+        li: 'Sharing a quick insight with our network. ' + p.copy,
+    };
+    const displayCopy = copies[active] || p.copy;
 
     document.getElementById('drawer-body').innerHTML = `
-        <img src="https://picsum.photos/seed/${seed}/600/280"
-             class="drawer-post-img" alt="Post image"
-             onerror="this.style.background='${p.imgBg}';this.removeAttribute('src');">
+        <div class="drawer-img-grid">
+            <img src="https://picsum.photos/seed/${seed}/400/560" alt="Post image"
+                 onerror="this.style.background='${p.imgBg}';this.removeAttribute('src');">
+            <img src="https://picsum.photos/seed/${seed+1}/400/280" alt=""
+                 onerror="this.style.background='${p.imgBg}';this.removeAttribute('src');">
+            <img src="https://picsum.photos/seed/${seed+2}/400/280" alt=""
+                 onerror="this.style.background='${p.imgBg}';this.removeAttribute('src');">
+        </div>
         <div class="drawer-body-content">
+            <p class="drawer-datetime">Planned for <strong>${d.day === 'Wed' && d.date == 4 ? 'today, ' : ''}${d.month} ${d.date}, ${p.time}</strong></p>
             <div class="drawer-tag-row">
                 <div class="cal-tag tag-${p.tag.toLowerCase()}" style="margin-bottom:0;">${p.tag}</div>
-                <div class="drawer-plats-row">${p.platforms.map(plt =>
-                    `<div class="cplt cplt-${plt}">${getPlatIconSVGSmall(plt)}</div>`
-                ).join('')}</div>
-                <span class="drawer-day-lbl">${d.day}, ${d.month} ${d.date}, ${d.year} · ${p.time}</span>
             </div>
-            <p class="drawer-copy">${p.copy}</p>
-            <div class="drawer-meta-grid">
-                <div class="drawer-meta-cell">
-                    <div class="drawer-meta-lbl">Platforms</div>
-                    <div class="drawer-meta-val">${platNames}</div>
-                </div>
-                <div class="drawer-meta-cell">
-                    <div class="drawer-meta-lbl">Scheduled</div>
-                    <div class="drawer-meta-val">${p.time}</div>
-                </div>
-                <div class="drawer-meta-cell">
-                    <div class="drawer-meta-lbl">Content type</div>
-                    <div class="drawer-meta-val">${p.tag}</div>
-                </div>
-                <div class="drawer-meta-cell">
-                    <div class="drawer-meta-lbl">Date</div>
-                    <div class="drawer-meta-val">${d.month} ${d.date}, ${d.year}</div>
-                </div>
+            <p class="drawer-copy">${displayCopy}</p>
+            <div class="drawer-bp">
+                <div class="drawer-bp-title">Best practices applied</div>
+                ${bpItems.map(bp => `
+                <div class="drawer-bp-item">
+                    <div class="drawer-bp-check">
+                        <svg viewBox="0 0 9 7" fill="none"><path d="M1 3.5l2.5 2.5L8 1" stroke="#16a34a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <span>${bp.text}</span>
+                </div>`).join('')}
             </div>
-            <button class="btn-drawer-action" onclick="closeDrawer()">✦ Schedule Post</button>
+            <button class="btn-drawer-refresh" onclick="refreshDrawerPost()">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M12.5 2.5A6 6 0 0 0 2 7m-.5 4.5A6 6 0 0 0 12 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M1.5 11.5v-3h3M12.5 2.5v3h-3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Refresh with another variation
+            </button>
         </div>`;
+}
 
-    document.getElementById('drawer-overlay').classList.add('visible');
-    document.getElementById('post-drawer').classList.add('open');
+function switchDrawerTab(plt) {
+    drawerState.activePlt = plt;
+    renderDrawerContent();
+    document.getElementById('post-drawer').scrollTop = 0;
+}
+
+function refreshDrawerPost() {
+    const { colIdx, pIdx } = drawerState;
+    const p = SOCIAL_WEEK[colIdx].posts[pIdx];
+    const btn = document.querySelector('.btn-drawer-refresh');
+    if (!btn) return;
+    btn.disabled = true;
+    btn.innerHTML = `<span class="pulsing">↻</span>&nbsp;Generating variation…`;
+    setTimeout(() => {
+        // Rotate copy variation
+        const variations = [
+            p.copy,
+            p.copy.replace(/today|this month/gi, 'this week').replace(/call us/gi, 'book online'),
+            'Quick reminder: ' + p.copy.split('.')[0] + '. Don\'t miss out!',
+        ];
+        const next = variations[(variations.findIndex(v => v === p.copy) + 1) % variations.length];
+        SOCIAL_WEEK[colIdx].posts[pIdx] = { ...p, copy: next };
+        drawerState.activePlt = drawerState.activePlt;
+        renderDrawerContent();
+        document.getElementById('post-drawer').scrollTop = 0;
+    }, 1200);
 }
 
 function closeDrawer() {
