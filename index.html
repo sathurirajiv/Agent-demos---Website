@@ -1201,13 +1201,14 @@
         .drawer-tag-row { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
         /* Best practices */
         .drawer-bp { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px 16px; margin-bottom: 20px; }
-        .drawer-bp-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: #94a3b8; margin-bottom: 10px; }
+        .drawer-bp-title { font-size: 12px; font-weight: 500; color: #64748b; margin-bottom: 10px; }
         .drawer-bp-item { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #475569; line-height: 1.4; padding: 4px 0; }
         .drawer-bp-check { width: 16px; height: 16px; background: #dcfce7; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .drawer-bp-check svg { width: 9px; height: 9px; }
-        /* Refresh button */
-        .btn-drawer-refresh { width: 100%; padding: 12px; background: white; color: #2563eb; border: 1.5px solid #2563eb; border-radius: 9px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 7px; }
-        .btn-drawer-refresh:hover { background: #eff6ff; }
+        /* Regenerate button — purple outline */
+        .btn-drawer-refresh { width: 100%; padding: 12px; background: white; color: #7c3aed; border: 1.5px solid #7c3aed; border-radius: 9px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 7px; }
+        .btn-drawer-refresh:hover { background: #f5f3ff; }
+        .btn-drawer-refresh:disabled { opacity: 0.6; cursor: default; }
         /* Post length for social publishing */
         .post-len-group { display: flex; gap: 8px; }
         .post-len-opt { flex: 1; display: flex; flex-direction: column; gap: 4px; padding: 12px 10px; border: 1.5px solid #e2e8f0; border-radius: 10px; background: white; cursor: pointer; font-family: inherit; transition: all 0.15s; text-align: left; }
@@ -2938,10 +2939,52 @@ function renderCalendar() {
 function prevWeek() { weekOffset--; renderCalendar(); }
 function nextWeek() { weekOffset++; renderCalendar(); }
 
-let drawerState = { colIdx: 0, pIdx: 0, activePlt: null };
+let drawerState = { colIdx: 0, pIdx: 0, activePlt: null, seedOffset: 0 };
+
+// Build copy for a post based on selected post-length option
+function buildPostCopy(baseCopy, tag, platform, seedOffset) {
+    const len = document.querySelector('.post-len-opt.selected')?.dataset.val || 'standard';
+    const platSuffix = {
+        fb: '',
+        ig: ' 📸 Double-tap if this resonates!',
+        li: ''
+    };
+    const platPrefix = {
+        fb: '',
+        ig: '',
+        li: 'Sharing a professional perspective: '
+    };
+
+    const crisp = {
+        Tip:          `Pro tip: ${baseCopy.split('.')[0]}.`,
+        Promo:        `${baseCopy.split('.')[0]}. Book now!`,
+        Product:      `${baseCopy.split('.')[0]}.`,
+        Announcement: `Big news: ${baseCopy.split('.')[0]}.`,
+        Other:        `${baseCopy.split('.')[0]}.`,
+    };
+
+    const story = {
+        Tip:          `Here's something we wish more people knew.\n\n${baseCopy}\n\nSmall habits like this compound over time. Share this with someone who needs to hear it. Your future self will thank you. 💙`,
+        Promo:        `We've been listening to you — and this one's for you.\n\n${baseCopy}\n\nLife gets busy. We've made it easier than ever to take care of what matters. Spots are limited — don't wait until it's too late. Tag a friend who needs this today! 🙌`,
+        Product:      `We're excited to share something that's been in the works.\n\n${baseCopy}\n\nWe built this because you asked for it. Because you deserve the best. Questions? Drop them below and our team will personally respond. ⬇️`,
+        Announcement: `This is a moment we've been looking forward to sharing with you.\n\n${baseCopy}\n\nEvery big change starts with a single decision. We made this one with you in mind. Stay tuned — there's more to come. 🎉`,
+        Other:        `Some things are worth saying out loud.\n\n${baseCopy}\n\nWe're grateful for every single one of you. The trust you place in us drives everything we do. Thank you for being part of our story. ❤️`,
+    };
+
+    let copy;
+    if (len === 'crisp') {
+        copy = crisp[tag] || baseCopy.split('.')[0] + '.';
+    } else if (len === 'story') {
+        copy = story[tag] || baseCopy;
+    } else {
+        copy = baseCopy; // standard — use base copy as-is
+    }
+
+    return (platPrefix[platform] || '') + copy + (platSuffix[platform] || '');
+}
 
 function openPostDrawer(colIdx, pIdx) {
-    drawerState = { colIdx, pIdx, activePlt: null };
+    drawerState = { colIdx, pIdx, activePlt: null, seedOffset: 0 };
     renderDrawerContent();
     document.getElementById('drawer-overlay').classList.add('visible');
     document.getElementById('post-drawer').classList.add('open');
@@ -2949,101 +2992,78 @@ function openPostDrawer(colIdx, pIdx) {
 }
 
 function renderDrawerContent() {
-    const { colIdx, pIdx } = drawerState;
+    const { colIdx, pIdx, seedOffset } = drawerState;
     const p = SOCIAL_WEEK[colIdx].posts[pIdx];
     const dates = getWeekDates(weekOffset);
     const d = dates[colIdx];
-    const seed = (Math.abs(weekOffset) * 14) + colIdx * 2 + pIdx + 10;
+    const baseSeed = (Math.abs(weekOffset) * 14) + colIdx * 2 + pIdx + 10 + seedOffset * 7;
     const platMap = { fb: 'Facebook', ig: 'Instagram', li: 'LinkedIn' };
 
-    // Active platform tab (default to first platform)
-    if (!drawerState.activePlt) drawerState.activePlt = p.platforms[0];
+    // Default to first platform
+    if (!drawerState.activePlt || !p.platforms.includes(drawerState.activePlt)) {
+        drawerState.activePlt = p.platforms[0];
+    }
     const active = drawerState.activePlt;
 
-    // Build tabs — "Initial content" + one per platform
-    const allTabs = ['initial', ...p.platforms];
-    document.getElementById('drawer-tabs').innerHTML = allTabs.map(t =>
-        `<div class="drawer-tab${t === active ? ' active' : ''}" onclick="switchDrawerTab('${t}')">${
-            t === 'initial' ? 'Initial content' : platMap[t]
-        }</div>`
+    // Tabs — only the platforms this post targets (no "Initial content")
+    document.getElementById('drawer-tabs').innerHTML = p.platforms.map(plt =>
+        `<div class="drawer-tab${plt === active ? ' active' : ''}" onclick="switchDrawerTab('${plt}')">${platMap[plt]}</div>`
     ).join('');
 
-    // Best practices for this post
-    const bpItems = [
-        { text: 'Image attached to maximize visual engagement' },
-        { text: `Optimal posting time for ${platMap[active] || 'this platform'} — ${p.time}` },
-        { text: `${p.tag} format drives higher ${p.tag === 'Tip' ? 'saves & shares' : p.tag === 'Promo' ? 'click-throughs' : 'reach'}` },
-        { text: 'Copy length within recommended character limit' },
-        { text: 'Call-to-action included for audience engagement' },
-    ];
+    const displayCopy = buildPostCopy(p.copy, p.tag, active, seedOffset);
 
-    // Platform-specific copy variations
-    const copies = {
-        initial: p.copy,
-        fb: p.copy,
-        ig: p.copy.replace(/[.!]$/, '') + ' 📸 Save this for later!',
-        li: 'Sharing a quick insight with our network. ' + p.copy,
-    };
-    const displayCopy = copies[active] || p.copy;
+    const bpItems = [
+        `3 images attached — ${active === 'ig' ? 'carousel format boosts saves by 3×' : 'multi-image posts get higher reach'}`,
+        `Optimal posting time for ${platMap[active]} — ${p.time}`,
+        `${p.tag} content drives higher ${p.tag === 'Tip' ? 'saves & shares' : p.tag === 'Promo' ? 'click-throughs' : p.tag === 'Product' ? 'profile visits' : 'reach'}`,
+        `Copy length optimised for ${document.querySelector('.post-len-opt.selected')?.dataset.val || 'standard'} format`,
+        active === 'ig' ? 'Emoji used to increase tap-through on mobile' : 'Call-to-action included to drive next step',
+    ];
 
     document.getElementById('drawer-body').innerHTML = `
         <div class="drawer-img-grid">
-            <img src="https://picsum.photos/seed/${seed}/400/560" alt="Post image"
+            <img src="https://picsum.photos/seed/${baseSeed}/400/560" alt="Post image"
                  onerror="this.style.background='${p.imgBg}';this.removeAttribute('src');">
-            <img src="https://picsum.photos/seed/${seed+1}/400/280" alt=""
+            <img src="https://picsum.photos/seed/${baseSeed+1}/400/280" alt=""
                  onerror="this.style.background='${p.imgBg}';this.removeAttribute('src');">
-            <img src="https://picsum.photos/seed/${seed+2}/400/280" alt=""
+            <img src="https://picsum.photos/seed/${baseSeed+2}/400/280" alt=""
                  onerror="this.style.background='${p.imgBg}';this.removeAttribute('src');">
         </div>
         <div class="drawer-body-content">
-            <p class="drawer-datetime">Planned for <strong>${d.day === 'Wed' && d.date == 4 ? 'today, ' : ''}${d.month} ${d.date}, ${p.time}</strong></p>
+            <p class="drawer-datetime">Planned for <strong>${d.month} ${d.date}, ${p.time}</strong></p>
             <div class="drawer-tag-row">
                 <div class="cal-tag tag-${p.tag.toLowerCase()}" style="margin-bottom:0;">${p.tag}</div>
             </div>
-            <p class="drawer-copy">${displayCopy}</p>
+            <p class="drawer-copy" style="white-space:pre-line;">${displayCopy}</p>
             <div class="drawer-bp">
                 <div class="drawer-bp-title">Best practices applied</div>
-                ${bpItems.map(bp => `
+                ${bpItems.map(text => `
                 <div class="drawer-bp-item">
                     <div class="drawer-bp-check">
                         <svg viewBox="0 0 9 7" fill="none"><path d="M1 3.5l2.5 2.5L8 1" stroke="#16a34a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                     </div>
-                    <span>${bp.text}</span>
+                    <span>${text}</span>
                 </div>`).join('')}
             </div>
-            <button class="btn-drawer-refresh" onclick="refreshDrawerPost()">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M12.5 2.5A6 6 0 0 0 2 7m-.5 4.5A6 6 0 0 0 12 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M1.5 11.5v-3h3M12.5 2.5v3h-3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                Refresh with another variation
-            </button>
+            <button class="btn-drawer-refresh" id="btn-regenerate" onclick="refreshDrawerPost()">Regenerate</button>
         </div>`;
 }
 
 function switchDrawerTab(plt) {
     drawerState.activePlt = plt;
     renderDrawerContent();
-    document.getElementById('post-drawer').scrollTop = 0;
 }
 
 function refreshDrawerPost() {
-    const { colIdx, pIdx } = drawerState;
-    const p = SOCIAL_WEEK[colIdx].posts[pIdx];
-    const btn = document.querySelector('.btn-drawer-refresh');
-    if (!btn) return;
+    const btn = document.getElementById('btn-regenerate');
+    if (!btn || btn.disabled) return;
     btn.disabled = true;
-    btn.innerHTML = `<span class="pulsing">↻</span>&nbsp;Generating variation…`;
+    btn.innerHTML = `<span class="pulsing" style="font-size:16px;">↻</span>&nbsp;Generating…`;
     setTimeout(() => {
-        // Rotate copy variation
-        const variations = [
-            p.copy,
-            p.copy.replace(/today|this month/gi, 'this week').replace(/call us/gi, 'book online'),
-            'Quick reminder: ' + p.copy.split('.')[0] + '. Don\'t miss out!',
-        ];
-        const next = variations[(variations.findIndex(v => v === p.copy) + 1) % variations.length];
-        SOCIAL_WEEK[colIdx].posts[pIdx] = { ...p, copy: next };
-        drawerState.activePlt = drawerState.activePlt;
+        drawerState.seedOffset = (drawerState.seedOffset + 1) % 20;
         renderDrawerContent();
         document.getElementById('post-drawer').scrollTop = 0;
-    }, 1200);
+    }, 1100);
 }
 
 function closeDrawer() {
