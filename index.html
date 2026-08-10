@@ -236,6 +236,21 @@
 
         .dd-option.selected .dd-dot { background: #2563eb; }
 
+        .dd-option.disabled { color: #cbd5e1; cursor: not-allowed; }
+        .dd-option.disabled:hover { background: none; }
+        .dd-soon-tag {
+            margin-left: auto;
+            font-size: 9px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #94a3b8;
+            background: #f1f5f9;
+            padding: 3px 7px;
+            border-radius: 5px;
+            flex-shrink: 0;
+        }
+
         .dd-divider { height: 1px; background: #f1f5f9; margin: 6px 0; }
 
         .agent-hint {
@@ -485,6 +500,234 @@
         .ao-custom-input.visible { display: block; }
         .ao-custom-input:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,0.08); }
         .ao-custom-input::placeholder { color: #d1d5db; }
+
+        /* ===== LISTINGS OPTIMIZATION AGENT ===== */
+        .field-sub { font-size: 11.5px; color: #94a3b8; margin-top: 5px; line-height: 1.4; }
+
+        .input-inline-link {
+            position: absolute; right: 13px; top: 50%; transform: translateY(-50%);
+            font-size: 12px; font-weight: 500; color: #2563eb; text-decoration: none;
+            white-space: nowrap; background: white; padding-left: 6px;
+        }
+        .input-inline-link:hover { text-decoration: underline; }
+
+        /* Business profile summary card */
+        .biz-summary-card { border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px 16px; background: #f8fafc; }
+        .biz-summary-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+        .biz-summary-title { font-size: 13px; font-weight: 500; color: #374151; }
+        .biz-edit-btn {
+            display: inline-flex; align-items: center; gap: 5px; font-size: 12.5px; font-weight: 500;
+            color: #2563eb; background: none; border: none; cursor: pointer; font-family: inherit; padding: 2px 0;
+        }
+        .biz-edit-btn:hover { color: #1d4ed8; }
+        .biz-summary-row { display: flex; gap: 12px; font-size: 13px; padding: 7px 0; border-top: 1px solid #e2e8f0; }
+        .biz-summary-row:first-of-type { border-top: none; }
+        .bs-label { color: #94a3b8; flex-shrink: 0; width: 150px; }
+        .bs-value { color: #374151; flex: 1; line-height: 1.5; }
+        .biz-edit-fields { margin-top: 14px; }
+        .biz-edit-done-row { display: flex; justify-content: flex-end; margin-top: -4px; }
+
+        /* Field label + tooltip icon */
+        .field-label-row { display: flex; align-items: center; gap: 6px; margin-bottom: 7px; }
+        .field-label-row .form-label { margin-bottom: 0; }
+        .tooltip-wrap { position: relative; display: inline-flex; align-items: center; }
+        .tooltip-icon {
+            width: 15px; height: 15px; border-radius: 50%;
+            border: 1.5px solid #94a3b8; display: flex; align-items: center; justify-content: center;
+            font-size: 9px; font-weight: 700; font-style: normal; color: #64748b;
+            cursor: help; flex-shrink: 0;
+        }
+        .tooltip-bubble {
+            position: absolute; bottom: calc(100% + 8px); left: 0;
+            background: #1e293b; color: white; font-size: 11.5px; font-weight: 400;
+            line-height: 1.5; padding: 9px 11px; border-radius: 8px; width: 230px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+            opacity: 0; visibility: hidden; transform: translateY(3px);
+            transition: opacity 0.15s, transform 0.15s; pointer-events: none; z-index: 20;
+        }
+        .tooltip-bubble::after {
+            content: ''; position: absolute; top: 100%; left: 8px;
+            border: 5px solid transparent; border-top-color: #1e293b;
+        }
+        .tooltip-wrap:hover .tooltip-bubble { opacity: 1; visibility: visible; transform: translateY(0); }
+
+        /* Recommendation type cards */
+        .rt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .rt-card {
+            display: flex; align-items: center; gap: 10px;
+            border: 1.5px solid #e2e8f0; border-radius: 10px; padding: 11px 12px;
+            cursor: pointer; transition: all 0.15s; background: white;
+        }
+        .rt-card:hover { border-color: #93c5fd; }
+        .rt-card.selected { border-color: #2563eb; background: white; }
+        .rt-card-check {
+            width: 16px; height: 16px; border: 1.5px solid #d1d5db; border-radius: 4px;
+            flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.15s;
+        }
+        .rt-card.selected .rt-card-check { background: #2563eb; border-color: #2563eb; }
+        .rt-card.selected .rt-card-check::after {
+            content: ''; width: 8px; height: 5px; border-left: 1.5px solid white; border-bottom: 1.5px solid white;
+            transform: rotate(-45deg) translateY(-1px); display: block;
+        }
+        .rt-card-icon {
+            width: 22px; height: 22px;
+            display: flex; align-items: center; justify-content: center;
+            color: #64748b; flex-shrink: 0; transition: color 0.15s;
+        }
+        .rt-card.selected .rt-card-icon { color: #2563eb; }
+        .rt-card-text { flex: 1; min-width: 0; }
+        .rt-card-label-row { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
+        .rt-card-label { font-size: 13px; font-weight: 400; color: #374151; }
+
+        /* Custom category dropdown */
+        .cdd-anchor { position: relative; }
+        .cdd-trigger {
+            display: flex; align-items: center; justify-content: space-between; gap: 8px;
+            width: 100%; padding: 10px 14px; border: 1px solid #d1d5db; border-radius: 8px;
+            font-size: 14px; color: #0f172a; background: white; cursor: pointer;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .cdd-trigger:hover { border-color: #93c5fd; }
+        .cdd-trigger span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .cdd-chevron { display: flex; align-items: center; color: #64748b; flex-shrink: 0; transition: transform 0.2s; }
+        .cdd-anchor.open .cdd-chevron { transform: rotate(180deg); }
+        .cdd-panel {
+            position: absolute; top: calc(100% + 6px); left: 0; right: 0;
+            background: white; border: 1px solid #e2e8f0; border-radius: 10px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1); z-index: 30; overflow: hidden;
+            display: none; max-height: 220px; overflow-y: auto;
+        }
+        .cdd-anchor.open .cdd-panel { display: block; animation: dropFade 0.15s ease; }
+        .dd-option-check {
+            padding: 9px 14px; font-size: 13.5px; color: #374151; cursor: pointer;
+            display: flex; align-items: center; gap: 9px; transition: background 0.12s;
+        }
+        .dd-option-check:hover { background: #f8fafc; }
+        .dd-check-box {
+            width: 16px; height: 16px; border: 1.5px solid #d1d5db; border-radius: 4px;
+            flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.15s;
+        }
+        .dd-check-box.checked { background: #2563eb; border-color: #2563eb; }
+        .dd-check-box.checked::after {
+            content: ''; width: 8px; height: 5px; border-left: 1.5px solid white; border-bottom: 1.5px solid white;
+            transform: rotate(-45deg) translateY(-1px); display: block;
+        }
+
+        .competitor-row { display: flex; gap: 8px; margin-bottom: 8px; align-items: flex-start; }
+        .competitor-row .form-input { flex: 1; }
+        .competitor-input-wrap { position: relative; flex: 1; }
+        .competitor-input-wrap .form-input { width: 100%; }
+        .competitor-suggest-panel {
+            position: absolute; top: calc(100% + 4px); left: 0; right: 0;
+            background: white; border: 1px solid #e2e8f0; border-radius: 9px;
+            box-shadow: 0 8px 22px rgba(0,0,0,0.1); z-index: 25;
+            max-height: 190px; overflow-y: auto; display: none;
+        }
+        .competitor-suggest-item { padding: 8px 12px; cursor: pointer; transition: background 0.12s; }
+        .competitor-suggest-item:hover { background: #f8fafc; }
+        .cs-name { font-size: 13px; font-weight: 600; color: #0f172a; }
+        .cs-sub { font-size: 11.5px; color: #94a3b8; margin-top: 1px; }
+
+        .btn-remove-row {
+            width: 30px; height: 30px; flex-shrink: 0;
+            border: 1px solid #e2e8f0; border-radius: 7px; background: white;
+            color: #94a3b8; font-size: 15px; line-height: 1; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.15s;
+        }
+        .btn-remove-row:hover { border-color: #fca5a5; color: #dc2626; }
+
+        .btn-add-row {
+            display: inline-flex; align-items: center; gap: 6px;
+            font-size: 12.5px; font-weight: 500; color: #2563eb;
+            cursor: pointer; background: none; border: none; font-family: inherit;
+            padding: 4px 0;
+        }
+        .btn-add-row:hover { color: #1d4ed8; }
+
+        /* Recommendation cards */
+        .rec-summary-bar {
+            display: flex; align-items: center; justify-content: space-between;
+            gap: 12px; flex-wrap: wrap;
+            padding: 12px 16px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            margin-bottom: 14px;
+        }
+        .rec-summary-text { font-size: 12.5px; color: #64748b; }
+        .rec-summary-text strong { color: #0f172a; }
+
+        .rec-card {
+            border: 1.5px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 10px;
+            background: white;
+            transition: border-color 0.15s;
+        }
+        .rec-card:hover { border-color: #cbd5e1; }
+
+        .rec-card-top { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 6px; }
+        .rec-field-label {
+            font-size: 10.5px; font-weight: 400; text-transform: uppercase;
+            letter-spacing: 0.05em; color: #94a3b8; margin-bottom: 4px;
+        }
+        .rec-title { font-size: 14px; font-weight: 400; color: #0f172a; line-height: 1.4; }
+
+        .impact-badge {
+            font-size: 10.5px; font-weight: 400; padding: 3px 9px;
+            border-radius: 5px; white-space: nowrap; flex-shrink: 0; margin-top: 1px;
+        }
+        .impact-high   { background: #fee2e2; color: #dc2626; }
+        .impact-medium { background: #fef9c3; color: #854d0e; }
+        .impact-low    { background: #f1f5f9; color: #64748b; }
+
+        .rec-detail { font-size: 12.5px; color: #64748b; line-height: 1.55; margin: 8px 0 14px; }
+
+        .rec-preview-btn {
+            display: inline-flex; align-items: center; gap: 6px;
+            border: 1.5px solid #e2e8f0; border-radius: 7px; padding: 7px 13px;
+            font-size: 12px; font-weight: 400; color: #374151; cursor: pointer;
+            background: white; transition: all 0.15s; position: relative;
+        }
+        .rec-preview-btn:hover { border-color: #93c5fd; color: #2563eb; background: #f5f9ff; }
+        .rec-preview-btn svg { flex-shrink: 0; }
+
+        .btn-review-impact {
+            background: linear-gradient(135deg, #7c3aed, #6d28d9);
+            color: white; border: none; padding: 10px 20px; border-radius: 9px;
+            font-size: 13.5px; font-weight: 600; cursor: pointer; font-family: inherit;
+            display: inline-flex; align-items: center; gap: 7px; transition: all 0.2s;
+        }
+        .btn-review-impact:hover { transform: translateY(-1px); box-shadow: 0 5px 14px rgba(124,58,237,0.3); }
+        .btn-review-impact:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+
+        .impact-reveal { display: none; margin-top: 18px; }
+        .impact-reveal.show { display: block; animation: fadeUp 0.3s ease; }
+        .impact-reveal-title { font-size: 13px; font-weight: 400; color: #0f172a; margin-bottom: 14px; }
+        #listings-impact-reveal .roi-row-top strong { font-weight: 400; }
+
+        /* Inline recommendation preview (accordion within card) */
+        .rec-preview-body {
+            overflow: hidden; max-height: 0;
+            transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1);
+        }
+        .rec-preview-inner { padding-top: 16px; }
+        .rec-preview-suggestion { font-size: 13.5px; font-weight: 400; color: #0f172a; line-height: 1.5; margin-bottom: 14px; }
+
+        .ba-two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .ba-two-col .before-after-box { margin-bottom: 0; }
+
+        /* Before/after content */
+        .before-after-box { border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px; margin-bottom: 12px; }
+        .ba-label {
+            font-size: 10px; font-weight: 400; text-transform: uppercase;
+            letter-spacing: 0.06em; margin-bottom: 7px; display: flex; align-items: center; gap: 6px;
+        }
+        .ba-before .ba-label { color: #dc2626; }
+        .ba-after .ba-label { color: #16a34a; }
+        .ba-text { font-size: 13px; font-weight: 400; color: #374151; line-height: 1.6; }
 
         /* ===== RESPONSE LENGTH TOGGLE ===== */
         .resp-length-group {
@@ -1336,8 +1579,9 @@
         <div class="dd-option selected" onclick="selectAgent('Review Response Agent', this)">
             Review Response Agent
         </div>
-        <div class="dd-option" onclick="selectAgent('Review Generation Agent', this)">
+        <div class="dd-option disabled" title="Coming soon">
             Review Generation Agent
+            <span class="dd-soon-tag">Coming soon</span>
         </div>
         <div class="dd-divider"></div>
         <div class="dd-category">Social</div>
@@ -1352,8 +1596,9 @@
         <div class="dd-option" onclick="selectAgent('Listings Optimization Agent', this)">
             Listings Optimization Agent
         </div>
-        <div class="dd-option" onclick="selectAgent('Listings Verify Agent', this)">
+        <div class="dd-option disabled" title="Coming soon">
             Listings Verify Agent
+            <span class="dd-soon-tag">Coming soon</span>
         </div>
     </div>
     </div><!-- /.pill-anchor -->
@@ -1379,37 +1624,39 @@
         </div>
         <div class="acc-body" id="body-basic">
             <div class="form-grid">
-                <!-- ── Common fields (all agents) ── -->
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label">Business name <span class="req">*</span></label>
-                        <select class="form-select" id="biz-name">
-                            <option>Aspen Dental Group</option>
-                            <option>Bright Smiles Dental</option>
-                            <option>Austin Family Dentistry</option>
-                            <option>Premier Dental Care</option>
-                        </select>
+                <!-- ── Common fields (all agents except Listings Optimization) ── -->
+                <div id="common-biz-fields">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Business name <span class="req">*</span></label>
+                            <select class="form-select" id="biz-name">
+                                <option>Aspen Dental Group</option>
+                                <option>Bright Smiles Dental</option>
+                                <option>Austin Family Dentistry</option>
+                                <option>Premier Dental Care</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Industry <span class="req">*</span></label>
+                            <select class="form-select" id="industry">
+                                <option>Dental</option>
+                                <option>Healthcare</option>
+                                <option>Real Estate</option>
+                                <option>Automotive</option>
+                                <option>Restaurants</option>
+                                <option>Legal</option>
+                                <option>Retail</option>
+                                <option>Hospitality</option>
+                            </select>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label class="form-label">Industry <span class="req">*</span></label>
-                        <select class="form-select" id="industry">
-                            <option>Dental</option>
-                            <option>Healthcare</option>
-                            <option>Real Estate</option>
-                            <option>Automotive</option>
-                            <option>Restaurants</option>
-                            <option>Legal</option>
-                            <option>Retail</option>
-                            <option>Hospitality</option>
-                        </select>
-                    </div>
-                </div>
 
-                <div class="form-group">
-                    <label class="form-label">Website <span class="req">*</span></label>
-                    <div class="input-wrap">
-                        <input type="text" class="form-input" id="website" value="https://www.aspendental.com/">
-                        <span class="input-ext-icon">↗</span>
+                    <div class="form-group">
+                        <label class="form-label">Website <span class="req">*</span></label>
+                        <div class="input-wrap">
+                            <input type="text" class="form-input" id="website" value="https://www.aspendental.com/">
+                            <span class="input-ext-icon">↗</span>
+                        </div>
                     </div>
                 </div>
 
@@ -1605,6 +1852,196 @@
                     </div>
                 </div>
 
+                <!-- ── Listings Optimization Agent fields ── -->
+                <div id="listings-fields" style="display:none;">
+                    <div class="form-group" style="margin-bottom:16px;">
+                        <label class="form-label">Business name <span class="req">*</span></label>
+                        <div class="input-wrap">
+                            <input type="text" class="form-input" id="listings-biz-name" value="Aspen Dental Group" style="padding-left:36px;padding-right:98px;">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0f172a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;left:13px;top:50%;transform:translateY(-50%);pointer-events:none;"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                            <a href="#" class="input-inline-link" onclick="event.preventDefault();">View profile ↗</a>
+                        </div>
+                        <div class="field-sub">Search any business to auto-populate all fields below</div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom:20px;">
+                        <div class="biz-summary-card" id="biz-summary-view">
+                            <div class="biz-summary-top">
+                                <span class="biz-summary-title">Business profile</span>
+                                <button type="button" class="biz-edit-btn" onclick="toggleBizEdit()">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                                    Edit
+                                </button>
+                            </div>
+                            <div class="biz-summary-row"><span class="bs-label">Address</span><span class="bs-value" id="bs-address">123 W 6th St, Austin, TX 78701</span></div>
+                            <div class="biz-summary-row"><span class="bs-label">Primary category</span><span class="bs-value" id="bs-primary">Dentist</span></div>
+                            <div class="biz-summary-row"><span class="bs-label">Additional categories</span><span class="bs-value" id="bs-additional">Cosmetic dentist, +2 more</span></div>
+                            <div class="biz-summary-row"><span class="bs-label">Description</span><span class="bs-value" id="bs-description">Aspen Dental Group provides comprehensive family dental care in Austin, TX, including routine checkups, cleanings, and restorative treatment.</span></div>
+                        </div>
+
+                        <div class="biz-edit-fields" id="biz-edit-fields" style="display:none;">
+                            <div class="form-group" style="margin-bottom:16px;">
+                                <label class="form-label">Business address</label>
+                                <input type="text" class="form-input" id="listings-biz-address" value="123 W 6th St, Austin, TX 78701">
+                            </div>
+
+                            <div class="form-row" style="margin-bottom:20px;">
+                                <div class="form-group">
+                                    <label class="form-label">Primary category</label>
+                                    <div class="cdd-anchor" id="cdd-primary">
+                                        <div class="cdd-trigger" onclick="toggleCatDropdown('primary', event)">
+                                            <span id="cdd-primary-label">Dentist</span>
+                                            <span class="cdd-chevron"><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                                        </div>
+                                        <div class="cdd-panel">
+                                            <div class="dd-option selected" onclick="selectPrimaryCategory('Dentist', this)">Dentist</div>
+                                            <div class="dd-option" onclick="selectPrimaryCategory('Cosmetic dentist', this)">Cosmetic dentist</div>
+                                            <div class="dd-option" onclick="selectPrimaryCategory('Orthodontist', this)">Orthodontist</div>
+                                            <div class="dd-option" onclick="selectPrimaryCategory('Pediatric dentist', this)">Pediatric dentist</div>
+                                            <div class="dd-option" onclick="selectPrimaryCategory('Emergency dental clinic', this)">Emergency dental clinic</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Additional categories</label>
+                                    <div class="cdd-anchor" id="cdd-additional">
+                                        <div class="cdd-trigger" onclick="toggleCatDropdown('additional', event)">
+                                            <span id="cdd-additional-label">Cosmetic dentist, +2 more</span>
+                                            <span class="cdd-chevron"><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                                        </div>
+                                        <div class="cdd-panel">
+                                            <div class="dd-option-check" onclick="toggleAdditionalCategory(this)"><span class="dd-check-box checked"></span>Cosmetic dentist</div>
+                                            <div class="dd-option-check" onclick="toggleAdditionalCategory(this)"><span class="dd-check-box checked"></span>Emergency dental service</div>
+                                            <div class="dd-option-check" onclick="toggleAdditionalCategory(this)"><span class="dd-check-box checked"></span>Teeth whitening service</div>
+                                            <div class="dd-option-check" onclick="toggleAdditionalCategory(this)"><span class="dd-check-box"></span>Pediatric dentist</div>
+                                            <div class="dd-option-check" onclick="toggleAdditionalCategory(this)"><span class="dd-check-box"></span>Orthodontist</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="margin-bottom:12px;">
+                                <label class="form-label">Business description</label>
+                                <textarea class="form-input" id="listings-biz-desc" rows="3" style="resize:vertical;min-height:64px;">Aspen Dental Group provides comprehensive family dental care in Austin, TX, including routine checkups, cleanings, and restorative treatment.</textarea>
+                            </div>
+
+                            <div class="biz-edit-done-row">
+                                <button type="button" class="btn-add-row" onclick="toggleBizEdit()">✓ Done editing</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom:8px;">
+                        <div class="field-label-row" style="margin-bottom:12px;">
+                            <label class="form-label">Select recommendations to generate</label>
+                            <span class="tooltip-wrap">
+                                <span class="tooltip-icon">i</span>
+                                <span class="tooltip-bubble">Choose which recommendation types the agent should produce</span>
+                            </span>
+                        </div>
+                        <div class="rt-grid">
+                            <div class="rt-card selected" id="rt-desc" onclick="toggleRecCard(this)">
+                                <div class="rt-card-check"></div>
+                                <div class="rt-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+                                <div class="rt-card-text">
+                                    <div class="rt-card-label-row">
+                                        <span class="rt-card-label">Google description</span>
+                                        <span class="impact-badge impact-low">Low impact</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="rt-card selected" id="rt-photos" onclick="toggleRecCard(this)">
+                                <div class="rt-card-check"></div>
+                                <div class="rt-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+                                <div class="rt-card-text">
+                                    <div class="rt-card-label-row">
+                                        <span class="rt-card-label">Photos</span>
+                                        <span class="impact-badge impact-low">Low impact</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="rt-card selected" id="rt-services" onclick="toggleRecCard(this)">
+                                <div class="rt-card-check"></div>
+                                <div class="rt-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94z"/></svg></div>
+                                <div class="rt-card-text">
+                                    <div class="rt-card-label-row">
+                                        <span class="rt-card-label">Services</span>
+                                        <span class="impact-badge impact-high">High impact</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="rt-card" id="rt-hours" onclick="toggleRecCard(this)">
+                                <div class="rt-card-check"></div>
+                                <div class="rt-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+                                <div class="rt-card-text">
+                                    <div class="rt-card-label-row">
+                                        <span class="rt-card-label">Holiday hours</span>
+                                        <span class="impact-badge impact-high">High impact</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="rt-card" id="rt-posts" onclick="toggleRecCard(this)">
+                                <div class="rt-card-check"></div>
+                                <div class="rt-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></div>
+                                <div class="rt-card-text">
+                                    <div class="rt-card-label-row">
+                                        <span class="rt-card-label">Google posts</span>
+                                        <span class="impact-badge impact-medium">Medium impact</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="more-options-toggle" onclick="toggleListingsMoreOptions()" style="margin-top:8px;">
+                            <span class="more-options-label">More options</span>
+                            <span class="more-options-chevron" id="listings-mo-chevron"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5l4 4 4-4" stroke="#93c5fd" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                        </div>
+                        <div class="more-options-body" id="listings-mo-body" style="display:none;">
+                            <div class="form-group" style="margin-bottom:16px;">
+                                <div class="field-label-row">
+                                    <label class="form-label">Custom keywords</label>
+                                    <span class="tooltip-wrap">
+                                        <span class="tooltip-icon">i</span>
+                                        <span class="tooltip-bubble">Add up to 5 keywords for the agent to prioritize. Semrush adds category keywords automatically.</span>
+                                    </span>
+                                </div>
+                                <input type="text" class="form-input" id="listings-keywords" placeholder="e.g. emergency dentist, teeth whitening">
+                            </div>
+                            <div class="form-group" style="margin-bottom:16px;">
+                                <div class="field-label-row">
+                                    <label class="form-label">Add competitor</label>
+                                    <span class="tooltip-wrap">
+                                        <span class="tooltip-icon">i</span>
+                                        <span class="tooltip-bubble">Add up to 5 competitors to benchmark keywords against</span>
+                                    </span>
+                                </div>
+                                <div id="competitor-rows">
+                                    <div class="competitor-row">
+                                        <div class="competitor-input-wrap">
+                                            <input type="text" class="form-input" placeholder="Competitor name" oninput="handleCompetitorInput(this)" onfocus="handleCompetitorInput(this)" onblur="hideCompetitorSuggestions(this)">
+                                            <div class="competitor-suggest-panel"></div>
+                                        </div>
+                                        <input type="text" class="form-input" placeholder="Competitor website">
+                                    </div>
+                                </div>
+                                <button type="button" class="btn-add-row" onclick="addCompetitorRow()">+ Add competitor</button>
+                            </div>
+                            <div class="form-group">
+                                <div class="field-label-row">
+                                    <label class="form-label">Custom instruction</label>
+                                    <span class="tooltip-wrap">
+                                        <span class="tooltip-icon">i</span>
+                                        <span class="tooltip-bubble">An instruction the agent follows across all recommendation types</span>
+                                    </span>
+                                </div>
+                                <textarea class="form-input" id="listings-custom-instruction" rows="2" placeholder="e.g. Do not use keyword X, focus on outdoor services" style="resize:vertical;min-height:56px;"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="continue-row">
                     <button class="btn-continue" onclick="runContinue()">Continue →</button>
                 </div>
@@ -1716,6 +2153,16 @@
                                 <p class="rp-empty">Select a comment above and click "Generate Response" to see the agent in action.</p>
                             </div>
                         </div>
+                    </div>
+                </div>
+
+                <!-- ── Listings Optimization Agent ── -->
+                <div id="output-listings-opt" style="display:none;">
+                    <div class="output-wrap">
+                        <div class="output-top">
+                            <div class="output-subtext">AI-generated listing optimization recommendations for <span id="listings-out-biz-name">Aspen Dental Group</span></div>
+                        </div>
+                        <div id="listings-output-area"></div>
                     </div>
                 </div>
 
@@ -1912,6 +2359,64 @@
                     </div>
                 </div>
 
+                <!-- ── Listings Optimization Outcome ── -->
+                <div id="outcome-listings-opt" style="display:none;">
+                    <div class="outcomes-wrap">
+                        <p class="outcomes-intro">Here are some key outcomes of the Listings Optimization Agent.</p>
+                        <div class="roi-calc-inputs" style="margin-bottom:20px;">
+                            <div class="form-group">
+                                <label class="form-label">Monthly Listing Updates</label>
+                                <input type="number" class="form-input" id="listings-roi-volume" value="40" min="1" max="2000" oninput="recalcListingsROI()">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Staff Cost ($/hr)</label>
+                                <input type="number" class="form-input" id="listings-roi-rate" value="25" min="1" max="500" oninput="recalcListingsROI()">
+                            </div>
+                        </div>
+                        <div class="metrics-row">
+                            <div class="metric-card blue">
+                                <div class="metric-val" id="listings-m-time">12 min</div>
+                                <div class="metric-lbl">Saved per listing update</div>
+                                <div class="metric-sub">vs. manual research and edits</div>
+                            </div>
+                            <div class="metric-card green">
+                                <div class="metric-val" id="listings-m-hours">8 hrs</div>
+                                <div class="metric-lbl">Saved monthly</div>
+                                <div class="metric-sub" id="listings-m-hours-sub">~40 updates/month</div>
+                            </div>
+                            <div class="metric-card purple">
+                                <div class="metric-val" id="listings-m-cost">$200</div>
+                                <div class="metric-lbl">Cost saved/month</div>
+                                <div class="metric-sub" id="listings-m-cost-sub">@ $25/hr staff rate</div>
+                            </div>
+                        </div>
+                        <div class="impact-acc">
+                            <div class="impact-acc-header" onclick="toggleImpact('listings')">
+                                <span class="impact-acc-title">Impact Breakdown</span>
+                                <span class="impact-acc-chevron" id="impact-chevron-listings"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5l4 4 4-4" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                            </div>
+                            <div class="impact-acc-body collapsed" id="impact-body-listings">
+                                <div class="roi-row" style="margin-top:4px;">
+                                    <div class="roi-row-top"><span>Visibility Lift</span><strong>+18%</strong></div>
+                                    <div class="roi-track"><div class="roi-bar b-blue" data-target="18"></div></div>
+                                </div>
+                                <div class="roi-row">
+                                    <div class="roi-row-top"><span>Ranking Improvement</span><strong>+12 positions</strong></div>
+                                    <div class="roi-track"><div class="roi-bar b-green" data-target="72"></div></div>
+                                </div>
+                                <div class="roi-row">
+                                    <div class="roi-row-top"><span>Profile Completeness</span><strong>96%</strong></div>
+                                    <div class="roi-track"><div class="roi-bar b-purple" data-target="96"></div></div>
+                                </div>
+                                <div class="roi-row">
+                                    <div class="roi-row-top"><span>Listing Accuracy Score</span><strong>94%</strong></div>
+                                    <div class="roi-track"><div class="roi-bar b-teal" data-target="94"></div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
@@ -2047,7 +2552,7 @@
         <button class="drawer-back" onclick="closeDrawer()">
             <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M11 4L6 9l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
-        <span class="drawer-title">Post details</span>
+        <span class="drawer-title" id="drawer-title">Post details</span>
     </div>
     <div class="drawer-tabs" id="drawer-tabs"></div>
     <div id="drawer-body"></div>
@@ -2144,6 +2649,56 @@ const RESPONSES = {
     }
 };
 
+// ---- LISTINGS OPTIMIZATION DATA ----
+const LISTINGS_STEPS = [
+    { txt: "Analyzing your business information", ms: 550 },
+    { txt: "Researching relevant business keywords", ms: 650 },
+    { txt: "Researching keywords used by your competitors", ms: 600 },
+    { txt: "Refining your business keywords", ms: 600 },
+    { txt: "Applying your custom instructions", ms: 550 },
+    { txt: "Generating recommendations", ms: 700 }
+];
+
+const LISTINGS_REC_TYPE_MAP = { desc: 'rt-desc', photos: 'rt-photos', services: 'rt-services', hours: 'rt-hours', posts: 'rt-posts' };
+
+const LISTINGS_RECS = [
+    {
+        id: 'desc', type: 'desc', field: 'Google description', impact: 'low', impactLabel: 'Low impact',
+        title: 'Add "cosmetic" and "emergency dental care" to your business description',
+        detail: 'Adding these keywords helps people searching for cosmetic and emergency care find Aspen Dental Group, boosting SEO ranking.',
+        before: 'Aspen Dental Group provides comprehensive family dental care in Austin, TX, including routine checkups, cleanings, and restorative treatment.',
+        after: 'Aspen Dental Group provides comprehensive family and cosmetic dental care in Austin, TX, including emergency dental appointments, routine checkups, cleanings, and teeth whitening.'
+    },
+    {
+        id: 'photos', type: 'photos', field: 'Photos', impact: 'low', impactLabel: 'Low impact',
+        title: 'Add photos of your treatment rooms and front desk team',
+        detail: 'Photos of your office and staff build trust with new patients and improve engagement with your profile.',
+        before: '6 photos on profile: exterior and logo only',
+        after: '10 photos on profile: treatment rooms, team, and waiting area added'
+    },
+    {
+        id: 'services', type: 'services', field: 'Services', impact: 'high', impactLabel: 'High impact',
+        title: 'Add "teeth whitening" and "emergency dental care" to your services list',
+        detail: 'Adding these services helps people searching for urgent or cosmetic care find Aspen Dental Group, boosting SEO ranking.',
+        before: 'Services listed: Checkups, Cleanings, Fillings',
+        after: 'Services listed: Checkups, Cleanings, Fillings, Teeth whitening, Emergency dental care'
+    },
+    {
+        id: 'hours', type: 'hours', field: 'Holiday hours', impact: 'high', impactLabel: 'High impact',
+        title: 'Set special hours for Labor Day, Sep 7',
+        detail: 'Keep patients informed by updating your special hours for Labor Day.',
+        before: 'No special hours set for Sep 7',
+        after: 'Closed on Sep 7 for Labor Day'
+    },
+    {
+        id: 'posts', type: 'posts', field: 'Google posts', impact: 'medium', impactLabel: 'Medium impact',
+        title: 'Publish a post about your new patient welcome offer',
+        detail: 'Regular posts about offers keep your profile active and improve visibility in local search.',
+        before: 'No posts published in the last 30 days',
+        after: 'New post scheduled: "New patients save 20% on their first visit"'
+    }
+];
+
 // ---- STATE ----
 let currentAgent  = 'Review Response Agent';
 let selectedId    = null;
@@ -2156,6 +2711,9 @@ let socialPubIsGenerating = false;
 let selectedCommentId = null;
 let scIsGenerating = false;
 let socialCommentCache = {};
+let listingsGenerated = false;
+let listingsIsGenerating = false;
+let openRecPreviewId = null;
 
 // ---- DROPDOWN ----
 function toggleDropdown(e) {
@@ -2169,6 +2727,7 @@ function toggleDropdown(e) {
 function getAgentType() {
     if (currentAgent === 'Social Publishing Agent') return 'social-pub';
     if (currentAgent === 'Social Engagement Agent') return 'social-eng';
+    if (currentAgent === 'Listings Optimization Agent') return 'listings-opt';
     return 'review';
 }
 
@@ -2203,9 +2762,11 @@ function selectAgent(name, el) {
 
     // Show/hide agent-specific form sections
     const type = getAgentType();
+    document.getElementById('common-biz-fields').style.display  = type === 'listings-opt' ? 'none'  : 'block';
     document.getElementById('review-fields').style.display      = type === 'review'     ? 'block' : 'none';
     document.getElementById('social-pub-fields').style.display  = type === 'social-pub' ? 'block' : 'none';
     document.getElementById('social-eng-fields').style.display  = type === 'social-eng' ? 'block' : 'none';
+    document.getElementById('listings-fields').style.display    = type === 'listings-opt' ? 'block' : 'none';
 
     // Update subtitles
     const bdSub     = document.querySelector('#acc-basic .acc-subtitle');
@@ -2219,6 +2780,10 @@ function selectAgent(name, el) {
         bdSub.textContent    = 'Business profile, tone, and engagement preferences';
         outSub.textContent   = 'Social comments with AI-generated responses';
         outcomeSub.textContent = 'Engagement metrics and time savings';
+    } else if (type === 'listings-opt') {
+        bdSub.textContent    = 'Business profile, keywords, and recommendation types';
+        outSub.textContent   = 'AI-generated listing optimization recommendations';
+        outcomeSub.textContent = 'Estimated time savings and cost impact';
     } else {
         bdSub.textContent    = 'Business profile, brand voice, and response preferences';
         outSub.textContent   = 'Sample reviews with AI-generated responses';
@@ -2227,11 +2792,14 @@ function selectAgent(name, el) {
 
     // Reset week offset
     weekOffset = 0;
+    listingsGenerated = false;
+    listingsIsGenerating = false;
 }
 
 document.addEventListener('click', () => {
     document.getElementById('agent-dropdown').classList.remove('open');
     document.getElementById('agent-pill').classList.remove('open');
+    document.querySelectorAll('.cdd-anchor.open').forEach(a => a.classList.remove('open'));
 });
 
 // ---- ACCORDION ----
@@ -2342,6 +2910,132 @@ function toggleCheck(item) {
     }
 }
 
+// ---- LISTINGS: RECOMMENDATION TYPE CARD ----
+function toggleRecCard(card) {
+    card.classList.toggle('selected');
+    if (listingsGenerated) renderListingsRecs();
+}
+
+// ---- LISTINGS: BUSINESS PROFILE SUMMARY / EDIT TOGGLE ----
+function toggleBizEdit() {
+    const summary = document.getElementById('biz-summary-view');
+    const fields  = document.getElementById('biz-edit-fields');
+    const isEditing = fields.style.display === 'block';
+
+    if (isEditing) {
+        syncBizSummary();
+        fields.style.display = 'none';
+        summary.style.display = 'block';
+    } else {
+        summary.style.display = 'none';
+        fields.style.display = 'block';
+    }
+}
+
+function syncBizSummary() {
+    document.getElementById('bs-address').textContent     = document.getElementById('listings-biz-address').value;
+    document.getElementById('bs-primary').textContent     = document.getElementById('cdd-primary-label').textContent;
+    document.getElementById('bs-additional').textContent  = document.getElementById('cdd-additional-label').textContent;
+    document.getElementById('bs-description').textContent = document.getElementById('listings-biz-desc').value;
+}
+
+// ---- LISTINGS: MORE OPTIONS TOGGLE ----
+function toggleListingsMoreOptions() {
+    const body    = document.getElementById('listings-mo-body');
+    const chevron = document.getElementById('listings-mo-chevron');
+    const isOpen  = body.style.display === 'block';
+    body.style.display = isOpen ? 'none' : 'block';
+    chevron.classList.toggle('open', !isOpen);
+}
+
+// ---- LISTINGS: COMPETITOR ROWS ----
+function addCompetitorRow() {
+    const wrap = document.getElementById('competitor-rows');
+    if (wrap.children.length >= 5) return;
+    const row = document.createElement('div');
+    row.className = 'competitor-row';
+    row.innerHTML = `
+        <div class="competitor-input-wrap">
+            <input type="text" class="form-input" placeholder="Competitor name" oninput="handleCompetitorInput(this)" onfocus="handleCompetitorInput(this)" onblur="hideCompetitorSuggestions(this)">
+            <div class="competitor-suggest-panel"></div>
+        </div>
+        <input type="text" class="form-input" placeholder="Competitor website">
+        <button type="button" class="btn-remove-row" onclick="this.parentElement.remove()">×</button>
+    `;
+    wrap.appendChild(row);
+}
+
+// ---- LISTINGS: COMPETITOR AUTOCOMPLETE ----
+const COMPETITOR_SUGGESTIONS = [
+    { name: 'Bright Smiles Dental', website: 'brightsmilesdental.com', google: 'g.co/kgs/BrightSmiles' },
+    { name: 'Austin Family Dentistry', website: 'austinfamilydentistry.com', google: 'g.co/kgs/AustinFamily' },
+    { name: 'Premier Dental Care', website: 'premierdentalcare.com', google: 'g.co/kgs/PremierDental' },
+    { name: 'Downtown Dental Austin', website: 'downtowndentalaustin.com', google: 'g.co/kgs/DowntownDental' },
+    { name: 'Lakeway Dental Group', website: 'lakewaydentalgroup.com', google: 'g.co/kgs/LakewayDental' }
+];
+
+function handleCompetitorInput(input) {
+    const wrap  = input.closest('.competitor-input-wrap');
+    const panel = wrap.querySelector('.competitor-suggest-panel');
+    const q = input.value.trim().toLowerCase();
+    const matches = q
+        ? COMPETITOR_SUGGESTIONS.filter(c => c.name.toLowerCase().includes(q))
+        : COMPETITOR_SUGGESTIONS;
+
+    if (!matches.length) { panel.style.display = 'none'; panel.innerHTML = ''; return; }
+
+    panel.innerHTML = matches.map(c => `
+        <div class="competitor-suggest-item" onmousedown="selectCompetitorSuggestion(this)" data-name="${c.name}" data-website="${c.website}">
+            <div class="cs-name">${c.name}</div>
+            <div class="cs-sub">${c.website} · ${c.google}</div>
+        </div>
+    `).join('');
+    panel.style.display = 'block';
+}
+
+function hideCompetitorSuggestions(input) {
+    const panel = input.closest('.competitor-input-wrap').querySelector('.competitor-suggest-panel');
+    setTimeout(() => { panel.style.display = 'none'; }, 150);
+}
+
+function selectCompetitorSuggestion(item) {
+    const row = item.closest('.competitor-row');
+    const nameInput    = row.querySelector('.competitor-input-wrap input');
+    const websiteInput = row.querySelectorAll('.form-input')[1];
+    nameInput.value    = item.dataset.name;
+    websiteInput.value = item.dataset.website;
+    item.closest('.competitor-suggest-panel').style.display = 'none';
+}
+
+// ---- LISTINGS: CATEGORY DROPDOWNS ----
+function toggleCatDropdown(which, event) {
+    event.stopPropagation();
+    const anchor = document.getElementById('cdd-' + which);
+    const isOpen = anchor.classList.contains('open');
+    document.querySelectorAll('.cdd-anchor.open').forEach(a => a.classList.remove('open'));
+    if (!isOpen) anchor.classList.add('open');
+}
+
+function selectPrimaryCategory(value, el) {
+    document.getElementById('cdd-primary-label').textContent = value;
+    el.parentElement.querySelectorAll('.dd-option').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+    document.getElementById('cdd-primary').classList.remove('open');
+}
+
+function toggleAdditionalCategory(el) {
+    el.querySelector('.dd-check-box').classList.toggle('checked');
+    const panel = el.parentElement;
+    const checked = Array.from(panel.querySelectorAll('.dd-option-check')).filter(o => o.querySelector('.dd-check-box').classList.contains('checked'));
+    const label = document.getElementById('cdd-additional-label');
+    if (!checked.length) {
+        label.textContent = 'None selected';
+    } else {
+        const first = checked[0].textContent.trim();
+        label.textContent = checked.length > 1 ? `${first}, +${checked.length - 1} more` : first;
+    }
+}
+
 // ---- CONTINUE ----
 function forceOpenAcc(id) {
     const body = document.getElementById('body-' + id);
@@ -2352,12 +3046,15 @@ function forceOpenAcc(id) {
 }
 
 function runContinue() {
-    const biz = document.getElementById('biz-name').value.trim() || 'your business';
     const type = getAgentType();
+    const biz = (type === 'listings-opt'
+        ? document.getElementById('listings-biz-name').value.trim()
+        : document.getElementById('biz-name').value.trim()) || 'your business';
 
-    document.getElementById('output-review').style.display      = type === 'review'     ? 'block' : 'none';
-    document.getElementById('output-social-pub').style.display  = type === 'social-pub' ? 'block' : 'none';
-    document.getElementById('output-social-eng').style.display  = type === 'social-eng' ? 'block' : 'none';
+    document.getElementById('output-review').style.display        = type === 'review'       ? 'block' : 'none';
+    document.getElementById('output-social-pub').style.display    = type === 'social-pub'   ? 'block' : 'none';
+    document.getElementById('output-social-eng').style.display    = type === 'social-eng'   ? 'block' : 'none';
+    document.getElementById('output-listings-opt').style.display  = type === 'listings-opt' ? 'block' : 'none';
 
     document.getElementById('output-placeholder').style.display = 'none';
     document.getElementById('output-live').style.display = 'block';
@@ -2372,6 +3069,8 @@ function runContinue() {
     } else if (type === 'social-eng') {
         document.getElementById('eng-biz-name').textContent = biz;
         renderSocialComments();
+    } else if (type === 'listings-opt') {
+        document.getElementById('listings-out-biz-name').textContent = biz;
     }
 
     forceOpenAcc('output');
@@ -2385,6 +3084,254 @@ function runContinue() {
         socialPubIsGenerating = false;
         setTimeout(() => runSocialPubGenerate(), 400);
     }
+
+    // Auto-generate for listings optimization
+    if (type === 'listings-opt') {
+        listingsGenerated = false;
+        listingsIsGenerating = false;
+        setTimeout(() => runListingsGenerate(), 400);
+    }
+}
+
+// ---- LISTINGS OPTIMIZATION AGENT ----
+function getCheckedRecTypes() {
+    return Object.keys(LISTINGS_REC_TYPE_MAP).filter(k =>
+        document.getElementById(LISTINGS_REC_TYPE_MAP[k])?.classList.contains('selected')
+    );
+}
+
+async function runListingsGenerate() {
+    if (listingsIsGenerating) return;
+    listingsIsGenerating = true;
+
+    const area = document.getElementById('listings-output-area');
+    area.innerHTML = `
+        <div class="reasoning-block">
+            <div class="reasoning-heading">Agent reasoning</div>
+            <div id="listings-steps"></div>
+        </div>
+        <div class="progress-block">
+            <div class="progress-meta">
+                <span id="listings-prog-label">Starting analysis…</span>
+                <span id="listings-prog-pct">0%</span>
+            </div>
+            <div class="progress-track">
+                <div class="progress-fill" id="listings-prog-fill"></div>
+            </div>
+        </div>
+    `;
+
+    const container = document.getElementById('listings-steps');
+    const progFill  = document.getElementById('listings-prog-fill');
+    const progLabel = document.getElementById('listings-prog-label');
+    const progPct   = document.getElementById('listings-prog-pct');
+    const total     = LISTINGS_STEPS.length;
+
+    for (let i = 0; i < total; i++) {
+        const step = LISTINGS_STEPS[i];
+        await pause(step.ms);
+
+        container.querySelectorAll('.step-dot.spinning').forEach(d => {
+            d.classList.replace('spinning', 'done');
+            d.textContent = '✓';
+        });
+
+        const pct = Math.round(((i + 1) / total) * 88);
+        const el = document.createElement('div');
+        el.className = 'reason-step';
+        el.innerHTML = `<div class="step-dot spinning">↻</div><span>${step.txt}</span>`;
+        container.appendChild(el);
+        requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('show')));
+
+        progFill.style.width  = pct + '%';
+        progPct.textContent   = pct + '%';
+        progLabel.textContent = step.txt;
+    }
+
+    await pause(400);
+
+    container.querySelectorAll('.step-dot.spinning').forEach(d => {
+        d.classList.replace('spinning', 'done');
+        d.textContent = '✓';
+    });
+    progFill.style.width  = '100%';
+    progPct.textContent   = '100%';
+    progLabel.textContent = 'Recommendations ready!';
+
+    await pause(320);
+
+    const stepsSnap = container.innerHTML;
+
+    area.innerHTML = `
+        <div class="reasoning-acc">
+            <div class="reasoning-acc-header" onclick="toggleReasoningAcc(this)">
+                <span>Agent reasoning</span>
+                <svg class="reasoning-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none">
+                    <path d="M3 5l4 4 4-4" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <div class="reasoning-acc-body">
+                <div class="reasoning-acc-inner">${stepsSnap}</div>
+            </div>
+        </div>
+        <div id="listings-rec-summary"></div>
+        <div id="listings-rec-list"></div>
+        <div id="listings-review-row"></div>
+        <div id="listings-impact-reveal" class="impact-reveal"></div>
+    `;
+
+    listingsIsGenerating = false;
+    listingsGenerated = true;
+    renderListingsRecs();
+}
+
+function renderListingsRecs() {
+    const summaryEl   = document.getElementById('listings-rec-summary');
+    const listEl      = document.getElementById('listings-rec-list');
+    const reviewRowEl = document.getElementById('listings-review-row');
+    if (!listEl) return;
+
+    const checkedTypes = getCheckedRecTypes();
+    const recs = LISTINGS_RECS.filter(r => checkedTypes.includes(r.type));
+
+    if (!recs.length) {
+        summaryEl.innerHTML   = '';
+        listEl.innerHTML      = '<p class="rp-empty">Select at least one recommendation type in Basic details to see recommendations here.</p>';
+        reviewRowEl.innerHTML = '';
+        return;
+    }
+
+    summaryEl.innerHTML = `
+        <div class="rec-summary-bar">
+            <span class="rec-summary-text">${recs.length} recommendation${recs.length === 1 ? '' : 's'} generated for 1 location</span>
+        </div>
+    `;
+
+    openRecPreviewId = null;
+
+    listEl.innerHTML = recs.map((r, idx) => `
+        <div class="rec-card fade-up" style="animation-delay:${idx * 60}ms;">
+            <div class="rec-card-top">
+                <div style="flex:1;min-width:0;">
+                    <div class="rec-field-label">${r.field}</div>
+                    <div class="rec-title">${r.title}</div>
+                </div>
+                <span class="impact-badge impact-${r.impact}">${r.impactLabel}</span>
+            </div>
+            <p class="rec-detail">${r.detail}</p>
+            <div class="rec-preview-btn" id="rec-preview-btn-${r.id}" onclick="toggleRecPreview('${r.id}')">
+                <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M1 10s3.5-6 9-6 9 6 9 6-3.5 6-9 6-9-6-9-6z" stroke="currentColor" stroke-width="1.6"/><circle cx="10" cy="10" r="2.5" stroke="currentColor" stroke-width="1.6"/></svg>
+                <span>Preview</span>
+            </div>
+            <div class="rec-preview-body" id="rec-preview-body-${r.id}">
+                <div class="rec-preview-inner">
+                    <p class="rec-preview-suggestion">${r.title}</p>
+                    <div class="ba-two-col">
+                        <div class="before-after-box ba-before">
+                            <div class="ba-label">Before</div>
+                            <div class="ba-text">${r.before}</div>
+                        </div>
+                        <div class="before-after-box ba-after">
+                            <div class="ba-label">After</div>
+                            <div class="ba-text">${r.after}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>`
+    ).join('');
+
+    reviewRowEl.innerHTML = `
+        <div class="continue-row" style="margin-top:6px;">
+            <button class="btn-review-impact" onclick="reviewListingsImpact()">✦ Review impact</button>
+        </div>
+    `;
+}
+
+function reviewListingsImpact() {
+    const checkedTypes = getCheckedRecTypes();
+    const recs = LISTINGS_RECS.filter(r => checkedTypes.includes(r.type));
+    if (!recs.length) return;
+
+    // Inline projected-impact panel, directly below the Review impact CTA
+    const panel = document.getElementById('listings-impact-reveal');
+    panel.innerHTML = `
+        <div class="impact-reveal-title">Projected impact if you apply these recommendations</div>
+        <div class="roi-row">
+            <div class="roi-row-top"><span>Visibility lift</span><strong>+18%</strong></div>
+            <div class="roi-track"><div class="roi-bar b-blue" data-target="18"></div></div>
+        </div>
+        <div class="roi-row">
+            <div class="roi-row-top"><span>Ranking improvement</span><strong>+12 positions</strong></div>
+            <div class="roi-track"><div class="roi-bar b-green" data-target="72"></div></div>
+        </div>
+        <div class="roi-row">
+            <div class="roi-row-top"><span>Profile completeness</span><strong>96%</strong></div>
+            <div class="roi-track"><div class="roi-bar b-purple" data-target="96"></div></div>
+        </div>
+    `;
+    panel.classList.add('show');
+    setTimeout(() => {
+        panel.querySelectorAll('.roi-bar[data-target]').forEach(bar => {
+            bar.style.width = bar.dataset.target + '%';
+        });
+    }, 250);
+
+    // Outcome tab, same experience as the other agents
+    document.getElementById('outcome-placeholder').style.display = 'none';
+    document.getElementById('outcome-live').style.display = 'block';
+    document.getElementById('outcome-review').style.display = 'none';
+    document.getElementById('outcome-social-pub').style.display = 'none';
+    document.getElementById('outcome-social-eng').style.display = 'none';
+    document.getElementById('outcome-listings-opt').style.display = 'block';
+
+    recalcListingsROI();
+    forceOpenAcc('outcome');
+
+    setTimeout(() => {
+        document.querySelectorAll('#outcome-listings-opt .roi-bar[data-target]').forEach(bar => {
+            bar.style.width = bar.dataset.target + '%';
+        });
+    }, 300);
+    setTimeout(() => {
+        panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 100);
+}
+
+// ---- LISTINGS: INLINE RECOMMENDATION PREVIEW (single-open accordion) ----
+function toggleRecPreview(id) {
+    const wasOpen = openRecPreviewId === id;
+    if (openRecPreviewId) closeRecPreview(openRecPreviewId);
+    if (!wasOpen) openRecPreview(id);
+}
+
+function openRecPreview(id) {
+    const body = document.getElementById('rec-preview-body-' + id);
+    const btn  = document.getElementById('rec-preview-btn-' + id);
+    if (!body) return;
+
+    body.classList.add('open');
+    body.style.maxHeight = body.scrollHeight + 'px';
+    body.addEventListener('transitionend', function h(e) {
+        if (e.propertyName === 'max-height') {
+            body.style.maxHeight = 'none';
+            body.removeEventListener('transitionend', h);
+        }
+    });
+    if (btn) btn.querySelector('span').textContent = 'Hide preview';
+    openRecPreviewId = id;
+}
+
+function closeRecPreview(id) {
+    const body = document.getElementById('rec-preview-body-' + id);
+    const btn  = document.getElementById('rec-preview-btn-' + id);
+    if (!body) { openRecPreviewId = null; return; }
+
+    body.style.maxHeight = body.scrollHeight + 'px';
+    body.classList.remove('open');
+    requestAnimationFrame(() => requestAnimationFrame(() => { body.style.maxHeight = '0'; }));
+    if (btn) btn.querySelector('span').textContent = 'Preview';
+    if (openRecPreviewId === id) openRecPreviewId = null;
 }
 
 // ---- RENDER REVIEWS ----
@@ -2744,6 +3691,22 @@ function recalcROI() {
     if (ar) ar.textContent = `$${rate}/hour average staff rate`;
 }
 
+function recalcListingsROI() {
+    const volume = parseInt(document.getElementById('listings-roi-volume').value) || 40;
+    const rate   = parseInt(document.getElementById('listings-roi-rate').value) || 25;
+
+    const minutesPerUpdate = 12;
+    const totalMinutes = volume * minutesPerUpdate;
+    const totalHours   = Math.round(totalMinutes / 60);
+    const totalCost    = Math.round(totalHours * rate);
+
+    document.getElementById('listings-m-time').textContent      = `${minutesPerUpdate} min`;
+    document.getElementById('listings-m-hours').textContent     = `${totalHours} hrs`;
+    document.getElementById('listings-m-hours-sub').textContent = `~${volume} updates/month`;
+    document.getElementById('listings-m-cost').textContent      = `$${totalCost.toLocaleString()}`;
+    document.getElementById('listings-m-cost-sub').textContent  = `@ $${rate}/hr staff rate`;
+}
+
 // ---- COPY ----
 function copyText(cacheKey, btn, btnId) {
     let text = '';
@@ -2984,6 +3947,8 @@ function buildPostCopy(baseCopy, tag, platform, seedOffset) {
 }
 
 function openPostDrawer(colIdx, pIdx) {
+    document.getElementById('drawer-title').textContent = 'Post details';
+    document.getElementById('drawer-tabs').style.display = '';
     drawerState = { colIdx, pIdx, activePlt: null, seedOffset: 0 };
     renderDrawerContent();
     document.getElementById('drawer-overlay').classList.add('visible');
