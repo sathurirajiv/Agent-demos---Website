@@ -556,30 +556,20 @@
         .tooltip-wrap:hover .tooltip-bubble { opacity: 1; visibility: visible; transform: translateY(0); }
 
         /* Recommendation type cards */
-        .rt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .rt-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
         .rt-card {
-            display: flex; align-items: center; gap: 10px;
-            border: 1.5px solid #e2e8f0; border-radius: 10px; padding: 11px 12px;
+            display: flex; flex-direction: column; align-items: center; text-align: center;
+            gap: 8px; border: 1.5px solid #e2e8f0; border-radius: 10px; padding: 16px 8px 14px;
             cursor: pointer; transition: all 0.15s; background: white;
         }
         .rt-card:hover { border-color: #93c5fd; }
-        .rt-card-check {
-            width: 16px; height: 16px; border: 1.5px solid #d1d5db; border-radius: 4px;
-            flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.15s;
-        }
-        .rt-card.selected .rt-card-check { background: #2563eb; border-color: #2563eb; }
-        .rt-card.selected .rt-card-check::after {
-            content: ''; width: 8px; height: 5px; border-left: 1.5px solid white; border-bottom: 1.5px solid white;
-            transform: rotate(-45deg) translateY(-1px); display: block;
-        }
+        .rt-card.selected { border-color: #2563eb; }
         .rt-card-icon {
             width: 22px; height: 22px;
             display: flex; align-items: center; justify-content: center;
             color: #64748b; flex-shrink: 0;
         }
-        .rt-card-text { flex: 1; min-width: 0; }
-        .rt-card-label-row { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
-        .rt-card-label { font-size: 13px; font-weight: 400; color: #374151; }
+        .rt-card-label { font-size: 13px; font-weight: 400; color: #374151; line-height: 1.3; }
 
         /* Custom category dropdown */
         .cdd-anchor { position: relative; }
@@ -719,6 +709,18 @@
 
         .ba-two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         .ba-two-col .before-after-box { margin-bottom: 0; }
+
+        /* New Google post preview (no before/after — nothing existed yet) */
+        .post-preview-card { border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px; background: #fafaff; }
+        .post-preview-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+        .post-preview-ai-badge {
+            display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 500;
+            color: #6d28d9; background: #ede9fe; padding: 3px 9px; border-radius: 999px;
+        }
+        .post-preview-time { font-size: 11.5px; color: #94a3b8; }
+        .post-preview-text { font-size: 13px; font-weight: 400; color: #374151; line-height: 1.6; margin-bottom: 12px; }
+        .post-preview-image { width: 100%; max-height: 220px; object-fit: cover; border-radius: 8px; display: block; background: #ede9fe; }
+        .post-preview-caption { font-size: 11.5px; color: #94a3b8; margin-top: 8px; }
 
         /* Before/after content */
         .before-after-box { border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px; margin-bottom: 12px; }
@@ -1305,24 +1307,6 @@
         .assumption-item:last-child { margin-bottom: 0; }
         .dot-bullet { width: 4px; height: 4px; border-radius: 50%; background: #cbd5e1; flex-shrink: 0; margin-top: 6px; }
 
-        /* Impact breakdown collapsible */
-        .impact-acc { border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; margin-top: 20px; }
-        .impact-acc-header {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 10px 14px; cursor: pointer; user-select: none;
-            background: #fafafa; font-size: 13px; font-weight: 500; color: #64748b;
-        }
-        .impact-acc-header:hover { background: #f1f5f9; }
-        .impact-acc-title { font-size: 13px; font-weight: 500; color: #64748b; }
-        .impact-acc-chevron { display: flex; align-items: center; flex-shrink: 0; transition: transform 0.25s ease; }
-        .impact-acc-chevron.open { transform: rotate(180deg); }
-        .impact-acc-body {
-            padding: 0 18px 18px;
-            overflow: hidden;
-            max-height: 600px;
-            transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1), padding 0.3s ease;
-        }
-        .impact-acc-body.collapsed { max-height: 0; padding-top: 0; padding-bottom: 0; }
         .roi-chart-title { display: none; }
 
         .roi-row { margin-bottom: 14px; }
@@ -1543,6 +1527,7 @@
             .header { padding: 0 20px; }
             .roi-calc-inputs { grid-template-columns: 1fr 1fr; }
             .roi-calc-inputs.roi-calc-inputs-3 { grid-template-columns: 1fr; }
+            .rt-grid { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
 </head>
@@ -1946,54 +1931,29 @@
                         </div>
                         <div class="rt-grid">
                             <div class="rt-card selected" id="rt-services" onclick="toggleRecCard(this)">
-                                <div class="rt-card-check"></div>
-                                <div class="rt-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94z"/></svg></div>
-                                <div class="rt-card-text">
-                                    <div class="rt-card-label-row">
-                                        <span class="rt-card-label">Services</span>
-                                        <span class="impact-badge impact-high">High impact</span>
-                                    </div>
-                                </div>
+                                <div class="rt-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94z"/></svg></div>
+                                <div class="rt-card-label">Services</div>
+                                <span class="impact-badge impact-high">High impact</span>
                             </div>
                             <div class="rt-card selected" id="rt-hours" onclick="toggleRecCard(this)">
-                                <div class="rt-card-check"></div>
-                                <div class="rt-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
-                                <div class="rt-card-text">
-                                    <div class="rt-card-label-row">
-                                        <span class="rt-card-label">Holiday hours</span>
-                                        <span class="impact-badge impact-high">High impact</span>
-                                    </div>
-                                </div>
+                                <div class="rt-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+                                <div class="rt-card-label">Holiday hours</div>
+                                <span class="impact-badge impact-high">High impact</span>
                             </div>
                             <div class="rt-card selected" id="rt-posts" onclick="toggleRecCard(this)">
-                                <div class="rt-card-check"></div>
-                                <div class="rt-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></div>
-                                <div class="rt-card-text">
-                                    <div class="rt-card-label-row">
-                                        <span class="rt-card-label">Google posts</span>
-                                        <span class="impact-badge impact-high">High impact</span>
-                                    </div>
-                                </div>
+                                <div class="rt-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></div>
+                                <div class="rt-card-label">Google posts</div>
+                                <span class="impact-badge impact-high">High impact</span>
                             </div>
                             <div class="rt-card" id="rt-desc" onclick="toggleRecCard(this)">
-                                <div class="rt-card-check"></div>
-                                <div class="rt-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
-                                <div class="rt-card-text">
-                                    <div class="rt-card-label-row">
-                                        <span class="rt-card-label">Google description</span>
-                                        <span class="impact-badge impact-low">Low impact</span>
-                                    </div>
-                                </div>
+                                <div class="rt-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+                                <div class="rt-card-label">Google description</div>
+                                <span class="impact-badge impact-low">Low impact</span>
                             </div>
                             <div class="rt-card" id="rt-photos" onclick="toggleRecCard(this)">
-                                <div class="rt-card-check"></div>
-                                <div class="rt-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
-                                <div class="rt-card-text">
-                                    <div class="rt-card-label-row">
-                                        <span class="rt-card-label">Photos</span>
-                                        <span class="impact-badge impact-low">Low impact</span>
-                                    </div>
-                                </div>
+                                <div class="rt-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+                                <div class="rt-card-label">Photos</div>
+                                <span class="impact-badge impact-low">Low impact</span>
                             </div>
                         </div>
                     </div>
@@ -2222,30 +2182,6 @@
                                 <div class="metric-sub" id="m-cost-sub">@ $25/hr staff rate</div>
                             </div>
                         </div>
-                        <div class="impact-acc">
-                            <div class="impact-acc-header" onclick="toggleImpact()">
-                                <span class="impact-acc-title">Impact Breakdown</span>
-                                <span class="impact-acc-chevron" id="impact-chevron"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5l4 4 4-4" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                            </div>
-                            <div class="impact-acc-body collapsed" id="impact-body">
-                                <div class="roi-row" style="margin-top:4px;">
-                                    <div class="roi-row-top"><span>Response Rate Improvement</span><strong>+82%</strong></div>
-                                    <div class="roi-track"><div class="roi-bar b-blue" data-target="82"></div></div>
-                                </div>
-                                <div class="roi-row">
-                                    <div class="roi-row-top"><span>Brand Voice Consistency</span><strong>97%</strong></div>
-                                    <div class="roi-track"><div class="roi-bar b-green" data-target="97"></div></div>
-                                </div>
-                                <div class="roi-row">
-                                    <div class="roi-row-top"><span>Time Efficiency Gain</span><strong>92%</strong></div>
-                                    <div class="roi-track"><div class="roi-bar b-purple" data-target="92"></div></div>
-                                </div>
-                                <div class="roi-row">
-                                    <div class="roi-row-top"><span>Customer Satisfaction Lift</span><strong>+34%</strong></div>
-                                    <div class="roi-track"><div class="roi-bar b-teal" data-target="34"></div></div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
 
@@ -2280,30 +2216,6 @@
                                 <div class="metric-sub" id="sp-m-cost-sub">@ $25/hr staff rate</div>
                             </div>
                         </div>
-                        <div class="impact-acc">
-                            <div class="impact-acc-header" onclick="toggleImpact('pub')">
-                                <span class="impact-acc-title">Impact Breakdown</span>
-                                <span class="impact-acc-chevron" id="impact-chevron-pub"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5l4 4 4-4" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                            </div>
-                            <div class="impact-acc-body collapsed" id="impact-body-pub">
-                                <div class="roi-row" style="margin-top:4px;">
-                                    <div class="roi-row-top"><span>Content Consistency Score</span><strong>94%</strong></div>
-                                    <div class="roi-track"><div class="roi-bar b-blue" data-target="94"></div></div>
-                                </div>
-                                <div class="roi-row">
-                                    <div class="roi-row-top"><span>Posting Frequency Increase</span><strong>+180%</strong></div>
-                                    <div class="roi-track"><div class="roi-bar b-green" data-target="90"></div></div>
-                                </div>
-                                <div class="roi-row">
-                                    <div class="roi-row-top"><span>Audience Engagement Lift</span><strong>+45%</strong></div>
-                                    <div class="roi-track"><div class="roi-bar b-purple" data-target="45"></div></div>
-                                </div>
-                                <div class="roi-row">
-                                    <div class="roi-row-top"><span>Brand Voice Consistency</span><strong>98%</strong></div>
-                                    <div class="roi-track"><div class="roi-bar b-teal" data-target="98"></div></div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
 
@@ -2336,30 +2248,6 @@
                                 <div class="metric-val" id="se-m-cost">$300</div>
                                 <div class="metric-lbl">Cost saved/month</div>
                                 <div class="metric-sub" id="se-m-cost-sub">@ $25/hr staff rate</div>
-                            </div>
-                        </div>
-                        <div class="impact-acc">
-                            <div class="impact-acc-header" onclick="toggleImpact('eng')">
-                                <span class="impact-acc-title">Impact Breakdown</span>
-                                <span class="impact-acc-chevron" id="impact-chevron-eng"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5l4 4 4-4" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                            </div>
-                            <div class="impact-acc-body collapsed" id="impact-body-eng">
-                                <div class="roi-row" style="margin-top:4px;">
-                                    <div class="roi-row-top"><span>Comment Response Rate</span><strong>+91%</strong></div>
-                                    <div class="roi-track"><div class="roi-bar b-blue" data-target="91"></div></div>
-                                </div>
-                                <div class="roi-row">
-                                    <div class="roi-row-top"><span>Average Response Time Reduction</span><strong>−85%</strong></div>
-                                    <div class="roi-track"><div class="roi-bar b-green" data-target="85"></div></div>
-                                </div>
-                                <div class="roi-row">
-                                    <div class="roi-row-top"><span>Community Sentiment Lift</span><strong>+38%</strong></div>
-                                    <div class="roi-track"><div class="roi-bar b-purple" data-target="38"></div></div>
-                                </div>
-                                <div class="roi-row">
-                                    <div class="roi-row-top"><span>Brand Engagement Score</span><strong>89%</strong></div>
-                                    <div class="roi-track"><div class="roi-bar b-teal" data-target="89"></div></div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -2663,6 +2551,13 @@ const LISTINGS_RECS = [
         after: '10 photos on profile: treatment rooms, team, and waiting area added'
     },
     {
+        id: 'photos-specific', type: 'photos', field: 'Photos', impact: 'low', impactLabel: 'Low impact',
+        title: 'Dentist explaining treatment plan to patient',
+        detail: 'Upload an image showcasing a dentist explaining a treatment plan to a patient to attract and engage customers effectively.',
+        before: 'No patient interaction photos on profile',
+        after: '1 new photo added: dentist explaining treatment plan'
+    },
+    {
         id: 'services', type: 'services', field: 'Services', impact: 'high', impactLabel: 'High impact',
         title: 'Add "teeth whitening" and "emergency dental care" to your services list',
         detail: 'Adding these services helps people searching for urgent or cosmetic care find Aspen Dental Group, boosting SEO ranking.',
@@ -2678,10 +2573,11 @@ const LISTINGS_RECS = [
     },
     {
         id: 'posts', type: 'posts', field: 'Google posts', impact: 'high', impactLabel: 'High impact',
-        title: 'Publish a post about your new patient welcome offer',
-        detail: 'Regular posts about offers keep your profile active and improve visibility in local search.',
-        before: 'No posts published in the last 30 days',
-        after: 'New post scheduled: "New patients save 20% on their first visit"'
+        title: 'New patients save 20% on their first visit at Aspen Dental Group. Book your appointment today and experience comprehensive family dental care in Austin, TX.',
+        detail: 'Highlighting your new patient offer keeps your profile active and helps you stand out to people comparing local dental practices.',
+        isNewPost: true,
+        postTime: 'Suggested for Aug 14, 2026',
+        postImageSeed: 'aspendental-post'
     }
 ];
 
@@ -2770,8 +2666,6 @@ function selectAgent(name, el) {
     });
     document.getElementById('output-placeholder').style.display = 'block';
     document.getElementById('output-live').style.display = 'none';
-    document.getElementById('outcome-placeholder').style.display = 'block';
-    document.getElementById('outcome-live').style.display = 'none';
     socialPubGenerated = false;
     socialPubIsGenerating = false;
     selectedCommentId = null;
@@ -2785,16 +2679,17 @@ function selectAgent(name, el) {
         ? 'Click Continue to see recommendations from this agent to improve your listings'
         : 'Check out the example reviews and agent responses here';
 
-    // Listings Optimization outcome is filled by default — it doesn't depend on Basic details or Output
-    if (type === 'listings-opt') {
-        document.getElementById('outcome-placeholder').style.display = 'none';
-        document.getElementById('outcome-live').style.display = 'block';
-        document.getElementById('outcome-review').style.display = 'none';
-        document.getElementById('outcome-social-pub').style.display = 'none';
-        document.getElementById('outcome-social-eng').style.display = 'none';
-        document.getElementById('outcome-listings-opt').style.display = 'block';
-        recalcListingsROI();
-    }
+    // Outcome is filled by default for every agent — it never depends on Basic details or Output
+    document.getElementById('outcome-placeholder').style.display = 'none';
+    document.getElementById('outcome-live').style.display = 'block';
+    document.getElementById('outcome-review').style.display       = type === 'review'       ? 'block' : 'none';
+    document.getElementById('outcome-social-pub').style.display   = type === 'social-pub'   ? 'block' : 'none';
+    document.getElementById('outcome-social-eng').style.display   = type === 'social-eng'   ? 'block' : 'none';
+    document.getElementById('outcome-listings-opt').style.display = type === 'listings-opt' ? 'block' : 'none';
+    if (type === 'review') recalcROI();
+    else if (type === 'social-pub') recalcSocialPub();
+    else if (type === 'social-eng') recalcSocialEng();
+    else if (type === 'listings-opt') recalcListingsROI();
 
     document.getElementById('common-biz-fields').style.display  = type === 'listings-opt' ? 'none'  : 'block';
     document.getElementById('review-fields').style.display      = type === 'review'     ? 'block' : 'none';
@@ -2882,6 +2777,11 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.acc-body.collapsed').forEach(el => {
         el.style.maxHeight = '0';
     });
+
+    // Outcome is filled by default from first load too, not just after switching agents
+    document.getElementById('outcome-placeholder').style.display = 'none';
+    document.getElementById('outcome-live').style.display = 'block';
+    recalcROI();
 });
 
 // ---- RESPONSE LENGTH ----
@@ -2893,16 +2793,6 @@ function selectRespLen(btn) {
 function selectPostLen(btn) {
     document.querySelectorAll('.post-len-opt').forEach(b => b.classList.remove('selected'));
     btn.classList.add('selected');
-}
-
-// ---- IMPACT BREAKDOWN TOGGLE ----
-function toggleImpact(suffix) {
-    const sfx     = suffix ? '-' + suffix : '';
-    const body    = document.getElementById('impact-body' + sfx);
-    const chevron = document.getElementById('impact-chevron' + sfx);
-    const isOpen  = !body.classList.contains('collapsed');
-    body.classList.toggle('collapsed', isOpen);
-    chevron.classList.toggle('open', !isOpen);
 }
 
 // ---- MORE OPTIONS TOGGLE ----
@@ -3326,6 +3216,35 @@ async function runListingsGenerate() {
     renderListingsRecs();
 }
 
+// Google posts recommendations are a brand-new post (no before state) — preview the generated post instead of before/after
+function buildRecPreviewInner(r) {
+    if (r.isNewPost) {
+        return `
+            <div class="post-preview-card">
+                <div class="post-preview-head">
+                    <span class="post-preview-ai-badge">✦ AI</span>
+                    <span class="post-preview-time">${r.postTime}</span>
+                </div>
+                <p class="post-preview-text">${r.title}</p>
+                <img class="post-preview-image" src="https://picsum.photos/seed/${r.postImageSeed}/500/280" alt="" onerror="this.style.background='#ede9fe';this.removeAttribute('src');">
+                <div class="post-preview-caption">Suggested by Bird AI</div>
+            </div>
+        `;
+    }
+    return `
+        <div class="ba-two-col">
+            <div class="before-after-box ba-before">
+                <div class="ba-label">Before</div>
+                <div class="ba-text">${r.before}</div>
+            </div>
+            <div class="before-after-box ba-after">
+                <div class="ba-label">After</div>
+                <div class="ba-text">${r.after}</div>
+            </div>
+        </div>
+    `;
+}
+
 function renderListingsRecs() {
     const summaryEl   = document.getElementById('listings-rec-summary');
     const listEl      = document.getElementById('listings-rec-list');
@@ -3369,16 +3288,7 @@ function renderListingsRecs() {
             </div>
             <div class="rec-preview-body" id="rec-preview-body-${r.id}">
                 <div class="rec-preview-inner">
-                    <div class="ba-two-col">
-                        <div class="before-after-box ba-before">
-                            <div class="ba-label">Before</div>
-                            <div class="ba-text">${r.before}</div>
-                        </div>
-                        <div class="before-after-box ba-after">
-                            <div class="ba-label">After</div>
-                            <div class="ba-text">${r.after}</div>
-                        </div>
-                    </div>
+                    ${buildRecPreviewInner(r)}
                 </div>
             </div>
         </div>`
@@ -3579,6 +3489,7 @@ async function generateResponse() {
                 document.getElementById('outcome-review').style.display = 'block';
                 document.getElementById('outcome-social-pub').style.display = 'none';
                 document.getElementById('outcome-social-eng').style.display = 'none';
+                document.getElementById('outcome-listings-opt').style.display = 'none';
                 recalcROI();
                 forceOpenAcc('outcome');
                 setTimeout(() => {
@@ -4256,6 +4167,7 @@ async function runSocialPubGenerate() {
         document.getElementById('outcome-review').style.display = 'none';
         document.getElementById('outcome-social-pub').style.display = 'block';
         document.getElementById('outcome-social-eng').style.display = 'none';
+        document.getElementById('outcome-listings-opt').style.display = 'none';
         recalcSocialPub();
         forceOpenAcc('outcome');
         setTimeout(() => {
@@ -4418,6 +4330,7 @@ async function generateSocialResponse() {
                 document.getElementById('outcome-review').style.display = 'none';
                 document.getElementById('outcome-social-pub').style.display = 'none';
                 document.getElementById('outcome-social-eng').style.display = 'block';
+                document.getElementById('outcome-listings-opt').style.display = 'none';
                 recalcSocialEng();
                 forceOpenAcc('outcome');
                 setTimeout(() => {
