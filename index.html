@@ -238,6 +238,8 @@
 
         .dd-option.disabled { color: #cbd5e1; cursor: not-allowed; }
         .dd-option.disabled:hover { background: none; }
+        .dd-option-hint { font-size: 11px; font-weight: 400; color: #94a3b8; }
+        .dd-option.selected .dd-option-hint { color: #93c5fd; }
         .dd-soon-tag {
             margin-left: auto;
             font-size: 9px;
@@ -617,7 +619,7 @@
         }
         .competitor-suggest-item { padding: 8px 12px; cursor: pointer; transition: background 0.12s; }
         .competitor-suggest-item:hover { background: #f8fafc; }
-        .cs-name { font-size: 13px; font-weight: 600; color: #0f172a; }
+        .cs-name { font-size: 13px; font-weight: 400; color: #0f172a; }
         .cs-sub { font-size: 11.5px; color: #94a3b8; margin-top: 1px; }
 
         .btn-remove-row {
@@ -732,6 +734,131 @@
         .ba-after .ba-label { color: #16a34a; }
         .ba-text { font-size: 13px; font-weight: 400; color: #374151; line-height: 1.6; }
 
+        /* ===== REVIEW MARKETING AGENT ===== */
+        .layout-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .layout-card {
+            position: relative; border: 1.5px solid #e2e8f0; border-radius: 10px;
+            padding: 12px; cursor: pointer; transition: border-color 0.15s; background: white;
+        }
+        .layout-card:hover { border-color: #93c5fd; }
+        .layout-card.selected { border-color: #2563eb; }
+        .layout-check {
+            position: absolute; top: 10px; left: 10px; width: 16px; height: 16px;
+            border: 1.5px solid #d1d5db; border-radius: 4px; transition: all 0.15s;
+        }
+        .layout-card.selected .layout-check { background: #2563eb; border-color: #2563eb; }
+        .layout-card.selected .layout-check::after {
+            content: ''; width: 8px; height: 5px; margin: 3px auto 0;
+            border-left: 1.5px solid white; border-bottom: 1.5px solid white;
+            transform: rotate(-45deg) translateY(-1px); display: block;
+        }
+        .layout-preview {
+            border: 1px solid #f1f5f9; border-radius: 8px; padding: 12px 10px;
+            margin: 18px 0 10px; background: #fafafa; min-height: 92px;
+            display: flex; flex-direction: column; justify-content: center;
+        }
+        .layout-preview p { font-size: 11px; font-style: italic; color: #374151; margin: 0 0 6px; line-height: 1.4; }
+        .layout-preview span { font-size: 10px; color: #94a3b8; }
+        .layout-preview-quote { text-align: center; }
+        .layout-preview-spotlight { text-align: left; }
+        .layout-preview-minimal { text-align: left; background: white; border-style: dashed; }
+        .layout-name { font-size: 12.5px; font-weight: 400; color: #374151; text-align: center; }
+
+        .rma-review-pick {
+            border: 1.5px solid #e2e8f0; border-radius: 10px; padding: 12px 14px;
+            margin-bottom: 10px; cursor: pointer; transition: all 0.15s;
+        }
+        .rma-review-pick:hover { border-color: #93c5fd; }
+        .rma-review-pick.selected { border-color: #2563eb; background: #fafbff; }
+        .rma-review-pick-top { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; flex-wrap: wrap; }
+        .rma-review-pick .review-text { font-size: 12.5px; margin: 0; }
+        .rma-review-pick .reviewer-name { font-size: 12.5px; }
+        .rma-review-pick .reviewer-date { font-size: 11.5px; }
+        .rma-review-pick .star { font-size: 13px; }
+
+        /* Linear day-by-day post previews */
+        .rma-day-section { margin-bottom: 26px; }
+        .rma-day-section:last-child { margin-bottom: 0; }
+        .rma-day-heading-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+        .rma-day-heading { font-size: 13.5px; font-weight: 500; color: #0f172a; }
+        .rma-change-review-btn {
+            font-size: 12px; font-weight: 500; color: #2563eb; background: none; border: none;
+            cursor: pointer; font-family: inherit; padding: 2px 0;
+        }
+        .rma-change-review-btn:hover { color: #1d4ed8; }
+        .rma-day-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+        .rma-social-preview { border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; background: white; }
+        .rma-preview-header { display: flex; align-items: center; gap: 9px; padding: 11px 13px; }
+        .rma-preview-avatar {
+            width: 30px; height: 30px; border-radius: 50%; background: #ede9fe; color: #6d28d9;
+            display: flex; align-items: center; justify-content: center; font-weight: 400; font-size: 13px; flex-shrink: 0;
+        }
+        .rma-preview-name { font-size: 12.5px; font-weight: 400; color: #0f172a; display: block; line-height: 1.3; }
+        .rma-preview-platform-tag { font-size: 11px; color: #94a3b8; }
+        .rma-plat-badge-header {
+            width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0; margin-left: auto;
+        }
+        .rma-preview-image {
+            position: relative; width: 100%; aspect-ratio: 4 / 3; background-size: cover; background-position: center;
+            background-color: #ede9fe; display: flex; align-items: center;
+        }
+        .rma-img-tint { position: absolute; inset: 0; background: rgba(10,14,26,0.46); z-index: 1; }
+        .rma-preview-image-overlay {
+            position: relative; z-index: 2; width: 100%; padding: 14px; color: white;
+        }
+        .rma-preview-quote { font-size: 12.5px; font-weight: 400; line-height: 1.45; margin: 0 0 8px; }
+        .rma-preview-meta { font-size: 10.5px; opacity: 0.95; margin-bottom: 4px; }
+        .rma-preview-stars { font-size: 12px; letter-spacing: 1px; }
+        .rma-spotlight-row { display: flex; align-items: center; gap: 7px; margin-bottom: 8px; }
+        .rma-spotlight-avatar {
+            width: 22px; height: 22px; border-radius: 50%; background: rgba(255,255,255,0.9); color: #6d28d9;
+            display: flex; align-items: center; justify-content: center; font-size: 11px; flex-shrink: 0;
+        }
+        .rma-spotlight-name { font-size: 12px; }
+        .rma-preview-image-minimal {
+            background-image: none !important; background-color: #f8fafc; align-items: stretch;
+        }
+        .rma-minimal-body { padding: 18px 16px; color: #1e293b; }
+        .rma-minimal-body .rma-preview-quote { margin: 0 0 8px; }
+        .rma-minimal-attrib { font-size: 11px; color: #64748b; }
+        .rma-edit-img-btn {
+            position: absolute; top: 10px; right: 10px; width: 20px; height: 20px;
+            background: none; border: none; padding: 0; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; color: white; transition: opacity 0.15s, color 0.15s; z-index: 3;
+            opacity: 0; pointer-events: none; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.7));
+        }
+        .rma-social-preview:hover .rma-edit-img-btn { opacity: 1; pointer-events: auto; }
+        .rma-edit-img-btn:hover { color: #cbd5e1; }
+        .rma-edit-img-btn.rma-edit-btn-dark { color: #64748b; filter: none; }
+        .rma-edit-img-btn.rma-edit-btn-dark:hover { color: #2563eb; }
+        .rma-preview-footer { display: flex; justify-content: space-around; padding: 9px 6px; border-top: 1px solid #f1f5f9; }
+        .rma-preview-footer-item { display: flex; align-items: center; gap: 5px; font-size: 11.5px; color: #64748b; }
+        .rma-align-toggle { display: flex; gap: 6px; }
+        .rma-align-btn {
+            flex: 1; padding: 7px 0; border: 1.5px solid #e2e8f0; border-radius: 6px;
+            background: white; color: #64748b; cursor: pointer; font-family: inherit; transition: all 0.15s;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .rma-align-btn:hover { border-color: #93c5fd; }
+        .rma-align-btn.active { border-color: #2563eb; color: #2563eb; background: #eff6ff; }
+        .rma-img-editor {
+            display: none; position: absolute; top: 44px; right: 10px; width: 210px; padding: 10px;
+            background: white; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 8px 24px rgba(15,23,42,0.14);
+            gap: 10px; flex-direction: column; z-index: 3;
+        }
+        .rma-img-editor.open { display: flex; }
+        .rma-img-editor input[type="text"] { font-size: 12.5px; padding: 8px 10px; }
+        .rma-img-editor .btn-add-row { justify-content: center; border: 1.5px dashed #d1d5db; border-radius: 7px; padding: 8px; font-size: 12.5px; }
+        .rma-img-editor .btn-add-row:hover { border-color: #93c5fd; }
+        .rma-img-editor-label { font-size: 10px; font-weight: 400; text-transform: uppercase; letter-spacing: 0.06em; color: #94a3b8; margin-bottom: -4px; }
+        .rma-img-editor-divider { border: none; border-top: 1px solid #f1f5f9; margin: 0; }
+
+        @media (max-width: 640px) {
+            .rma-day-row { grid-template-columns: 1fr; }
+        }
+
         /* ===== RESPONSE LENGTH TOGGLE ===== */
         .resp-length-group {
             display: grid;
@@ -817,7 +944,7 @@
         .output-wrap { padding-top: 20px; }
 
         .output-top { margin-bottom: 6px; }
-        .output-section-title { font-size: 14px; font-weight: 600; color: #0f172a; }
+        .output-section-title { font-size: 14px; font-weight: 400; color: #0f172a; }
         .output-subtext { font-size: 13px; color: #64748b; margin-top: 4px; margin-bottom: 16px; line-height: 1.5; }
 
         .reviews-list { display: flex; flex-direction: column; gap: 10px; }
@@ -856,7 +983,7 @@
             display: flex; align-items: center; flex-wrap: wrap;
             gap: 0; font-size: 13px; color: #374151;
         }
-        .reviewer-name { font-weight: 600; color: #0f172a; }
+        .reviewer-name { font-weight: 400; color: #0f172a; }
         .reviewer-sep { color: #cbd5e1; margin: 0 6px; }
         .reviewer-date { color: #94a3b8; }
 
@@ -945,7 +1072,7 @@
 
         .cr-label {
             font-size: 10px;
-            font-weight: 700;
+            font-weight: 400;
             text-transform: uppercase;
             letter-spacing: 0.08em;
             color: #64748b;
@@ -1052,7 +1179,7 @@
             flex-wrap: wrap;
         }
 
-        .rp-title { font-size: 14px; font-weight: 600; color: #0f172a; }
+        .rp-title { font-size: 14px; font-weight: 400; color: #0f172a; }
 
         .btn-generate {
             background: linear-gradient(135deg, #7c3aed, #6d28d9);
@@ -1195,7 +1322,7 @@
             justify-content: space-between;
         }
 
-        .time-saved-label { font-size: 12px; color: #16a34a; font-weight: 600; }
+        .time-saved-label { font-size: 12px; color: #16a34a; font-weight: 400; }
 
         .btn-copy {
             background: transparent;
@@ -1231,7 +1358,7 @@
 
         .roi-calc-icon { display: none; }
 
-        .roi-calc-title { font-size: 13px; font-weight: 600; color: #374151; }
+        .roi-calc-title { font-size: 13px; font-weight: 400; color: #374151; }
 
         .roi-calc-sub { font-size: 12px; color: #94a3b8; margin-bottom: 14px; }
 
@@ -1247,7 +1374,7 @@
 
         .roi-input-label {
             font-size: 10px;
-            font-weight: 700;
+            font-weight: 400;
             text-transform: uppercase;
             letter-spacing: 0.08em;
             color: #64748b;
@@ -1291,7 +1418,7 @@
         .metric-card { border-radius: 12px; padding: 18px 16px; text-align: left; background: #f8fafc; border: 1px solid #e2e8f0; }
         .metric-card.blue, .metric-card.green, .metric-card.purple { background: #f8fafc; border-color: #e2e8f0; }
 
-        .metric-val { font-size: 22px; font-weight: 600; line-height: 1; margin-bottom: 5px; color: #374151; }
+        .metric-val { font-size: 22px; font-weight: 400; line-height: 1; margin-bottom: 5px; color: #374151; }
         .metric-card.blue .metric-val, .metric-card.green .metric-val, .metric-card.purple .metric-val { color: #374151; }
 
         .metric-lbl { font-size: 12px; font-weight: 400; color: #64748b; }
@@ -1301,7 +1428,7 @@
 
         /* Assumptions — same heading style as impact breakdown */
         .assumptions-box { margin-bottom: 24px; }
-        .assumptions-title { font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 12px; }
+        .assumptions-title { font-size: 13px; font-weight: 400; color: #374151; margin-bottom: 12px; }
 
         .assumption-item { font-size: 12px; color: #94a3b8; display: flex; align-items: flex-start; gap: 8px; margin-bottom: 6px; }
         .assumption-item:last-child { margin-bottom: 0; }
@@ -1401,18 +1528,20 @@
         .week-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
         .week-nav-btn { width: 32px; height: 32px; border: 1px solid #e2e8f0; border-radius: 8px; background: white; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #374151; transition: all 0.15s; font-family: inherit; flex-shrink: 0; }
         .week-nav-btn:hover { background: #f8fafc; border-color: #94a3b8; }
-        .week-nav-label { font-size: 13px; font-weight: 600; color: #0f172a; }
+        .week-nav-label { font-size: 13px; font-weight: 400; color: #0f172a; }
 
         /* ===== POST DRAWER ===== */
         .drawer-overlay { position: fixed; inset: 0; background: rgba(15,23,42,0.4); z-index: 499; display: none; }
         .drawer-overlay.visible { display: block; animation: fadeIn 0.2s ease; }
         .post-drawer { position: fixed; top: 0; right: -480px; width: 440px; height: 100vh; background: white; box-shadow: -8px 0 40px rgba(0,0,0,0.18); z-index: 500; transition: right 0.35s cubic-bezier(0.4,0,0.2,1); overflow-y: auto; display: flex; flex-direction: column; }
         .post-drawer.open { right: 0; }
+        .post-drawer.drawer-wide { width: 600px; right: -640px; }
+        .post-drawer.drawer-wide.open { right: 0; }
         /* Drawer header — back arrow + title only */
         .drawer-header { display: flex; align-items: center; gap: 10px; padding: 16px 20px; border-bottom: 1px solid #f1f5f9; flex-shrink: 0; position: sticky; top: 0; background: white; z-index: 1; }
         .drawer-back { width: 30px; height: 30px; border: none; background: none; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #374151; padding: 0; border-radius: 6px; transition: background 0.15s; flex-shrink: 0; }
         .drawer-back:hover { background: #f1f5f9; }
-        .drawer-title { font-size: 15px; font-weight: 600; color: #0f172a; }
+        .drawer-title { font-size: 15px; font-weight: 400; color: #0f172a; }
         /* Platform tabs */
         .drawer-tabs { display: flex; border-bottom: 1px solid #e2e8f0; flex-shrink: 0; padding: 0 20px; position: sticky; top: 63px; background: white; z-index: 1; }
         .drawer-tab { padding: 11px 14px; font-size: 13px; font-weight: 500; color: #64748b; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all 0.15s; user-select: none; white-space: nowrap; }
@@ -1425,7 +1554,7 @@
         .drawer-img-grid img { width: 100%; height: 140px; object-fit: cover; display: block; }
         .drawer-img-grid img:first-child { grid-row: span 2; height: 283px; }
         .drawer-datetime { font-size: 12px; color: #64748b; margin-bottom: 10px; }
-        .drawer-datetime strong { color: #0f172a; }
+        .drawer-datetime strong { color: #0f172a; font-weight: 400; }
         .drawer-copy { font-size: 14px; color: #1e293b; line-height: 1.7; margin: 10px 0 18px; }
         .drawer-tag-row { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
         /* Best practices */
@@ -1443,10 +1572,10 @@
         .post-len-opt { flex: 1; display: flex; flex-direction: column; gap: 4px; padding: 12px 10px; border: 1.5px solid #e2e8f0; border-radius: 10px; background: white; cursor: pointer; font-family: inherit; transition: all 0.15s; text-align: left; }
         .post-len-opt:hover { border-color: #93c5fd; }
         .post-len-opt.selected { border-color: #2563eb; background: #eff6ff; }
-        .post-len-name { font-size: 13px; font-weight: 600; color: #374151; }
+        .post-len-name { font-size: 13px; font-weight: 400; color: #374151; }
         .post-len-opt.selected .post-len-name { color: #2563eb; }
         .post-len-desc { font-size: 11px; color: #94a3b8; line-height: 1.3; }
-        .post-len-eng { font-size: 10px; font-weight: 600; color: #16a34a; margin-top: 2px; }
+        .post-len-eng { font-size: 10px; font-weight: 400; color: #16a34a; margin-top: 2px; }
         .post-len-eng.med { color: #d97706; }
         .post-len-eng.low { color: #94a3b8; }
 
@@ -1510,7 +1639,7 @@
         .sc-icon-ig { background: linear-gradient(135deg,#f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%); }
         .sc-icon-li { background: #0a66c2; }
         .sc-meta-blk { display: flex; flex-direction: column; gap: 2px; }
-        .sc-uname { font-size: 13px; font-weight: 600; color: #0f172a; }
+        .sc-uname { font-size: 13px; font-weight: 400; color: #0f172a; }
         .sc-info { font-size: 12px; color: #94a3b8; display: flex; align-items: center; flex-wrap: wrap; gap: 0; }
         .sc-text { font-size: 13px; color: #374151; line-height: 1.6; }
         .sc-chk { position: absolute; top: 14px; right: 14px; width: 22px; height: 22px; border-radius: 50%; background: #2563eb; display: none; align-items: center; justify-content: center; color: white; font-size: 11px; font-weight: 700; }
@@ -1566,6 +1695,9 @@
         <div class="dd-category">Review</div>
         <div class="dd-option selected" onclick="selectAgent('Review Response Agent', this)">
             Review Response Agent
+        </div>
+        <div class="dd-option" onclick="selectAgent('Review Marketing Agent', this)">
+            Review Marketing Agent
         </div>
         <div class="dd-option disabled" title="Coming soon">
             Review Generation Agent
@@ -1639,7 +1771,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group" style="margin-top:8px;">
                         <label class="form-label">Website <span class="req">*</span></label>
                         <div class="input-wrap">
                             <input type="text" class="form-input" id="website" value="https://www.aspendental.com/">
@@ -1837,6 +1969,104 @@
                     <div id="se-custom-prompt-wrap" style="display:none;margin-top:12px;">
                         <label class="form-label">Describe your custom schedule</label>
                         <textarea class="form-input" id="se-custom-prompt" rows="3" placeholder="e.g. Weekdays 7 AM – 10 PM, Saturdays 9 AM – 5 PM, Sundays closed" style="resize:vertical;min-height:72px;"></textarea>
+                    </div>
+                </div>
+
+                <!-- ── Review Marketing Agent fields ── -->
+                <div id="review-marketing-fields" style="display:none;">
+                    <div class="rec-summary-bar" style="margin-bottom:20px;">
+                        <span class="rec-summary-text">Identified 32 reviews with a 4+ rating that can be shared to your social channels</span>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom:20px;">
+                        <label class="form-label">Choose layout</label>
+                        <div class="field-sub" style="margin-top:0;margin-bottom:12px;">If you choose multiple layouts, posts will rotate between them</div>
+                        <div class="layout-grid">
+                            <div class="layout-card selected" id="rma-layout-quote" onclick="toggleLayoutCard(this)">
+                                <div class="layout-check"></div>
+                                <div class="layout-preview layout-preview-quote">
+                                    <p>"Best dental experience in Austin!"</p>
+                                    <span>Mike R. · ★★★★★</span>
+                                </div>
+                                <div class="layout-name">Quote card</div>
+                            </div>
+                            <div class="layout-card selected" id="rma-layout-spotlight" onclick="toggleLayoutCard(this)">
+                                <div class="layout-check"></div>
+                                <div class="layout-preview layout-preview-spotlight">
+                                    <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
+                                        <span style="width:16px;height:16px;border-radius:50%;background:#c7d2fe;display:inline-block;flex-shrink:0;"></span>
+                                        <span style="font-size:10px;font-weight:500;color:#374151;">Mike R.</span>
+                                        <span style="font-size:9px;color:#f59e0b;margin-left:auto;">★★★★★</span>
+                                    </div>
+                                    <p style="margin:0;">"Best dental experience in Austin!"</p>
+                                </div>
+                                <div class="layout-name">Reviewer spotlight</div>
+                            </div>
+                            <div class="layout-card" id="rma-layout-minimal" onclick="toggleLayoutCard(this)">
+                                <div class="layout-check"></div>
+                                <div class="layout-preview layout-preview-minimal">
+                                    <p>"Best dental experience in Austin!"</p>
+                                    <span>— Mike R., ★★★★★</span>
+                                </div>
+                                <div class="layout-name">Minimal</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom:8px;">
+                        <label class="form-label">Select channels <span class="req">*</span></label>
+                        <div class="plat-check-row">
+                            <div class="plat-check-opt checked" onclick="togglePlatCheck(this)">
+                                <div class="ao-checkbox checked"></div>
+                                <span class="cplt cplt-fb"><svg width="9" height="9" viewBox="0 0 24 24" fill="white"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></span>
+                                <span class="plat-check-name">Facebook</span>
+                            </div>
+                            <div class="plat-check-opt checked" onclick="togglePlatCheck(this)">
+                                <div class="ao-checkbox checked"></div>
+                                <span class="cplt cplt-li"><svg width="9" height="9" viewBox="0 0 24 24" fill="white"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></span>
+                                <span class="plat-check-name">LinkedIn</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="more-options-toggle" onclick="toggleRmaMoreOptions()" style="margin-top:8px;">
+                            <span class="more-options-label">More options</span>
+                            <span class="more-options-chevron" id="rma-mo-chevron"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5l4 4 4-4" stroke="#93c5fd" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                        </div>
+                        <div class="more-options-body" id="rma-mo-body" style="display:none;">
+                            <div class="form-group" style="margin-bottom:16px;">
+                                <label class="form-label">Posting frequency</label>
+                                <div class="cdd-anchor" id="cdd-rma-freq">
+                                    <div class="cdd-trigger" onclick="toggleCatDropdown('rma-freq', event)">
+                                        <span id="cdd-rma-freq-label">Once daily</span>
+                                        <span class="cdd-chevron"><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                                    </div>
+                                    <div class="cdd-panel">
+                                        <div class="dd-option selected" onclick="selectRmaDropdown('rma-freq', 'Once daily', this)">Once daily</div>
+                                        <div class="dd-option" onclick="selectRmaDropdown('rma-freq', 'Twice daily', this)">Twice daily</div>
+                                        <div class="dd-option" onclick="selectRmaDropdown('rma-freq', 'Every other day', this)">Every other day</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-bottom:16px;">
+                                <label class="form-label">Review character limit</label>
+                                <div class="cdd-anchor" id="cdd-rma-char">
+                                    <div class="cdd-trigger" onclick="toggleCatDropdown('rma-char', event)">
+                                        <span id="cdd-rma-char-label">Detailed and long</span>
+                                        <span class="cdd-chevron"><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                                    </div>
+                                    <div class="cdd-panel">
+                                        <div class="dd-option" onclick="selectRmaDropdown('rma-char', 'Short and crisp', this)">Short and crisp <span class="dd-option-hint">(under 100 characters)</span></div>
+                                        <div class="dd-option selected" onclick="selectRmaDropdown('rma-char', 'Detailed and long', this)">Detailed and long <span class="dd-option-hint">(100+ characters)</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Custom instruction</label>
+                                <textarea class="form-input" id="rma-custom-instruction" rows="2" placeholder="e.g. Don't use promotional language or mention pricing" style="resize:vertical;min-height:56px;"></textarea>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -2132,6 +2362,16 @@
                     </div>
                 </div>
 
+                <!-- ── Review Marketing Agent ── -->
+                <div id="output-review-marketing" style="display:none;">
+                    <div class="output-wrap">
+                        <div class="output-top">
+                            <div class="output-subtext" id="rma-output-subtext">5 social shares can be scheduled this week on Facebook and LinkedIn for Aspen Dental Group</div>
+                        </div>
+                        <div id="rma-output-area"></div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
@@ -2291,6 +2531,44 @@
                     </div>
                 </div>
 
+                <!-- ── Review Marketing Outcome ── -->
+                <div id="outcome-review-marketing" style="display:none;">
+                    <div class="outcomes-wrap">
+                        <p class="outcomes-intro">Here are some key outcomes of the Review Marketing Agent.</p>
+                        <div class="roi-calc-inputs roi-calc-inputs-3" style="margin-bottom:20px;">
+                            <div class="form-group">
+                                <label class="form-label">Monthly review volume</label>
+                                <input type="number" class="form-input" id="rma-roi-review-volume" value="200" min="1" max="10000" oninput="recalcReviewMarketingROI()">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Monthly social shares</label>
+                                <input type="number" class="form-input" id="rma-roi-shares" value="40" min="1" max="2000" oninput="recalcReviewMarketingROI()">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Staff cost ($/hr)</label>
+                                <input type="number" class="form-input" id="rma-roi-rate" value="25" min="1" max="500" oninput="recalcReviewMarketingROI()">
+                            </div>
+                        </div>
+                        <div class="metrics-row">
+                            <div class="metric-card blue">
+                                <div class="metric-val" id="rma-m-time">8 min</div>
+                                <div class="metric-lbl">Saved per share</div>
+                                <div class="metric-sub">vs. manually finding and posting</div>
+                            </div>
+                            <div class="metric-card green">
+                                <div class="metric-val" id="rma-m-hours">5 hrs</div>
+                                <div class="metric-lbl">Saved monthly</div>
+                                <div class="metric-sub" id="rma-m-hours-sub">~40 shares/month from 200 monthly reviews</div>
+                            </div>
+                            <div class="metric-card purple">
+                                <div class="metric-val" id="rma-m-cost">$125</div>
+                                <div class="metric-lbl">Cost saved/month</div>
+                                <div class="metric-sub" id="rma-m-cost-sub">@ $25/hr staff rate</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
@@ -2436,6 +2714,7 @@
 // ---- AGENT HINT TEXT ----
 const AGENT_HINTS = {
     'Review Response Agent':    'The AI review response agent analyzes reviews and creates proactive responses.',
+    'Review Marketing Agent':   'The AI review marketing agent turns your best reviews into scheduled social posts automatically.',
     'Review Generation Agent':  'The AI review generation agent helps request and generate authentic reviews from customers.',
     'Social Publishing Agent':  'The AI social publishing agent creates and schedules brand-consistent posts across platforms.',
     'Social Engagement Agent':  'The AI social engagement agent monitors and responds to comments and messages automatically.',
@@ -2612,6 +2891,44 @@ const LISTINGS_BUSINESS_PROFILES = [
 // Listing sites the agent optimizes beyond the Google profile — length drives the Output subtext, so it scales automatically
 const OTHER_LISTING_SITES = ['Yelp', 'Facebook', 'Bing Places', 'Apple Maps', 'Yellow Pages', 'Foursquare'];
 
+// ---- REVIEW MARKETING AGENT DATA ----
+const RMA_STEPS = [
+    { txt: 'Scanning recent reviews across your connected sites', ms: 550 },
+    { txt: 'Filtering for 4+ star ratings with detailed feedback', ms: 650 },
+    { txt: 'Matching reviews to your selected layout and channels', ms: 600 },
+    { txt: 'Scheduling posts across the week', ms: 600 }
+];
+
+const RMA_REVIEW_POOL = [
+    { id: 1, name: 'Mike R.', stars: 5, date: 'Aug 3, 2026', text: 'Best dental experience in Austin! Dr. Kim and the entire team are incredibly professional and caring.' },
+    { id: 2, name: 'Sarah M.', stars: 5, date: 'Aug 5, 2026', text: 'Dr. Patel and hygienist Lisa were wonderful. Thorough, gentle, and took the time to explain everything clearly.' },
+    { id: 3, name: 'James T.', stars: 5, date: 'Aug 6, 2026', text: "Aspen Dental Group made my daughter's first dental visit so easy. The staff is patient and genuinely kind." },
+    { id: 4, name: 'Priya N.', stars: 4, date: 'Aug 7, 2026', text: 'Great experience overall. Clean office, friendly staff, and they got me in same-day for an emergency filling.' },
+    { id: 5, name: 'Carlos D.', stars: 5, date: 'Aug 9, 2026', text: "Switched here after years at another practice and wish I'd done it sooner. Modern equipment and a team that actually listens." },
+    { id: 6, name: 'Emily R.', stars: 5, date: 'Aug 10, 2026', text: 'Painless root canal, if you can believe that. Dr. Kim walked me through every step and checked in the next day.' },
+    { id: 7, name: 'Aaron B.', stars: 4, date: 'Aug 11, 2026', text: 'Reliable, professional, and always on time. My whole family goes here now.' }
+];
+
+// One featured review per weekday by default — user can swap any of them from the drawer
+const RMA_WEEK = [
+    { day: 'Mon', reviewId: 1 },
+    { day: 'Tue', reviewId: 2 },
+    { day: 'Wed', reviewId: 3 },
+    { day: 'Thu', reviewId: 4 },
+    { day: 'Fri', reviewId: 5 }
+];
+
+// Dental-specific stock photo matched to the context of each review's text
+const RMA_DENTAL_IMAGES = {
+    1: 'https://loremflickr.com/600/450/dentist,office/all?lock=101',
+    2: 'https://loremflickr.com/600/450/dental,hygienist/all?lock=102',
+    3: 'https://loremflickr.com/600/450/kids,dentist/all?lock=103',
+    4: 'https://loremflickr.com/600/450/dental,clinic/all?lock=104',
+    5: 'https://loremflickr.com/600/450/dental,equipment/all?lock=105',
+    6: 'https://loremflickr.com/600/450/dentist,patient/all?lock=106',
+    7: 'https://loremflickr.com/600/450/family,dentist/all?lock=107'
+};
+
 // ---- STATE ----
 let currentAgent  = 'Review Response Agent';
 let selectedId    = null;
@@ -2627,6 +2944,12 @@ let socialCommentCache = {};
 let listingsGenerated = false;
 let listingsIsGenerating = false;
 let openRecPreviewId = null;
+let rmaGenerated = false;
+let rmaIsGenerating = false;
+let rmaSelectedReviewByDay = {};
+let rmaDayImages = {};
+let rmaDayAlign = {};
+let rmaDrawerDayIdx = null;
 
 // ---- DROPDOWN ----
 function toggleDropdown(e) {
@@ -2641,6 +2964,7 @@ function getAgentType() {
     if (currentAgent === 'Social Publishing Agent') return 'social-pub';
     if (currentAgent === 'Social Engagement Agent') return 'social-eng';
     if (currentAgent === 'Listings Optimization Agent') return 'listings-opt';
+    if (currentAgent === 'Review Marketing Agent') return 'review-marketing';
     return 'review';
 }
 
@@ -2648,7 +2972,7 @@ function selectAgent(name, el) {
     currentAgent = name;
     document.getElementById('pill-label').textContent = name;
     document.getElementById('agent-hint-text').textContent = AGENT_HINTS[name] || '';
-    document.querySelectorAll('.dd-option').forEach(o => o.classList.remove('selected'));
+    document.querySelectorAll('#agent-dropdown .dd-option').forEach(o => o.classList.remove('selected'));
     el.classList.add('selected');
     document.getElementById('agent-dropdown').classList.remove('open');
     document.getElementById('agent-pill').classList.remove('open');
@@ -2675,27 +2999,34 @@ function selectAgent(name, el) {
     const type = getAgentType();
 
     // Output placeholder copy is agent-specific
-    document.getElementById('output-placeholder').textContent = type === 'listings-opt'
-        ? 'Click Continue to see recommendations from this agent to improve your listings'
-        : 'Check out the example reviews and agent responses here';
+    if (type === 'listings-opt') {
+        document.getElementById('output-placeholder').textContent = 'Click Continue to see recommendations from this agent to improve your listings';
+    } else if (type === 'review-marketing') {
+        document.getElementById('output-placeholder').textContent = "Click Continue to see this week's review-based social posts";
+    } else {
+        document.getElementById('output-placeholder').textContent = 'Check out the example reviews and agent responses here';
+    }
 
     // Outcome is filled by default for every agent — it never depends on Basic details or Output
     document.getElementById('outcome-placeholder').style.display = 'none';
     document.getElementById('outcome-live').style.display = 'block';
-    document.getElementById('outcome-review').style.display       = type === 'review'       ? 'block' : 'none';
-    document.getElementById('outcome-social-pub').style.display   = type === 'social-pub'   ? 'block' : 'none';
-    document.getElementById('outcome-social-eng').style.display   = type === 'social-eng'   ? 'block' : 'none';
-    document.getElementById('outcome-listings-opt').style.display = type === 'listings-opt' ? 'block' : 'none';
+    document.getElementById('outcome-review').style.display            = type === 'review'            ? 'block' : 'none';
+    document.getElementById('outcome-social-pub').style.display        = type === 'social-pub'        ? 'block' : 'none';
+    document.getElementById('outcome-social-eng').style.display        = type === 'social-eng'        ? 'block' : 'none';
+    document.getElementById('outcome-listings-opt').style.display      = type === 'listings-opt'      ? 'block' : 'none';
+    document.getElementById('outcome-review-marketing').style.display  = type === 'review-marketing'  ? 'block' : 'none';
     if (type === 'review') recalcROI();
     else if (type === 'social-pub') recalcSocialPub();
     else if (type === 'social-eng') recalcSocialEng();
     else if (type === 'listings-opt') recalcListingsROI();
+    else if (type === 'review-marketing') recalcReviewMarketingROI();
 
-    document.getElementById('common-biz-fields').style.display  = type === 'listings-opt' ? 'none'  : 'block';
-    document.getElementById('review-fields').style.display      = type === 'review'     ? 'block' : 'none';
-    document.getElementById('social-pub-fields').style.display  = type === 'social-pub' ? 'block' : 'none';
-    document.getElementById('social-eng-fields').style.display  = type === 'social-eng' ? 'block' : 'none';
-    document.getElementById('listings-fields').style.display    = type === 'listings-opt' ? 'block' : 'none';
+    document.getElementById('common-biz-fields').style.display      = type === 'listings-opt' ? 'none'  : 'block';
+    document.getElementById('review-fields').style.display          = type === 'review'            ? 'block' : 'none';
+    document.getElementById('social-pub-fields').style.display      = type === 'social-pub'        ? 'block' : 'none';
+    document.getElementById('social-eng-fields').style.display      = type === 'social-eng'        ? 'block' : 'none';
+    document.getElementById('listings-fields').style.display        = type === 'listings-opt'      ? 'block' : 'none';
+    document.getElementById('review-marketing-fields').style.display = type === 'review-marketing' ? 'block' : 'none';
 
     // Update subtitles
     const bdSub     = document.querySelector('#acc-basic .acc-subtitle');
@@ -2713,6 +3044,10 @@ function selectAgent(name, el) {
         bdSub.textContent    = 'Business profile, keywords, and recommendation types';
         outSub.textContent   = 'AI-generated listing optimization recommendations';
         outcomeSub.textContent = 'Estimated time savings and cost impact';
+    } else if (type === 'review-marketing') {
+        bdSub.textContent    = 'Business profile, review layout, and posting channels';
+        outSub.textContent   = 'Weekly social calendar built from your best reviews';
+        outcomeSub.textContent = 'Estimated time savings and cost impact';
     } else {
         bdSub.textContent    = 'Business profile, brand voice, and response preferences';
         outSub.textContent   = 'Sample reviews with AI-generated responses';
@@ -2723,12 +3058,15 @@ function selectAgent(name, el) {
     weekOffset = 0;
     listingsGenerated = false;
     listingsIsGenerating = false;
+    rmaGenerated = false;
+    rmaIsGenerating = false;
 }
 
 document.addEventListener('click', () => {
     document.getElementById('agent-dropdown').classList.remove('open');
     document.getElementById('agent-pill').classList.remove('open');
     document.querySelectorAll('.cdd-anchor.open').forEach(a => a.classList.remove('open'));
+    document.querySelectorAll('.rma-img-editor.open').forEach(e => e.classList.remove('open'));
 });
 
 // ---- ACCORDION ----
@@ -2738,6 +3076,7 @@ function toggleAcc(id) {
     const isOpen = !body.classList.contains('collapsed');
 
     if (isOpen) {
+        body.style.overflow = 'hidden';
         body.style.maxHeight = body.scrollHeight + 'px';
         body.classList.add('collapsed');
         requestAnimationFrame(() => requestAnimationFrame(() => {
@@ -2751,6 +3090,7 @@ function toggleAcc(id) {
         body.addEventListener('transitionend', function h(e) {
             if (e.propertyName === 'max-height') {
                 body.style.maxHeight = 'none';
+                body.style.overflow = 'visible';
                 body.removeEventListener('transitionend', h);
             }
         });
@@ -2766,6 +3106,7 @@ function openAcc(id) {
     body.addEventListener('transitionend', function h(e) {
         if (e.propertyName === 'max-height') {
             body.style.maxHeight = 'none';
+            body.style.overflow = 'visible';
             body.removeEventListener('transitionend', h);
         }
     });
@@ -2774,8 +3115,15 @@ function openAcc(id) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.acc-body.collapsed').forEach(el => {
-        el.style.maxHeight = '0';
+    document.querySelectorAll('.acc-body').forEach(el => {
+        if (el.classList.contains('collapsed')) {
+            el.style.maxHeight = '0';
+        } else {
+            // Already open on first paint (e.g. Basic details) — never passes through the
+            // toggle/open transition that would otherwise flip this to visible, so dropdown
+            // panels inside it would stay clipped by the collapse animation's overflow:hidden.
+            el.style.overflow = 'visible';
+        }
     });
 
     // Outcome is filled by default from first load too, not just after switching agents
@@ -2958,6 +3306,28 @@ function toggleListingsMoreOptions() {
     chevron.classList.toggle('open', !isOpen);
 }
 
+// ---- REVIEW MARKETING: LAYOUT CARDS, MORE OPTIONS, DROPDOWNS ----
+function toggleLayoutCard(card) {
+    card.classList.toggle('selected');
+    if (rmaGenerated) renderReviewCalendar();
+}
+
+function toggleRmaMoreOptions() {
+    const body    = document.getElementById('rma-mo-body');
+    const chevron = document.getElementById('rma-mo-chevron');
+    const isOpen  = body.style.display === 'block';
+    body.style.display = isOpen ? 'none' : 'block';
+    chevron.classList.toggle('open', !isOpen);
+}
+
+// Generic single-select dropdown label setter, shared by the frequency and character-limit dropdowns
+function selectRmaDropdown(which, value, el) {
+    el.parentElement.querySelectorAll('.dd-option').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+    document.getElementById('cdd-' + which + '-label').textContent = value;
+    document.getElementById('cdd-' + which).classList.remove('open');
+}
+
 // ---- LISTINGS: COMPETITOR ROWS ----
 function addCompetitorRow() {
     const wrap = document.getElementById('competitor-rows');
@@ -3072,6 +3442,7 @@ function forceOpenAcc(id) {
     const body = document.getElementById('body-' + id);
     body.classList.remove('collapsed');
     body.style.maxHeight = 'none';
+    body.style.overflow = 'visible';
     document.getElementById('toggle-' + id).textContent = '−';
     document.getElementById('acc-' + id).classList.remove('is-closed');
 }
@@ -3082,10 +3453,11 @@ function runContinue() {
         ? document.getElementById('listings-biz-name').value.trim()
         : document.getElementById('biz-name').value.trim()) || 'your business';
 
-    document.getElementById('output-review').style.display        = type === 'review'       ? 'block' : 'none';
-    document.getElementById('output-social-pub').style.display    = type === 'social-pub'   ? 'block' : 'none';
-    document.getElementById('output-social-eng').style.display    = type === 'social-eng'   ? 'block' : 'none';
-    document.getElementById('output-listings-opt').style.display  = type === 'listings-opt' ? 'block' : 'none';
+    document.getElementById('output-review').style.display            = type === 'review'            ? 'block' : 'none';
+    document.getElementById('output-social-pub').style.display        = type === 'social-pub'        ? 'block' : 'none';
+    document.getElementById('output-social-eng').style.display        = type === 'social-eng'        ? 'block' : 'none';
+    document.getElementById('output-listings-opt').style.display      = type === 'listings-opt'      ? 'block' : 'none';
+    document.getElementById('output-review-marketing').style.display  = type === 'review-marketing'  ? 'block' : 'none';
 
     document.getElementById('output-placeholder').style.display = 'none';
     document.getElementById('output-live').style.display = 'block';
@@ -3102,6 +3474,8 @@ function runContinue() {
         renderSocialComments();
     } else if (type === 'listings-opt') {
         renderListingsOutputSubtext(biz);
+    } else if (type === 'review-marketing') {
+        renderRmaOutputSubtext(biz);
     }
 
     forceOpenAcc('output');
@@ -3121,6 +3495,13 @@ function runContinue() {
         listingsGenerated = false;
         listingsIsGenerating = false;
         setTimeout(() => runListingsGenerate(), 400);
+    }
+
+    // Auto-generate for review marketing
+    if (type === 'review-marketing') {
+        rmaGenerated = false;
+        rmaIsGenerating = false;
+        setTimeout(() => runReviewMarketingGenerate(), 400);
     }
 }
 
@@ -3336,6 +3717,7 @@ function reviewListingsImpact() {
     document.getElementById('outcome-review').style.display = 'none';
     document.getElementById('outcome-social-pub').style.display = 'none';
     document.getElementById('outcome-social-eng').style.display = 'none';
+    document.getElementById('outcome-review-marketing').style.display = 'none';
     document.getElementById('outcome-listings-opt').style.display = 'block';
 
     recalcListingsROI();
@@ -3490,6 +3872,7 @@ async function generateResponse() {
                 document.getElementById('outcome-social-pub').style.display = 'none';
                 document.getElementById('outcome-social-eng').style.display = 'none';
                 document.getElementById('outcome-listings-opt').style.display = 'none';
+                document.getElementById('outcome-review-marketing').style.display = 'none';
                 recalcROI();
                 forceOpenAcc('outcome');
                 setTimeout(() => {
@@ -3762,6 +4145,337 @@ function recalcListingsROI() {
     document.getElementById('listings-m-cost-sub').textContent  = `@ $${rate}/hr staff rate`;
 }
 
+// ---- REVIEW MARKETING AGENT ----
+function renderRmaOutputSubtext(biz) {
+    const freq = document.getElementById('cdd-rma-freq-label')?.textContent || 'Once daily';
+    const el = document.getElementById('rma-output-subtext');
+    if (el) el.textContent = `5 social shares can be scheduled this week on Facebook and LinkedIn for ${biz}, posting ${freq.toLowerCase()}`;
+}
+
+async function runReviewMarketingGenerate() {
+    if (rmaIsGenerating) return;
+    rmaIsGenerating = true;
+
+    const area = document.getElementById('rma-output-area');
+    area.innerHTML = `
+        <div class="reasoning-block">
+            <div class="reasoning-heading">Agent reasoning</div>
+            <div id="rma-steps"></div>
+        </div>
+        <div class="progress-block">
+            <div class="progress-meta">
+                <span id="rma-prog-label">Starting analysis…</span>
+                <span id="rma-prog-pct">0%</span>
+            </div>
+            <div class="progress-track">
+                <div class="progress-fill" id="rma-prog-fill"></div>
+            </div>
+        </div>
+    `;
+
+    const container = document.getElementById('rma-steps');
+    const progFill  = document.getElementById('rma-prog-fill');
+    const progLabel = document.getElementById('rma-prog-label');
+    const progPct   = document.getElementById('rma-prog-pct');
+    const total     = RMA_STEPS.length;
+
+    for (let i = 0; i < total; i++) {
+        const step = RMA_STEPS[i];
+        await pause(step.ms);
+
+        container.querySelectorAll('.step-dot.spinning').forEach(d => {
+            d.classList.replace('spinning', 'done');
+            d.textContent = '✓';
+        });
+
+        const pct = Math.round(((i + 1) / total) * 88);
+        const el = document.createElement('div');
+        el.className = 'reason-step';
+        el.innerHTML = `<div class="step-dot spinning">↻</div><span>${step.txt}</span>`;
+        container.appendChild(el);
+        requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('show')));
+
+        progFill.style.width  = pct + '%';
+        progPct.textContent   = pct + '%';
+        progLabel.textContent = step.txt;
+    }
+
+    await pause(400);
+
+    container.querySelectorAll('.step-dot.spinning').forEach(d => {
+        d.classList.replace('spinning', 'done');
+        d.textContent = '✓';
+    });
+    progFill.style.width  = '100%';
+    progPct.textContent   = '100%';
+    progLabel.textContent = 'Calendar ready!';
+
+    await pause(320);
+
+    const stepsSnap = container.innerHTML;
+
+    area.innerHTML = `
+        <div class="reasoning-acc">
+            <div class="reasoning-acc-header" onclick="toggleReasoningAcc(this)">
+                <span>Agent reasoning</span>
+                <svg class="reasoning-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none">
+                    <path d="M3 5l4 4 4-4" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <div class="reasoning-acc-body">
+                <div class="reasoning-acc-inner">${stepsSnap}</div>
+            </div>
+        </div>
+        <div class="week-nav">
+            <button class="week-nav-btn" onclick="prevWeek()">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 3L5 7l4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <span class="week-nav-label" id="rma-week-label">This week</span>
+            <button class="week-nav-btn" onclick="nextWeek()">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+        </div>
+        <div id="rma-days-list"></div>
+    `;
+
+    rmaIsGenerating = false;
+    rmaGenerated = true;
+    rmaSelectedReviewByDay = {};
+    rmaDayImages = {};
+    renderReviewCalendar();
+}
+
+const RMA_ICON_EDIT = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>';
+const RMA_ICON_LIKE = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>';
+const RMA_ICON_COMMENT = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>';
+const RMA_ICON_SHARE = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>';
+const RMA_ICON_SEND = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>';
+
+function renderReviewCalendar() {
+    const list  = document.getElementById('rma-days-list');
+    const label = document.getElementById('rma-week-label');
+    if (!list) return;
+
+    const dates = getWeekDates(weekOffset);
+    const weekdayDates = dates.slice(0, 5); // Mon–Fri (the fixed anchor date, June 1 2026, is itself a Monday)
+
+    if (label) label.textContent = `${weekdayDates[0].month} ${weekdayDates[0].date}–${weekdayDates[4].date}, ${weekdayDates[4].year}`;
+
+    const layouts = getRmaSelectedLayouts();
+
+    list.innerHTML = RMA_WEEK.map((col, idx) => {
+        const reviewId = rmaSelectedReviewByDay[idx] ?? col.reviewId;
+        const r = RMA_REVIEW_POOL.find(x => x.id === reviewId);
+        const d = weekdayDates[idx];
+        const layout = layouts[idx % layouts.length];
+        return `
+        <div class="rma-day-section">
+            <div class="rma-day-heading-row">
+                <span class="rma-day-heading">${d.day}, ${d.month} ${d.date}</span>
+                <button class="rma-change-review-btn" onclick="openReviewDrawer(${idx})">Change review</button>
+            </div>
+            <div class="rma-day-row">
+                ${buildRmaPreview(idx, 'fb', r, layout)}
+                ${buildRmaPreview(idx, 'li', r, layout)}
+            </div>
+        </div>`;
+    }).join('');
+}
+
+function getRmaSelectedLayouts() {
+    const map = [['quote', 'rma-layout-quote'], ['spotlight', 'rma-layout-spotlight'], ['minimal', 'rma-layout-minimal']];
+    const selected = map.filter(([, id]) => document.getElementById(id)?.classList.contains('selected')).map(([key]) => key);
+    return selected.length ? selected : ['quote'];
+}
+
+function buildRmaPreview(dayIdx, platform, r, layout) {
+    const key = dayIdx + '-' + platform;
+    const imgUrl = rmaDayImages[key] || RMA_DENTAL_IMAGES[r.id];
+    const align = rmaDayAlign[key] || 'center';
+    const platformLabel = platform === 'fb' ? 'Facebook' : 'LinkedIn';
+    const stars = Array(5).fill(0).map((_, i) =>
+        `<span style="color:${i < r.stars ? '#fbbf24' : 'rgba(255,255,255,0.4)'};">★</span>`
+    ).join('');
+    const footerItems = [
+        `<span class="rma-preview-footer-item">${RMA_ICON_LIKE} Like</span>`,
+        `<span class="rma-preview-footer-item">${RMA_ICON_COMMENT} Comment</span>`,
+        `<span class="rma-preview-footer-item">${RMA_ICON_SHARE} Share</span>`
+    ];
+    if (platform === 'li') footerItems.push(`<span class="rma-preview-footer-item">${RMA_ICON_SEND} Send</span>`);
+
+    const platBadge = `<span class="rma-plat-badge-header cplt-${platform}">${getPlatIconSVGSmall(platform)}</span>`;
+    const tint = layout === 'minimal' ? '' : `<div class="rma-img-tint"></div>`;
+
+    const ICON_ALIGN_LEFT = '<svg width="14" height="12" viewBox="0 0 16 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><line x1="1" y1="2" x2="15" y2="2"/><line x1="1" y1="7" x2="10" y2="7"/><line x1="1" y1="12" x2="13" y2="12"/></svg>';
+    const ICON_ALIGN_CENTER = '<svg width="14" height="12" viewBox="0 0 16 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><line x1="1" y1="2" x2="15" y2="2"/><line x1="3" y1="7" x2="13" y2="7"/><line x1="2" y1="12" x2="14" y2="12"/></svg>';
+
+    const editorPopover = `
+            <div class="rma-img-editor" id="rma-img-editor-${key}" onclick="event.stopPropagation()">
+                ${layout === 'minimal' ? '' : `
+                <span class="rma-img-editor-label">Image</span>
+                <button type="button" class="btn-add-row" onclick="document.getElementById('rma-file-${key}').click()">Upload image</button>
+                <input type="file" id="rma-file-${key}" accept="image/*" style="display:none;" onchange="handleRmaImageUpload(event, '${key}')">
+                <input type="text" class="form-input" placeholder="Or paste an image link" onkeydown="if(event.key==='Enter'){applyRmaImageLink(this, '${key}');}">
+                <hr class="rma-img-editor-divider">`}
+                <span class="rma-img-editor-label">Text alignment</span>
+                <div class="rma-align-toggle">
+                    <button type="button" class="rma-align-btn ${align === 'left' ? 'active' : ''}" data-align="left" onclick="setRmaAlign(event, '${key}', 'left')" title="Left align">${ICON_ALIGN_LEFT}</button>
+                    <button type="button" class="rma-align-btn ${align === 'center' ? 'active' : ''}" data-align="center" onclick="setRmaAlign(event, '${key}', 'center')" title="Center align">${ICON_ALIGN_CENTER}</button>
+                </div>
+            </div>`;
+
+    const editBtn = `<button type="button" class="rma-edit-img-btn${layout === 'minimal' ? ' rma-edit-btn-dark' : ''}" onclick="toggleRmaImageEditor(event, '${key}')" title="Edit post">${RMA_ICON_EDIT}</button>`;
+
+    let media;
+    if (layout === 'minimal') {
+        media = `
+        <div class="rma-preview-image rma-preview-image-minimal" id="rma-img-${key}">
+            ${editBtn}
+            <div class="rma-minimal-body" style="text-align:${align};">
+                <p class="rma-preview-quote">"${r.text}"</p>
+                <div class="rma-minimal-attrib">— ${r.name}, ${stars}</div>
+            </div>
+            ${editorPopover}
+        </div>`;
+    } else if (layout === 'spotlight') {
+        media = `
+        <div class="rma-preview-image" id="rma-img-${key}" style="background-image:url('${imgUrl}');">
+            ${tint}
+            ${editBtn}
+            <div class="rma-preview-image-overlay" style="text-align:${align};">
+                <div class="rma-spotlight-row" style="justify-content:${align === 'center' ? 'center' : 'flex-start'};">
+                    <div class="rma-spotlight-avatar">A</div>
+                    <span class="rma-spotlight-name">${r.name}</span>
+                    <span class="rma-preview-stars">${stars}</span>
+                </div>
+                <p class="rma-preview-quote">"${r.text}"</p>
+            </div>
+            ${editorPopover}
+        </div>`;
+    } else {
+        media = `
+        <div class="rma-preview-image" id="rma-img-${key}" style="background-image:url('${imgUrl}');">
+            ${tint}
+            ${editBtn}
+            <div class="rma-preview-image-overlay" style="text-align:${align};">
+                <p class="rma-preview-quote">"${r.text}"</p>
+                <div class="rma-preview-meta">${r.name} on Google, ${r.date}</div>
+                <div class="rma-preview-stars">${stars}</div>
+            </div>
+            ${editorPopover}
+        </div>`;
+    }
+
+    return `
+    <div class="rma-social-preview">
+        <div class="rma-preview-header">
+            <div class="rma-preview-avatar">A</div>
+            <div>
+                <span class="rma-preview-name">Aspen Dental Group</span>
+                <span class="rma-preview-platform-tag">${platformLabel}</span>
+            </div>
+            ${platBadge}
+        </div>
+        ${media}
+        <div class="rma-preview-footer">${footerItems.join('')}</div>
+    </div>`;
+}
+
+function toggleRmaImageEditor(event, key) {
+    event.stopPropagation();
+    const el = document.getElementById('rma-img-editor-' + key);
+    const willOpen = !el.classList.contains('open');
+    document.querySelectorAll('.rma-img-editor.open').forEach(e => e.classList.remove('open'));
+    if (willOpen) el.classList.add('open');
+}
+
+function setRmaAlign(event, key, align) {
+    event.stopPropagation();
+    rmaDayAlign[key] = align;
+    const img = document.getElementById('rma-img-' + key);
+    if (!img) return;
+    const overlay = img.querySelector('.rma-preview-image-overlay, .rma-minimal-body');
+    if (overlay) overlay.style.textAlign = align;
+    const row = img.querySelector('.rma-spotlight-row');
+    if (row) row.style.justifyContent = align === 'center' ? 'center' : 'flex-start';
+    img.querySelectorAll('.rma-align-btn').forEach(b => b.classList.toggle('active', b.dataset.align === align));
+}
+
+function handleRmaImageUpload(event, key) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        rmaDayImages[key] = e.target.result;
+        document.getElementById('rma-img-' + key).style.backgroundImage = `url('${e.target.result}')`;
+        document.getElementById('rma-img-editor-' + key).classList.remove('open');
+    };
+    reader.readAsDataURL(file);
+}
+
+function applyRmaImageLink(input, key) {
+    const url = input.value.trim();
+    if (!url) return;
+    rmaDayImages[key] = url;
+    document.getElementById('rma-img-' + key).style.backgroundImage = `url('${url}')`;
+    document.getElementById('rma-img-editor-' + key).classList.remove('open');
+    input.value = '';
+}
+
+function openReviewDrawer(dayIdx) {
+    rmaDrawerDayIdx = dayIdx;
+    document.getElementById('drawer-title').textContent = 'Select a review';
+    document.getElementById('drawer-tabs').innerHTML = '';
+    document.getElementById('drawer-tabs').style.display = 'none';
+    renderReviewDrawerContent();
+    document.getElementById('drawer-overlay').classList.add('visible');
+    document.getElementById('post-drawer').classList.add('open', 'drawer-wide');
+    document.getElementById('post-drawer').scrollTop = 0;
+}
+
+function renderReviewDrawerContent() {
+    const currentId = rmaSelectedReviewByDay[rmaDrawerDayIdx] ?? RMA_WEEK[rmaDrawerDayIdx].reviewId;
+    document.getElementById('drawer-body').innerHTML = `
+        <div class="drawer-body-content">
+            <p class="drawer-datetime">Choose the review to feature for <strong>${RMA_WEEK[rmaDrawerDayIdx].day}</strong></p>
+            ${RMA_REVIEW_POOL.map(r => `
+                <div class="rma-review-pick${r.id === currentId ? ' selected' : ''}" onclick="selectDrawerReview(${r.id})">
+                    <div class="rma-review-pick-top">
+                        <div class="stars-row">${Array(5).fill(0).map((_, i) => `<span class="star ${i < r.stars ? 'on' : 'off'}">★</span>`).join('')}</div>
+                        <span class="reviewer-name">${r.name}</span>
+                        <span class="reviewer-sep">•</span>
+                        <span class="reviewer-date">${r.date}</span>
+                    </div>
+                    <p class="review-text">${r.text}</p>
+                </div>
+            `).join('')}
+        </div>
+    `;
+}
+
+function selectDrawerReview(reviewId) {
+    rmaSelectedReviewByDay[rmaDrawerDayIdx] = reviewId;
+    renderReviewDrawerContent();
+    renderReviewCalendar();
+}
+
+function recalcReviewMarketingROI() {
+    const reviewVolume = parseInt(document.getElementById('rma-roi-review-volume').value) || 200;
+    const shares = parseInt(document.getElementById('rma-roi-shares').value) || 40;
+    const rate   = parseInt(document.getElementById('rma-roi-rate').value) || 25;
+
+    const minutesPerShare = 8;
+    const totalMinutes = shares * minutesPerShare;
+    const totalHours   = Math.round(totalMinutes / 60);
+    const totalCost    = Math.round(totalHours * rate);
+
+    document.getElementById('rma-m-time').textContent      = `${minutesPerShare} min`;
+    document.getElementById('rma-m-hours').textContent     = `${totalHours} hrs`;
+    document.getElementById('rma-m-hours-sub').textContent = `~${shares} shares/month from ${reviewVolume} monthly reviews`;
+    document.getElementById('rma-m-cost').textContent      = `$${totalCost.toLocaleString()}`;
+    document.getElementById('rma-m-cost-sub').textContent  = `@ $${rate}/hr staff rate`;
+}
+
 // ---- COPY ----
 function copyText(cacheKey, btn, btnId) {
     let text = '';
@@ -3954,8 +4668,8 @@ function renderCalendar() {
     }
 }
 
-function prevWeek() { weekOffset--; renderCalendar(); }
-function nextWeek() { weekOffset++; renderCalendar(); }
+function prevWeek() { weekOffset--; if (getAgentType() === 'review-marketing') renderReviewCalendar(); else renderCalendar(); }
+function nextWeek() { weekOffset++; if (getAgentType() === 'review-marketing') renderReviewCalendar(); else renderCalendar(); }
 
 let drawerState = { colIdx: 0, pIdx: 0, activePlt: null, seedOffset: 0 };
 
@@ -4007,6 +4721,7 @@ function openPostDrawer(colIdx, pIdx) {
     drawerState = { colIdx, pIdx, activePlt: null, seedOffset: 0 };
     renderDrawerContent();
     document.getElementById('drawer-overlay').classList.add('visible');
+    document.getElementById('post-drawer').classList.remove('drawer-wide');
     document.getElementById('post-drawer').classList.add('open');
     document.getElementById('post-drawer').scrollTop = 0;
 }
@@ -4168,6 +4883,7 @@ async function runSocialPubGenerate() {
         document.getElementById('outcome-social-pub').style.display = 'block';
         document.getElementById('outcome-social-eng').style.display = 'none';
         document.getElementById('outcome-listings-opt').style.display = 'none';
+        document.getElementById('outcome-review-marketing').style.display = 'none';
         recalcSocialPub();
         forceOpenAcc('outcome');
         setTimeout(() => {
@@ -4331,6 +5047,7 @@ async function generateSocialResponse() {
                 document.getElementById('outcome-social-pub').style.display = 'none';
                 document.getElementById('outcome-social-eng').style.display = 'block';
                 document.getElementById('outcome-listings-opt').style.display = 'none';
+                document.getElementById('outcome-review-marketing').style.display = 'none';
                 recalcSocialEng();
                 forceOpenAcc('outcome');
                 setTimeout(() => {
