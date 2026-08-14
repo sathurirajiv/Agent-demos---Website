@@ -184,7 +184,7 @@
             border: 1px solid #e2e8f0;
             border-radius: 12px;
             box-shadow: 0 8px 28px rgba(0,0,0,0.12);
-            min-width: 280px;
+            width: 580px;
             z-index: 300;
             overflow: hidden;
             display: none;
@@ -197,14 +197,39 @@
             to   { opacity: 1; transform: translateX(-50%) translateY(0); }
         }
 
-        .dd-category {
-            padding: 12px 16px 6px;
-            font-size: 10px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.09em;
-            color: #94a3b8;
+        /* Split dropdown: department nav on the left, agent list on the right */
+        .dd-split { display: flex; }
+        .dd-nav {
+            width: 260px; flex-shrink: 0; background: #f8fafc; border-right: 1px solid #f1f5f9;
+            padding: 8px; display: flex; flex-direction: column; gap: 2px;
+            max-height: 380px; overflow-y: auto;
         }
+        .dd-nav-item {
+            padding: 10px; border-radius: 8px; cursor: pointer; transition: background 0.12s;
+            display: flex; align-items: center; gap: 7px; white-space: nowrap;
+        }
+        .dd-nav-item:hover { background: #f1f5f9; }
+        .dd-nav-item.selected { background: white; box-shadow: 0 1px 4px rgba(15,23,42,0.1); }
+        .dd-nav-label { font-size: 13px; font-weight: 500; color: #374151; overflow: hidden; text-overflow: ellipsis; }
+        .dd-nav-item.selected .dd-nav-label { color: #2563eb; }
+        .dd-nav-sep { color: #cbd5e1; font-size: 12px; flex-shrink: 0; }
+        .dd-poc-name { font-size: 12.5px; font-weight: 400; color: #94a3b8; flex-shrink: 0; }
+        .dd-count-badge {
+            min-width: 19px; height: 19px; padding: 0 5px; border-radius: 999px;
+            background: #e5e7eb; color: #6b7280; font-size: 10.5px; font-weight: 500;
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+        }
+        .dd-list-panel { flex: 1; min-width: 0; max-height: 380px; overflow-y: auto; padding: 6px 0; }
+        .dd-list { display: none; flex-direction: column; }
+        .dd-list.active { display: flex; }
+        .dd-search-wrap { position: relative; padding: 6px 12px 8px; }
+        .dd-search-wrap svg { position: absolute; left: 21px; top: 50%; transform: translateY(-50%); color: #94a3b8; pointer-events: none; }
+        .dd-search-input {
+            width: 100%; padding: 7px 10px 7px 28px; border: 1px solid #e2e8f0; border-radius: 7px;
+            font-size: 12.5px; font-family: inherit; outline: none; color: #374151;
+        }
+        .dd-search-input:focus { border-color: #93c5fd; }
+        .dd-no-results { padding: 10px 16px 14px; text-align: center; font-size: 12.5px; color: #94a3b8; display: none; }
 
         .dd-option {
             padding: 9px 16px;
@@ -241,20 +266,17 @@
         .dd-option-hint { font-size: 11px; font-weight: 400; color: #94a3b8; }
         .dd-option.selected .dd-option-hint { color: #93c5fd; }
         #cdd-rma-freq .dd-option.selected, #cdd-rma-char .dd-option.selected { font-weight: 400; }
+        #agent-dropdown .dd-option.selected { font-weight: 400; }
         .dd-soon-tag {
             margin-left: auto;
-            font-size: 9px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
+            font-size: 10px;
+            font-weight: 400;
             color: #94a3b8;
             background: #f1f5f9;
             padding: 3px 7px;
             border-radius: 5px;
             flex-shrink: 0;
         }
-
-        .dd-divider { height: 1px; background: #f1f5f9; margin: 6px 0; }
 
         .agent-hint {
             display: flex;
@@ -1725,33 +1747,79 @@
         <span class="chevron"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     </div>
     <div class="agent-dropdown" id="agent-dropdown">
-        <div class="dd-category">Review</div>
-        <div class="dd-option selected" onclick="selectAgent('Review Response Agent', this)">
-            Review Response Agent
-        </div>
-        <div class="dd-option" onclick="selectAgent('Review Marketing Agent', this)">
-            Review Marketing Agent
-        </div>
-        <div class="dd-option disabled" title="Coming soon">
-            Review Generation Agent
-            <span class="dd-soon-tag">Coming soon</span>
-        </div>
-        <div class="dd-divider"></div>
-        <div class="dd-category">Social</div>
-        <div class="dd-option" onclick="selectAgent('Social Publishing Agent', this)">
-            Social Publishing Agent
-        </div>
-        <div class="dd-option" onclick="selectAgent('Social Engagement Agent', this)">
-            Social Engagement Agent
-        </div>
-        <div class="dd-divider"></div>
-        <div class="dd-category">Listings</div>
-        <div class="dd-option" onclick="selectAgent('Listings Optimization Agent', this)">
-            Listings Optimization Agent
-        </div>
-        <div class="dd-option disabled" title="Coming soon">
-            Listings Verify Agent
-            <span class="dd-soon-tag">Coming soon</span>
+        <div class="dd-split" onclick="event.stopPropagation()">
+            <div class="dd-nav">
+                <div class="dd-nav-item selected" data-dept="marketing" onclick="selectDeptNav('marketing', this)">
+                    <span class="dd-nav-label">Marketing</span>
+                    <span class="dd-nav-sep">&bull;</span>
+                    <span class="dd-poc-name">Jay</span>
+                    <span class="dd-count-badge">8</span>
+                </div>
+                <div class="dd-nav-item" data-dept="operations" onclick="selectDeptNav('operations', this)">
+                    <span class="dd-nav-label">Operations</span>
+                    <span class="dd-nav-sep">&bull;</span>
+                    <span class="dd-poc-name">Myna</span>
+                    <span class="dd-count-badge">1</span>
+                </div>
+                <div class="dd-nav-item" data-dept="cx" onclick="selectDeptNav('cx', this)">
+                    <span class="dd-nav-label">Customer Experience</span>
+                    <span class="dd-nav-sep">&bull;</span>
+                    <span class="dd-poc-name">Robin</span>
+                    <span class="dd-count-badge">2</span>
+                </div>
+            </div>
+            <div class="dd-list-panel">
+                <div class="dd-list active" id="dd-list-marketing">
+                    <div class="dd-search-wrap">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                        <input type="text" class="dd-search-input" placeholder="Search" oninput="filterDeptAgents(this)">
+                    </div>
+                    <div class="dd-option selected" onclick="selectAgent('Review Response Agent', this)">
+                        Review Response Agent
+                    </div>
+                    <div class="dd-option" onclick="selectAgent('Review Marketing Agent', this)">
+                        Review Marketing Agent
+                    </div>
+                    <div class="dd-option disabled" title="Coming soon">
+                        Review Generation Agent
+                        <span class="dd-soon-tag">Coming soon</span>
+                    </div>
+                    <div class="dd-option disabled" title="Coming soon">
+                        Search Recommendations Agent
+                        <span class="dd-soon-tag">Coming soon</span>
+                    </div>
+                    <div class="dd-option" onclick="selectAgent('Social Publishing Agent', this)">
+                        Social Publishing Agent
+                    </div>
+                    <div class="dd-option" onclick="selectAgent('Social Engagement Agent', this)">
+                        Social Engagement Agent
+                    </div>
+                    <div class="dd-option" onclick="selectAgent('Listings Optimization Agent', this)">
+                        Listings Optimization Agent
+                    </div>
+                    <div class="dd-option disabled" title="Coming soon">
+                        Routing &amp; Tagging Agent
+                        <span class="dd-soon-tag">Coming soon</span>
+                    </div>
+                    <div class="dd-no-results">No agents match your search</div>
+                </div>
+                <div class="dd-list" id="dd-list-operations">
+                    <div class="dd-option disabled" title="Coming soon">
+                        Front Desk Agent
+                        <span class="dd-soon-tag">Coming soon</span>
+                    </div>
+                </div>
+                <div class="dd-list" id="dd-list-cx">
+                    <div class="dd-option disabled" title="Coming soon">
+                        Ticketing Survey Agent
+                        <span class="dd-soon-tag">Coming soon</span>
+                    </div>
+                    <div class="dd-option disabled" title="Coming soon">
+                        Ticketing Review Agent
+                        <span class="dd-soon-tag">Coming soon</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     </div><!-- /.pill-anchor -->
@@ -3034,6 +3102,28 @@ let rmaDayGradient = {};
 let rmaDrawerDayIdx = null;
 
 // ---- DROPDOWN ----
+function selectDeptNav(dept, el) {
+    document.querySelectorAll('.dd-nav-item').forEach(n => n.classList.remove('selected'));
+    el.classList.add('selected');
+    document.querySelectorAll('.dd-list-panel .dd-list').forEach(l => l.classList.remove('active'));
+    const activeList = document.getElementById('dd-list-' + dept);
+    if (activeList) activeList.classList.add('active');
+}
+
+function filterDeptAgents(input) {
+    const q = input.value.trim().toLowerCase();
+    const list = input.closest('.dd-list');
+    if (!list) return;
+    let anyVisible = false;
+    list.querySelectorAll('.dd-option').forEach(opt => {
+        const match = opt.textContent.toLowerCase().includes(q);
+        opt.style.display = match ? '' : 'none';
+        if (match) anyVisible = true;
+    });
+    const noResults = list.querySelector('.dd-no-results');
+    if (noResults) noResults.style.display = anyVisible ? 'none' : 'block';
+}
+
 function toggleDropdown(e) {
     e.stopPropagation();
     const pill = document.getElementById('agent-pill');
