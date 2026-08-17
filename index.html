@@ -263,9 +263,6 @@
 
         .dd-option.disabled { color: #cbd5e1; cursor: not-allowed; }
         .dd-option.disabled:hover { background: none; }
-        .dd-option-hint { font-size: 11px; font-weight: 400; color: #94a3b8; }
-        .dd-option.selected .dd-option-hint { color: #93c5fd; }
-        #cdd-rma-freq .dd-option.selected, #cdd-rma-char .dd-option.selected { font-weight: 400; }
         #agent-dropdown .dd-option.selected { font-weight: 400; }
         .dd-soon-tag {
             margin-left: auto;
@@ -775,6 +772,12 @@
             border-left: 1.5px solid white; border-bottom: 1.5px solid white;
             transform: rotate(-45deg) translateY(-1px); display: block;
         }
+        .layout-check.radio { border-radius: 50%; }
+        .layout-card.selected .layout-check.radio { background: white; border-color: #2563eb; }
+        .layout-card.selected .layout-check.radio::after {
+            content: ''; width: 8px; height: 8px; border-radius: 50%; background: #2563eb;
+            margin: 3px auto 0; border: none; transform: none; display: block;
+        }
         .layout-preview {
             border: 1px solid #f1f5f9; border-radius: 8px; padding: 12px 10px;
             margin: 18px 0 10px; background: #fafafa; min-height: 92px;
@@ -798,16 +801,40 @@
         .rma-review-pick .reviewer-date { font-size: 11.5px; }
         .rma-review-pick .star { font-size: 13px; }
 
-        /* Linear day-by-day post previews */
-        .rma-day-section { margin-bottom: 26px; }
-        .rma-day-section:last-child { margin-bottom: 0; }
-        .rma-day-heading-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
-        .rma-day-heading { font-size: 13.5px; font-weight: 500; color: #0f172a; }
-        .rma-change-review-btn {
-            font-size: 12px; font-weight: 500; color: #2563eb; background: none; border: none;
-            cursor: pointer; font-family: inherit; padding: 2px 0;
+        /* Featured-review picker row in Basic details */
+        .rma-review-select {
+            display: flex; align-items: center; gap: 10px; border: 1.5px solid #e2e8f0; border-radius: 10px;
+            padding: 12px 14px; cursor: pointer; transition: border-color 0.15s;
         }
-        .rma-change-review-btn:hover { color: #1d4ed8; }
+        .rma-review-select:hover { border-color: #93c5fd; }
+        .rma-review-select-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+        .rma-review-select-count { font-size: 12.5px; font-weight: 500; color: #0f172a; }
+        .rma-review-select-snippet { font-size: 12px; color: #94a3b8; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .rma-review-select-chevron { color: #94a3b8; flex-shrink: 0; }
+
+        /* Thumbnail image gallery */
+        .rma-thumb-grid { display: flex; flex-wrap: wrap; gap: 10px; }
+        .rma-thumb-item, .rma-thumb-add {
+            width: 72px; height: 72px; border-radius: 10px; position: relative; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+        }
+        .rma-thumb-item { overflow: hidden; border: 2px solid #e2e8f0; }
+        .rma-thumb-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .rma-thumb-item.active { border-color: #2563eb; }
+        .rma-thumb-remove {
+            position: absolute; top: 3px; right: 3px; width: 18px; height: 18px; border-radius: 50%;
+            background: rgba(15,23,42,0.65); color: white; border: none; font-size: 12px; line-height: 1;
+            display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0;
+        }
+        .rma-thumb-add {
+            border: 1.5px dashed #d1d5db; border-radius: 10px; flex-direction: column; gap: 4px;
+            color: #94a3b8; font-size: 11px; background: white; transition: border-color 0.15s, color 0.15s;
+        }
+        .rma-thumb-add:hover { border-color: #93c5fd; color: #2563eb; }
+        .rma-thumb-add-icon { font-size: 18px; line-height: 1; color: #93c5fd; }
+        .rma-thumb-add:hover .rma-thumb-add-icon { color: #2563eb; }
+
+        /* Post preview row (Facebook + LinkedIn, side by side or full-width for a single channel) */
         .rma-day-row { display: flex; align-items: flex-start; }
         .rma-slot {
             flex: 1 1 0%; min-width: 0; max-width: 2000px; opacity: 1; overflow: hidden;
@@ -818,18 +845,6 @@
         .rma-slot.inactive {
             flex: 0 1 0%; max-width: 0; opacity: 0; margin-left: 0 !important; pointer-events: none;
         }
-        .rma-day-edit-anchor { position: relative; }
-        .rma-day-edit-btn {
-            width: 22px; height: 22px; border: none; background: none; padding: 0; display: flex;
-            align-items: center; justify-content: center; cursor: pointer; color: #94a3b8; transition: color 0.15s;
-        }
-        .rma-day-edit-btn:hover { color: #2563eb; }
-        .rma-day-editor {
-            display: none; position: absolute; top: 28px; right: 0; width: 250px; padding: 14px;
-            background: white; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 8px 24px rgba(15,23,42,0.14);
-            flex-direction: column; gap: 10px; z-index: 10;
-        }
-        .rma-day-editor.open { display: flex; }
 
         .rma-social-preview { border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; background: white; }
         .rma-preview-header { display: flex; align-items: center; gap: 9px; padding: 11px 13px; }
@@ -867,14 +882,6 @@
         .rma-day-row.single .rma-preview-stars { font-size: 15px; }
         .rma-day-row.single .rma-spotlight-name { font-size: 15px; }
         .rma-day-row.single .rma-spotlight-avatar { width: 26px; height: 26px; font-size: 13px; }
-        .rma-edit-img-btn {
-            position: absolute; top: 10px; right: 10px; width: 20px; height: 20px;
-            background: none; border: none; padding: 0; display: flex; align-items: center; justify-content: center;
-            cursor: pointer; color: white; transition: opacity 0.15s, color 0.15s; z-index: 3;
-            opacity: 0; pointer-events: none; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.7));
-        }
-        .rma-social-preview:hover .rma-edit-img-btn { opacity: 1; pointer-events: auto; }
-        .rma-edit-img-btn:hover { color: #cbd5e1; }
         .rma-preview-footer { display: flex; justify-content: space-around; padding: 9px 6px; border-top: 1px solid #f1f5f9; }
         .rma-preview-footer-item { display: flex; align-items: center; gap: 5px; font-size: 11.5px; color: #64748b; }
         .rma-align-toggle { display: flex; gap: 6px; }
@@ -885,28 +892,27 @@
         }
         .rma-align-btn:hover { border-color: #93c5fd; }
         .rma-align-btn.active { border-color: #2563eb; color: #2563eb; background: #eff6ff; }
-        .rma-img-editor {
-            display: none; position: absolute; top: 44px; right: 10px; width: 230px; padding: 10px;
-            background: white; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 8px 24px rgba(15,23,42,0.14);
-            gap: 10px; flex-direction: column; z-index: 3;
-        }
-        .rma-img-editor.open { display: flex; }
-        .rma-img-editor input[type="text"] { font-size: 12.5px; padding: 8px 10px; }
-        .rma-img-editor .btn-add-row, .rma-day-editor .btn-add-row { justify-content: center; border: 1.5px dashed #d1d5db; border-radius: 7px; padding: 8px; font-size: 12.5px; }
-        .rma-img-editor .btn-add-row:hover, .rma-day-editor .btn-add-row:hover { border-color: #93c5fd; }
-        .rma-img-editor-label { font-size: 10px; font-weight: 400; text-transform: uppercase; letter-spacing: 0.06em; color: #94a3b8; margin-bottom: -4px; }
-        .rma-img-editor-divider { border: none; border-top: 1px solid #f1f5f9; margin: 0; }
         .rma-bg-radio-row { display: flex; gap: 10px; flex-wrap: wrap; }
         .rma-bg-radio { display: flex; align-items: center; gap: 5px; font-size: 12px; color: #374151; cursor: pointer; }
         .rma-bg-radio input[type="radio"] { margin: 0; accent-color: #2563eb; cursor: pointer; }
-        .rma-bg-subpanel { flex-direction: column; gap: 8px; }
-        .rma-day-editor input[type="text"] { font-size: 12.5px; padding: 8px 10px; }
         .rma-swatch-row { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
         .rma-swatch {
             width: 22px; height: 22px; border-radius: 6px; border: 1.5px solid transparent; cursor: pointer; padding: 0;
         }
         .rma-swatch.active { border-color: #0f172a; box-shadow: 0 0 0 2px white inset; }
-        .rma-color-input { width: 26px; height: 26px; border: none; border-radius: 6px; padding: 0; cursor: pointer; background: none; }
+        .rma-custom-swatch {
+            width: 22px; height: 22px; border-radius: 6px; border: 1.5px solid #e2e8f0; cursor: pointer;
+            position: relative; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+            background: white; color: #94a3b8; overflow: hidden;
+        }
+        .rma-custom-swatch:hover { border-color: #93c5fd; color: #2563eb; }
+        .rma-custom-swatch.active { border-color: #0f172a; box-shadow: 0 0 0 2px white inset; color: white; }
+        .rma-custom-swatch.active svg { filter: drop-shadow(0 0 1.5px rgba(0,0,0,0.7)); }
+        .rma-custom-swatch svg { pointer-events: none; position: relative; z-index: 1; }
+        .rma-custom-swatch input[type="color"] {
+            position: absolute; inset: -4px; width: calc(100% + 8px); height: calc(100% + 8px);
+            opacity: 0; cursor: pointer; border: none; padding: 0;
+        }
 
         @media (max-width: 640px) {
             .rma-day-row { flex-direction: column; }
@@ -2100,24 +2106,37 @@
                         </div>
                     </div>
 
-                    <div class="rec-summary-bar" style="margin-bottom:20px;">
-                        <span class="rec-summary-text" id="rma-reviews-banner-text">Identified 10 reviews with a 4+ rating that can be shared to your social channels</span>
+                    <div class="form-group" style="margin-bottom:20px;">
+                        <div class="field-label-row">
+                            <label class="form-label" style="margin-bottom:0;">Featured review</label>
+                            <span class="tooltip-wrap">
+                                <span class="tooltip-icon">i</span>
+                                <span class="tooltip-bubble" id="rma-reviews-banner-text">Identified 10 reviews with a 4+ rating that can be shared to your social channels. Select one.</span>
+                            </span>
+                        </div>
+                        <div class="rma-review-select" onclick="openReviewDrawer()">
+                            <div class="rma-review-select-text">
+                                <span class="rma-review-select-count">1 review selected</span>
+                                <span class="rma-review-select-snippet" id="rma-selected-review-snippet">"Best dental experience in Austin! Dr. Kim and the entire team are incredibly professional and caring." — Mike R.</span>
+                            </div>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="rma-review-select-chevron"><path d="M9 6l6 6-6 6"/></svg>
+                        </div>
                     </div>
 
                     <div class="form-group" style="margin-bottom:20px;">
                         <label class="form-label">Choose layout</label>
-                        <div class="field-sub" style="margin-top:0;margin-bottom:12px;">If you choose multiple layouts, posts will rotate between them</div>
+                        <div class="field-sub" style="margin-top:0;margin-bottom:12px;">Select a layout to see a preview of your social post</div>
                         <div class="layout-grid">
-                            <div class="layout-card selected" id="rma-layout-quote" onclick="toggleLayoutCard(this)">
-                                <div class="layout-check"></div>
+                            <div class="layout-card selected" id="rma-layout-quote" onclick="selectRmaLayout('quote', this)">
+                                <div class="layout-check radio"></div>
                                 <div class="layout-preview layout-preview-quote">
                                     <p>"Best dental experience in Austin!"</p>
                                     <span>Mike R. · ★★★★★</span>
                                 </div>
                                 <div class="layout-name">Quote card</div>
                             </div>
-                            <div class="layout-card selected" id="rma-layout-spotlight" onclick="toggleLayoutCard(this)">
-                                <div class="layout-check"></div>
+                            <div class="layout-card" id="rma-layout-spotlight" onclick="selectRmaLayout('spotlight', this)">
+                                <div class="layout-check radio"></div>
                                 <div class="layout-preview layout-preview-spotlight">
                                     <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:6px;">
                                         <span style="width:16px;height:16px;border-radius:50%;background:#c7d2fe;display:inline-block;flex-shrink:0;"></span>
@@ -2131,7 +2150,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group" style="margin-bottom:8px;">
+                    <div class="form-group" style="margin-bottom:20px;">
                         <label class="form-label">Select channels <span class="req">*</span></label>
                         <div class="plat-check-row">
                             <div class="plat-check-opt checked" onclick="togglePlatCheck(this)">
@@ -2147,43 +2166,46 @@
                         </div>
                     </div>
 
-                    <div>
-                        <div class="more-options-toggle" onclick="toggleRmaMoreOptions()" style="margin-top:8px;">
-                            <span class="more-options-label">More options</span>
-                            <span class="more-options-chevron" id="rma-mo-chevron"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5l4 4 4-4" stroke="#93c5fd" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                    <div class="form-group" style="margin-bottom:20px;">
+                        <label class="form-label">Background</label>
+                        <div class="rma-bg-radio-row" style="margin-bottom:12px;">
+                            <label class="rma-bg-radio"><input type="radio" name="rma-bg-type" value="image" checked onchange="setRmaBgType('image')"> Image</label>
+                            <label class="rma-bg-radio"><input type="radio" name="rma-bg-type" value="color" onchange="setRmaBgType('color')"> Color</label>
                         </div>
-                        <div class="more-options-body" id="rma-mo-body" style="display:none;">
-                            <div class="form-group" style="margin-bottom:16px;">
-                                <label class="form-label">Posting frequency</label>
-                                <div class="cdd-anchor" id="cdd-rma-freq">
-                                    <div class="cdd-trigger" onclick="toggleCatDropdown('rma-freq', event)">
-                                        <span id="cdd-rma-freq-label">Once daily</span>
-                                        <span class="cdd-chevron"><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                                    </div>
-                                    <div class="cdd-panel">
-                                        <div class="dd-option selected" onclick="selectRmaDropdown('rma-freq', 'Once daily', this)">Once daily</div>
-                                        <div class="dd-option" onclick="selectRmaDropdown('rma-freq', 'Twice daily', this)">Twice daily</div>
-                                        <div class="dd-option" onclick="selectRmaDropdown('rma-freq', 'Every other day', this)">Every other day</div>
-                                    </div>
+
+                        <div id="rma-bg-panel-image">
+                            <div class="field-label-row" style="margin-bottom:10px;">
+                                <label class="form-label" style="margin-bottom:0;">Background image</label>
+                                <span class="tooltip-wrap">
+                                    <span class="tooltip-icon">i</span>
+                                    <span class="tooltip-bubble">The first image is selected automatically based on your review. Add up to 4 more (under 1MB each) and click one to use it in the preview.</span>
+                                </span>
+                            </div>
+                            <div class="rma-thumb-grid" id="rma-thumb-grid"></div>
+                            <input type="file" id="rma-thumb-file" accept="image/*" multiple style="display:none;" onchange="handleRmaThumbUpload(event)">
+                        </div>
+
+                        <div id="rma-bg-panel-color" style="display:none;">
+                            <div class="rma-swatch-row">
+                                <button type="button" class="rma-swatch active" data-value="#2563eb" style="background:#2563eb;" onclick="setRmaFillColor('#2563eb')"></button>
+                                <button type="button" class="rma-swatch" data-value="#0d9488" style="background:#0d9488;" onclick="setRmaFillColor('#0d9488')"></button>
+                                <button type="button" class="rma-swatch" data-value="#7c3aed" style="background:#7c3aed;" onclick="setRmaFillColor('#7c3aed')"></button>
+                                <button type="button" class="rma-swatch" data-value="#ea580c" style="background:#ea580c;" onclick="setRmaFillColor('#ea580c')"></button>
+                                <button type="button" class="rma-swatch" data-value="#db2777" style="background:#db2777;" onclick="setRmaFillColor('#db2777')"></button>
+                                <button type="button" class="rma-swatch" data-value="#334155" style="background:#334155;" onclick="setRmaFillColor('#334155')"></button>
+                                <div class="rma-custom-swatch" id="rma-custom-swatch" title="Custom color">
+                                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                                    <input type="color" id="rma-custom-color-input" value="#2563eb" onchange="setRmaFillColor(this.value, true)">
                                 </div>
                             </div>
-                            <div class="form-group" style="margin-bottom:16px;">
-                                <label class="form-label">Review character limit</label>
-                                <div class="cdd-anchor" id="cdd-rma-char">
-                                    <div class="cdd-trigger" onclick="toggleCatDropdown('rma-char', event)">
-                                        <span id="cdd-rma-char-label">Detailed and long</span>
-                                        <span class="cdd-chevron"><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                                    </div>
-                                    <div class="cdd-panel">
-                                        <div class="dd-option" onclick="selectRmaDropdown('rma-char', 'Short and crisp', this)">Short and crisp <span class="dd-option-hint">(under 100 characters)</span></div>
-                                        <div class="dd-option selected" onclick="selectRmaDropdown('rma-char', 'Detailed and long', this)">Detailed and long <span class="dd-option-hint">(100+ characters)</span></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Custom instruction</label>
-                                <textarea class="form-input" id="rma-custom-instruction" rows="2" placeholder="e.g. Don't use promotional language or mention pricing" style="resize:vertical;min-height:56px;"></textarea>
-                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Text alignment</label>
+                        <div class="rma-align-toggle" style="max-width:170px;">
+                            <button type="button" class="rma-align-btn" data-align="left" onclick="setRmaAlign('left')" title="Left align"><svg width="14" height="12" viewBox="0 0 16 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><line x1="1" y1="2" x2="15" y2="2"/><line x1="1" y1="7" x2="10" y2="7"/><line x1="1" y1="12" x2="13" y2="12"/></svg></button>
+                            <button type="button" class="rma-align-btn active" data-align="center" onclick="setRmaAlign('center')" title="Center align"><svg width="14" height="12" viewBox="0 0 16 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><line x1="1" y1="2" x2="15" y2="2"/><line x1="3" y1="7" x2="13" y2="7"/><line x1="2" y1="12" x2="14" y2="12"/></svg></button>
                         </div>
                     </div>
                 </div>
@@ -3013,8 +3035,8 @@ const OTHER_LISTING_SITES = ['Yelp', 'Facebook', 'Bing Places', 'Apple Maps', 'Y
 const RMA_STEPS = [
     { txt: 'Scanning recent reviews across your connected sites', ms: 550 },
     { txt: 'Filtering for 4+ star ratings with detailed feedback', ms: 650 },
-    { txt: 'Matching reviews to your selected layout and channels', ms: 600 },
-    { txt: 'Scheduling posts across the week', ms: 600 }
+    { txt: 'Matching your selected review to the layout and channels', ms: 600 },
+    { txt: 'Formatting the post for each channel', ms: 600 }
 ];
 
 const RMA_REVIEW_POOL = [
@@ -3035,16 +3057,7 @@ const RMA_BUSINESS_REVIEW_COUNTS = {
     'Premier Dental Care': 9
 };
 
-// One featured review per weekday by default — user can swap any of them from the drawer
-const RMA_WEEK = [
-    { day: 'Mon', reviewId: 1 },
-    { day: 'Tue', reviewId: 2 },
-    { day: 'Wed', reviewId: 3 },
-    { day: 'Thu', reviewId: 4 },
-    { day: 'Fri', reviewId: 5 }
-];
-
-// Default cover photo per review (real photo, shown unless the user picks a fill/gradient background instead)
+// Default cover photo per review (real photo, shown unless the user picks a color background or uploads their own)
 const RMA_DEFAULT_IMAGES = {
     1: 'https://picsum.photos/id/1015/600/450',
     2: 'https://picsum.photos/id/1016/600/450',
@@ -3055,26 +3068,7 @@ const RMA_DEFAULT_IMAGES = {
     7: 'https://picsum.photos/id/1024/600/450'
 };
 
-// Default gradient per review, used when the "Gradient" background option is picked
-const RMA_REVIEW_GRADIENTS = {
-    1: 'linear-gradient(135deg, #60a5fa, #1d4ed8)',
-    2: 'linear-gradient(135deg, #5eead4, #0d9488)',
-    3: 'linear-gradient(135deg, #c4b5fd, #7c3aed)',
-    4: 'linear-gradient(135deg, #93c5fd, #3b82f6)',
-    5: 'linear-gradient(135deg, #6ee7b7, #059669)',
-    6: 'linear-gradient(135deg, #fdba74, #ea580c)',
-    7: 'linear-gradient(135deg, #a5b4fc, #4f46e5)'
-};
-
 const RMA_FILL_PRESETS = ['#2563eb', '#0d9488', '#7c3aed', '#ea580c', '#db2777', '#334155'];
-const RMA_GRADIENT_PRESETS = [
-    { name: 'Blue', value: 'linear-gradient(135deg, #60a5fa, #1d4ed8)' },
-    { name: 'Teal', value: 'linear-gradient(135deg, #5eead4, #0d9488)' },
-    { name: 'Violet', value: 'linear-gradient(135deg, #c4b5fd, #7c3aed)' },
-    { name: 'Sunset', value: 'linear-gradient(135deg, #fdba74, #ea580c)' },
-    { name: 'Rose', value: 'linear-gradient(135deg, #fbcfe8, #db2777)' },
-    { name: 'Slate', value: 'linear-gradient(135deg, #94a3b8, #334155)' }
-];
 
 // ---- STATE ----
 let currentAgent  = 'Review Response Agent';
@@ -3093,13 +3087,12 @@ let listingsIsGenerating = false;
 let openRecPreviewId = null;
 let rmaGenerated = false;
 let rmaIsGenerating = false;
-let rmaSelectedReviewByDay = {};
-let rmaDayImages = {};
-let rmaDayAlign = {};
-let rmaDayBgType = {};
-let rmaDayFillColor = {};
-let rmaDayGradient = {};
-let rmaDrawerDayIdx = null;
+let rmaSelectedReviewId = 1;
+let rmaImages = [];
+let rmaSelectedImageIdx = -1;
+let rmaBgType = 'image';
+let rmaFillColor = RMA_FILL_PRESETS[0];
+let rmaAlign = 'center';
 
 // ---- DROPDOWN ----
 function selectDeptNav(dept, el) {
@@ -3174,7 +3167,7 @@ function selectAgent(name, el) {
     if (type === 'listings-opt') {
         document.getElementById('output-placeholder').textContent = 'Click Continue to see recommendations from this agent to improve your listings';
     } else if (type === 'review-marketing') {
-        document.getElementById('output-placeholder').textContent = "Click Continue to see this week's review-based social posts";
+        document.getElementById('output-placeholder').textContent = 'Click Continue to see your review-based social post';
     } else {
         document.getElementById('output-placeholder').textContent = 'Check out the example reviews and agent responses here';
     }
@@ -3218,7 +3211,7 @@ function selectAgent(name, el) {
         outcomeSub.textContent = 'Estimated time savings and cost impact';
     } else if (type === 'review-marketing') {
         bdSub.textContent    = 'Business profile, review layout, and posting channels';
-        outSub.textContent   = 'Weekly social calendar built from your best reviews';
+        outSub.textContent   = 'Ready-to-publish post built from your best review';
         outcomeSub.textContent = 'Estimated time savings and cost impact';
     } else {
         bdSub.textContent    = 'Business profile, brand voice, and response preferences';
@@ -3238,7 +3231,6 @@ document.addEventListener('click', () => {
     document.getElementById('agent-dropdown').classList.remove('open');
     document.getElementById('agent-pill').classList.remove('open');
     document.querySelectorAll('.cdd-anchor.open').forEach(a => a.classList.remove('open'));
-    document.querySelectorAll('.rma-img-editor.open, .rma-day-editor.open').forEach(e => e.classList.remove('open'));
 });
 
 // ---- ACCORDION ----
@@ -3302,6 +3294,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('outcome-placeholder').style.display = 'none';
     document.getElementById('outcome-live').style.display = 'block';
     recalcROI();
+
+    renderRmaThumbGrid();
 });
 
 // ---- RESPONSE LENGTH ----
@@ -3471,10 +3465,10 @@ async function fetchRmaBusinessProfile(name) {
     await pause(700);
 
     const count = RMA_BUSINESS_REVIEW_COUNTS[name] || 10;
-    if (textEl) textEl.textContent = `Identified ${count} reviews with a 4+ rating that can be shared to your social channels`;
+    if (textEl) textEl.textContent = `Identified ${count} reviews with a 4+ rating that can be shared to your social channels. Select one.`;
 
-    // Keep the already-generated calendar in sync with the newly selected business
-    if (rmaGenerated) renderReviewCalendar();
+    // Keep the already-generated preview in sync with the newly selected business
+    if (rmaGenerated) renderRmaPreview();
 }
 
 async function selectBizNameSuggestion(name) {
@@ -3532,25 +3526,13 @@ function toggleListingsMoreOptions() {
 }
 
 // ---- REVIEW MARKETING: LAYOUT CARDS, MORE OPTIONS, DROPDOWNS ----
-function toggleLayoutCard(card) {
-    card.classList.toggle('selected');
-    if (rmaGenerated) renderReviewCalendar();
-}
-
-function toggleRmaMoreOptions() {
-    const body    = document.getElementById('rma-mo-body');
-    const chevron = document.getElementById('rma-mo-chevron');
-    const isOpen  = body.style.display === 'block';
-    body.style.display = isOpen ? 'none' : 'block';
-    chevron.classList.toggle('open', !isOpen);
-}
-
-// Generic single-select dropdown label setter, shared by the frequency and character-limit dropdowns
-function selectRmaDropdown(which, value, el) {
-    el.parentElement.querySelectorAll('.dd-option').forEach(o => o.classList.remove('selected'));
-    el.classList.add('selected');
-    document.getElementById('cdd-' + which + '-label').textContent = value;
-    document.getElementById('cdd-' + which).classList.remove('open');
+// Choose-layout cards are single-select (radio-like) now that Output shows only one post
+// Layout cards are multi-select — if both are checked, the agent would rotate between them across future posts
+// Choose-layout cards are single-select (radio-like) — Output shows only one post
+function selectRmaLayout(type, card) {
+    document.querySelectorAll('#review-marketing-fields .layout-card').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    if (rmaGenerated) renderRmaPreview();
 }
 
 // ---- LISTINGS: COMPETITOR ROWS ----
@@ -4374,11 +4356,10 @@ function recalcListingsROI() {
 
 // ---- REVIEW MARKETING AGENT ----
 function renderRmaOutputSubtext(biz) {
-    const freq = document.getElementById('cdd-rma-freq-label')?.textContent || 'Once daily';
     const el = document.getElementById('rma-output-subtext');
     const channelNames = getRmaSelectedChannels().map(p => p === 'fb' ? 'Facebook' : 'LinkedIn');
     const channelText = channelNames.length === 2 ? 'Facebook and LinkedIn' : (channelNames[0] || 'your connected channels');
-    if (el) el.textContent = `5 social shares can be scheduled this week on ${channelText} for ${biz}, posting ${freq.toLowerCase()}`;
+    if (el) el.textContent = `Preview of your review-based post on ${channelText} for ${biz}. Once automated, this agent can plan and schedule posts like this across the week or month based on your posting frequency and review volume.`;
 }
 
 async function runReviewMarketingGenerate() {
@@ -4437,7 +4418,7 @@ async function runReviewMarketingGenerate() {
     });
     progFill.style.width  = '100%';
     progPct.textContent   = '100%';
-    progLabel.textContent = 'Calendar ready!';
+    progLabel.textContent = 'Post ready!';
 
     await pause(320);
 
@@ -4455,221 +4436,36 @@ async function runReviewMarketingGenerate() {
                 <div class="reasoning-acc-inner">${stepsSnap}</div>
             </div>
         </div>
-        <div class="week-nav">
-            <button class="week-nav-btn" onclick="prevWeek()">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 3L5 7l4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </button>
-            <span class="week-nav-label" id="rma-week-label">This week</span>
-            <button class="week-nav-btn" onclick="nextWeek()">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </button>
-        </div>
-        <div id="rma-days-list"></div>
+        <div class="rma-day-row" id="rma-preview-row"></div>
     `;
 
     rmaIsGenerating = false;
     rmaGenerated = true;
-    rmaSelectedReviewByDay = {};
-    rmaDayImages = {};
-    rmaDayBgType = {};
-    rmaDayFillColor = {};
-    rmaDayGradient = {};
-    renderReviewCalendar();
+    renderRmaPreview();
 }
 
-const RMA_ICON_EDIT = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>';
 const RMA_ICON_LIKE = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>';
 const RMA_ICON_COMMENT = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>';
 const RMA_ICON_SHARE = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>';
 const RMA_ICON_SEND = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>';
-const RMA_ICON_ALIGN_LEFT = '<svg width="14" height="12" viewBox="0 0 16 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><line x1="1" y1="2" x2="15" y2="2"/><line x1="1" y1="7" x2="10" y2="7"/><line x1="1" y1="12" x2="13" y2="12"/></svg>';
-const RMA_ICON_ALIGN_CENTER = '<svg width="14" height="12" viewBox="0 0 16 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><line x1="1" y1="2" x2="15" y2="2"/><line x1="3" y1="7" x2="13" y2="7"/><line x1="2" y1="12" x2="14" y2="12"/></svg>';
 
-function getRmaReviewForDay(dayIdx) {
-    const reviewId = rmaSelectedReviewByDay[dayIdx] ?? RMA_WEEK[dayIdx].reviewId;
-    return RMA_REVIEW_POOL.find(x => x.id === reviewId);
+function getRmaSelectedReview() {
+    return RMA_REVIEW_POOL.find(x => x.id === rmaSelectedReviewId) || RMA_REVIEW_POOL[0];
 }
 
-function computeRmaBg(key, r) {
-    const type = rmaDayBgType[key] || 'image';
-    if (type === 'fill') {
-        return { backgroundImage: 'none', backgroundColor: rmaDayFillColor[key] || RMA_FILL_PRESETS[0], showTint: false };
+function computeRmaBg() {
+    if (rmaBgType === 'color') {
+        return { backgroundImage: 'none', backgroundColor: rmaFillColor, showTint: false };
     }
-    if (type === 'gradient') {
-        return { backgroundImage: rmaDayGradient[key] || RMA_REVIEW_GRADIENTS[r.id], backgroundColor: 'transparent', showTint: false };
-    }
-    const url = rmaDayImages[key] || RMA_DEFAULT_IMAGES[r.id];
+    const url = (rmaSelectedImageIdx >= 0 && rmaImages[rmaSelectedImageIdx]) ? rmaImages[rmaSelectedImageIdx] : RMA_DEFAULT_IMAGES[getRmaSelectedReview().id];
     return { backgroundImage: `url('${url}')`, backgroundColor: 'transparent', showTint: true };
 }
 
-function refreshRmaCardBg(key) {
-    const img = document.getElementById('rma-img-' + key);
-    if (!img) return;
-    const dayIdx = parseInt(key.split('-')[0], 10);
-    const bg = computeRmaBg(key, getRmaReviewForDay(dayIdx));
-    img.style.backgroundImage = bg.backgroundImage;
-    img.style.backgroundColor = bg.backgroundColor;
-    const tintEl = img.querySelector('.rma-img-tint');
-    if (tintEl) tintEl.style.display = bg.showTint ? 'block' : 'none';
-}
-
-// ---- Shared apply/sync primitives (used by both the per-card and per-day editors) ----
-function applyRmaBgType(key, type) {
-    rmaDayBgType[key] = type;
-    refreshRmaCardBg(key);
-}
-function applyRmaFillColor(key, color) {
-    rmaDayFillColor[key] = color;
-    rmaDayBgType[key] = 'fill';
-    refreshRmaCardBg(key);
-}
-function applyRmaGradient(key, value) {
-    rmaDayGradient[key] = value;
-    rmaDayBgType[key] = 'gradient';
-    refreshRmaCardBg(key);
-}
-function applyRmaAlign(key, align) {
-    rmaDayAlign[key] = align;
-    const img = document.getElementById('rma-img-' + key);
-    if (!img) return;
-    const overlay = img.querySelector('.rma-preview-image-overlay');
-    if (overlay) overlay.style.textAlign = align;
-    const row = img.querySelector('.rma-spotlight-row');
-    if (row) row.style.justifyContent = align === 'center' ? 'center' : 'flex-start';
-}
-function syncRmaBgTypeUI(container, activeType) {
-    if (!container) return;
-    container.querySelectorAll('.rma-bg-subpanel').forEach(el => { el.style.display = el.dataset.bgtype === activeType ? 'flex' : 'none'; });
-    container.querySelectorAll('[data-bgradio]').forEach(r => { r.checked = r.value === activeType; });
-}
-function syncRmaSwatchUI(container, kind, value) {
-    if (!container) return;
-    container.querySelectorAll(`.rma-swatch[data-kind="${kind}"]`).forEach(b => b.classList.toggle('active', b.dataset.value === value));
-}
-function syncRmaAlignUI(container, align) {
-    if (!container) return;
-    container.querySelectorAll('.rma-align-btn').forEach(b => b.classList.toggle('active', b.dataset.align === align));
-}
-
-// Renders the Background section shared by the per-card editor (id = "dayIdx-platform") and the per-day editor (id = dayIdx, isDay = true)
-function buildRmaBgSection(id, bgType, fillVal, gradVal, isDay) {
-    const typeFn = isDay ? 'setRmaDayBgType' : 'setRmaBgType';
-    const fillFn = isDay ? 'setRmaDayFillColor' : 'setRmaFillColor';
-    const gradFn = isDay ? 'setRmaDayGradient' : 'setRmaGradient';
-    const idArg = isDay ? id : `'${id}'`;
-    const fileInputId = isDay ? `rma-file-day-${id}` : `rma-file-${id}`;
-    const uploadFn = isDay ? `handleRmaDayImageUpload(event,${id})` : `handleRmaImageUpload(event,'${id}')`;
-    const linkFn = isDay ? `applyRmaDayImageLink(this,${id})` : `applyRmaImageLink(this,'${id}')`;
-    const safeFill = /^#[0-9a-fA-F]{6}$/.test(fillVal) ? fillVal : '#2563eb';
-    return `
-                <span class="rma-img-editor-label">Background</span>
-                <div class="rma-bg-radio-row">
-                    <label class="rma-bg-radio"><input type="radio" name="bgtype-${id}" value="image" data-bgradio ${bgType === 'image' ? 'checked' : ''} onchange="${typeFn}(event,${idArg},'image')"> Image</label>
-                    <label class="rma-bg-radio"><input type="radio" name="bgtype-${id}" value="fill" data-bgradio ${bgType === 'fill' ? 'checked' : ''} onchange="${typeFn}(event,${idArg},'fill')"> Fill color</label>
-                    <label class="rma-bg-radio"><input type="radio" name="bgtype-${id}" value="gradient" data-bgradio ${bgType === 'gradient' ? 'checked' : ''} onchange="${typeFn}(event,${idArg},'gradient')"> Gradient</label>
-                </div>
-                <div class="rma-bg-subpanel" data-bgtype="image" style="display:${bgType === 'image' ? 'flex' : 'none'};">
-                    <button type="button" class="btn-add-row" onclick="document.getElementById('${fileInputId}').click()">Upload image</button>
-                    <input type="file" id="${fileInputId}" accept="image/*" style="display:none;" onchange="${uploadFn}">
-                    <input type="text" class="form-input" placeholder="Or paste an image link" onkeydown="if(event.key==='Enter'){${linkFn};}">
-                </div>
-                <div class="rma-bg-subpanel" data-bgtype="fill" style="display:${bgType === 'fill' ? 'flex' : 'none'};">
-                    <div class="rma-swatch-row">
-                        ${RMA_FILL_PRESETS.map(c => `<button type="button" class="rma-swatch ${fillVal === c ? 'active' : ''}" data-kind="fill" data-value="${c}" style="background:${c};" onclick="${fillFn}(event,${idArg},'${c}')"></button>`).join('')}
-                        <input type="color" class="rma-color-input" value="${safeFill}" onchange="${fillFn}(event,${idArg},this.value)">
-                    </div>
-                </div>
-                <div class="rma-bg-subpanel" data-bgtype="gradient" style="display:${bgType === 'gradient' ? 'flex' : 'none'};">
-                    <div class="rma-swatch-row">
-                        ${RMA_GRADIENT_PRESETS.map(g => `<button type="button" class="rma-swatch ${gradVal === g.value ? 'active' : ''}" data-kind="gradient" data-value="${g.value}" title="${g.name}" style="background:${g.value};" onclick="${gradFn}(event,${idArg},'${g.value}')"></button>`).join('')}
-                    </div>
-                </div>`;
-}
-
-function buildRmaDayEditor(dayIdx) {
-    const fbKey = dayIdx + '-fb';
-    const bgType = rmaDayBgType[fbKey] || 'image';
-    const fillVal = rmaDayFillColor[fbKey] || RMA_FILL_PRESETS[0];
-    const gradVal = rmaDayGradient[fbKey] || RMA_REVIEW_GRADIENTS[getRmaReviewForDay(dayIdx).id];
-    const align = rmaDayAlign[fbKey] || 'center';
-    return `
-            <div class="rma-day-editor" id="rma-day-editor-${dayIdx}" onclick="event.stopPropagation()">
-                <span class="rma-img-editor-label">Review</span>
-                <button type="button" class="rma-change-review-btn" style="text-align:left;padding:0;" onclick="closeRmaDayEditor(${dayIdx});openReviewDrawer(${dayIdx});">Change review</button>
-                <hr class="rma-img-editor-divider">
-                ${buildRmaBgSection(dayIdx, bgType, fillVal, gradVal, true)}
-                <hr class="rma-img-editor-divider">
-                <span class="rma-img-editor-label">Text alignment</span>
-                <div class="rma-align-toggle">
-                    <button type="button" class="rma-align-btn ${align === 'left' ? 'active' : ''}" data-align="left" onclick="setRmaDayAlign(event,${dayIdx},'left')" title="Left align">${RMA_ICON_ALIGN_LEFT}</button>
-                    <button type="button" class="rma-align-btn ${align === 'center' ? 'active' : ''}" data-align="center" onclick="setRmaDayAlign(event,${dayIdx},'center')" title="Center align">${RMA_ICON_ALIGN_CENTER}</button>
-                </div>
-            </div>`;
-}
-
-function toggleRmaDayEditor(event, dayIdx) {
-    event.stopPropagation();
-    const el = document.getElementById('rma-day-editor-' + dayIdx);
-    const willOpen = !el.classList.contains('open');
-    document.querySelectorAll('.rma-day-editor.open, .rma-img-editor.open').forEach(e => e.classList.remove('open'));
-    if (willOpen) el.classList.add('open');
-}
-
-function closeRmaDayEditor(dayIdx) {
-    document.getElementById('rma-day-editor-' + dayIdx)?.classList.remove('open');
-}
-
-function renderReviewCalendar() {
-    const list  = document.getElementById('rma-days-list');
-    const label = document.getElementById('rma-week-label');
-    if (!list) return;
-
-    const dates = getWeekDates(weekOffset);
-    const weekdayDates = dates.slice(0, 5); // Mon–Fri (the fixed anchor date, June 1 2026, is itself a Monday)
-
-    if (label) label.textContent = `${weekdayDates[0].month} ${weekdayDates[0].date}–${weekdayDates[4].date}, ${weekdayDates[4].year}`;
-
-    const layouts = getRmaSelectedLayouts();
-    const channels = getRmaSelectedChannels();
-
-    list.innerHTML = RMA_WEEK.map((col, idx) => {
-        const reviewId = rmaSelectedReviewByDay[idx] ?? col.reviewId;
-        const r = RMA_REVIEW_POOL.find(x => x.id === reviewId);
-        const d = weekdayDates[idx];
-        const layout = layouts[idx % layouts.length];
-        return `
-        <div class="rma-day-section">
-            <div class="rma-day-heading-row">
-                <span class="rma-day-heading">${d.day}, ${d.month} ${d.date}</span>
-                <div class="rma-day-edit-anchor">
-                    <button type="button" class="rma-day-edit-btn" onclick="toggleRmaDayEditor(event, ${idx})" title="Edit day">${RMA_ICON_EDIT}</button>
-                    ${buildRmaDayEditor(idx)}
-                </div>
-            </div>
-            <div class="rma-day-row${channels.length === 1 ? ' single' : ''}">
-                <div class="rma-slot rma-slot-fb${channels.includes('fb') ? ' active' : ' inactive'}">${buildRmaPreview(idx, 'fb', r, layout)}</div>
-                <div class="rma-slot rma-slot-li${channels.includes('li') ? ' active' : ' inactive'}">${buildRmaPreview(idx, 'li', r, layout)}</div>
-            </div>
-        </div>`;
-    }).join('');
-}
-
-// Toggles which channel slots are visible without rebuilding the DOM, so the width change animates smoothly
-function updateRmaChannelVisibility() {
-    const channels = getRmaSelectedChannels();
-    document.querySelectorAll('.rma-day-row').forEach(row => row.classList.toggle('single', channels.length === 1));
-    const setSlotState = (el, isActive) => {
-        el.classList.toggle('active', isActive);
-        el.classList.toggle('inactive', !isActive);
-    };
-    document.querySelectorAll('.rma-slot-fb').forEach(el => setSlotState(el, channels.includes('fb')));
-    document.querySelectorAll('.rma-slot-li').forEach(el => setSlotState(el, channels.includes('li')));
-}
-
-function getRmaSelectedLayouts() {
-    const map = [['quote', 'rma-layout-quote'], ['spotlight', 'rma-layout-spotlight']];
-    const selected = map.filter(([, id]) => document.getElementById(id)?.classList.contains('selected')).map(([key]) => key);
-    return selected.length ? selected : ['quote'];
+// If both layouts are selected, the preview shows Quote card (the agent would rotate between them once automated)
+function getRmaSelectedLayout() {
+    if (document.getElementById('rma-layout-quote')?.classList.contains('selected')) return 'quote';
+    if (document.getElementById('rma-layout-spotlight')?.classList.contains('selected')) return 'spotlight';
+    return 'quote';
 }
 
 function getRmaSelectedChannels() {
@@ -4680,14 +4476,37 @@ function getRmaSelectedChannels() {
     return channels;
 }
 
-function buildRmaPreview(dayIdx, platform, r, layout) {
-    const key = dayIdx + '-' + platform;
-    const bgType = rmaDayBgType[key] || 'image';
-    const bg = computeRmaBg(key, r);
-    const fillVal = rmaDayFillColor[key] || RMA_FILL_PRESETS[0];
-    const gradVal = rmaDayGradient[key] || RMA_REVIEW_GRADIENTS[r.id];
-    const align = rmaDayAlign[key] || 'center';
+// Renders the single Facebook + LinkedIn preview pair reflecting the current Basic details configuration
+function renderRmaPreview() {
+    const wrap = document.getElementById('rma-preview-row');
+    if (!wrap) return;
+    const r = getRmaSelectedReview();
+    const layout = getRmaSelectedLayout();
     const bizName = document.getElementById('rma-biz-name')?.value.trim() || 'Aspen Dental Group';
+    const channels = getRmaSelectedChannels();
+    wrap.className = 'rma-day-row' + (channels.length === 1 ? ' single' : '');
+    wrap.innerHTML = `
+        <div class="rma-slot rma-slot-fb${channels.includes('fb') ? ' active' : ' inactive'}">${buildRmaPreview('fb', r, layout, bizName)}</div>
+        <div class="rma-slot rma-slot-li${channels.includes('li') ? ' active' : ' inactive'}">${buildRmaPreview('li', r, layout, bizName)}</div>
+    `;
+}
+
+// Toggles which channel slots are visible without rebuilding the DOM, so the width change animates smoothly
+function updateRmaChannelVisibility() {
+    const channels = getRmaSelectedChannels();
+    const row = document.getElementById('rma-preview-row');
+    if (row) row.classList.toggle('single', channels.length === 1);
+    const setSlotState = (el, isActive) => {
+        el.classList.toggle('active', isActive);
+        el.classList.toggle('inactive', !isActive);
+    };
+    document.querySelectorAll('.rma-slot-fb').forEach(el => setSlotState(el, channels.includes('fb')));
+    document.querySelectorAll('.rma-slot-li').forEach(el => setSlotState(el, channels.includes('li')));
+}
+
+function buildRmaPreview(platform, r, layout, bizName) {
+    const bg = computeRmaBg();
+    const align = rmaAlign;
     const stars = Array(5).fill(0).map((_, i) =>
         `<span style="color:${i < r.stars ? '#fbbf24' : 'rgba(255,255,255,0.4)'};">★</span>`
     ).join('');
@@ -4699,28 +4518,14 @@ function buildRmaPreview(dayIdx, platform, r, layout) {
     if (platform === 'li') footerItems.push(`<span class="rma-preview-footer-item">${RMA_ICON_SEND} Send</span>`);
 
     const platBadge = `<span class="rma-plat-badge-header cplt-${platform}">${getPlatIconSVGSmall(platform)}</span>`;
-
-    const editorPopover = `
-            <div class="rma-img-editor" id="rma-img-editor-${key}" onclick="event.stopPropagation()">
-                ${buildRmaBgSection(key, bgType, fillVal, gradVal, false)}
-                <hr class="rma-img-editor-divider">
-                <span class="rma-img-editor-label">Text alignment</span>
-                <div class="rma-align-toggle">
-                    <button type="button" class="rma-align-btn ${align === 'left' ? 'active' : ''}" data-align="left" onclick="setRmaAlign(event, '${key}', 'left')" title="Left align">${RMA_ICON_ALIGN_LEFT}</button>
-                    <button type="button" class="rma-align-btn ${align === 'center' ? 'active' : ''}" data-align="center" onclick="setRmaAlign(event, '${key}', 'center')" title="Center align">${RMA_ICON_ALIGN_CENTER}</button>
-                </div>
-            </div>`;
-
-    const editBtn = `<button type="button" class="rma-edit-img-btn" onclick="toggleRmaImageEditor(event, '${key}')" title="Edit post">${RMA_ICON_EDIT}</button>`;
     const tint = `<div class="rma-img-tint" style="display:${bg.showTint ? 'block' : 'none'};"></div>`;
     const bgStyleAttr = `background-image:${bg.backgroundImage};background-color:${bg.backgroundColor};`;
 
     let media;
     if (layout === 'spotlight') {
         media = `
-        <div class="rma-preview-image" id="rma-img-${key}" style="${bgStyleAttr}">
+        <div class="rma-preview-image" style="${bgStyleAttr}">
             ${tint}
-            ${editBtn}
             <div class="rma-preview-image-overlay" style="text-align:${align};">
                 <div class="rma-spotlight-row" style="justify-content:${align === 'center' ? 'center' : 'flex-start'};">
                     <div class="rma-spotlight-avatar">A</div>
@@ -4729,19 +4534,16 @@ function buildRmaPreview(dayIdx, platform, r, layout) {
                 </div>
                 <p class="rma-preview-quote">"${r.text}"</p>
             </div>
-            ${editorPopover}
         </div>`;
     } else {
         media = `
-        <div class="rma-preview-image" id="rma-img-${key}" style="${bgStyleAttr}">
+        <div class="rma-preview-image" style="${bgStyleAttr}">
             ${tint}
-            ${editBtn}
             <div class="rma-preview-image-overlay" style="text-align:${align};">
                 <p class="rma-preview-quote">"${r.text}"</p>
                 <div class="rma-preview-meta">${r.name} on Google, ${r.date}</div>
                 <div class="rma-preview-stars">${stars}</div>
             </div>
-            ${editorPopover}
         </div>`;
     }
 
@@ -4759,124 +4561,93 @@ function buildRmaPreview(dayIdx, platform, r, layout) {
     </div>`;
 }
 
-function toggleRmaImageEditor(event, key) {
-    event.stopPropagation();
-    const el = document.getElementById('rma-img-editor-' + key);
-    const willOpen = !el.classList.contains('open');
-    document.querySelectorAll('.rma-img-editor.open, .rma-day-editor.open').forEach(e => e.classList.remove('open'));
-    if (willOpen) el.classList.add('open');
+// ---- Background controls (Basic details) ----
+function setRmaBgType(type) {
+    rmaBgType = type;
+    document.getElementById('rma-bg-panel-image').style.display = type === 'image' ? 'block' : 'none';
+    document.getElementById('rma-bg-panel-color').style.display = type === 'color' ? 'block' : 'none';
+    if (rmaGenerated) renderRmaPreview();
 }
 
-// ---- Per-card (single platform) editor handlers ----
-function setRmaAlign(event, key, align) {
-    event.stopPropagation();
-    applyRmaAlign(key, align);
-    syncRmaAlignUI(document.getElementById('rma-img-editor-' + key), align);
+function setRmaFillColor(color, isCustom) {
+    rmaFillColor = color;
+    document.querySelectorAll('#rma-bg-panel-color .rma-swatch').forEach(b => b.classList.toggle('active', !isCustom && b.dataset.value === color));
+    const customSwatch = document.getElementById('rma-custom-swatch');
+    if (customSwatch) {
+        customSwatch.classList.toggle('active', !!isCustom);
+        customSwatch.style.background = isCustom ? color : '';
+    }
+    if (rmaGenerated) renderRmaPreview();
 }
 
-function setRmaBgType(event, key, type) {
-    event.stopPropagation();
-    applyRmaBgType(key, type);
-    syncRmaBgTypeUI(document.getElementById('rma-img-editor-' + key), type);
+function setRmaAlign(align) {
+    rmaAlign = align;
+    document.querySelectorAll('#review-marketing-fields .rma-align-btn').forEach(b => b.classList.toggle('active', b.dataset.align === align));
+    if (rmaGenerated) renderRmaPreview();
 }
 
-function setRmaFillColor(event, key, color) {
-    event.stopPropagation();
-    applyRmaFillColor(key, color);
-    const container = document.getElementById('rma-img-editor-' + key);
-    syncRmaBgTypeUI(container, 'fill');
-    syncRmaSwatchUI(container, 'fill', color);
+// ---- Background image gallery (Basic details) ----
+// Slot 0 is always the system default photo matched to the featured review — shown, selectable, but not removable
+function renderRmaThumbGrid() {
+    const grid = document.getElementById('rma-thumb-grid');
+    if (!grid) return;
+    const defaultUrl = RMA_DEFAULT_IMAGES[getRmaSelectedReview().id];
+    const defaultTile = `
+        <div class="rma-thumb-item${rmaSelectedImageIdx === -1 ? ' active' : ''}" onclick="selectRmaThumb(-1)" title="System default">
+            <img src="${defaultUrl}" alt="">
+        </div>`;
+    const items = rmaImages.map((url, idx) => `
+        <div class="rma-thumb-item${idx === rmaSelectedImageIdx ? ' active' : ''}" onclick="selectRmaThumb(${idx})">
+            <img src="${url}" alt="">
+            <button type="button" class="rma-thumb-remove" onclick="event.stopPropagation();removeRmaThumb(${idx})">&times;</button>
+        </div>
+    `).join('');
+    const addTile = rmaImages.length < 4 ? `
+        <div class="rma-thumb-add" onclick="document.getElementById('rma-thumb-file').click()">
+            <span class="rma-thumb-add-icon">+</span>
+            <span>Add</span>
+        </div>` : '';
+    grid.innerHTML = defaultTile + items + addTile;
 }
 
-function setRmaGradient(event, key, value) {
-    event.stopPropagation();
-    applyRmaGradient(key, value);
-    const container = document.getElementById('rma-img-editor-' + key);
-    syncRmaBgTypeUI(container, 'gradient');
-    syncRmaSwatchUI(container, 'gradient', value);
+// Supports selecting several images at once, up to 4 additions on top of the default photo
+function handleRmaThumbUpload(event) {
+    const files = Array.from(event.target.files || []);
+    event.target.value = '';
+    const toAdd = files.slice(0, Math.max(0, 4 - rmaImages.length));
+    if (!toAdd.length) return;
+    let loaded = 0;
+    toAdd.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            rmaImages.push(e.target.result);
+            loaded++;
+            if (loaded === toAdd.length) {
+                rmaSelectedImageIdx = rmaImages.length - 1;
+                renderRmaThumbGrid();
+                if (rmaGenerated) renderRmaPreview();
+            }
+        };
+        reader.readAsDataURL(file);
+    });
 }
 
-function handleRmaImageUpload(event, key) {
-    const file = event.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (e) => {
-        rmaDayImages[key] = e.target.result;
-        applyRmaBgType(key, 'image');
-        document.getElementById('rma-img-editor-' + key).classList.remove('open');
-    };
-    reader.readAsDataURL(file);
+function selectRmaThumb(idx) {
+    rmaSelectedImageIdx = idx;
+    renderRmaThumbGrid();
+    if (rmaGenerated) renderRmaPreview();
 }
 
-function applyRmaImageLink(input, key) {
-    const url = input.value.trim();
-    if (!url) return;
-    rmaDayImages[key] = url;
-    applyRmaBgType(key, 'image');
-    document.getElementById('rma-img-editor-' + key).classList.remove('open');
-    input.value = '';
+function removeRmaThumb(idx) {
+    rmaImages.splice(idx, 1);
+    if (rmaSelectedImageIdx === idx) rmaSelectedImageIdx = rmaImages.length ? 0 : -1;
+    else if (rmaSelectedImageIdx > idx) rmaSelectedImageIdx--;
+    renderRmaThumbGrid();
+    if (rmaGenerated) renderRmaPreview();
 }
 
-// ---- Per-day (both platforms at once) editor handlers ----
-function setRmaDayAlign(event, dayIdx, align) {
-    event.stopPropagation();
-    applyRmaAlign(dayIdx + '-fb', align);
-    applyRmaAlign(dayIdx + '-li', align);
-    syncRmaAlignUI(document.getElementById('rma-day-editor-' + dayIdx), align);
-}
-
-function setRmaDayBgType(event, dayIdx, type) {
-    event.stopPropagation();
-    applyRmaBgType(dayIdx + '-fb', type);
-    applyRmaBgType(dayIdx + '-li', type);
-    syncRmaBgTypeUI(document.getElementById('rma-day-editor-' + dayIdx), type);
-}
-
-function setRmaDayFillColor(event, dayIdx, color) {
-    event.stopPropagation();
-    applyRmaFillColor(dayIdx + '-fb', color);
-    applyRmaFillColor(dayIdx + '-li', color);
-    const container = document.getElementById('rma-day-editor-' + dayIdx);
-    syncRmaBgTypeUI(container, 'fill');
-    syncRmaSwatchUI(container, 'fill', color);
-}
-
-function setRmaDayGradient(event, dayIdx, value) {
-    event.stopPropagation();
-    applyRmaGradient(dayIdx + '-fb', value);
-    applyRmaGradient(dayIdx + '-li', value);
-    const container = document.getElementById('rma-day-editor-' + dayIdx);
-    syncRmaBgTypeUI(container, 'gradient');
-    syncRmaSwatchUI(container, 'gradient', value);
-}
-
-function handleRmaDayImageUpload(event, dayIdx) {
-    const file = event.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (e) => {
-        rmaDayImages[dayIdx + '-fb'] = e.target.result;
-        rmaDayImages[dayIdx + '-li'] = e.target.result;
-        applyRmaBgType(dayIdx + '-fb', 'image');
-        applyRmaBgType(dayIdx + '-li', 'image');
-        closeRmaDayEditor(dayIdx);
-    };
-    reader.readAsDataURL(file);
-}
-
-function applyRmaDayImageLink(input, dayIdx) {
-    const url = input.value.trim();
-    if (!url) return;
-    rmaDayImages[dayIdx + '-fb'] = url;
-    rmaDayImages[dayIdx + '-li'] = url;
-    applyRmaBgType(dayIdx + '-fb', 'image');
-    applyRmaBgType(dayIdx + '-li', 'image');
-    closeRmaDayEditor(dayIdx);
-    input.value = '';
-}
-
-function openReviewDrawer(dayIdx) {
-    rmaDrawerDayIdx = dayIdx;
+// ---- Featured-review drawer ----
+function openReviewDrawer() {
     document.getElementById('drawer-title').textContent = 'Select a review';
     document.getElementById('drawer-tabs').innerHTML = '';
     document.getElementById('drawer-tabs').style.display = 'none';
@@ -4887,12 +4658,11 @@ function openReviewDrawer(dayIdx) {
 }
 
 function renderReviewDrawerContent() {
-    const currentId = rmaSelectedReviewByDay[rmaDrawerDayIdx] ?? RMA_WEEK[rmaDrawerDayIdx].reviewId;
     document.getElementById('drawer-body').innerHTML = `
         <div class="drawer-body-content">
-            <p class="drawer-datetime">Choose the review to feature for <strong>${RMA_WEEK[rmaDrawerDayIdx].day}</strong></p>
+            <p class="drawer-datetime">Choose the review to feature in your post</p>
             ${RMA_REVIEW_POOL.map(r => `
-                <div class="rma-review-pick${r.id === currentId ? ' selected' : ''}" onclick="selectDrawerReview(${r.id})">
+                <div class="rma-review-pick${r.id === rmaSelectedReviewId ? ' selected' : ''}" onclick="selectDrawerReview(${r.id})">
                     <div class="rma-review-pick-top">
                         <div class="stars-row">${Array(5).fill(0).map((_, i) => `<span class="star ${i < r.stars ? 'on' : 'off'}">★</span>`).join('')}</div>
                         <span class="reviewer-name">${r.name}</span>
@@ -4906,10 +4676,18 @@ function renderReviewDrawerContent() {
     `;
 }
 
+function updateRmaSelectedReviewSnippet() {
+    const r = getRmaSelectedReview();
+    const el = document.getElementById('rma-selected-review-snippet');
+    if (el) el.textContent = `"${r.text}" — ${r.name}`;
+}
+
 function selectDrawerReview(reviewId) {
-    rmaSelectedReviewByDay[rmaDrawerDayIdx] = reviewId;
+    rmaSelectedReviewId = reviewId;
     renderReviewDrawerContent();
-    renderReviewCalendar();
+    updateRmaSelectedReviewSnippet();
+    renderRmaThumbGrid();
+    if (rmaGenerated) renderRmaPreview();
 }
 
 function recalcReviewMarketingROI() {
@@ -5122,8 +4900,8 @@ function renderCalendar() {
     }
 }
 
-function prevWeek() { weekOffset--; if (getAgentType() === 'review-marketing') renderReviewCalendar(); else renderCalendar(); }
-function nextWeek() { weekOffset++; if (getAgentType() === 'review-marketing') renderReviewCalendar(); else renderCalendar(); }
+function prevWeek() { weekOffset--; renderCalendar(); }
+function nextWeek() { weekOffset++; renderCalendar(); }
 
 let drawerState = { colIdx: 0, pIdx: 0, activePlt: null, seedOffset: 0 };
 
