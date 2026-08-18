@@ -170,6 +170,10 @@
 
         .agent-selector-pill:hover { background: linear-gradient(135deg, #ddd6fe, #c7d2fe); }
         .agent-selector-pill .chevron { display: flex; align-items: center; opacity: 0.8; margin-left: 2px; transition: transform 0.2s; flex-shrink: 0; }
+        .pill-label-col { display: inline-flex; align-items: baseline; gap: 6px; }
+        #pill-label { font-weight: 400; }
+        .pill-dot-sep { color: #a78bfa; font-size: 10px; }
+        .pill-dept-label { font-size: 12.5px; font-weight: 400; color: #7c3aed; opacity: 0.75; }
         .agent-selector-pill.open .chevron { transform: rotate(180deg); }
 
         /* Dropdown */
@@ -219,7 +223,14 @@
             background: #e5e7eb; color: #6b7280; font-size: 10.5px; font-weight: 500;
             display: flex; align-items: center; justify-content: center; flex-shrink: 0;
         }
-        .dd-list-panel { flex: 1; min-width: 0; max-height: 380px; overflow-y: auto; padding: 6px 0; }
+        .dd-list-panel {
+            flex: 1; min-width: 0; max-height: 380px; overflow-y: auto; padding: 6px 0;
+            scrollbar-width: thin; scrollbar-color: transparent transparent;
+        }
+        .dd-list-panel:hover { scrollbar-color: #cbd5e1 transparent; }
+        .dd-list-panel::-webkit-scrollbar { width: 6px; }
+        .dd-list-panel::-webkit-scrollbar-thumb { background: transparent; border-radius: 999px; }
+        .dd-list-panel:hover::-webkit-scrollbar-thumb { background: #cbd5e1; }
         .dd-list { display: none; flex-direction: column; }
         .dd-list.active { display: flex; }
         .dd-search-wrap { position: relative; padding: 6px 12px 8px; }
@@ -592,6 +603,8 @@
             color: #64748b; flex-shrink: 0;
         }
         .rt-card-label { font-size: 13px; font-weight: 400; color: #374151; line-height: 1.3; }
+        .rt-grid-icon { grid-template-columns: repeat(4, 1fr); }
+        .rt-grid-icon .rt-card { flex-direction: row; justify-content: flex-start; text-align: left; padding: 12px; gap: 10px; }
 
         /* Custom category dropdown */
         .cdd-anchor { position: relative; }
@@ -697,7 +710,25 @@
         .impact-medium { background: #fef9c3; color: #854d0e; }
         .impact-low    { background: #f1f5f9; color: #64748b; }
 
-        .rec-detail { font-size: 12.5px; color: #64748b; line-height: 1.55; margin: 8px 0 14px; }
+        .sr-chip-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+        .sr-chip {
+            font-size: 10.5px; font-weight: 400; padding: 3px 9px; border-radius: 5px;
+            white-space: nowrap; display: inline-flex; align-items: center; gap: 4px;
+        }
+        .sr-chip-visibility { background: #dcfce7; color: #15803d; }
+        .sr-chip-theme { background: #eff6ff; color: #2563eb; }
+
+        .rec-card-clickable { cursor: pointer; transition: border-color 0.15s, box-shadow 0.15s; }
+        .rec-card-clickable:hover { border-color: #c7d2fe; box-shadow: 0 2px 10px rgba(79,70,229,0.08); }
+
+        .sr-drawer-section { margin-bottom: 22px; }
+        .sr-drawer-section:last-child { margin-bottom: 0; }
+        .sr-drawer-section-title { font-size: 13px; color: #0f172a; font-weight: 400; margin-bottom: 8px; }
+        .sr-drawer-section-text { font-size: 13px; color: #475569; line-height: 1.6; margin: 0; }
+        .sr-drawer-steps { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 8px; }
+        .sr-drawer-steps li { font-size: 13px; color: #475569; line-height: 1.5; }
+
+        .rec-detail { font-size: 12.5px; color: #64748b; line-height: 1.55; margin: 8px 0 0; }
 
         .rec-preview-btn {
             display: inline-flex; align-items: center; gap: 6px;
@@ -1718,6 +1749,7 @@
             .roi-calc-inputs { grid-template-columns: 1fr 1fr; }
             .roi-calc-inputs.roi-calc-inputs-3 { grid-template-columns: 1fr; }
             .rt-grid { grid-template-columns: repeat(2, 1fr); }
+            .rt-grid-icon { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
 </head>
@@ -1749,7 +1781,11 @@
     <div class="pill-anchor">
     <div class="agent-selector-pill" id="agent-pill" onclick="toggleDropdown(event)">
         <span>✦</span>
-        <span id="pill-label">Review Response Agent</span>
+        <span class="pill-label-col">
+            <span id="pill-label">Review Response Agent</span>
+            <span class="pill-dot-sep">&bull;</span>
+            <span id="pill-dept-label" class="pill-dept-label">Marketing</span>
+        </span>
         <span class="chevron"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     </div>
     <div class="agent-dropdown" id="agent-dropdown">
@@ -1786,14 +1822,6 @@
                     <div class="dd-option" onclick="selectAgent('Review Marketing Agent', this)">
                         Review Marketing Agent
                     </div>
-                    <div class="dd-option disabled" title="Coming soon">
-                        Review Generation Agent
-                        <span class="dd-soon-tag">Coming soon</span>
-                    </div>
-                    <div class="dd-option disabled" title="Coming soon">
-                        Search Recommendations Agent
-                        <span class="dd-soon-tag">Coming soon</span>
-                    </div>
                     <div class="dd-option" onclick="selectAgent('Social Publishing Agent', this)">
                         Social Publishing Agent
                     </div>
@@ -1802,6 +1830,13 @@
                     </div>
                     <div class="dd-option" onclick="selectAgent('Listings Optimization Agent', this)">
                         Listings Optimization Agent
+                    </div>
+                    <div class="dd-option" onclick="selectAgent('Search Recommendations Agent', this)">
+                        Search Recommendations Agent
+                    </div>
+                    <div class="dd-option disabled" title="Coming soon">
+                        Review Generation Agent
+                        <span class="dd-soon-tag">Coming soon</span>
                     </div>
                     <div class="dd-option disabled" title="Coming soon">
                         Routing &amp; Tagging Agent
@@ -2378,6 +2413,126 @@
                     </div>
                 </div>
 
+                <!-- ── Search Recommendations Agent fields ── -->
+                <div id="search-reco-fields" style="display:none;">
+                    <div class="form-group" style="margin-bottom:16px;">
+                        <label class="form-label">Business name <span class="req">*</span></label>
+                        <div class="input-wrap">
+                            <input type="text" class="form-input" id="sr-biz-name" value="Aspen Dental Group" style="padding-left:36px;padding-right:98px;" oninput="handleSrBizNameInput(this)" onfocus="handleSrBizNameFocus()" onblur="hideSrBizNameSuggestions()">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0f172a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;left:13px;top:50%;transform:translateY(-50%);pointer-events:none;"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                            <a href="#" class="input-inline-link" onclick="event.preventDefault();">View profile ↗</a>
+                            <div class="competitor-suggest-panel" id="sr-biz-name-suggest-panel"></div>
+                        </div>
+                        <div class="field-sub">Search any business to auto-populate its profile below</div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom:20px;">
+                        <div class="biz-summary-card" id="sr-biz-profile-card">
+                            <div class="biz-summary-top">
+                                <span class="biz-summary-title">Business profile</span>
+                                <button type="button" class="biz-edit-btn" id="sr-biz-edit-btn" onclick="toggleSrBizEdit()">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                                    Edit
+                                </button>
+                            </div>
+
+                            <div id="sr-biz-summary-view">
+                                <div class="biz-summary-row"><span class="bs-label">Address</span><span class="bs-value" id="sr-bs-address">123 W 6th St, Austin, TX 78701</span></div>
+                                <div class="biz-summary-row"><span class="bs-label">Primary category</span><span class="bs-value" id="sr-bs-primary">Dentist</span></div>
+                                <div class="biz-summary-row"><span class="bs-label">Description</span><span class="bs-value" id="sr-bs-description">Aspen Dental Group provides comprehensive family dental care in Austin, TX, including routine checkups, cleanings, and restorative treatment.</span></div>
+                                <div class="biz-summary-row"><span class="bs-label">Website</span><span class="bs-value" id="sr-bs-website">aspendental.com</span></div>
+                            </div>
+
+                            <div class="biz-edit-fields" id="sr-biz-edit-fields" style="display:none;">
+                                <div class="form-group" style="margin-bottom:16px;">
+                                    <label class="form-label">Business address</label>
+                                    <input type="text" class="form-input" id="sr-biz-address" value="123 W 6th St, Austin, TX 78701">
+                                </div>
+                                <div class="form-group" style="margin-bottom:16px;">
+                                    <label class="form-label">Primary category</label>
+                                    <div class="cdd-anchor" id="cdd-sr-primary">
+                                        <div class="cdd-trigger" onclick="toggleCatDropdown('sr-primary', event)">
+                                            <span id="cdd-sr-primary-label">Dentist</span>
+                                            <span class="cdd-chevron"><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                                        </div>
+                                        <div class="cdd-panel">
+                                            <div class="dd-option selected" onclick="selectSrPrimaryCategory('Dentist', this)">Dentist</div>
+                                            <div class="dd-option" onclick="selectSrPrimaryCategory('Cosmetic dentist', this)">Cosmetic dentist</div>
+                                            <div class="dd-option" onclick="selectSrPrimaryCategory('Orthodontist', this)">Orthodontist</div>
+                                            <div class="dd-option" onclick="selectSrPrimaryCategory('Pediatric dentist', this)">Pediatric dentist</div>
+                                            <div class="dd-option" onclick="selectSrPrimaryCategory('Emergency dental clinic', this)">Emergency dental clinic</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group" style="margin-bottom:16px;">
+                                    <label class="form-label">Website</label>
+                                    <input type="text" class="form-input" id="sr-biz-website" value="aspendental.com">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Business description</label>
+                                    <textarea class="form-input" id="sr-biz-desc" rows="3" style="resize:vertical;min-height:64px;">Aspen Dental Group provides comprehensive family dental care in Austin, TX, including routine checkups, cleanings, and restorative treatment.</textarea>
+                                </div>
+                            </div>
+
+                            <div class="biz-fetching-overlay" id="sr-biz-fetching-overlay"><span class="pulsing">⚙</span> Fetching business profile…</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom:8px;">
+                        <div class="field-label-row" style="margin-bottom:12px;">
+                            <label class="form-label">Select recommendation types</label>
+                            <span class="tooltip-wrap">
+                                <span class="tooltip-icon">i</span>
+                                <span class="tooltip-bubble">Choose which recommendation types the agent should look for</span>
+                            </span>
+                        </div>
+                        <div class="rt-grid rt-grid-icon">
+                            <div class="rt-card selected" id="sr-rt-content" onclick="toggleSrRecCard(this)">
+                                <div class="rt-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+                                <div class="rt-card-label">Content</div>
+                            </div>
+                            <div class="rt-card selected" id="sr-rt-faq" onclick="toggleSrRecCard(this)">
+                                <div class="rt-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+                                <div class="rt-card-label">FAQ</div>
+                            </div>
+                            <div class="rt-card selected" id="sr-rt-listings" onclick="toggleSrRecCard(this)">
+                                <div class="rt-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+                                <div class="rt-card-label">Listings</div>
+                            </div>
+                            <div class="rt-card selected" id="sr-rt-reputation" onclick="toggleSrRecCard(this)">
+                                <div class="rt-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+                                <div class="rt-card-label">Reputation</div>
+                            </div>
+                            <div class="rt-card selected" id="sr-rt-outreach" onclick="toggleSrRecCard(this)">
+                                <div class="rt-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
+                                <div class="rt-card-label">Outreach</div>
+                            </div>
+                            <div class="rt-card selected" id="sr-rt-accuracy" onclick="toggleSrRecCard(this)">
+                                <div class="rt-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
+                                <div class="rt-card-label">Accuracy</div>
+                            </div>
+                            <div class="rt-card selected" id="sr-rt-general" onclick="toggleSrRecCard(this)">
+                                <div class="rt-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg></div>
+                                <div class="rt-card-label">General</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="more-options-toggle" onclick="toggleSrMoreOptions()" style="margin-top:8px;">
+                            <span class="more-options-label">More options</span>
+                            <span class="more-options-chevron" id="sr-mo-chevron"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5l4 4 4-4" stroke="#93c5fd" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                        </div>
+                        <div class="more-options-body" id="sr-mo-body" style="display:none;">
+                            <div class="form-group">
+                                <label class="form-label">Number of recommendations</label>
+                                <input type="number" class="form-input" id="sr-num-recs" value="10" min="1" max="50" style="max-width:140px;">
+                                <div class="field-sub">Maximum recommendations to generate per run</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="continue-row">
                     <button class="btn-continue" onclick="runContinue()">Continue →</button>
                 </div>
@@ -2499,6 +2654,16 @@
                             <div class="output-subtext" id="listings-output-subtext">AI-generated listing optimization recommendations for <span id="listings-out-biz-name">Aspen Dental Group</span></div>
                         </div>
                         <div id="listings-output-area"></div>
+                    </div>
+                </div>
+
+                <!-- ── Search Recommendations Agent ── -->
+                <div id="output-search-reco" style="display:none;">
+                    <div class="output-wrap">
+                        <div class="output-top">
+                            <div class="output-subtext" id="sr-output-subtext">AI-generated search visibility recommendations for <span id="sr-out-biz-name">Aspen Dental Group</span></div>
+                        </div>
+                        <div id="sr-output-area"></div>
                     </div>
                 </div>
 
@@ -2666,6 +2831,44 @@
                                 <div class="metric-val" id="listings-m-cost">$500</div>
                                 <div class="metric-lbl">Cost saved/month</div>
                                 <div class="metric-sub" id="listings-m-cost-sub">@ $25/hr staff rate</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── Search Recommendations Outcome ── -->
+                <div id="outcome-search-reco" style="display:none;">
+                    <div class="outcomes-wrap">
+                        <p class="outcomes-intro">Here are some key outcomes of the Search Recommendations Agent.</p>
+                        <div class="roi-calc-inputs roi-calc-inputs-3" style="margin-bottom:20px;">
+                            <div class="form-group">
+                                <label class="form-label">Number of locations</label>
+                                <input type="number" class="form-input" id="sr-roi-locations" value="2" min="1" max="500" oninput="recalcSearchRecoROI()">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Monthly search updates</label>
+                                <input type="number" class="form-input" id="sr-roi-runs" value="4" min="1" max="60" oninput="recalcSearchRecoROI()">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Staff cost ($/hr)</label>
+                                <input type="number" class="form-input" id="sr-roi-rate" value="25" min="1" max="500" oninput="recalcSearchRecoROI()">
+                            </div>
+                        </div>
+                        <div class="metrics-row">
+                            <div class="metric-card blue">
+                                <div class="metric-val" id="sr-m-time">84 min</div>
+                                <div class="metric-lbl">Saved per optimization run</div>
+                                <div class="metric-sub" id="sr-m-time-sub">time per rec × total recs</div>
+                            </div>
+                            <div class="metric-card green">
+                                <div class="metric-val" id="sr-m-hours">11 hrs</div>
+                                <div class="metric-lbl">Saved per month</div>
+                                <div class="metric-sub" id="sr-m-hours-sub">~4 runs × 2 locations</div>
+                            </div>
+                            <div class="metric-card purple">
+                                <div class="metric-val" id="sr-m-cost">$275</div>
+                                <div class="metric-lbl">Cost saved/month</div>
+                                <div class="metric-sub" id="sr-m-cost-sub">@ $25/hr staff rate</div>
                             </div>
                         </div>
                     </div>
@@ -2859,7 +3062,23 @@ const AGENT_HINTS = {
     'Social Publishing Agent':  'The AI social publishing agent creates and schedules brand-consistent posts across platforms.',
     'Social Engagement Agent':  'The AI social engagement agent monitors and responds to comments and messages automatically.',
     'Listings Optimization Agent': 'The AI listings agent audits and optimizes your business listings across 50+ directories.',
+    'Search Recommendations Agent': 'The AI search recommendations agent improves how AI platforms like ChatGPT and Gemini find and cite your business.',
     'Listings Verify Agent':    'The AI listings verify agent ensures NAP consistency and flags discrepancies across directories.'
+};
+
+// Department each agent belongs to, shown as a small subtext under the pill label so it reads clearly even with the dropdown closed
+const AGENT_DEPARTMENTS = {
+    'Review Response Agent': 'Marketing',
+    'Review Marketing Agent': 'Marketing',
+    'Review Generation Agent': 'Marketing',
+    'Social Publishing Agent': 'Marketing',
+    'Social Engagement Agent': 'Marketing',
+    'Listings Optimization Agent': 'Marketing',
+    'Search Recommendations Agent': 'Marketing',
+    'Routing & Tagging Agent': 'Marketing',
+    'Front Desk Agent': 'Operations',
+    'Ticketing Survey Agent': 'Customer Experience',
+    'Ticketing Review Agent': 'Customer Experience'
 };
 
 // ---- REVIEWS DATA (3 only: positive, neutral, negative) ----
@@ -3031,6 +3250,185 @@ const LISTINGS_BUSINESS_PROFILES = [
 // Listing sites the agent optimizes beyond the Google profile — length drives the Output subtext, so it scales automatically
 const OTHER_LISTING_SITES = ['Yelp', 'Facebook', 'Bing Places', 'Apple Maps', 'Yellow Pages', 'Foursquare'];
 
+// ---- SEARCH RECOMMENDATIONS AGENT DATA ----
+const SR_STEPS = [
+    { txt: 'Analyzing your business information', ms: 550 },
+    { txt: 'Researching competitor data', ms: 650 },
+    { txt: 'Analyzing your Search AI reports', ms: 600 },
+    { txt: 'Applying your instructions', ms: 550 },
+    { txt: 'Generating recommendations', ms: 600 }
+];
+
+const SR_REC_TYPE_MAP = {
+    content: 'sr-rt-content', faq: 'sr-rt-faq', listings: 'sr-rt-listings', reputation: 'sr-rt-reputation',
+    outreach: 'sr-rt-outreach', accuracy: 'sr-rt-accuracy', general: 'sr-rt-general'
+};
+
+const SR_RECS = [
+    {
+        id: 'sr-general-1', type: 'general', field: 'General', impact: 'high',
+        theme: 'Teeth Whitening', visibilityDelta: '+41.7%',
+        title: 'Fix Teeth Whitening page structure for Aspen Dental Group',
+        detail: 'Updates the page headline, title, and description to include "Teeth Whitening" so AI retrieval tools can more easily match the page to relevant searches.',
+        steps: [
+            'Update the page headline, title, and meta description to include "Teeth Whitening".',
+            'Ask your web developer to correct the page URL slug so it includes "teeth-whitening".',
+            'Add LocalBusiness structured data with your business name, address, and phone number.',
+            'Validate the structured data with a testing tool, then request re-indexing through Google Search Console.'
+        ]
+    },
+    {
+        id: 'sr-outreach-1', type: 'outreach', field: 'Outreach', impact: 'high',
+        theme: 'Emergency Dental Care', visibilityDelta: '+33.3%',
+        title: 'Grow Emergency Dental Care presence for Aspen Dental Group',
+        detail: 'Expands body content to comprehensively cover emergency dental care, including answer-first copy aligned to how people ask AI assistants about urgent visits.',
+        steps: [
+            'Expand the emergency dental care page to comprehensively cover common urgent scenarios.',
+            'Add answer-first intro copy that directly addresses "same-day dentist near me" style questions.',
+            'Link the emergency care page from your homepage and Google Business Profile.',
+            'Monitor AI assistant responses over the next 30 days to confirm improved coverage.'
+        ]
+    },
+    {
+        id: 'sr-content-1', type: 'content', field: 'Content', impact: 'high',
+        theme: 'Teeth Whitening', visibilityDelta: '+24.6%',
+        title: 'Enhance Teeth Whitening page content for Aspen Dental Group',
+        detail: 'Expands thin page content so LLMs can confidently surface Aspen Dental Group when people ask about teeth whitening.',
+        steps: [
+            'Expand the page to at least 400 words covering process, pricing, and aftercare.',
+            'Add a clear pricing table or starting price range for teeth whitening.',
+            'Include before-and-after photos with descriptive alt text.',
+            'Re-submit the page for indexing once changes are live.'
+        ]
+    },
+    {
+        id: 'sr-faq-1', type: 'faq', field: 'FAQ', impact: 'medium',
+        theme: 'Teeth Whitening', visibilityDelta: '+15.2%',
+        title: 'Add Teeth Whitening FAQ for Aspen Dental Group',
+        detail: 'Adding structured FAQs signals topical authority to AI assistants, increasing the odds of being cited in answers.',
+        steps: [
+            'Draft 5 common patient questions about teeth whitening — cost, duration, sensitivity, results, and safety.',
+            'Add the FAQ section directly on the teeth whitening page, not a separate page.',
+            'Mark up the FAQ with FAQPage structured data so AI assistants can parse it.',
+            'Validate the structured data and request re-indexing.'
+        ]
+    },
+    {
+        id: 'sr-listings-1', type: 'listings', field: 'Listings', impact: 'medium',
+        theme: 'Business Information', visibilityDelta: '+11.7%',
+        title: 'Correct business address for Aspen Dental Group across listings',
+        detail: 'Aligns your address across all directories so AI platforms have one consistent, citable source of truth.',
+        steps: [
+            'Identify all directories showing the outdated suite number.',
+            'Update the address on Apple Maps and Yellow Pages to match your Google Business Profile.',
+            'Re-verify each listing once updated to confirm the change is live.'
+        ]
+    },
+    {
+        id: 'sr-reputation-1', type: 'reputation', field: 'Reputation', impact: 'medium',
+        theme: 'Reputation', visibilityDelta: '+9.1%',
+        title: 'Request more reviews to strengthen reputation signals for Aspen Dental Group',
+        detail: 'AI assistants weigh review volume and recency when ranking businesses, so steady review growth improves trust signals.',
+        steps: [
+            'Set up automated review request emails or texts after each appointment.',
+            'Add a review link to appointment confirmation and follow-up messages.',
+            'Monitor review volume weekly and adjust request frequency as needed.'
+        ]
+    },
+    {
+        id: 'sr-accuracy-1', type: 'accuracy', field: 'Accuracy', impact: 'low',
+        theme: 'Business Information', visibilityDelta: '+8.4%',
+        title: 'Sync phone number across listings for Aspen Dental Group',
+        detail: 'Fixes a mismatch between your Google Business Profile and other directories, so AI assistants show accurate contact details.',
+        steps: [
+            'Confirm your correct phone number in your Google Business Profile.',
+            'Update the phone number on Yelp and Bing Places to match.',
+            'Re-verify each listing once updated to confirm the change is live.'
+        ]
+    },
+    {
+        id: 'sr-general-2', type: 'general', field: 'General', impact: 'medium',
+        theme: 'Emergency Dental Care', visibilityDelta: '+28.9%',
+        title: 'Fix Emergency Dental Care page structure for Aspen Dental Group',
+        detail: 'Updates the page headline, title, and description to include "Emergency Dental Care" so AI retrieval tools can more easily match the page to relevant searches.',
+        steps: [
+            'Update the page headline, title, and meta description to include "Emergency Dental Care".',
+            'Ask your web developer to correct the page URL slug so it includes "emergency-dental-care".',
+            'Add LocalBusiness structured data with your business name, address, and phone number.',
+            'Validate the structured data with a testing tool, then request re-indexing through Google Search Console.'
+        ]
+    },
+    {
+        id: 'sr-outreach-2', type: 'outreach', field: 'Outreach', impact: 'medium',
+        theme: 'Invisalign', visibilityDelta: '+19.4%',
+        title: 'Grow Invisalign presence for Aspen Dental Group',
+        detail: 'Expands body content to comprehensively cover Invisalign treatment, including answer-first copy aligned to how people ask AI assistants about clear aligners.',
+        steps: [
+            'Expand the Invisalign page to comprehensively cover candidacy, process, and cost.',
+            'Add answer-first intro copy that directly addresses "clear aligners near me" style questions.',
+            'Link the Invisalign page from your homepage and services list.',
+            'Monitor AI assistant responses over the next 30 days to confirm improved coverage.'
+        ]
+    },
+    {
+        id: 'sr-content-2', type: 'content', field: 'Content', impact: 'medium',
+        theme: 'Invisalign', visibilityDelta: '+17.8%',
+        title: 'Create a dedicated Invisalign page for Aspen Dental Group',
+        detail: 'Adds a standalone, in-depth page so LLMs can confidently surface Aspen Dental Group when people ask about clear aligners.',
+        steps: [
+            'Create a standalone Invisalign page of at least 400 words.',
+            'Cover candidacy, treatment timeline, and starting price range.',
+            'Include patient testimonials or before-and-after photos with descriptive alt text.',
+            'Re-submit the page for indexing once changes are live.'
+        ]
+    },
+    {
+        id: 'sr-faq-2', type: 'faq', field: 'FAQ', impact: 'low',
+        theme: 'Emergency Dental Care', visibilityDelta: '+10.5%',
+        title: 'Add Emergency Dental Care FAQ for Aspen Dental Group',
+        detail: 'Adding structured FAQs signals topical authority to AI assistants, increasing the odds of being cited in urgent-care answers.',
+        steps: [
+            'Draft 5 common patient questions about emergency visits — same-day availability, cost, and walk-ins.',
+            'Add the FAQ section directly on the emergency dental care page.',
+            'Mark up the FAQ with FAQPage structured data so AI assistants can parse it.',
+            'Validate the structured data and request re-indexing.'
+        ]
+    },
+    {
+        id: 'sr-listings-2', type: 'listings', field: 'Listings', impact: 'low',
+        theme: 'Business Information', visibilityDelta: '+7.9%',
+        title: 'Correct phone number for Aspen Dental Group across listings',
+        detail: 'Aligns your phone number across all directories so AI platforms have one consistent, citable source of truth.',
+        steps: [
+            'Identify all directories showing the outdated phone number.',
+            'Update the phone number on Foursquare and Facebook to match your Google Business Profile.',
+            'Re-verify each listing once updated to confirm the change is live.'
+        ]
+    },
+    {
+        id: 'sr-reputation-2', type: 'reputation', field: 'Reputation', impact: 'low',
+        theme: 'Reputation', visibilityDelta: '+6.3%',
+        title: 'Respond to recent reviews to improve trust signals for Aspen Dental Group',
+        detail: 'AI assistants and prospective patients weigh review responsiveness, so timely replies improve trust signals.',
+        steps: [
+            'Reply to all reviews from the last 30 days, starting with the most recent.',
+            'Personalize each response and mention the patient\'s specific feedback.',
+            'Set a weekly reminder to keep response time under 48 hours going forward.'
+        ]
+    },
+    {
+        id: 'sr-accuracy-2', type: 'accuracy', field: 'Accuracy', impact: 'low',
+        theme: 'Business Information', visibilityDelta: '+5.8%',
+        title: 'Sync business hours across listings for Aspen Dental Group',
+        detail: 'Fixes a mismatch between your Google Business Profile and other directories, so AI assistants show accurate hours of operation.',
+        steps: [
+            'Confirm your correct hours of operation in your Google Business Profile.',
+            'Update hours on Apple Maps and Bing Places to match.',
+            'Re-verify each listing once updated to confirm the change is live.'
+        ]
+    }
+];
+
 // ---- REVIEW MARKETING AGENT DATA ----
 const RMA_STEPS = [
     { txt: 'Scanning recent reviews across your connected sites', ms: 550 },
@@ -3085,6 +3483,8 @@ let socialCommentCache = {};
 let listingsGenerated = false;
 let listingsIsGenerating = false;
 let openRecPreviewId = null;
+let searchRecoGenerated = false;
+let searchRecoIsGenerating = false;
 let rmaGenerated = false;
 let rmaIsGenerating = false;
 let rmaSelectedReviewId = 1;
@@ -3130,12 +3530,14 @@ function getAgentType() {
     if (currentAgent === 'Social Engagement Agent') return 'social-eng';
     if (currentAgent === 'Listings Optimization Agent') return 'listings-opt';
     if (currentAgent === 'Review Marketing Agent') return 'review-marketing';
+    if (currentAgent === 'Search Recommendations Agent') return 'search-reco';
     return 'review';
 }
 
 function selectAgent(name, el) {
     currentAgent = name;
     document.getElementById('pill-label').textContent = name;
+    document.getElementById('pill-dept-label').textContent = AGENT_DEPARTMENTS[name] || '';
     document.getElementById('agent-hint-text').textContent = AGENT_HINTS[name] || '';
     document.querySelectorAll('#agent-dropdown .dd-option').forEach(o => o.classList.remove('selected'));
     el.classList.add('selected');
@@ -3168,6 +3570,8 @@ function selectAgent(name, el) {
         document.getElementById('output-placeholder').textContent = 'Click Continue to see recommendations from this agent to improve your listings';
     } else if (type === 'review-marketing') {
         document.getElementById('output-placeholder').textContent = 'Click Continue to see your review-based social post';
+    } else if (type === 'search-reco') {
+        document.getElementById('output-placeholder').textContent = 'Click Continue to see recommendations to improve your AI search visibility';
     } else {
         document.getElementById('output-placeholder').textContent = 'Check out the example reviews and agent responses here';
     }
@@ -3180,18 +3584,21 @@ function selectAgent(name, el) {
     document.getElementById('outcome-social-eng').style.display        = type === 'social-eng'        ? 'block' : 'none';
     document.getElementById('outcome-listings-opt').style.display      = type === 'listings-opt'      ? 'block' : 'none';
     document.getElementById('outcome-review-marketing').style.display  = type === 'review-marketing'  ? 'block' : 'none';
+    document.getElementById('outcome-search-reco').style.display       = type === 'search-reco'       ? 'block' : 'none';
     if (type === 'review') recalcROI();
     else if (type === 'social-pub') recalcSocialPub();
     else if (type === 'social-eng') recalcSocialEng();
     else if (type === 'listings-opt') recalcListingsROI();
     else if (type === 'review-marketing') recalcReviewMarketingROI();
+    else if (type === 'search-reco') recalcSearchRecoROI();
 
-    document.getElementById('common-biz-fields').style.display      = (type === 'listings-opt' || type === 'review-marketing') ? 'none'  : 'block';
+    document.getElementById('common-biz-fields').style.display      = (type === 'listings-opt' || type === 'review-marketing' || type === 'search-reco') ? 'none'  : 'block';
     document.getElementById('review-fields').style.display          = type === 'review'            ? 'block' : 'none';
     document.getElementById('social-pub-fields').style.display      = type === 'social-pub'        ? 'block' : 'none';
     document.getElementById('social-eng-fields').style.display      = type === 'social-eng'        ? 'block' : 'none';
     document.getElementById('listings-fields').style.display        = type === 'listings-opt'      ? 'block' : 'none';
     document.getElementById('review-marketing-fields').style.display = type === 'review-marketing' ? 'block' : 'none';
+    document.getElementById('search-reco-fields').style.display     = type === 'search-reco'        ? 'block' : 'none';
 
     // Update subtitles
     const bdSub     = document.querySelector('#acc-basic .acc-subtitle');
@@ -3213,6 +3620,10 @@ function selectAgent(name, el) {
         bdSub.textContent    = 'Business profile, review layout, and posting channels';
         outSub.textContent   = 'Ready-to-publish post built from your best review';
         outcomeSub.textContent = 'Estimated time savings and cost impact';
+    } else if (type === 'search-reco') {
+        bdSub.textContent    = 'Business profile and recommendation types';
+        outSub.textContent   = 'Recommendations to improve AI search visibility';
+        outcomeSub.textContent = 'Estimated time savings and cost impact';
     } else {
         bdSub.textContent    = 'Business profile, brand voice, and response preferences';
         outSub.textContent   = 'Sample reviews with AI-generated responses';
@@ -3225,6 +3636,8 @@ function selectAgent(name, el) {
     listingsIsGenerating = false;
     rmaGenerated = false;
     rmaIsGenerating = false;
+    searchRecoGenerated = false;
+    searchRecoIsGenerating = false;
 }
 
 document.addEventListener('click', () => {
@@ -3516,6 +3929,337 @@ function renderListingsOutputSubtext(biz) {
         </span>`;
 }
 
+// ---- SEARCH RECOMMENDATIONS: BUSINESS NAME SEARCH (reuses the same business directory as Listings) ----
+function renderSrBizNameSuggestions(matches) {
+    const panel = document.getElementById('sr-biz-name-suggest-panel');
+    if (!panel) return;
+    if (!matches.length) { panel.style.display = 'none'; panel.innerHTML = ''; return; }
+    panel.innerHTML = matches.map(p => `
+        <div class="competitor-suggest-item" onmousedown="selectSrBizNameSuggestion('${p.name.replace(/'/g, "\\'")}')">
+            <div class="cs-name">${p.name}</div>
+            <div class="cs-sub">${p.website} · ${p.google}</div>
+        </div>
+    `).join('');
+    panel.style.display = 'block';
+}
+
+function handleSrBizNameFocus() {
+    renderSrBizNameSuggestions(LISTINGS_BUSINESS_PROFILES);
+}
+
+function handleSrBizNameInput(input) {
+    const q = input.value.trim().toLowerCase();
+    const matches = q
+        ? LISTINGS_BUSINESS_PROFILES.filter(p => p.name.toLowerCase().includes(q))
+        : LISTINGS_BUSINESS_PROFILES;
+    renderSrBizNameSuggestions(matches);
+}
+
+function hideSrBizNameSuggestions() {
+    setTimeout(() => {
+        const panel = document.getElementById('sr-biz-name-suggest-panel');
+        if (panel) panel.style.display = 'none';
+    }, 150);
+}
+
+async function selectSrBizNameSuggestion(name) {
+    document.getElementById('sr-biz-name').value = name;
+    const panel = document.getElementById('sr-biz-name-suggest-panel');
+    if (panel) panel.style.display = 'none';
+    await fetchSrBusinessProfile(name);
+}
+
+async function fetchSrBusinessProfile(name) {
+    const profile = LISTINGS_BUSINESS_PROFILES.find(p => p.name === name);
+    if (!profile) return;
+
+    // Resolve into summary view while fetching, even if edit fields were open
+    document.getElementById('sr-biz-edit-fields').style.display = 'none';
+    document.getElementById('sr-biz-summary-view').style.display = 'block';
+    document.getElementById('sr-biz-edit-btn').innerHTML = BIZ_EDIT_BTN_HTML;
+
+    const overlay = document.getElementById('sr-biz-fetching-overlay');
+    if (overlay) overlay.style.display = 'flex';
+
+    await pause(750);
+
+    document.getElementById('sr-biz-address').value = profile.address;
+    document.getElementById('sr-biz-website').value = profile.website;
+    document.getElementById('sr-biz-desc').value    = profile.description;
+    selectSrPrimaryCategoryByValue(profile.primaryCategory);
+    syncSrBizSummary();
+
+    if (overlay) overlay.style.display = 'none';
+
+    // Reflect the newly selected business if recommendations are already showing
+    if (searchRecoGenerated) {
+        renderSrOutputSubtext(name);
+        renderSearchRecoRecs();
+    }
+}
+
+function renderSrOutputSubtext(biz) {
+    const el = document.getElementById('sr-output-subtext');
+    if (el) el.innerHTML = `AI-generated search visibility recommendations for <span id="sr-out-biz-name">${biz}</span>`;
+}
+
+// ---- SEARCH RECOMMENDATIONS: BUSINESS PROFILE EDIT TOGGLE ----
+function toggleSrBizEdit() {
+    const summary = document.getElementById('sr-biz-summary-view');
+    const fields  = document.getElementById('sr-biz-edit-fields');
+    const btn     = document.getElementById('sr-biz-edit-btn');
+    const isEditing = fields.style.display === 'block';
+
+    if (isEditing) {
+        syncSrBizSummary();
+        fields.style.display = 'none';
+        summary.style.display = 'block';
+        btn.innerHTML = BIZ_EDIT_BTN_HTML;
+    } else {
+        summary.style.display = 'none';
+        fields.style.display = 'block';
+        btn.innerHTML = BIZ_SAVE_BTN_HTML;
+    }
+}
+
+function syncSrBizSummary() {
+    document.getElementById('sr-bs-address').textContent     = document.getElementById('sr-biz-address').value;
+    document.getElementById('sr-bs-primary').textContent     = document.getElementById('cdd-sr-primary-label').textContent;
+    document.getElementById('sr-bs-website').textContent     = document.getElementById('sr-biz-website').value;
+    document.getElementById('sr-bs-description').textContent = document.getElementById('sr-biz-desc').value;
+}
+
+function selectSrPrimaryCategory(value, el) {
+    el.parentElement.querySelectorAll('.dd-option').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+    document.getElementById('cdd-sr-primary-label').textContent = value;
+    document.getElementById('cdd-sr-primary').classList.remove('open');
+}
+
+function selectSrPrimaryCategoryByValue(value) {
+    document.querySelectorAll('#cdd-sr-primary .dd-option').forEach(o => {
+        o.classList.toggle('selected', o.textContent.trim() === value);
+    });
+    document.getElementById('cdd-sr-primary-label').textContent = value;
+}
+
+// ---- SEARCH RECOMMENDATIONS: RECOMMENDATION TYPE CARDS / MORE OPTIONS ----
+function toggleSrRecCard(card) {
+    card.classList.toggle('selected');
+    if (searchRecoGenerated) renderSearchRecoRecs();
+}
+
+function toggleSrMoreOptions() {
+    const body    = document.getElementById('sr-mo-body');
+    const chevron = document.getElementById('sr-mo-chevron');
+    const isOpen  = body.style.display === 'block';
+    body.style.display = isOpen ? 'none' : 'block';
+    chevron.classList.toggle('open', !isOpen);
+}
+
+function getCheckedSrRecTypes() {
+    return Object.keys(SR_REC_TYPE_MAP).filter(key => document.getElementById(SR_REC_TYPE_MAP[key])?.classList.contains('selected'));
+}
+
+// ---- SEARCH RECOMMENDATIONS: GENERATE OUTPUT ----
+async function runSearchRecoGenerate() {
+    if (searchRecoIsGenerating) return;
+    searchRecoIsGenerating = true;
+
+    const area = document.getElementById('sr-output-area');
+    area.innerHTML = `
+        <div class="reasoning-block">
+            <div class="reasoning-heading">Agent reasoning</div>
+            <div id="sr-steps"></div>
+        </div>
+        <div class="progress-block">
+            <div class="progress-meta">
+                <span id="sr-prog-label">Starting analysis…</span>
+                <span id="sr-prog-pct">0%</span>
+            </div>
+            <div class="progress-track">
+                <div class="progress-fill" id="sr-prog-fill"></div>
+            </div>
+        </div>
+    `;
+
+    const container = document.getElementById('sr-steps');
+    const progFill  = document.getElementById('sr-prog-fill');
+    const progLabel = document.getElementById('sr-prog-label');
+    const progPct   = document.getElementById('sr-prog-pct');
+    const total     = SR_STEPS.length;
+
+    for (let i = 0; i < total; i++) {
+        const step = SR_STEPS[i];
+        await pause(step.ms);
+
+        container.querySelectorAll('.step-dot.spinning').forEach(d => {
+            d.classList.replace('spinning', 'done');
+            d.textContent = '✓';
+        });
+
+        const pct = Math.round(((i + 1) / total) * 88);
+        const el = document.createElement('div');
+        el.className = 'reason-step';
+        el.innerHTML = `<div class="step-dot spinning">↻</div><span>${step.txt}</span>`;
+        container.appendChild(el);
+        requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('show')));
+
+        progFill.style.width  = pct + '%';
+        progPct.textContent   = pct + '%';
+        progLabel.textContent = step.txt;
+    }
+
+    await pause(400);
+
+    container.querySelectorAll('.step-dot.spinning').forEach(d => {
+        d.classList.replace('spinning', 'done');
+        d.textContent = '✓';
+    });
+    progFill.style.width  = '100%';
+    progPct.textContent   = '100%';
+    progLabel.textContent = 'Recommendations ready!';
+
+    await pause(320);
+
+    const stepsSnap = container.innerHTML;
+
+    area.innerHTML = `
+        <div class="reasoning-acc">
+            <div class="reasoning-acc-header" onclick="toggleReasoningAcc(this)">
+                <span>Agent reasoning</span>
+                <svg class="reasoning-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none">
+                    <path d="M3 5l4 4 4-4" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <div class="reasoning-acc-body">
+                <div class="reasoning-acc-inner">${stepsSnap}</div>
+            </div>
+        </div>
+        <div id="sr-rec-summary"></div>
+        <div id="sr-rec-list"></div>
+        <div id="sr-review-row"></div>
+        <div id="sr-impact-reveal" class="impact-reveal"></div>
+    `;
+
+    searchRecoIsGenerating = false;
+    searchRecoGenerated = true;
+    renderSearchRecoRecs();
+}
+
+let srRenderedRecs = [];
+
+function renderSearchRecoRecs() {
+    const checked = getCheckedSrRecTypes();
+    const numRecs = parseInt(document.getElementById('sr-num-recs')?.value) || 10;
+    const impactRank = { high: 0, medium: 1, low: 2 };
+    const recs = SR_RECS
+        .filter(r => checked.includes(r.type))
+        .sort((a, b) => impactRank[a.impact] - impactRank[b.impact])
+        .slice(0, numRecs);
+
+    srRenderedRecs = recs;
+
+    const listEl   = document.getElementById('sr-rec-list');
+    const reviewEl = document.getElementById('sr-review-row');
+    if (!listEl) return;
+
+    listEl.innerHTML = recs.map((r, idx) => `
+        <div class="rec-card rec-card-clickable fade-up" style="animation-delay:${idx * 60}ms;" onclick="openSrDetailDrawer('${r.id}')">
+            <div class="rec-card-top">
+                <div style="flex:1;min-width:0;">
+                    <div class="rec-field-label">${r.field}</div>
+                    <div class="rec-title">${r.title}</div>
+                </div>
+                ${idx < 3 ? `<span class="impact-badge impact-high">High impact</span>` : ''}
+            </div>
+            <p class="rec-detail">${r.detail}</p>
+            <div class="sr-chip-row">
+                <span class="sr-chip sr-chip-visibility">↑ ${r.visibilityDelta} visibility score</span>
+                <span class="sr-chip sr-chip-theme">${r.theme}</span>
+            </div>
+        </div>
+    `).join('');
+
+    if (reviewEl) {
+        reviewEl.innerHTML = recs.length ? `
+            <div class="continue-row" style="margin-top:6px;">
+                <button class="btn-review-impact" onclick="reviewSearchRecoImpact()">✦ Review impact</button>
+            </div>
+        ` : '';
+    }
+}
+
+function openSrDetailDrawer(id) {
+    const r = srRenderedRecs.find(rec => rec.id === id) || SR_RECS.find(rec => rec.id === id);
+    if (!r) return;
+
+    document.getElementById('drawer-title').textContent = 'Details';
+    document.getElementById('drawer-tabs').innerHTML = '';
+    document.getElementById('drawer-tabs').style.display = 'none';
+    document.getElementById('drawer-body').innerHTML = `
+        <div class="drawer-body-content">
+            <div class="sr-drawer-section">
+                <div class="sr-drawer-section-title">What will fixing this do</div>
+                <p class="sr-drawer-section-text">${r.detail}</p>
+            </div>
+            <div class="sr-drawer-section">
+                <div class="sr-drawer-section-title">What to do next</div>
+                <ol class="sr-drawer-steps">
+                    ${r.steps.map(s => `<li>${s}</li>`).join('')}
+                </ol>
+            </div>
+        </div>
+    `;
+    document.getElementById('drawer-overlay').classList.add('visible');
+    document.getElementById('post-drawer').classList.add('open');
+    document.getElementById('post-drawer').scrollTop = 0;
+}
+
+function reviewSearchRecoImpact() {
+    const reveal = document.getElementById('sr-impact-reveal');
+    if (!reveal) return;
+
+    reveal.innerHTML = `
+        <div class="impact-reveal-title">Projected impact if you apply these recommendations</div>
+        <div class="roi-row">
+            <div class="roi-row-top"><span>Visibility score lift</span><strong>+22%</strong></div>
+            <div class="roi-track"><div class="roi-bar b-blue" data-target="22"></div></div>
+        </div>
+        <div class="roi-row">
+            <div class="roi-row-top"><span>Citation share improvement</span><strong>+15 pts</strong></div>
+            <div class="roi-track"><div class="roi-bar b-green" data-target="60"></div></div>
+        </div>
+        <div class="roi-row">
+            <div class="roi-row-top"><span>AI search ranking</span><strong>#2 avg. position</strong></div>
+            <div class="roi-track"><div class="roi-bar b-purple" data-target="82"></div></div>
+        </div>
+    `;
+    reveal.classList.add('show');
+
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+        reveal.querySelectorAll('.roi-bar').forEach(bar => { bar.style.width = bar.dataset.target + '%'; });
+    }));
+
+    document.getElementById('outcome-placeholder').style.display = 'none';
+    document.getElementById('outcome-live').style.display = 'block';
+    document.getElementById('outcome-review').style.display            = 'none';
+    document.getElementById('outcome-social-pub').style.display        = 'none';
+    document.getElementById('outcome-social-eng').style.display        = 'none';
+    document.getElementById('outcome-listings-opt').style.display      = 'none';
+    document.getElementById('outcome-review-marketing').style.display  = 'none';
+    document.getElementById('outcome-search-reco').style.display       = 'block';
+    recalcSearchRecoROI();
+    forceOpenAcc('outcome');
+
+    document.querySelectorAll('#outcome-search-reco .roi-bar').forEach(bar => {
+        bar.style.width = '0';
+        requestAnimationFrame(() => requestAnimationFrame(() => { bar.style.width = bar.dataset.target + '%'; }));
+    });
+
+    setTimeout(() => reveal.scrollIntoView({ behavior: 'smooth', block: 'center' }), 100);
+}
+
 // ---- LISTINGS: MORE OPTIONS TOGGLE ----
 function toggleListingsMoreOptions() {
     const body    = document.getElementById('listings-mo-body');
@@ -3660,6 +4404,8 @@ function runContinue() {
         ? document.getElementById('listings-biz-name').value.trim()
         : type === 'review-marketing'
         ? document.getElementById('rma-biz-name').value.trim()
+        : type === 'search-reco'
+        ? document.getElementById('sr-biz-name').value.trim()
         : document.getElementById('biz-name').value.trim()) || 'your business';
 
     document.getElementById('output-review').style.display            = type === 'review'            ? 'block' : 'none';
@@ -3667,6 +4413,7 @@ function runContinue() {
     document.getElementById('output-social-eng').style.display        = type === 'social-eng'        ? 'block' : 'none';
     document.getElementById('output-listings-opt').style.display      = type === 'listings-opt'      ? 'block' : 'none';
     document.getElementById('output-review-marketing').style.display  = type === 'review-marketing'  ? 'block' : 'none';
+    document.getElementById('output-search-reco').style.display       = type === 'search-reco'        ? 'block' : 'none';
 
     document.getElementById('output-placeholder').style.display = 'none';
     document.getElementById('output-live').style.display = 'block';
@@ -3685,6 +4432,8 @@ function runContinue() {
         renderListingsOutputSubtext(biz);
     } else if (type === 'review-marketing') {
         renderRmaOutputSubtext(biz);
+    } else if (type === 'search-reco') {
+        renderSrOutputSubtext(biz);
     }
 
     forceOpenAcc('output');
@@ -3711,6 +4460,13 @@ function runContinue() {
         rmaGenerated = false;
         rmaIsGenerating = false;
         setTimeout(() => runReviewMarketingGenerate(), 400);
+    }
+
+    // Auto-generate for search recommendations
+    if (type === 'search-reco') {
+        searchRecoGenerated = false;
+        searchRecoIsGenerating = false;
+        setTimeout(() => runSearchRecoGenerate(), 400);
     }
 }
 
@@ -4352,6 +5108,26 @@ function recalcListingsROI() {
     document.getElementById('listings-m-hours-sub').textContent = `~${volume} updates × ${locations} location${locations === 1 ? '' : 's'}`;
     document.getElementById('listings-m-cost').textContent      = `$${totalCost.toLocaleString()}`;
     document.getElementById('listings-m-cost-sub').textContent  = `@ $${rate}/hr staff rate`;
+}
+
+function recalcSearchRecoROI() {
+    const locations = parseInt(document.getElementById('sr-roi-locations').value) || 2;
+    const runs      = parseInt(document.getElementById('sr-roi-runs').value) || 4;
+    const rate      = parseInt(document.getElementById('sr-roi-rate').value) || 25;
+
+    const minutesPerRec = 12;
+    const recsPerRun = Math.max(srRenderedRecs.length || getCheckedSrRecTypes().length, 1);
+    const minutesPerRun = minutesPerRec * recsPerRun;
+    const totalMinutesPerMonth = minutesPerRun * runs * locations;
+    const totalHours = Math.round(totalMinutesPerMonth / 60);
+    const totalCost  = Math.round(totalHours * rate);
+
+    document.getElementById('sr-m-time').textContent      = minutesPerRun >= 60 ? `${(minutesPerRun / 60).toFixed(1)} hrs` : `${minutesPerRun} min`;
+    document.getElementById('sr-m-time-sub').textContent  = `${minutesPerRec} min × ${recsPerRun} rec${recsPerRun === 1 ? '' : 's'}`;
+    document.getElementById('sr-m-hours').textContent     = `${totalHours} hrs`;
+    document.getElementById('sr-m-hours-sub').textContent = `~${runs} runs × ${locations} location${locations === 1 ? '' : 's'}`;
+    document.getElementById('sr-m-cost').textContent      = `$${totalCost.toLocaleString()}`;
+    document.getElementById('sr-m-cost-sub').textContent  = `@ $${rate}/hr staff rate`;
 }
 
 // ---- REVIEW MARKETING AGENT ----
