@@ -224,7 +224,7 @@
             display: flex; align-items: center; justify-content: center; flex-shrink: 0;
         }
         .dd-list-panel {
-            flex: 1; min-width: 0; max-height: 380px; overflow-y: auto; padding: 6px 0;
+            flex: 1; min-width: 0; height: 368px; overflow-y: auto; padding: 6px 0;
             scrollbar-width: thin; scrollbar-color: transparent transparent;
         }
         .dd-list-panel:hover { scrollbar-color: #cbd5e1 transparent; }
@@ -717,6 +717,22 @@
         }
         .sr-chip-visibility { background: #dcfce7; color: #15803d; }
         .sr-chip-theme { background: #eff6ff; color: #2563eb; }
+        .tsa-chip-template { background: #f1f5f9; color: #475569; }
+        .tsa-chip-score { background: #fee2e2; color: #b91c1c; }
+
+        .tsa-assign-row {
+            display: flex; align-items: center; gap: 8px; margin-top: 14px;
+            padding: 10px 12px; background: #f5f3ff; border: 1px solid #ede9fe;
+            border-radius: 8px; font-size: 12.5px; color: #0f172a;
+        }
+        .tsa-assign-row svg { flex-shrink: 0; color: #7c3aed; }
+
+        .tsa-impact-note {
+            display: flex; align-items: flex-start; gap: 10px; margin-top: 18px;
+            padding: 14px 16px; background: #faf5ff; border: 1px solid #ede9fe;
+            border-radius: 10px; font-size: 12.5px; color: #0f172a; line-height: 1.6;
+        }
+        .tsa-impact-icon { flex-shrink: 0; font-size: 14px; color: #7c3aed; }
 
         .rec-card-clickable { cursor: pointer; transition: border-color 0.15s, box-shadow 0.15s; }
         .rec-card-clickable:hover { border-color: #c7d2fe; box-shadow: 0 2px 10px rgba(79,70,229,0.08); }
@@ -1773,7 +1789,7 @@
         THE AGENTIC MARKETING PLATFORM
     </div>
     <h1>Try our <span class="hero-purple">AI agents</span> for<br>your business growth</h1>
-    <p>Choose from a list of 6 agents that automate your reputation, listings and social presence with measurable outcomes.</p>
+    <p>Choose from a list of <span id="active-agent-count">6</span> agents that automate your reputation, listings and social presence with measurable outcomes.</p>
 </section>
 
 <!-- ===== AGENT SELECTOR ===== -->
@@ -1795,19 +1811,19 @@
                     <span class="dd-nav-label">Marketing</span>
                     <span class="dd-nav-sep">&bull;</span>
                     <span class="dd-poc-name">Jay</span>
-                    <span class="dd-count-badge">8</span>
+                    <span class="dd-count-badge">17</span>
                 </div>
                 <div class="dd-nav-item" data-dept="operations" onclick="selectDeptNav('operations', this)">
                     <span class="dd-nav-label">Operations</span>
                     <span class="dd-nav-sep">&bull;</span>
                     <span class="dd-poc-name">Myna</span>
-                    <span class="dd-count-badge">1</span>
+                    <span class="dd-count-badge">8</span>
                 </div>
                 <div class="dd-nav-item" data-dept="cx" onclick="selectDeptNav('cx', this)">
                     <span class="dd-nav-label">Customer Experience</span>
                     <span class="dd-nav-sep">&bull;</span>
                     <span class="dd-poc-name">Robin</span>
-                    <span class="dd-count-badge">2</span>
+                    <span class="dd-count-badge">6</span>
                 </div>
             </div>
             <div class="dd-list-panel">
@@ -1835,11 +1851,47 @@
                         Search Recommendations Agent
                     </div>
                     <div class="dd-option disabled" title="Coming soon">
+                        Workflow Agent
+                        <span class="dd-soon-tag">Coming soon</span>
+                    </div>
+                    <div class="dd-option disabled" title="Coming soon">
+                        Lead Gen Agent
+                        <span class="dd-soon-tag">Coming soon</span>
+                    </div>
+                    <div class="dd-option disabled" title="Coming soon">
+                        Segmentation Agent
+                        <span class="dd-soon-tag">Coming soon</span>
+                    </div>
+                    <div class="dd-option disabled" title="Coming soon">
                         Review Generation Agent
                         <span class="dd-soon-tag">Coming soon</span>
                     </div>
                     <div class="dd-option disabled" title="Coming soon">
                         Routing &amp; Tagging Agent
+                        <span class="dd-soon-tag">Coming soon</span>
+                    </div>
+                    <div class="dd-option disabled" title="Coming soon">
+                        Template Agent
+                        <span class="dd-soon-tag">Coming soon</span>
+                    </div>
+                    <div class="dd-option disabled" title="Coming soon">
+                        Blog Page Agent
+                        <span class="dd-soon-tag">Coming soon</span>
+                    </div>
+                    <div class="dd-option disabled" title="Coming soon">
+                        FAQ Page Agent
+                        <span class="dd-soon-tag">Coming soon</span>
+                    </div>
+                    <div class="dd-option disabled" title="Coming soon">
+                        Platform Agents
+                        <span class="dd-soon-tag">Coming soon</span>
+                    </div>
+                    <div class="dd-option disabled" title="Coming soon">
+                        Custom Reporting Agent
+                        <span class="dd-soon-tag">Coming soon</span>
+                    </div>
+                    <div class="dd-option disabled" title="Coming soon">
+                        AI Coworkers
                         <span class="dd-soon-tag">Coming soon</span>
                     </div>
                     <div class="dd-no-results">No agents match your search</div>
@@ -1849,14 +1901,57 @@
                         Front Desk Agent
                         <span class="dd-soon-tag">Coming soon</span>
                     </div>
+                    <div class="dd-option disabled" title="Coming soon">
+                        Waitlist Agent
+                        <span class="dd-soon-tag">Coming soon</span>
+                    </div>
+                    <div class="dd-option disabled" title="Coming soon">
+                        Reminder Agent
+                        <span class="dd-soon-tag">Coming soon</span>
+                    </div>
+                    <div class="dd-option disabled" title="Coming soon">
+                        Pre Visit Agent
+                        <span class="dd-soon-tag">Coming soon</span>
+                    </div>
+                    <div class="dd-option disabled" title="Coming soon">
+                        Insurance Verification Agent
+                        <span class="dd-soon-tag">Coming soon</span>
+                    </div>
+                    <div class="dd-option disabled" title="Coming soon">
+                        Recall Agent
+                        <span class="dd-soon-tag">Coming soon</span>
+                    </div>
+                    <div class="dd-option disabled" title="Coming soon">
+                        Treatment Planning Agent
+                        <span class="dd-soon-tag">Coming soon</span>
+                    </div>
+                    <div class="dd-option disabled" title="Coming soon">
+                        Revenue Agent
+                        <span class="dd-soon-tag">Coming soon</span>
+                    </div>
                 </div>
                 <div class="dd-list" id="dd-list-cx">
-                    <div class="dd-option disabled" title="Coming soon">
+                    <div class="dd-option" onclick="selectAgent('Ticketing Survey Agent', this)">
                         Ticketing Survey Agent
+                    </div>
+                    <div class="dd-option disabled" title="Coming soon">
+                        Survey Creation Agent
+                        <span class="dd-soon-tag">Coming soon</span>
+                    </div>
+                    <div class="dd-option disabled" title="Coming soon">
+                        Survey Distribution Agent
+                        <span class="dd-soon-tag">Coming soon</span>
+                    </div>
+                    <div class="dd-option disabled" title="Coming soon">
+                        Survey Response Agent
                         <span class="dd-soon-tag">Coming soon</span>
                     </div>
                     <div class="dd-option disabled" title="Coming soon">
                         Ticketing Review Agent
+                        <span class="dd-soon-tag">Coming soon</span>
+                    </div>
+                    <div class="dd-option disabled" title="Coming soon">
+                        Insights Agent
                         <span class="dd-soon-tag">Coming soon</span>
                     </div>
                 </div>
@@ -2533,6 +2628,113 @@
                     </div>
                 </div>
 
+                <div id="ticketing-survey-fields" style="display:none;">
+                    <div class="form-group" style="margin-bottom:16px;">
+                        <label class="form-label">Business name <span class="req">*</span></label>
+                        <div class="input-wrap">
+                            <input type="text" class="form-input" id="tsa-biz-name" value="Aspen Dental Group" style="padding-left:36px;padding-right:98px;" oninput="handleTsaBizNameInput(this)" onfocus="handleTsaBizNameFocus()" onblur="hideTsaBizNameSuggestions()">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0f172a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;left:13px;top:50%;transform:translateY(-50%);pointer-events:none;"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                            <a href="#" class="input-inline-link" onclick="event.preventDefault();">View profile ↗</a>
+                            <div class="competitor-suggest-panel" id="tsa-biz-name-suggest-panel"></div>
+                        </div>
+                        <div class="field-sub">Search any business to auto-populate its profile below</div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom:20px;">
+                        <div class="biz-summary-card" id="tsa-biz-profile-card">
+                            <div class="biz-summary-top">
+                                <span class="biz-summary-title">Business profile</span>
+                                <button type="button" class="biz-edit-btn" id="tsa-biz-edit-btn" onclick="toggleTsaBizEdit()">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                                    Edit
+                                </button>
+                            </div>
+
+                            <div id="tsa-biz-summary-view">
+                                <div class="biz-summary-row"><span class="bs-label">Address</span><span class="bs-value" id="tsa-bs-address">123 W 6th St, Austin, TX 78701</span></div>
+                                <div class="biz-summary-row"><span class="bs-label">Primary category</span><span class="bs-value" id="tsa-bs-primary">Dentist</span></div>
+                                <div class="biz-summary-row"><span class="bs-label">Description</span><span class="bs-value" id="tsa-bs-description">Aspen Dental Group provides comprehensive family dental care in Austin, TX, including routine checkups, cleanings, and restorative treatment.</span></div>
+                                <div class="biz-summary-row"><span class="bs-label">Website</span><span class="bs-value" id="tsa-bs-website">aspendental.com</span></div>
+                            </div>
+
+                            <div class="biz-edit-fields" id="tsa-biz-edit-fields" style="display:none;">
+                                <div class="form-group" style="margin-bottom:16px;">
+                                    <label class="form-label">Business address</label>
+                                    <input type="text" class="form-input" id="tsa-biz-address" value="123 W 6th St, Austin, TX 78701">
+                                </div>
+                                <div class="form-group" style="margin-bottom:16px;">
+                                    <label class="form-label">Primary category</label>
+                                    <div class="cdd-anchor" id="cdd-tsa-primary">
+                                        <div class="cdd-trigger" onclick="toggleCatDropdown('tsa-primary', event)">
+                                            <span id="cdd-tsa-primary-label">Dentist</span>
+                                            <span class="cdd-chevron"><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                                        </div>
+                                        <div class="cdd-panel">
+                                            <div class="dd-option selected" onclick="selectTsaPrimaryCategory('Dentist', this)">Dentist</div>
+                                            <div class="dd-option" onclick="selectTsaPrimaryCategory('Cosmetic dentist', this)">Cosmetic dentist</div>
+                                            <div class="dd-option" onclick="selectTsaPrimaryCategory('Orthodontist', this)">Orthodontist</div>
+                                            <div class="dd-option" onclick="selectTsaPrimaryCategory('Pediatric dentist', this)">Pediatric dentist</div>
+                                            <div class="dd-option" onclick="selectTsaPrimaryCategory('Emergency dental clinic', this)">Emergency dental clinic</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group" style="margin-bottom:16px;">
+                                    <label class="form-label">Website</label>
+                                    <input type="text" class="form-input" id="tsa-biz-website" value="aspendental.com">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Business description</label>
+                                    <textarea class="form-input" id="tsa-biz-desc" rows="3" style="resize:vertical;min-height:64px;">Aspen Dental Group provides comprehensive family dental care in Austin, TX, including routine checkups, cleanings, and restorative treatment.</textarea>
+                                </div>
+                            </div>
+
+                            <div class="biz-fetching-overlay" id="tsa-biz-fetching-overlay"><span class="pulsing">⚙</span> Fetching business profile…</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Select survey templates to monitor</label>
+                        <div class="rt-grid rt-grid-icon" style="grid-template-columns: repeat(2, 1fr);">
+                            <div class="rt-card selected" id="tsa-tpl-nps" onclick="toggleTsaTemplateCard(this)">
+                                <div class="rt-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12a10 10 0 0 1 20 0"/><path d="M12 12l4-4"/><circle cx="12" cy="12" r="1"/></svg></div>
+                                <div class="rt-card-label">NPS Survey</div>
+                            </div>
+                            <div class="rt-card selected" id="tsa-tpl-csat" onclick="toggleTsaTemplateCard(this)">
+                                <div class="rt-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg></div>
+                                <div class="rt-card-label">CSAT Survey</div>
+                            </div>
+                            <div class="rt-card selected" id="tsa-tpl-postint" onclick="toggleTsaTemplateCard(this)">
+                                <div class="rt-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+                                <div class="rt-card-label">Post-Interaction Feedback</div>
+                            </div>
+                            <div class="rt-card selected" id="tsa-tpl-pulse" onclick="toggleTsaTemplateCard(this)">
+                                <div class="rt-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+                                <div class="rt-card-label">Pulse Survey</div>
+                            </div>
+                        </div>
+                        <div class="field-sub">Detractor responses — low ratings or negative open-text feedback — are automatically flagged for ticket creation.</div>
+                    </div>
+
+                    <div>
+                        <div class="more-options-toggle" onclick="toggleTsaMoreOptions()" style="margin-top:8px;">
+                            <span class="more-options-label">More options</span>
+                            <span class="more-options-chevron" id="tsa-mo-chevron"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5l4 4 4-4" stroke="#93c5fd" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                        </div>
+                        <div class="more-options-body" id="tsa-mo-body" style="display:none;">
+                            <div class="form-group">
+                                <div class="field-label-row">
+                                    <label class="form-label">Custom routing instruction</label>
+                                    <span class="tooltip-wrap">
+                                        <span class="tooltip-icon">i</span>
+                                        <span class="tooltip-bubble">An instruction the agent follows when categorizing and routing tickets</span>
+                                    </span>
+                                </div>
+                                <textarea class="form-input" id="tsa-custom-instruction" rows="2" placeholder="e.g. Route all billing-related feedback to the Finance team" style="resize:vertical;min-height:56px;"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="continue-row">
                     <button class="btn-continue" onclick="runContinue()">Continue →</button>
                 </div>
@@ -2674,6 +2876,16 @@
                             <div class="output-subtext" id="rma-output-subtext">5 social shares can be scheduled this week on Facebook and LinkedIn for Aspen Dental Group</div>
                         </div>
                         <div id="rma-output-area"></div>
+                    </div>
+                </div>
+
+                <!-- ── Ticketing Survey Agent ── -->
+                <div id="output-ticketing-survey" style="display:none;">
+                    <div class="output-wrap">
+                        <div class="output-top">
+                            <div class="output-subtext" id="tsa-output-subtext">For demo purposes, here are example negative survey responses for <span id="tsa-out-biz-name">Aspen Dental Group</span>. Each is automatically categorized and routed to the right team.</div>
+                        </div>
+                        <div id="tsa-output-area"></div>
                     </div>
                 </div>
 
@@ -2912,6 +3124,44 @@
                     </div>
                 </div>
 
+                <!-- ── Ticketing Survey Outcome ── -->
+                <div id="outcome-ticketing-survey" style="display:none;">
+                    <div class="outcomes-wrap">
+                        <p class="outcomes-intro">Here are some key outcomes of the Ticketing Survey Agent.</p>
+                        <div class="roi-calc-inputs roi-calc-inputs-3" style="margin-bottom:20px;">
+                            <div class="form-group">
+                                <label class="form-label">Monthly survey volume</label>
+                                <input type="number" class="form-input" id="tsa-roi-volume" value="500" min="1" max="20000" oninput="recalcTsaROI()">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Monthly negative survey volume</label>
+                                <input type="number" class="form-input" id="tsa-roi-negative" value="60" min="1" max="5000" oninput="recalcTsaROI()">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Staff cost ($/hr)</label>
+                                <input type="number" class="form-input" id="tsa-roi-rate" value="25" min="1" max="500" oninput="recalcTsaROI()">
+                            </div>
+                        </div>
+                        <div class="metrics-row">
+                            <div class="metric-card blue">
+                                <div class="metric-val" id="tsa-m-time">15 min</div>
+                                <div class="metric-lbl">Saved per ticket</div>
+                                <div class="metric-sub">vs. manual triage and routing</div>
+                            </div>
+                            <div class="metric-card green">
+                                <div class="metric-val" id="tsa-m-hours">15 hrs</div>
+                                <div class="metric-lbl">Saved monthly</div>
+                                <div class="metric-sub" id="tsa-m-hours-sub">~60 negative surveys/month</div>
+                            </div>
+                            <div class="metric-card purple">
+                                <div class="metric-val" id="tsa-m-cost">$375</div>
+                                <div class="metric-lbl">Cost saved/month</div>
+                                <div class="metric-sub" id="tsa-m-cost-sub">@ $25/hr staff rate</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
@@ -3063,23 +3313,53 @@ const AGENT_HINTS = {
     'Social Engagement Agent':  'The AI social engagement agent monitors and responds to comments and messages automatically.',
     'Listings Optimization Agent': 'The AI listings agent audits and optimizes your business listings across 50+ directories.',
     'Search Recommendations Agent': 'The AI search recommendations agent improves how AI platforms like ChatGPT and Gemini find and cite your business.',
-    'Listings Verify Agent':    'The AI listings verify agent ensures NAP consistency and flags discrepancies across directories.'
+    'Listings Verify Agent':    'The AI listings verify agent ensures NAP consistency and flags discrepancies across directories.',
+    'Ticketing Survey Agent':   'The AI ticketing survey agent detects negative survey feedback and automatically creates tickets routed to the right team.'
 };
 
 // Department each agent belongs to, shown as a small subtext under the pill label so it reads clearly even with the dropdown closed
 const AGENT_DEPARTMENTS = {
     'Review Response Agent': 'Marketing',
     'Review Marketing Agent': 'Marketing',
-    'Review Generation Agent': 'Marketing',
     'Social Publishing Agent': 'Marketing',
     'Social Engagement Agent': 'Marketing',
     'Listings Optimization Agent': 'Marketing',
     'Search Recommendations Agent': 'Marketing',
+    'Workflow Agent': 'Marketing',
+    'Lead Gen Agent': 'Marketing',
+    'Segmentation Agent': 'Marketing',
+    'Review Generation Agent': 'Marketing',
     'Routing & Tagging Agent': 'Marketing',
+    'Template Agent': 'Marketing',
+    'Blog Page Agent': 'Marketing',
+    'FAQ Page Agent': 'Marketing',
+    'Platform Agents': 'Marketing',
+    'Custom Reporting Agent': 'Marketing',
+    'AI Coworkers': 'Marketing',
     'Front Desk Agent': 'Operations',
+    'Waitlist Agent': 'Operations',
+    'Reminder Agent': 'Operations',
+    'Pre Visit Agent': 'Operations',
+    'Insurance Verification Agent': 'Operations',
+    'Recall Agent': 'Operations',
+    'Treatment Planning Agent': 'Operations',
+    'Revenue Agent': 'Operations',
     'Ticketing Survey Agent': 'Customer Experience',
-    'Ticketing Review Agent': 'Customer Experience'
+    'Survey Creation Agent': 'Customer Experience',
+    'Survey Distribution Agent': 'Customer Experience',
+    'Survey Response Agent': 'Customer Experience',
+    'Ticketing Review Agent': 'Customer Experience',
+    'Insights Agent': 'Customer Experience'
 };
+
+// Reflects the true number of built/active agents in the hero subtext — counts every
+// non-disabled option across all department lists, so it stays correct as agents are added.
+function updateActiveAgentCount() {
+    const el = document.getElementById('active-agent-count');
+    if (!el) return;
+    const count = document.querySelectorAll('.agent-dropdown .dd-option:not(.disabled)').length;
+    el.textContent = count;
+}
 
 // ---- REVIEWS DATA (3 only: positive, neutral, negative) ----
 const REVIEWS = [
@@ -3485,6 +3765,8 @@ let listingsIsGenerating = false;
 let openRecPreviewId = null;
 let searchRecoGenerated = false;
 let searchRecoIsGenerating = false;
+let tsaGenerated = false;
+let tsaIsGenerating = false;
 let rmaGenerated = false;
 let rmaIsGenerating = false;
 let rmaSelectedReviewId = 1;
@@ -3531,6 +3813,7 @@ function getAgentType() {
     if (currentAgent === 'Listings Optimization Agent') return 'listings-opt';
     if (currentAgent === 'Review Marketing Agent') return 'review-marketing';
     if (currentAgent === 'Search Recommendations Agent') return 'search-reco';
+    if (currentAgent === 'Ticketing Survey Agent') return 'ticketing-survey';
     return 'review';
 }
 
@@ -3572,6 +3855,8 @@ function selectAgent(name, el) {
         document.getElementById('output-placeholder').textContent = 'Click Continue to see your review-based social post';
     } else if (type === 'search-reco') {
         document.getElementById('output-placeholder').textContent = 'Click Continue to see recommendations to improve your AI search visibility';
+    } else if (type === 'ticketing-survey') {
+        document.getElementById('output-placeholder').textContent = 'Click Continue to see negative survey responses flagged and routed to the right team';
     } else {
         document.getElementById('output-placeholder').textContent = 'Check out the example reviews and agent responses here';
     }
@@ -3585,20 +3870,23 @@ function selectAgent(name, el) {
     document.getElementById('outcome-listings-opt').style.display      = type === 'listings-opt'      ? 'block' : 'none';
     document.getElementById('outcome-review-marketing').style.display  = type === 'review-marketing'  ? 'block' : 'none';
     document.getElementById('outcome-search-reco').style.display       = type === 'search-reco'       ? 'block' : 'none';
+    document.getElementById('outcome-ticketing-survey').style.display  = type === 'ticketing-survey'  ? 'block' : 'none';
     if (type === 'review') recalcROI();
     else if (type === 'social-pub') recalcSocialPub();
     else if (type === 'social-eng') recalcSocialEng();
     else if (type === 'listings-opt') recalcListingsROI();
     else if (type === 'review-marketing') recalcReviewMarketingROI();
     else if (type === 'search-reco') recalcSearchRecoROI();
+    else if (type === 'ticketing-survey') recalcTsaROI();
 
-    document.getElementById('common-biz-fields').style.display      = (type === 'listings-opt' || type === 'review-marketing' || type === 'search-reco') ? 'none'  : 'block';
+    document.getElementById('common-biz-fields').style.display      = (type === 'listings-opt' || type === 'review-marketing' || type === 'search-reco' || type === 'ticketing-survey') ? 'none'  : 'block';
     document.getElementById('review-fields').style.display          = type === 'review'            ? 'block' : 'none';
     document.getElementById('social-pub-fields').style.display      = type === 'social-pub'        ? 'block' : 'none';
     document.getElementById('social-eng-fields').style.display      = type === 'social-eng'        ? 'block' : 'none';
     document.getElementById('listings-fields').style.display        = type === 'listings-opt'      ? 'block' : 'none';
     document.getElementById('review-marketing-fields').style.display = type === 'review-marketing' ? 'block' : 'none';
     document.getElementById('search-reco-fields').style.display     = type === 'search-reco'        ? 'block' : 'none';
+    document.getElementById('ticketing-survey-fields').style.display = type === 'ticketing-survey'  ? 'block' : 'none';
 
     // Update subtitles
     const bdSub     = document.querySelector('#acc-basic .acc-subtitle');
@@ -3624,6 +3912,10 @@ function selectAgent(name, el) {
         bdSub.textContent    = 'Business profile and recommendation types';
         outSub.textContent   = 'Recommendations to improve AI search visibility';
         outcomeSub.textContent = 'Estimated time savings and cost impact';
+    } else if (type === 'ticketing-survey') {
+        bdSub.textContent    = 'Business profile and survey templates to monitor';
+        outSub.textContent   = 'Negative survey responses flagged and auto-routed to the right team';
+        outcomeSub.textContent = 'Estimated time savings and cost impact';
     } else {
         bdSub.textContent    = 'Business profile, brand voice, and response preferences';
         outSub.textContent   = 'Sample reviews with AI-generated responses';
@@ -3638,6 +3930,8 @@ function selectAgent(name, el) {
     rmaIsGenerating = false;
     searchRecoGenerated = false;
     searchRecoIsGenerating = false;
+    tsaGenerated = false;
+    tsaIsGenerating = false;
 }
 
 document.addEventListener('click', () => {
@@ -4406,6 +4700,8 @@ function runContinue() {
         ? document.getElementById('rma-biz-name').value.trim()
         : type === 'search-reco'
         ? document.getElementById('sr-biz-name').value.trim()
+        : type === 'ticketing-survey'
+        ? document.getElementById('tsa-biz-name').value.trim()
         : document.getElementById('biz-name').value.trim()) || 'your business';
 
     document.getElementById('output-review').style.display            = type === 'review'            ? 'block' : 'none';
@@ -4414,6 +4710,7 @@ function runContinue() {
     document.getElementById('output-listings-opt').style.display      = type === 'listings-opt'      ? 'block' : 'none';
     document.getElementById('output-review-marketing').style.display  = type === 'review-marketing'  ? 'block' : 'none';
     document.getElementById('output-search-reco').style.display       = type === 'search-reco'        ? 'block' : 'none';
+    document.getElementById('output-ticketing-survey').style.display  = type === 'ticketing-survey'   ? 'block' : 'none';
 
     document.getElementById('output-placeholder').style.display = 'none';
     document.getElementById('output-live').style.display = 'block';
@@ -4434,6 +4731,8 @@ function runContinue() {
         renderRmaOutputSubtext(biz);
     } else if (type === 'search-reco') {
         renderSrOutputSubtext(biz);
+    } else if (type === 'ticketing-survey') {
+        renderTsaOutputSubtext(biz);
     }
 
     forceOpenAcc('output');
@@ -4467,6 +4766,13 @@ function runContinue() {
         searchRecoGenerated = false;
         searchRecoIsGenerating = false;
         setTimeout(() => runSearchRecoGenerate(), 400);
+    }
+
+    // Auto-generate for ticketing survey
+    if (type === 'ticketing-survey') {
+        tsaGenerated = false;
+        tsaIsGenerating = false;
+        setTimeout(() => runTsaGenerate(), 400);
     }
 }
 
@@ -5128,6 +5434,339 @@ function recalcSearchRecoROI() {
     document.getElementById('sr-m-hours-sub').textContent = `~${runs} runs × ${locations} location${locations === 1 ? '' : 's'}`;
     document.getElementById('sr-m-cost').textContent      = `$${totalCost.toLocaleString()}`;
     document.getElementById('sr-m-cost-sub').textContent  = `@ $${rate}/hr staff rate`;
+}
+
+// ---- TICKETING SURVEY AGENT ----
+const TSA_STEPS = [
+    { txt: 'Scanning completed survey responses', ms: 550 },
+    { txt: 'Identifying detractor sentiment', ms: 600 },
+    { txt: 'Categorizing issue type', ms: 550 },
+    { txt: 'Matching to the responsible team', ms: 600 },
+    { txt: 'Creating and assigning tickets', ms: 550 }
+];
+
+const TSA_TEMPLATE_MAP = {
+    nps: 'tsa-tpl-nps',
+    csat: 'tsa-tpl-csat',
+    postint: 'tsa-tpl-postint',
+    pulse: 'tsa-tpl-pulse'
+};
+
+const TSA_TICKETS = [
+    {
+        id: 'tsa-legal',
+        templateKey: 'nps',
+        template: 'NPS Survey',
+        score: 'NPS score: 2 / 10',
+        category: 'Legal & Compliance',
+        title: 'Detractor NPS response flagged as a legal risk',
+        quote: '"I was billed for a whitening procedure I never agreed to, and now I\'m thinking about talking to my lawyer about it."',
+        assignee: 'John Doe',
+        team: 'Legal Team'
+    },
+    {
+        id: 'tsa-billing',
+        templateKey: 'csat',
+        template: 'CSAT Survey',
+        score: 'Rating: 1 / 5',
+        category: 'Billing',
+        title: 'Detractor CSAT response flagged for a billing dispute',
+        quote: '"I was charged twice for my cleaning visit and nobody has resolved it after three calls to the office."',
+        assignee: 'Maria Chen',
+        team: 'Billing Team'
+    },
+    {
+        id: 'tsa-service',
+        templateKey: 'postint',
+        template: 'Post-Interaction Feedback',
+        score: 'Rating: 2 / 5',
+        category: 'Patient Experience',
+        title: 'Detractor feedback flagged for service quality',
+        quote: '"Waited over 40 minutes past my appointment with no explanation, and the front desk was dismissive when I asked."',
+        assignee: 'Alex Turner',
+        team: 'Patient Experience Team'
+    },
+    {
+        id: 'tsa-pulse',
+        templateKey: 'pulse',
+        template: 'Pulse Survey',
+        score: 'Rating: 2 / 5',
+        category: 'Front Office & Scheduling',
+        title: 'Detractor pulse response flagged for scheduling friction',
+        quote: '"I called three times trying to reschedule and kept getting sent to voicemail. Finally gave up and booked somewhere else."',
+        assignee: 'Robin',
+        team: 'Customer Experience Team'
+    }
+];
+
+function getCheckedTsaTemplates() {
+    return Object.keys(TSA_TEMPLATE_MAP).filter(key => document.getElementById(TSA_TEMPLATE_MAP[key])?.classList.contains('selected'));
+}
+
+function toggleTsaTemplateCard(card) {
+    card.classList.toggle('selected');
+    if (tsaGenerated) renderTsaTickets();
+}
+
+function toggleTsaMoreOptions() {
+    const body    = document.getElementById('tsa-mo-body');
+    const chevron = document.getElementById('tsa-mo-chevron');
+    const isOpen  = body.style.display === 'block';
+    body.style.display = isOpen ? 'none' : 'block';
+    chevron.classList.toggle('open', !isOpen);
+}
+
+function renderTsaOutputSubtext(biz) {
+    const el = document.getElementById('tsa-output-subtext');
+    if (el) el.innerHTML = `For demo purposes, here are example negative survey responses for <span id="tsa-out-biz-name">${biz}</span>. Each is automatically categorized and routed to the right team.`;
+}
+
+// ---- TICKETING SURVEY: BUSINESS NAME SEARCH (reuses the same business directory as Listings) ----
+function renderTsaBizNameSuggestions(matches) {
+    const panel = document.getElementById('tsa-biz-name-suggest-panel');
+    if (!panel) return;
+    if (!matches.length) { panel.style.display = 'none'; panel.innerHTML = ''; return; }
+    panel.innerHTML = matches.map(p => `
+        <div class="competitor-suggest-item" onmousedown="selectTsaBizNameSuggestion('${p.name.replace(/'/g, "\\'")}')">
+            <div class="cs-name">${p.name}</div>
+            <div class="cs-sub">${p.website} · ${p.google}</div>
+        </div>
+    `).join('');
+    panel.style.display = 'block';
+}
+
+function handleTsaBizNameFocus() {
+    renderTsaBizNameSuggestions(LISTINGS_BUSINESS_PROFILES);
+}
+
+function handleTsaBizNameInput(input) {
+    const q = input.value.trim().toLowerCase();
+    const matches = q
+        ? LISTINGS_BUSINESS_PROFILES.filter(p => p.name.toLowerCase().includes(q))
+        : LISTINGS_BUSINESS_PROFILES;
+    renderTsaBizNameSuggestions(matches);
+}
+
+function hideTsaBizNameSuggestions() {
+    setTimeout(() => {
+        const panel = document.getElementById('tsa-biz-name-suggest-panel');
+        if (panel) panel.style.display = 'none';
+    }, 150);
+}
+
+async function selectTsaBizNameSuggestion(name) {
+    document.getElementById('tsa-biz-name').value = name;
+    const panel = document.getElementById('tsa-biz-name-suggest-panel');
+    if (panel) panel.style.display = 'none';
+    await fetchTsaBusinessProfile(name);
+}
+
+async function fetchTsaBusinessProfile(name) {
+    const profile = LISTINGS_BUSINESS_PROFILES.find(p => p.name === name);
+    if (!profile) return;
+
+    document.getElementById('tsa-biz-edit-fields').style.display = 'none';
+    document.getElementById('tsa-biz-summary-view').style.display = 'block';
+    document.getElementById('tsa-biz-edit-btn').innerHTML = BIZ_EDIT_BTN_HTML;
+
+    const overlay = document.getElementById('tsa-biz-fetching-overlay');
+    if (overlay) overlay.style.display = 'flex';
+
+    await pause(750);
+
+    document.getElementById('tsa-biz-address').value = profile.address;
+    document.getElementById('tsa-biz-website').value = profile.website;
+    document.getElementById('tsa-biz-desc').value    = profile.description;
+    selectTsaPrimaryCategoryByValue(profile.primaryCategory);
+    syncTsaBizSummary();
+
+    if (overlay) overlay.style.display = 'none';
+
+    if (tsaGenerated) {
+        renderTsaOutputSubtext(name);
+    }
+}
+
+// ---- TICKETING SURVEY: BUSINESS PROFILE EDIT TOGGLE ----
+function toggleTsaBizEdit() {
+    const summary = document.getElementById('tsa-biz-summary-view');
+    const fields  = document.getElementById('tsa-biz-edit-fields');
+    const btn     = document.getElementById('tsa-biz-edit-btn');
+    const isEditing = fields.style.display === 'block';
+
+    if (isEditing) {
+        syncTsaBizSummary();
+        fields.style.display = 'none';
+        summary.style.display = 'block';
+        btn.innerHTML = BIZ_EDIT_BTN_HTML;
+    } else {
+        summary.style.display = 'none';
+        fields.style.display = 'block';
+        btn.innerHTML = BIZ_SAVE_BTN_HTML;
+    }
+}
+
+function syncTsaBizSummary() {
+    document.getElementById('tsa-bs-address').textContent     = document.getElementById('tsa-biz-address').value;
+    document.getElementById('tsa-bs-primary').textContent     = document.getElementById('cdd-tsa-primary-label').textContent;
+    document.getElementById('tsa-bs-website').textContent     = document.getElementById('tsa-biz-website').value;
+    document.getElementById('tsa-bs-description').textContent = document.getElementById('tsa-biz-desc').value;
+}
+
+function selectTsaPrimaryCategory(value, el) {
+    el.parentElement.querySelectorAll('.dd-option').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+    document.getElementById('cdd-tsa-primary-label').textContent = value;
+    document.getElementById('cdd-tsa-primary').classList.remove('open');
+}
+
+function selectTsaPrimaryCategoryByValue(value) {
+    document.querySelectorAll('#cdd-tsa-primary .dd-option').forEach(o => {
+        o.classList.toggle('selected', o.textContent.trim() === value);
+    });
+    document.getElementById('cdd-tsa-primary-label').textContent = value;
+}
+
+async function runTsaGenerate() {
+    if (tsaIsGenerating) return;
+    tsaIsGenerating = true;
+
+    const area = document.getElementById('tsa-output-area');
+    area.innerHTML = `
+        <div class="reasoning-block">
+            <div class="reasoning-heading">Agent reasoning</div>
+            <div id="tsa-steps"></div>
+        </div>
+        <div class="progress-block">
+            <div class="progress-meta">
+                <span id="tsa-prog-label">Starting analysis…</span>
+                <span id="tsa-prog-pct">0%</span>
+            </div>
+            <div class="progress-track">
+                <div class="progress-fill" id="tsa-prog-fill"></div>
+            </div>
+        </div>
+    `;
+
+    const container = document.getElementById('tsa-steps');
+    const progFill  = document.getElementById('tsa-prog-fill');
+    const progLabel = document.getElementById('tsa-prog-label');
+    const progPct   = document.getElementById('tsa-prog-pct');
+    const total     = TSA_STEPS.length;
+
+    for (let i = 0; i < total; i++) {
+        const step = TSA_STEPS[i];
+        await pause(step.ms);
+
+        container.querySelectorAll('.step-dot.spinning').forEach(d => {
+            d.classList.replace('spinning', 'done');
+            d.textContent = '✓';
+        });
+
+        const pct = Math.round(((i + 1) / total) * 88);
+        const el = document.createElement('div');
+        el.className = 'reason-step';
+        el.innerHTML = `<div class="step-dot spinning">↻</div><span>${step.txt}</span>`;
+        container.appendChild(el);
+        requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('show')));
+
+        progFill.style.width  = pct + '%';
+        progPct.textContent   = pct + '%';
+        progLabel.textContent = step.txt;
+    }
+
+    await pause(400);
+
+    container.querySelectorAll('.step-dot.spinning').forEach(d => {
+        d.classList.replace('spinning', 'done');
+        d.textContent = '✓';
+    });
+    progFill.style.width  = '100%';
+    progPct.textContent   = '100%';
+    progLabel.textContent = 'Tickets created!';
+
+    await pause(320);
+
+    const stepsSnap = container.innerHTML;
+
+    area.innerHTML = `
+        <div class="reasoning-acc">
+            <div class="reasoning-acc-header" onclick="toggleReasoningAcc(this)">
+                <span>Agent reasoning</span>
+                <svg class="reasoning-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none">
+                    <path d="M3 5l4 4 4-4" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <div class="reasoning-acc-body">
+                <div class="reasoning-acc-inner">${stepsSnap}</div>
+            </div>
+        </div>
+        <div id="tsa-ticket-list"></div>
+        <div class="tsa-impact-note">
+            <span class="tsa-impact-icon">✦</span>
+            <span>Going forward, this agent can automatically analyze every completed survey, detect negative sentiment, and assign tickets to the right team in real time — helping you resolve customer experience issues faster.</span>
+        </div>
+    `;
+
+    tsaIsGenerating = false;
+    tsaGenerated = true;
+    renderTsaTickets();
+
+    // Open Outcome accordion the first time tickets are generated
+    const outcomeBody = document.getElementById('body-outcome');
+    if (outcomeBody.classList.contains('collapsed')) {
+        recalcTsaROI();
+        forceOpenAcc('outcome');
+        setTimeout(() => {
+            document.getElementById('acc-outcome').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 150);
+    }
+}
+
+function renderTsaTickets() {
+    const listEl = document.getElementById('tsa-ticket-list');
+    if (!listEl) return;
+
+    const checked = getCheckedTsaTemplates();
+    const tickets = TSA_TICKETS.filter(t => checked.includes(t.templateKey));
+
+    listEl.innerHTML = tickets.map((t, idx) => `
+        <div class="rec-card fade-up" style="animation-delay:${idx * 60}ms;">
+            <div class="rec-card-top">
+                <div style="flex:1;min-width:0;">
+                    <div class="rec-field-label">${t.category}</div>
+                    <div class="rec-title">${t.title}</div>
+                </div>
+            </div>
+            <p class="rec-detail" style="font-style:italic;">${t.quote}</p>
+            <div class="sr-chip-row">
+                <span class="sr-chip tsa-chip-template">${t.template}</span>
+                <span class="sr-chip tsa-chip-score">${t.score}</span>
+            </div>
+            <div class="tsa-assign-row">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                <span>Ticket created and assigned to ${t.assignee} · ${t.team}</span>
+            </div>
+        </div>
+    `).join('');
+}
+
+function recalcTsaROI() {
+    const volume   = parseInt(document.getElementById('tsa-roi-volume').value) || 500;
+    const negative = parseInt(document.getElementById('tsa-roi-negative').value) || 60;
+    const rate     = parseInt(document.getElementById('tsa-roi-rate').value) || 25;
+
+    const minutesPerTicket = 15;
+    const totalMinutes = negative * minutesPerTicket;
+    const totalHours   = Math.round(totalMinutes / 60);
+    const totalCost    = Math.round(totalHours * rate);
+    const pct = volume ? Math.round((negative / volume) * 100) : 0;
+
+    document.getElementById('tsa-m-time').textContent      = `${minutesPerTicket} min`;
+    document.getElementById('tsa-m-hours').textContent     = `${totalHours} hrs`;
+    document.getElementById('tsa-m-hours-sub').textContent = `~${negative} negative surveys/month (${pct}% of ${volume})`;
+    document.getElementById('tsa-m-cost').textContent      = `$${totalCost.toLocaleString()}`;
+    document.getElementById('tsa-m-cost-sub').textContent  = `@ $${rate}/hr staff rate`;
 }
 
 // ---- REVIEW MARKETING AGENT ----
@@ -6068,6 +6707,8 @@ async function generateSocialResponse() {
         }
     );
 }
+
+updateActiveAgentCount();
 </script>
 </body>
 </html>
