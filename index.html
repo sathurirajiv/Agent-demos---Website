@@ -1811,19 +1811,19 @@
                     <span class="dd-nav-label">Marketing</span>
                     <span class="dd-nav-sep">&bull;</span>
                     <span class="dd-poc-name">Jay</span>
-                    <span class="dd-count-badge">17</span>
+                    <span class="dd-count-badge">7</span>
                 </div>
                 <div class="dd-nav-item" data-dept="operations" onclick="selectDeptNav('operations', this)">
                     <span class="dd-nav-label">Operations</span>
                     <span class="dd-nav-sep">&bull;</span>
                     <span class="dd-poc-name">Myna</span>
-                    <span class="dd-count-badge">8</span>
+                    <span class="dd-count-badge">1</span>
                 </div>
                 <div class="dd-nav-item" data-dept="cx" onclick="selectDeptNav('cx', this)">
                     <span class="dd-nav-label">Customer Experience</span>
                     <span class="dd-nav-sep">&bull;</span>
                     <span class="dd-poc-name">Robin</span>
-                    <span class="dd-count-badge">6</span>
+                    <span class="dd-count-badge">2</span>
                 </div>
             </div>
             <div class="dd-list-panel">
@@ -1851,47 +1851,7 @@
                         Search Recommendations Agent
                     </div>
                     <div class="dd-option disabled" title="Coming soon">
-                        Workflow Agent
-                        <span class="dd-soon-tag">Coming soon</span>
-                    </div>
-                    <div class="dd-option disabled" title="Coming soon">
-                        Lead Gen Agent
-                        <span class="dd-soon-tag">Coming soon</span>
-                    </div>
-                    <div class="dd-option disabled" title="Coming soon">
-                        Segmentation Agent
-                        <span class="dd-soon-tag">Coming soon</span>
-                    </div>
-                    <div class="dd-option disabled" title="Coming soon">
-                        Review Generation Agent
-                        <span class="dd-soon-tag">Coming soon</span>
-                    </div>
-                    <div class="dd-option disabled" title="Coming soon">
                         Routing &amp; Tagging Agent
-                        <span class="dd-soon-tag">Coming soon</span>
-                    </div>
-                    <div class="dd-option disabled" title="Coming soon">
-                        Template Agent
-                        <span class="dd-soon-tag">Coming soon</span>
-                    </div>
-                    <div class="dd-option disabled" title="Coming soon">
-                        Blog Page Agent
-                        <span class="dd-soon-tag">Coming soon</span>
-                    </div>
-                    <div class="dd-option disabled" title="Coming soon">
-                        FAQ Page Agent
-                        <span class="dd-soon-tag">Coming soon</span>
-                    </div>
-                    <div class="dd-option disabled" title="Coming soon">
-                        Platform Agents
-                        <span class="dd-soon-tag">Coming soon</span>
-                    </div>
-                    <div class="dd-option disabled" title="Coming soon">
-                        Custom Reporting Agent
-                        <span class="dd-soon-tag">Coming soon</span>
-                    </div>
-                    <div class="dd-option disabled" title="Coming soon">
-                        AI Coworkers
                         <span class="dd-soon-tag">Coming soon</span>
                     </div>
                     <div class="dd-no-results">No agents match your search</div>
@@ -1901,58 +1861,13 @@
                         Front Desk Agent
                         <span class="dd-soon-tag">Coming soon</span>
                     </div>
-                    <div class="dd-option disabled" title="Coming soon">
-                        Waitlist Agent
-                        <span class="dd-soon-tag">Coming soon</span>
-                    </div>
-                    <div class="dd-option disabled" title="Coming soon">
-                        Reminder Agent
-                        <span class="dd-soon-tag">Coming soon</span>
-                    </div>
-                    <div class="dd-option disabled" title="Coming soon">
-                        Pre Visit Agent
-                        <span class="dd-soon-tag">Coming soon</span>
-                    </div>
-                    <div class="dd-option disabled" title="Coming soon">
-                        Insurance Verification Agent
-                        <span class="dd-soon-tag">Coming soon</span>
-                    </div>
-                    <div class="dd-option disabled" title="Coming soon">
-                        Recall Agent
-                        <span class="dd-soon-tag">Coming soon</span>
-                    </div>
-                    <div class="dd-option disabled" title="Coming soon">
-                        Treatment Planning Agent
-                        <span class="dd-soon-tag">Coming soon</span>
-                    </div>
-                    <div class="dd-option disabled" title="Coming soon">
-                        Revenue Agent
-                        <span class="dd-soon-tag">Coming soon</span>
-                    </div>
                 </div>
                 <div class="dd-list" id="dd-list-cx">
                     <div class="dd-option" onclick="selectAgent('Ticketing Survey Agent', this)">
                         Ticketing Survey Agent
                     </div>
-                    <div class="dd-option disabled" title="Coming soon">
-                        Survey Creation Agent
-                        <span class="dd-soon-tag">Coming soon</span>
-                    </div>
-                    <div class="dd-option disabled" title="Coming soon">
-                        Survey Distribution Agent
-                        <span class="dd-soon-tag">Coming soon</span>
-                    </div>
-                    <div class="dd-option disabled" title="Coming soon">
-                        Survey Response Agent
-                        <span class="dd-soon-tag">Coming soon</span>
-                    </div>
-                    <div class="dd-option disabled" title="Coming soon">
+                    <div class="dd-option" onclick="selectAgent('Ticketing Review Agent', this)">
                         Ticketing Review Agent
-                        <span class="dd-soon-tag">Coming soon</span>
-                    </div>
-                    <div class="dd-option disabled" title="Coming soon">
-                        Insights Agent
-                        <span class="dd-soon-tag">Coming soon</span>
                     </div>
                 </div>
             </div>
@@ -2735,6 +2650,71 @@
                     </div>
                 </div>
 
+                <div id="ticketing-review-fields" style="display:none;">
+                    <div class="form-group" style="margin-bottom:16px;">
+                        <label class="form-label">Business name <span class="req">*</span></label>
+                        <div class="input-wrap">
+                            <input type="text" class="form-input" id="trv-biz-name" value="Aspen Dental Group" style="padding-left:36px;padding-right:98px;" oninput="handleTrvBizNameInput(this)" onfocus="handleTrvBizNameFocus()" onblur="hideTrvBizNameSuggestions()">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0f172a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;left:13px;top:50%;transform:translateY(-50%);pointer-events:none;"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                            <a href="#" class="input-inline-link" onclick="event.preventDefault();">View profile ↗</a>
+                            <div class="competitor-suggest-panel" id="trv-biz-name-suggest-panel"></div>
+                        </div>
+                        <div class="field-sub">Search any business to auto-populate its profile below</div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="biz-summary-card" id="trv-biz-profile-card">
+                            <div class="biz-summary-top">
+                                <span class="biz-summary-title">Business profile</span>
+                                <button type="button" class="biz-edit-btn" id="trv-biz-edit-btn" onclick="toggleTrvBizEdit()">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                                    Edit
+                                </button>
+                            </div>
+
+                            <div id="trv-biz-summary-view">
+                                <div class="biz-summary-row"><span class="bs-label">Address</span><span class="bs-value" id="trv-bs-address">123 W 6th St, Austin, TX 78701</span></div>
+                                <div class="biz-summary-row"><span class="bs-label">Primary category</span><span class="bs-value" id="trv-bs-primary">Dentist</span></div>
+                                <div class="biz-summary-row"><span class="bs-label">Description</span><span class="bs-value" id="trv-bs-description">Aspen Dental Group provides comprehensive family dental care in Austin, TX, including routine checkups, cleanings, and restorative treatment.</span></div>
+                                <div class="biz-summary-row"><span class="bs-label">Website</span><span class="bs-value" id="trv-bs-website">aspendental.com</span></div>
+                            </div>
+
+                            <div class="biz-edit-fields" id="trv-biz-edit-fields" style="display:none;">
+                                <div class="form-group" style="margin-bottom:16px;">
+                                    <label class="form-label">Business address</label>
+                                    <input type="text" class="form-input" id="trv-biz-address" value="123 W 6th St, Austin, TX 78701">
+                                </div>
+                                <div class="form-group" style="margin-bottom:16px;">
+                                    <label class="form-label">Primary category</label>
+                                    <div class="cdd-anchor" id="cdd-trv-primary">
+                                        <div class="cdd-trigger" onclick="toggleCatDropdown('trv-primary', event)">
+                                            <span id="cdd-trv-primary-label">Dentist</span>
+                                            <span class="cdd-chevron"><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                                        </div>
+                                        <div class="cdd-panel">
+                                            <div class="dd-option selected" onclick="selectTrvPrimaryCategory('Dentist', this)">Dentist</div>
+                                            <div class="dd-option" onclick="selectTrvPrimaryCategory('Cosmetic dentist', this)">Cosmetic dentist</div>
+                                            <div class="dd-option" onclick="selectTrvPrimaryCategory('Orthodontist', this)">Orthodontist</div>
+                                            <div class="dd-option" onclick="selectTrvPrimaryCategory('Pediatric dentist', this)">Pediatric dentist</div>
+                                            <div class="dd-option" onclick="selectTrvPrimaryCategory('Emergency dental clinic', this)">Emergency dental clinic</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group" style="margin-bottom:16px;">
+                                    <label class="form-label">Website</label>
+                                    <input type="text" class="form-input" id="trv-biz-website" value="aspendental.com">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Business description</label>
+                                    <textarea class="form-input" id="trv-biz-desc" rows="3" style="resize:vertical;min-height:64px;">Aspen Dental Group provides comprehensive family dental care in Austin, TX, including routine checkups, cleanings, and restorative treatment.</textarea>
+                                </div>
+                            </div>
+
+                            <div class="biz-fetching-overlay" id="trv-biz-fetching-overlay"><span class="pulsing">⚙</span> Fetching business profile…</div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="continue-row">
                     <button class="btn-continue" onclick="runContinue()">Continue →</button>
                 </div>
@@ -2886,6 +2866,16 @@
                             <div class="output-subtext" id="tsa-output-subtext">For demo purposes, here are example negative survey responses for <span id="tsa-out-biz-name">Aspen Dental Group</span>. Each is automatically categorized and routed to the right team.</div>
                         </div>
                         <div id="tsa-output-area"></div>
+                    </div>
+                </div>
+
+                <!-- ── Ticketing Review Agent ── -->
+                <div id="output-ticketing-review" style="display:none;">
+                    <div class="output-wrap">
+                        <div class="output-top">
+                            <div class="output-subtext" id="trv-output-subtext">For demo purposes, here are example negative reviews for <span id="trv-out-biz-name">Aspen Dental Group</span>. Each is automatically categorized and routed to the right team.</div>
+                        </div>
+                        <div id="trv-output-area"></div>
                     </div>
                 </div>
 
@@ -3162,6 +3152,44 @@
                     </div>
                 </div>
 
+                <!-- ── Ticketing Review Outcome ── -->
+                <div id="outcome-ticketing-review" style="display:none;">
+                    <div class="outcomes-wrap">
+                        <p class="outcomes-intro">Here are some key outcomes of the Ticketing Review Agent.</p>
+                        <div class="roi-calc-inputs roi-calc-inputs-3" style="margin-bottom:20px;">
+                            <div class="form-group">
+                                <label class="form-label">Monthly review volume</label>
+                                <input type="number" class="form-input" id="trv-roi-volume" value="200" min="1" max="20000" oninput="recalcTrvROI()">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Monthly negative review volume</label>
+                                <input type="number" class="form-input" id="trv-roi-negative" value="25" min="1" max="5000" oninput="recalcTrvROI()">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Staff cost ($/hr)</label>
+                                <input type="number" class="form-input" id="trv-roi-rate" value="25" min="1" max="500" oninput="recalcTrvROI()">
+                            </div>
+                        </div>
+                        <div class="metrics-row">
+                            <div class="metric-card blue">
+                                <div class="metric-val" id="trv-m-time">15 min</div>
+                                <div class="metric-lbl">Saved per ticket</div>
+                                <div class="metric-sub">vs. manual triage and routing</div>
+                            </div>
+                            <div class="metric-card green">
+                                <div class="metric-val" id="trv-m-hours">6 hrs</div>
+                                <div class="metric-lbl">Saved monthly</div>
+                                <div class="metric-sub" id="trv-m-hours-sub">~25 negative reviews/month</div>
+                            </div>
+                            <div class="metric-card purple">
+                                <div class="metric-val" id="trv-m-cost">$150</div>
+                                <div class="metric-lbl">Cost saved/month</div>
+                                <div class="metric-sub" id="trv-m-cost-sub">@ $25/hr staff rate</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
@@ -3308,13 +3336,12 @@
 const AGENT_HINTS = {
     'Review Response Agent':    'The AI review response agent analyzes reviews and creates proactive responses.',
     'Review Marketing Agent':   'The AI review marketing agent turns your best reviews into scheduled social posts automatically.',
-    'Review Generation Agent':  'The AI review generation agent helps request and generate authentic reviews from customers.',
     'Social Publishing Agent':  'The AI social publishing agent creates and schedules brand-consistent posts across platforms.',
     'Social Engagement Agent':  'The AI social engagement agent monitors and responds to comments and messages automatically.',
     'Listings Optimization Agent': 'The AI listings agent audits and optimizes your business listings across 50+ directories.',
     'Search Recommendations Agent': 'The AI search recommendations agent improves how AI platforms like ChatGPT and Gemini find and cite your business.',
-    'Listings Verify Agent':    'The AI listings verify agent ensures NAP consistency and flags discrepancies across directories.',
-    'Ticketing Survey Agent':   'The AI ticketing survey agent detects negative survey feedback and automatically creates tickets routed to the right team.'
+    'Ticketing Survey Agent':   'The AI ticketing survey agent detects negative survey feedback and automatically creates tickets routed to the right team.',
+    'Ticketing Review Agent':   'The AI ticketing review agent detects negative reviews and automatically creates tickets routed to the right team.'
 };
 
 // Department each agent belongs to, shown as a small subtext under the pill label so it reads clearly even with the dropdown closed
@@ -3325,31 +3352,10 @@ const AGENT_DEPARTMENTS = {
     'Social Engagement Agent': 'Marketing',
     'Listings Optimization Agent': 'Marketing',
     'Search Recommendations Agent': 'Marketing',
-    'Workflow Agent': 'Marketing',
-    'Lead Gen Agent': 'Marketing',
-    'Segmentation Agent': 'Marketing',
-    'Review Generation Agent': 'Marketing',
     'Routing & Tagging Agent': 'Marketing',
-    'Template Agent': 'Marketing',
-    'Blog Page Agent': 'Marketing',
-    'FAQ Page Agent': 'Marketing',
-    'Platform Agents': 'Marketing',
-    'Custom Reporting Agent': 'Marketing',
-    'AI Coworkers': 'Marketing',
     'Front Desk Agent': 'Operations',
-    'Waitlist Agent': 'Operations',
-    'Reminder Agent': 'Operations',
-    'Pre Visit Agent': 'Operations',
-    'Insurance Verification Agent': 'Operations',
-    'Recall Agent': 'Operations',
-    'Treatment Planning Agent': 'Operations',
-    'Revenue Agent': 'Operations',
     'Ticketing Survey Agent': 'Customer Experience',
-    'Survey Creation Agent': 'Customer Experience',
-    'Survey Distribution Agent': 'Customer Experience',
-    'Survey Response Agent': 'Customer Experience',
-    'Ticketing Review Agent': 'Customer Experience',
-    'Insights Agent': 'Customer Experience'
+    'Ticketing Review Agent': 'Customer Experience'
 };
 
 // Reflects the true number of built/active agents in the hero subtext — counts every
@@ -3767,6 +3773,8 @@ let searchRecoGenerated = false;
 let searchRecoIsGenerating = false;
 let tsaGenerated = false;
 let tsaIsGenerating = false;
+let trvGenerated = false;
+let trvIsGenerating = false;
 let rmaGenerated = false;
 let rmaIsGenerating = false;
 let rmaSelectedReviewId = 1;
@@ -3814,6 +3822,7 @@ function getAgentType() {
     if (currentAgent === 'Review Marketing Agent') return 'review-marketing';
     if (currentAgent === 'Search Recommendations Agent') return 'search-reco';
     if (currentAgent === 'Ticketing Survey Agent') return 'ticketing-survey';
+    if (currentAgent === 'Ticketing Review Agent') return 'ticketing-review';
     return 'review';
 }
 
@@ -3857,6 +3866,8 @@ function selectAgent(name, el) {
         document.getElementById('output-placeholder').textContent = 'Click Continue to see recommendations to improve your AI search visibility';
     } else if (type === 'ticketing-survey') {
         document.getElementById('output-placeholder').textContent = 'Click Continue to see negative survey responses flagged and routed to the right team';
+    } else if (type === 'ticketing-review') {
+        document.getElementById('output-placeholder').textContent = 'Click Continue to see negative reviews flagged and routed to the right team';
     } else {
         document.getElementById('output-placeholder').textContent = 'Check out the example reviews and agent responses here';
     }
@@ -3871,6 +3882,7 @@ function selectAgent(name, el) {
     document.getElementById('outcome-review-marketing').style.display  = type === 'review-marketing'  ? 'block' : 'none';
     document.getElementById('outcome-search-reco').style.display       = type === 'search-reco'       ? 'block' : 'none';
     document.getElementById('outcome-ticketing-survey').style.display  = type === 'ticketing-survey'  ? 'block' : 'none';
+    document.getElementById('outcome-ticketing-review').style.display  = type === 'ticketing-review'  ? 'block' : 'none';
     if (type === 'review') recalcROI();
     else if (type === 'social-pub') recalcSocialPub();
     else if (type === 'social-eng') recalcSocialEng();
@@ -3878,8 +3890,9 @@ function selectAgent(name, el) {
     else if (type === 'review-marketing') recalcReviewMarketingROI();
     else if (type === 'search-reco') recalcSearchRecoROI();
     else if (type === 'ticketing-survey') recalcTsaROI();
+    else if (type === 'ticketing-review') recalcTrvROI();
 
-    document.getElementById('common-biz-fields').style.display      = (type === 'listings-opt' || type === 'review-marketing' || type === 'search-reco' || type === 'ticketing-survey') ? 'none'  : 'block';
+    document.getElementById('common-biz-fields').style.display      = (type === 'listings-opt' || type === 'review-marketing' || type === 'search-reco' || type === 'ticketing-survey' || type === 'ticketing-review') ? 'none'  : 'block';
     document.getElementById('review-fields').style.display          = type === 'review'            ? 'block' : 'none';
     document.getElementById('social-pub-fields').style.display      = type === 'social-pub'        ? 'block' : 'none';
     document.getElementById('social-eng-fields').style.display      = type === 'social-eng'        ? 'block' : 'none';
@@ -3887,6 +3900,7 @@ function selectAgent(name, el) {
     document.getElementById('review-marketing-fields').style.display = type === 'review-marketing' ? 'block' : 'none';
     document.getElementById('search-reco-fields').style.display     = type === 'search-reco'        ? 'block' : 'none';
     document.getElementById('ticketing-survey-fields').style.display = type === 'ticketing-survey'  ? 'block' : 'none';
+    document.getElementById('ticketing-review-fields').style.display = type === 'ticketing-review'  ? 'block' : 'none';
 
     // Update subtitles
     const bdSub     = document.querySelector('#acc-basic .acc-subtitle');
@@ -3916,6 +3930,10 @@ function selectAgent(name, el) {
         bdSub.textContent    = 'Business profile and survey templates to monitor';
         outSub.textContent   = 'Negative survey responses flagged and auto-routed to the right team';
         outcomeSub.textContent = 'Estimated time savings and cost impact';
+    } else if (type === 'ticketing-review') {
+        bdSub.textContent    = 'Business profile';
+        outSub.textContent   = 'Negative reviews flagged and auto-routed to the right team';
+        outcomeSub.textContent = 'Estimated time savings and cost impact';
     } else {
         bdSub.textContent    = 'Business profile, brand voice, and response preferences';
         outSub.textContent   = 'Sample reviews with AI-generated responses';
@@ -3932,6 +3950,8 @@ function selectAgent(name, el) {
     searchRecoIsGenerating = false;
     tsaGenerated = false;
     tsaIsGenerating = false;
+    trvGenerated = false;
+    trvIsGenerating = false;
 }
 
 document.addEventListener('click', () => {
@@ -4702,6 +4722,8 @@ function runContinue() {
         ? document.getElementById('sr-biz-name').value.trim()
         : type === 'ticketing-survey'
         ? document.getElementById('tsa-biz-name').value.trim()
+        : type === 'ticketing-review'
+        ? document.getElementById('trv-biz-name').value.trim()
         : document.getElementById('biz-name').value.trim()) || 'your business';
 
     document.getElementById('output-review').style.display            = type === 'review'            ? 'block' : 'none';
@@ -4711,6 +4733,7 @@ function runContinue() {
     document.getElementById('output-review-marketing').style.display  = type === 'review-marketing'  ? 'block' : 'none';
     document.getElementById('output-search-reco').style.display       = type === 'search-reco'        ? 'block' : 'none';
     document.getElementById('output-ticketing-survey').style.display  = type === 'ticketing-survey'   ? 'block' : 'none';
+    document.getElementById('output-ticketing-review').style.display  = type === 'ticketing-review'   ? 'block' : 'none';
 
     document.getElementById('output-placeholder').style.display = 'none';
     document.getElementById('output-live').style.display = 'block';
@@ -4733,6 +4756,8 @@ function runContinue() {
         renderSrOutputSubtext(biz);
     } else if (type === 'ticketing-survey') {
         renderTsaOutputSubtext(biz);
+    } else if (type === 'ticketing-review') {
+        renderTrvOutputSubtext(biz);
     }
 
     forceOpenAcc('output');
@@ -4773,6 +4798,13 @@ function runContinue() {
         tsaGenerated = false;
         tsaIsGenerating = false;
         setTimeout(() => runTsaGenerate(), 400);
+    }
+
+    // Auto-generate for ticketing review
+    if (type === 'ticketing-review') {
+        trvGenerated = false;
+        trvIsGenerating = false;
+        setTimeout(() => runTrvGenerate(), 400);
     }
 }
 
@@ -5767,6 +5799,310 @@ function recalcTsaROI() {
     document.getElementById('tsa-m-hours-sub').textContent = `~${negative} negative surveys/month (${pct}% of ${volume})`;
     document.getElementById('tsa-m-cost').textContent      = `$${totalCost.toLocaleString()}`;
     document.getElementById('tsa-m-cost-sub').textContent  = `@ $${rate}/hr staff rate`;
+}
+
+// ---- TICKETING REVIEW AGENT ----
+function renderTrvOutputSubtext(biz) {
+    const el = document.getElementById('trv-output-subtext');
+    if (el) el.innerHTML = `For demo purposes, here are example negative reviews for <span id="trv-out-biz-name">${biz}</span>. Each is automatically categorized and routed to the right team.`;
+}
+
+// ---- TICKETING REVIEW: BUSINESS NAME SEARCH (reuses the same business directory as Listings) ----
+function renderTrvBizNameSuggestions(matches) {
+    const panel = document.getElementById('trv-biz-name-suggest-panel');
+    if (!panel) return;
+    if (!matches.length) { panel.style.display = 'none'; panel.innerHTML = ''; return; }
+    panel.innerHTML = matches.map(p => `
+        <div class="competitor-suggest-item" onmousedown="selectTrvBizNameSuggestion('${p.name.replace(/'/g, "\\'")}')">
+            <div class="cs-name">${p.name}</div>
+            <div class="cs-sub">${p.website} · ${p.google}</div>
+        </div>
+    `).join('');
+    panel.style.display = 'block';
+}
+
+function handleTrvBizNameFocus() {
+    renderTrvBizNameSuggestions(LISTINGS_BUSINESS_PROFILES);
+}
+
+function handleTrvBizNameInput(input) {
+    const q = input.value.trim().toLowerCase();
+    const matches = q
+        ? LISTINGS_BUSINESS_PROFILES.filter(p => p.name.toLowerCase().includes(q))
+        : LISTINGS_BUSINESS_PROFILES;
+    renderTrvBizNameSuggestions(matches);
+}
+
+function hideTrvBizNameSuggestions() {
+    setTimeout(() => {
+        const panel = document.getElementById('trv-biz-name-suggest-panel');
+        if (panel) panel.style.display = 'none';
+    }, 150);
+}
+
+async function selectTrvBizNameSuggestion(name) {
+    document.getElementById('trv-biz-name').value = name;
+    const panel = document.getElementById('trv-biz-name-suggest-panel');
+    if (panel) panel.style.display = 'none';
+    await fetchTrvBusinessProfile(name);
+}
+
+async function fetchTrvBusinessProfile(name) {
+    const profile = LISTINGS_BUSINESS_PROFILES.find(p => p.name === name);
+    if (!profile) return;
+
+    document.getElementById('trv-biz-edit-fields').style.display = 'none';
+    document.getElementById('trv-biz-summary-view').style.display = 'block';
+    document.getElementById('trv-biz-edit-btn').innerHTML = BIZ_EDIT_BTN_HTML;
+
+    const overlay = document.getElementById('trv-biz-fetching-overlay');
+    if (overlay) overlay.style.display = 'flex';
+
+    await pause(750);
+
+    document.getElementById('trv-biz-address').value = profile.address;
+    document.getElementById('trv-biz-website').value = profile.website;
+    document.getElementById('trv-biz-desc').value    = profile.description;
+    selectTrvPrimaryCategoryByValue(profile.primaryCategory);
+    syncTrvBizSummary();
+
+    if (overlay) overlay.style.display = 'none';
+
+    if (trvGenerated) {
+        renderTrvOutputSubtext(name);
+    }
+}
+
+// ---- TICKETING REVIEW: BUSINESS PROFILE EDIT TOGGLE ----
+function toggleTrvBizEdit() {
+    const summary = document.getElementById('trv-biz-summary-view');
+    const fields  = document.getElementById('trv-biz-edit-fields');
+    const btn     = document.getElementById('trv-biz-edit-btn');
+    const isEditing = fields.style.display === 'block';
+
+    if (isEditing) {
+        syncTrvBizSummary();
+        fields.style.display = 'none';
+        summary.style.display = 'block';
+        btn.innerHTML = BIZ_EDIT_BTN_HTML;
+    } else {
+        summary.style.display = 'none';
+        fields.style.display = 'block';
+        btn.innerHTML = BIZ_SAVE_BTN_HTML;
+    }
+}
+
+function syncTrvBizSummary() {
+    document.getElementById('trv-bs-address').textContent     = document.getElementById('trv-biz-address').value;
+    document.getElementById('trv-bs-primary').textContent     = document.getElementById('cdd-trv-primary-label').textContent;
+    document.getElementById('trv-bs-website').textContent     = document.getElementById('trv-biz-website').value;
+    document.getElementById('trv-bs-description').textContent = document.getElementById('trv-biz-desc').value;
+}
+
+function selectTrvPrimaryCategory(value, el) {
+    el.parentElement.querySelectorAll('.dd-option').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+    document.getElementById('cdd-trv-primary-label').textContent = value;
+    document.getElementById('cdd-trv-primary').classList.remove('open');
+}
+
+function selectTrvPrimaryCategoryByValue(value) {
+    document.querySelectorAll('#cdd-trv-primary .dd-option').forEach(o => {
+        o.classList.toggle('selected', o.textContent.trim() === value);
+    });
+    document.getElementById('cdd-trv-primary-label').textContent = value;
+}
+
+// ---- TICKETING REVIEW: GENERATE OUTPUT ----
+const TRV_STEPS = [
+    { txt: 'Scanning new Google reviews', ms: 550 },
+    { txt: 'Identifying negative sentiment', ms: 600 },
+    { txt: 'Categorizing feedback theme', ms: 550 },
+    { txt: 'Matching to the responsible team', ms: 600 },
+    { txt: 'Creating and assigning tickets', ms: 550 }
+];
+
+const TRV_REVIEWS = [
+    {
+        id: 'trv-legal',
+        text: 'They performed a whitening procedure on me without ever having me sign a consent form. When I called to ask about it, nobody could give me a straight answer, so I\'m now considering speaking with a lawyer.',
+        stars: 1,
+        name: 'R. Kim',
+        date: '4 days ago',
+        theme: 'Informed Consent',
+        assignee: 'John Doe',
+        team: 'Legal Team'
+    },
+    {
+        id: 'trv-billing',
+        text: 'My insurance was billed for a deep cleaning I never actually received during my visit. I\'ve called the office three times over the past month and still haven\'t gotten a corrected statement.',
+        stars: 2,
+        name: 'T. Alvarez',
+        date: '1 week ago',
+        theme: 'Billing Accuracy',
+        assignee: 'Maria Chen',
+        team: 'Billing Team'
+    },
+    {
+        id: 'trv-service',
+        text: 'The hygienist seemed rushed the entire visit and barely looked up to answer my questions about the treatment plan. I felt like I was just another appointment to get through, not an actual patient.',
+        stars: 1,
+        name: 'S. Novak',
+        date: '2 weeks ago',
+        theme: 'Staff Attentiveness',
+        assignee: 'Alex Turner',
+        team: 'Patient Experience Team'
+    }
+];
+
+async function runTrvGenerate() {
+    if (trvIsGenerating) return;
+    trvIsGenerating = true;
+
+    const area = document.getElementById('trv-output-area');
+    area.innerHTML = `
+        <div class="reasoning-block">
+            <div class="reasoning-heading">Agent reasoning</div>
+            <div id="trv-steps"></div>
+        </div>
+        <div class="progress-block">
+            <div class="progress-meta">
+                <span id="trv-prog-label">Starting analysis…</span>
+                <span id="trv-prog-pct">0%</span>
+            </div>
+            <div class="progress-track">
+                <div class="progress-fill" id="trv-prog-fill"></div>
+            </div>
+        </div>
+    `;
+
+    const container = document.getElementById('trv-steps');
+    const progFill  = document.getElementById('trv-prog-fill');
+    const progLabel = document.getElementById('trv-prog-label');
+    const progPct   = document.getElementById('trv-prog-pct');
+    const total     = TRV_STEPS.length;
+
+    for (let i = 0; i < total; i++) {
+        const step = TRV_STEPS[i];
+        await pause(step.ms);
+
+        container.querySelectorAll('.step-dot.spinning').forEach(d => {
+            d.classList.replace('spinning', 'done');
+            d.textContent = '✓';
+        });
+
+        const pct = Math.round(((i + 1) / total) * 88);
+        const el = document.createElement('div');
+        el.className = 'reason-step';
+        el.innerHTML = `<div class="step-dot spinning">↻</div><span>${step.txt}</span>`;
+        container.appendChild(el);
+        requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('show')));
+
+        progFill.style.width  = pct + '%';
+        progPct.textContent   = pct + '%';
+        progLabel.textContent = step.txt;
+    }
+
+    await pause(400);
+
+    container.querySelectorAll('.step-dot.spinning').forEach(d => {
+        d.classList.replace('spinning', 'done');
+        d.textContent = '✓';
+    });
+    progFill.style.width  = '100%';
+    progPct.textContent   = '100%';
+    progLabel.textContent = 'Tickets created!';
+
+    await pause(320);
+
+    const stepsSnap = container.innerHTML;
+
+    area.innerHTML = `
+        <div class="reasoning-acc">
+            <div class="reasoning-acc-header" onclick="toggleReasoningAcc(this)">
+                <span>Agent reasoning</span>
+                <svg class="reasoning-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none">
+                    <path d="M3 5l4 4 4-4" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <div class="reasoning-acc-body">
+                <div class="reasoning-acc-inner">${stepsSnap}</div>
+            </div>
+        </div>
+        <div id="trv-ticket-list"></div>
+        <div class="tsa-impact-note">
+            <span class="tsa-impact-icon">✦</span>
+            <span>Going forward, this agent can automatically analyze every new review, detect negative sentiment, and assign tickets to the right team in real time — helping you resolve customer experience issues faster.</span>
+        </div>
+    `;
+
+    trvIsGenerating = false;
+    trvGenerated = true;
+    renderTrvTickets();
+
+    // Open Outcome accordion the first time tickets are generated
+    const outcomeBody = document.getElementById('body-outcome');
+    if (outcomeBody.classList.contains('collapsed')) {
+        recalcTrvROI();
+        forceOpenAcc('outcome');
+        setTimeout(() => {
+            document.getElementById('acc-outcome').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 150);
+    }
+}
+
+function renderTrvTickets() {
+    const listEl = document.getElementById('trv-ticket-list');
+    if (!listEl) return;
+
+    listEl.innerHTML = TRV_REVIEWS.map((r, idx) => `
+        <div class="rec-card fade-up" style="animation-delay:${idx * 60}ms;">
+            <div class="review-card-header">
+                <div class="review-glogo">
+                    <svg width="28" height="28" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+                        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                    </svg>
+                </div>
+                <div class="review-meta-block">
+                    <div class="stars-row">${Array(5).fill(0).map((_, i) => `<span class="star ${i < r.stars ? 'on' : 'off'}">★</span>`).join('')}</div>
+                    <div class="reviewer-info-row">
+                        <span class="reviewer-name">${r.name}</span>
+                        <span class="reviewer-sep">•</span>
+                        <span class="reviewer-date">${r.date}</span>
+                    </div>
+                </div>
+            </div>
+            <p class="rec-detail">${r.text}</p>
+            <div class="sr-chip-row">
+                <span class="sr-chip sr-chip-theme">${r.theme}</span>
+            </div>
+            <div class="tsa-assign-row">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                <span>Ticket created and assigned to ${r.assignee} · ${r.team}</span>
+            </div>
+        </div>
+    `).join('');
+}
+
+function recalcTrvROI() {
+    const volume   = parseInt(document.getElementById('trv-roi-volume').value) || 200;
+    const negative = parseInt(document.getElementById('trv-roi-negative').value) || 25;
+    const rate     = parseInt(document.getElementById('trv-roi-rate').value) || 25;
+
+    const minutesPerTicket = 15;
+    const totalMinutes = negative * minutesPerTicket;
+    const totalHours   = Math.round(totalMinutes / 60);
+    const totalCost    = Math.round(totalHours * rate);
+    const pct = volume ? Math.round((negative / volume) * 100) : 0;
+
+    document.getElementById('trv-m-time').textContent      = `${minutesPerTicket} min`;
+    document.getElementById('trv-m-hours').textContent     = `${totalHours} hrs`;
+    document.getElementById('trv-m-hours-sub').textContent = `~${negative} negative reviews/month (${pct}% of ${volume})`;
+    document.getElementById('trv-m-cost').textContent      = `$${totalCost.toLocaleString()}`;
+    document.getElementById('trv-m-cost-sub').textContent  = `@ $${rate}/hr staff rate`;
 }
 
 // ---- REVIEW MARKETING AGENT ----
