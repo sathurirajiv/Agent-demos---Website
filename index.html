@@ -672,6 +672,28 @@
         .rt-grid-icon { grid-template-columns: repeat(4, 1fr); }
         .rt-grid-icon .rt-card { flex-direction: row; justify-content: flex-start; text-align: left; padding: 12px; gap: 10px; }
 
+        .survey-type-option {
+            display: flex; align-items: flex-start; gap: 10px;
+            border: 1.5px solid #e2e8f0; border-radius: 10px; padding: 12px 14px;
+            cursor: pointer; transition: border-color 0.15s; margin-bottom: 10px; background: white;
+        }
+        .survey-type-option:last-child { margin-bottom: 0; }
+        .survey-type-option:hover { border-color: #93c5fd; }
+        .survey-type-option.selected { border-color: #2563eb; background: #fafbff; }
+        .survey-type-radio {
+            width: 16px; height: 16px; border: 1.5px solid #d1d5db; border-radius: 50%;
+            flex-shrink: 0; margin-top: 2px; display: flex; align-items: center; justify-content: center;
+            transition: all 0.15s;
+        }
+        .survey-type-option.selected .survey-type-radio { border-color: #2563eb; }
+        .survey-type-option.selected .survey-type-radio::after {
+            content: ''; width: 8px; height: 8px; border-radius: 50%; background: #2563eb;
+        }
+        .survey-type-icon { width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; color: #64748b; flex-shrink: 0; margin-top: 1px; }
+        .survey-type-text { flex: 1; }
+        .survey-type-label { font-size: 13px; font-weight: 400; color: #374151; margin-bottom: 2px; }
+        .survey-type-desc { font-size: 12px; font-weight: 400; color: #94a3b8; line-height: 1.5; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
         /* Custom category dropdown */
         .cdd-anchor { position: relative; }
         .cdd-trigger {
@@ -788,8 +810,6 @@
         }
         .sr-chip-visibility { background: #dcfce7; color: #15803d; }
         .sr-chip-theme { background: #eff6ff; color: #2563eb; }
-        .tsa-chip-template { background: #f1f5f9; color: #475569; }
-        .tsa-chip-score { background: #fee2e2; color: #b91c1c; }
 
         .tsa-assign-row {
             display: flex; align-items: center; gap: 8px; margin-top: 14px;
@@ -1154,6 +1174,19 @@
         .output-subtext { font-size: 13px; color: #64748b; margin-top: 4px; margin-bottom: 16px; line-height: 1.5; }
 
         .reviews-list { display: flex; flex-direction: column; gap: 10px; }
+
+        .tsa-question-box { border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 14px 16px; margin-bottom: 14px; background: #fafbff; }
+        .tsa-question-text { font-size: 14px; font-weight: 400; color: #0f172a; line-height: 1.4; margin-top: 4px; }
+
+        .tsa-score-circle {
+            width: 42px; height: 42px; border-radius: 50%; border: 2px solid currentColor;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            font-size: 13px; font-weight: 400; line-height: 1.1; flex-shrink: 0;
+        }
+        .tsa-score-circle .tsa-score-max { font-size: 8.5px; font-weight: 400; opacity: 0.75; }
+        .tsa-score-good { color: #16a34a; }
+        .tsa-score-mid  { color: #d97706; }
+        .tsa-score-bad  { color: #dc2626; }
 
         /* Review Card */
         .review-card {
@@ -2629,26 +2662,26 @@
 
                 <div id="ticketing-survey-fields" style="display:none;">
                     <div class="form-group">
-                        <label class="form-label">Select survey templates to monitor</label>
-                        <div class="rt-grid rt-grid-icon" style="grid-template-columns: repeat(2, 1fr);">
-                            <div class="rt-card selected" id="tsa-tpl-nps" onclick="toggleTsaTemplateCard(this)">
-                                <div class="rt-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12a10 10 0 0 1 20 0"/><path d="M12 12l4-4"/><circle cx="12" cy="12" r="1"/></svg></div>
-                                <div class="rt-card-label">NPS Survey</div>
+                        <label class="form-label">Select survey type</label>
+                        <div id="tsa-survey-type-list">
+                            <div class="survey-type-option selected" id="tsa-tpl-nps" onclick="selectTsaSurveyType('nps', this)">
+                                <div class="survey-type-radio"></div>
+                                <div class="survey-type-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12a10 10 0 0 1 20 0"/><path d="M12 12l4-4"/><circle cx="12" cy="12" r="1"/></svg></div>
+                                <div class="survey-type-text">
+                                    <div class="survey-type-label">NPS Survey</div>
+                                    <div class="survey-type-desc">Measures loyalty — how likely they'd recommend you.</div>
+                                </div>
                             </div>
-                            <div class="rt-card selected" id="tsa-tpl-csat" onclick="toggleTsaTemplateCard(this)">
-                                <div class="rt-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg></div>
-                                <div class="rt-card-label">CSAT Survey</div>
-                            </div>
-                            <div class="rt-card selected" id="tsa-tpl-postint" onclick="toggleTsaTemplateCard(this)">
-                                <div class="rt-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
-                                <div class="rt-card-label">Post-Interaction Feedback</div>
-                            </div>
-                            <div class="rt-card selected" id="tsa-tpl-pulse" onclick="toggleTsaTemplateCard(this)">
-                                <div class="rt-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
-                                <div class="rt-card-label">Pulse Survey</div>
+                            <div class="survey-type-option" id="tsa-tpl-csat" onclick="selectTsaSurveyType('csat', this)">
+                                <div class="survey-type-radio"></div>
+                                <div class="survey-type-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg></div>
+                                <div class="survey-type-text">
+                                    <div class="survey-type-label">CSAT Survey</div>
+                                    <div class="survey-type-desc">Measures satisfaction of your recent visit.</div>
+                                </div>
                             </div>
                         </div>
-                        <div class="field-sub">Detractor responses — low ratings or negative open-text feedback — are automatically flagged for ticket creation.</div>
+                        <div class="field-sub">Agent will detect negative ratings/feedback and auto-flag them for ticket creation</div>
                     </div>
 
                     <div>
@@ -2825,9 +2858,43 @@
                 <div id="output-ticketing-survey" style="display:none;">
                     <div class="output-wrap">
                         <div class="output-top">
-                            <div class="output-subtext" id="tsa-output-subtext">For demo purposes, here are example negative survey responses for <span id="tsa-out-biz-name">Aspen Dental Group</span>. Each is automatically categorized and routed to the right team.</div>
+                            <div class="output-subtext" id="tsa-output-subtext">Sample survey responses for <span id="tsa-out-biz-name">Aspen Dental Group</span> — select one to assess for a support ticket</div>
                         </div>
-                        <div id="tsa-output-area"></div>
+                        <div class="tsa-question-box">
+                            <div class="rec-field-label">Survey question</div>
+                            <div class="tsa-question-text" id="tsa-question-text">How likely are you to recommend us to a friend or colleague?</div>
+                        </div>
+                        <div class="reviews-list" id="tsa-responses-list"></div>
+                        <div class="custom-review-trigger" id="tsa-custom-trigger" onclick="toggleTsaCustomResponse()">
+                            <div class="cr-plus">+</div>
+                            <span>Try with your own response</span>
+                            <span class="cr-hint">Any name, score, and text</span>
+                        </div>
+                        <div class="custom-review-form" id="tsa-custom-form">
+                            <div class="cr-field">
+                                <label class="cr-label">Score (<span id="tsa-custom-score-range">0–10</span>)</label>
+                                <input type="number" class="cr-name-input" id="tsa-custom-score" min="0" max="10" placeholder="e.g. 3">
+                            </div>
+                            <div class="cr-field">
+                                <label class="cr-label">Response Text</label>
+                                <textarea class="cr-textarea" id="tsa-custom-text" placeholder="Paste or type a survey response here..."></textarea>
+                            </div>
+                            <div class="cr-field">
+                                <label class="cr-label-soft">Respondent name (optional)</label>
+                                <input type="text" class="cr-name-input" id="tsa-custom-name" placeholder="e.g. Alex K.">
+                            </div>
+                            <button class="btn-cr-generate" id="btn-tsa-cr-gen" onclick="generateTsaCustomTicket()">✦ Assess for Ticket</button>
+                            <div class="cr-response-area" id="tsa-cr-response-area"></div>
+                        </div>
+                        <div class="response-panel" id="tsa-response-panel" style="display:none;">
+                            <div class="rp-header">
+                                <span class="rp-title" id="tsa-rp-label">Assessing response</span>
+                                <button class="btn-generate" id="btn-tsa-gen" onclick="generateTsaTicket()">✦ Create Ticket</button>
+                            </div>
+                            <div class="rp-body" id="tsa-rp-body">
+                                <p class="rp-empty">Select a response above and click "Create Ticket" to see the agent in action.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -3899,8 +3966,8 @@ function selectAgent(name, el) {
         outSub.textContent   = 'Recommendations to improve AI search visibility';
         outcomeSub.textContent = 'Estimated time savings and cost impact';
     } else if (type === 'ticketing-survey') {
-        bdSub.textContent    = 'Business details and survey templates to monitor';
-        outSub.textContent   = 'Negative survey responses flagged and auto-routed to the right team';
+        bdSub.textContent    = 'Business details and survey type';
+        outSub.textContent   = 'Sample survey responses with AI-assessed support tickets';
         outcomeSub.textContent = 'Estimated time savings and cost impact';
     } else if (type === 'ticketing-review') {
         bdSub.textContent    = 'Business details';
@@ -3922,6 +3989,9 @@ function selectAgent(name, el) {
     searchRecoIsGenerating = false;
     tsaGenerated = false;
     tsaIsGenerating = false;
+    tsaSelectedResponseId = null;
+    tsaTicketCache = {};
+    tsaCustomIsGenerating = false;
     trvGenerated = false;
     trvIsGenerating = false;
 }
@@ -4805,6 +4875,12 @@ function runContinue() {
         renderSrOutputSubtext(biz);
     } else if (type === 'ticketing-survey') {
         renderTsaOutputSubtext(biz);
+        tsaSelectedResponseId = null;
+        tsaTicketCache = {};
+        renderTsaResponses();
+        document.getElementById('tsa-response-panel').style.display = 'none';
+        document.getElementById('tsa-custom-form').classList.remove('open');
+        document.getElementById('tsa-custom-trigger').classList.remove('expanded');
     } else if (type === 'ticketing-review') {
         renderTrvOutputSubtext(biz);
     }
@@ -4842,11 +4918,10 @@ function runContinue() {
         setTimeout(() => runSearchRecoGenerate(), 400);
     }
 
-    // Auto-generate for ticketing survey
+    // Ticketing survey: user selects a response and generates its ticket manually
     if (type === 'ticketing-survey') {
         tsaGenerated = false;
         tsaIsGenerating = false;
-        setTimeout(() => runTsaGenerate(), 400);
     }
 
     // Auto-generate for ticketing review
@@ -5523,70 +5598,58 @@ const TSA_STEPS = [
     { txt: 'Identifying detractor sentiment', ms: 600 },
     { txt: 'Categorizing issue type', ms: 550 },
     { txt: 'Matching to the responsible team', ms: 600 },
-    { txt: 'Creating and assigning tickets', ms: 550 }
+    { txt: 'Creating and assigning the ticket', ms: 550 }
 ];
 
-const TSA_TEMPLATE_MAP = {
-    nps: 'tsa-tpl-nps',
-    csat: 'tsa-tpl-csat',
-    postint: 'tsa-tpl-postint',
-    pulse: 'tsa-tpl-pulse'
+const TSA_SURVEY_TYPES = {
+    nps: {
+        label: 'NPS Survey',
+        question: 'How likely are you to recommend us to a friend or colleague?',
+        scoreMax: 10,
+        responses: [
+            { id: 'nps-1', name: 'Anonymous', score: 3, date: '1 week ago',
+                text: 'The front desk staff was dismissive and rushed me through check-in without really answering my questions. When I asked about my appointment time, I got a short, annoyed response instead of an actual explanation. It left a bad first impression before I\'d even been seen.',
+                theme: 'a general service complaint', team: 'Support',
+                action: 'review the linked feedback and follow up with the customer directly.' },
+            { id: 'nps-2', name: 'J. Alvarez', score: 1, date: '3 days ago',
+                text: 'Honestly, the whole visit felt rushed and impersonal, and it wasn\'t what I was expecting given what I paid. I didn\'t feel like my concerns were really heard, and I left with more questions than answers.',
+                theme: 'a broader experience complaint', team: 'Patient Experience Team',
+                action: 'escalate to the on-site manager for direct outreach and service recovery.' },
+            { id: 'nps-3', name: 'Anonymous', score: 5, date: '6 days ago',
+                text: 'I was quoted one price for my cleaning and charged more at checkout, and nobody at the front desk could explain the difference. Left feeling like I got overcharged.',
+                theme: 'a billing discrepancy', team: 'Billing Team',
+                action: 'audit the account for billing discrepancies and issue a correction if needed.' }
+        ]
+    },
+    csat: {
+        label: 'CSAT Survey',
+        question: 'How satisfied were you with your recent visit?',
+        scoreMax: 5,
+        responses: [
+            { id: 'csat-1', name: 'Anonymous', score: 2, date: '4 days ago',
+                text: 'I waited almost 40 minutes past my appointment time with no explanation, and when I finally got called in the visit itself felt rushed. Not a great experience overall.',
+                theme: 'a wait-time complaint', team: 'Support',
+                action: 'review scheduling for that day and follow up with the customer directly.' },
+            { id: 'csat-2', name: 'D. Foster', score: 1, date: '1 week ago',
+                text: 'Very disappointed. I was quoted one price over the phone and charged something completely different at checkout, with no one able to explain the discrepancy.',
+                theme: 'a billing discrepancy', team: 'Billing Team',
+                action: 'audit the account for billing discrepancies and issue a correction if needed.' },
+            { id: 'csat-3', name: 'Anonymous', score: 2, date: '6 days ago',
+                text: 'It was a frustrating visit — the front desk seemed disorganized, I had to repeat my information twice, and nobody seemed to be in charge of fixing it.',
+                theme: 'a front-desk process complaint', team: 'Support',
+                action: 'flag for front-desk process review and follow up with the customer directly.' }
+        ]
+    }
 };
 
-const TSA_TICKETS = [
-    {
-        id: 'tsa-legal',
-        templateKey: 'nps',
-        template: 'NPS Survey',
-        score: 'NPS score: 2 / 10',
-        category: 'Legal & Compliance',
-        title: 'Detractor NPS response flagged as a legal risk',
-        quote: '"I was billed for a whitening procedure I never agreed to, and now I\'m thinking about talking to my lawyer about it."',
-        assignee: 'John Doe',
-        team: 'Legal Team'
-    },
-    {
-        id: 'tsa-billing',
-        templateKey: 'csat',
-        template: 'CSAT Survey',
-        score: 'Rating: 1 / 5',
-        category: 'Billing',
-        title: 'Detractor CSAT response flagged for a billing dispute',
-        quote: '"I was charged twice for my cleaning visit and nobody has resolved it after three calls to the office."',
-        assignee: 'Maria Chen',
-        team: 'Billing Team'
-    },
-    {
-        id: 'tsa-service',
-        templateKey: 'postint',
-        template: 'Post-Interaction Feedback',
-        score: 'Rating: 2 / 5',
-        category: 'Patient Experience',
-        title: 'Detractor feedback flagged for service quality',
-        quote: '"Waited over 40 minutes past my appointment with no explanation, and the front desk was dismissive when I asked."',
-        assignee: 'Alex Turner',
-        team: 'Patient Experience Team'
-    },
-    {
-        id: 'tsa-pulse',
-        templateKey: 'pulse',
-        template: 'Pulse Survey',
-        score: 'Rating: 2 / 5',
-        category: 'Front Office & Scheduling',
-        title: 'Detractor pulse response flagged for scheduling friction',
-        quote: '"I called three times trying to reschedule and kept getting sent to voicemail. Finally gave up and booked somewhere else."',
-        assignee: 'Robin',
-        team: 'Customer Experience Team'
-    }
-];
+let tsaSelectedType = 'nps';
+let tsaSelectedResponseId = null;
+let tsaTicketCache = {};
+let tsaCustomIsGenerating = false;
 
-function getCheckedTsaTemplates() {
-    return Object.keys(TSA_TEMPLATE_MAP).filter(key => document.getElementById(TSA_TEMPLATE_MAP[key])?.classList.contains('selected'));
-}
-
-function toggleTsaTemplateCard(card) {
-    card.classList.toggle('selected');
-    if (tsaGenerated) renderTsaTickets();
+function tsaScoreTier(score, max) {
+    const ratio = score / max;
+    return ratio >= 0.9 ? 'good' : ratio >= 0.6 ? 'mid' : 'bad';
 }
 
 function toggleTsaMoreOptions() {
@@ -5599,38 +5662,149 @@ function toggleTsaMoreOptions() {
 
 function renderTsaOutputSubtext(biz) {
     const el = document.getElementById('tsa-output-subtext');
-    if (el) el.innerHTML = `For demo purposes, here are example negative survey responses for <span id="tsa-out-biz-name">${biz}</span>. Each is automatically categorized and routed to the right team.`;
+    if (el) el.innerHTML = `Sample survey responses for <span id="tsa-out-biz-name">${biz}</span> — select one to assess for a support ticket`;
 }
 
-async function runTsaGenerate() {
-    if (tsaIsGenerating) return;
-    tsaIsGenerating = true;
+// ---- SURVEY TYPE SELECTION ----
+function selectTsaSurveyType(key, el) {
+    tsaSelectedType = key;
+    document.querySelectorAll('.survey-type-option').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
 
-    const area = document.getElementById('tsa-output-area');
-    area.innerHTML = `
+    tsaSelectedResponseId = null;
+    tsaTicketCache = {};
+
+    const outputLive = document.getElementById('output-live');
+    if (outputLive && outputLive.style.display === 'block' && getAgentType() === 'ticketing-survey') {
+        renderTsaResponses();
+        const panel = document.getElementById('tsa-response-panel');
+        if (panel) panel.style.display = 'none';
+    }
+}
+
+// ---- RENDER SAMPLE RESPONSES ----
+function renderTsaResponses() {
+    const type = TSA_SURVEY_TYPES[tsaSelectedType];
+    document.getElementById('tsa-question-text').textContent = type.question;
+    document.getElementById('tsa-custom-score-range').textContent = `0–${type.scoreMax}`;
+    document.getElementById('tsa-custom-score').max = type.scoreMax;
+
+    const list = document.getElementById('tsa-responses-list');
+    list.innerHTML = '';
+    type.responses.forEach((r, idx) => {
+        const tier = tsaScoreTier(r.score, type.scoreMax);
+        const isSelected = r.id === tsaSelectedResponseId;
+        const card = document.createElement('div');
+        card.className = 'review-card fade-up' + (isSelected ? ' selected' : '');
+        card.style.animationDelay = (idx * 55) + 'ms';
+        card.onclick = () => selectTsaResponse(r.id);
+        card.innerHTML = `
+            <div class="select-check">✓</div>
+            <div class="review-card-header">
+                <div class="tsa-score-circle tsa-score-${tier}"><span>${r.score}</span><span class="tsa-score-max">/${type.scoreMax}</span></div>
+                <div class="review-meta-block">
+                    <div class="reviewer-info-row">
+                        <span class="reviewer-name">${r.name}</span>
+                        <span class="reviewer-sep">•</span>
+                        <span class="reviewer-date">${r.date}</span>
+                    </div>
+                </div>
+            </div>
+            <p class="review-text">${r.text}</p>
+        `;
+        list.appendChild(card);
+    });
+}
+
+// ---- SELECT A RESPONSE ----
+function selectTsaResponse(id) {
+    tsaSelectedResponseId = id;
+    renderTsaResponses();
+
+    const panel = document.getElementById('tsa-response-panel');
+    panel.style.display = 'block';
+    panel.classList.add('active');
+
+    const type = TSA_SURVEY_TYPES[tsaSelectedType];
+    const response = type.responses.find(r => r.id === id);
+    document.getElementById('tsa-rp-label').textContent = `Assessing ${response.name}'s response`;
+
+    const genBtn = document.getElementById('btn-tsa-gen');
+    if (tsaTicketCache[id]) {
+        document.getElementById('tsa-rp-body').innerHTML = buildTsaTicketHTML(tsaTicketCache[id]);
+        genBtn.innerHTML = '↺ Regenerate';
+        genBtn.disabled = false;
+    } else {
+        document.getElementById('tsa-rp-body').innerHTML = `<p class="rp-empty">Click "Create Ticket" to have the AI assess this response and draft a support ticket.</p>`;
+        genBtn.innerHTML = '✦ Create Ticket';
+        genBtn.disabled = false;
+    }
+    setTimeout(() => panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 80);
+}
+
+// ---- BUILD TICKET ----
+function buildTsaTicket(response, type, bizName) {
+    const themeCap = response.theme.charAt(0).toUpperCase() + response.theme.slice(1);
+    return {
+        subject: `${type.label} response flagged (${response.score}/${type.scoreMax}) — ${themeCap} at ${bizName}`,
+        team: response.team,
+        summary: `A customer left a ${response.score}/${type.scoreMax} ${type.label} response raising ${response.theme}.`,
+        action: response.action
+    };
+}
+
+function buildTsaTicketHTML(ticket) {
+    return `
+        <div class="gen-response fade-up">
+            <div class="gen-response-head">
+                <span class="gen-label">AI-Generated Ticket</span>
+            </div>
+            <div class="gen-response-body" style="padding:0;">
+                <div style="padding:16px 16px 14px;border-bottom:1px solid #f1f5f9;">
+                    <div class="rec-field-label">Subject</div>
+                    <div class="rec-title">${ticket.subject}</div>
+                </div>
+                <div style="padding:14px 16px;display:flex;flex-direction:column;gap:10px;font-size:13.5px;font-weight:400;color:#374151;line-height:1.6;">
+                    <div>Assigned Team : ${ticket.team}</div>
+                    <div>Ticket summary : ${ticket.summary}</div>
+                    <div>Recommended action: ${ticket.action}</div>
+                </div>
+            </div>
+            <div class="gen-response-foot">
+                <span class="time-saved-label">⏱ 15 min saved this ticket</span>
+            </div>
+        </div>
+    `;
+}
+
+// ---- SHARED TICKET REASONING FLOW ----
+async function runTsaTicketFlow(bodyId, steps, ticket, cacheKey, onDone) {
+    const rpBody = document.getElementById(bodyId);
+
+    rpBody.innerHTML = `
         <div class="reasoning-block">
             <div class="reasoning-heading">Agent reasoning</div>
-            <div id="tsa-steps"></div>
+            <div id="tsa-steps-${cacheKey}"></div>
         </div>
         <div class="progress-block">
             <div class="progress-meta">
-                <span id="tsa-prog-label">Starting analysis…</span>
-                <span id="tsa-prog-pct">0%</span>
+                <span id="tsa-prog-label-${cacheKey}">Starting analysis…</span>
+                <span id="tsa-prog-pct-${cacheKey}">0%</span>
             </div>
             <div class="progress-track">
-                <div class="progress-fill" id="tsa-prog-fill"></div>
+                <div class="progress-fill" id="tsa-prog-fill-${cacheKey}"></div>
             </div>
         </div>
     `;
 
-    const container = document.getElementById('tsa-steps');
-    const progFill  = document.getElementById('tsa-prog-fill');
-    const progLabel = document.getElementById('tsa-prog-label');
-    const progPct   = document.getElementById('tsa-prog-pct');
-    const total     = TSA_STEPS.length;
+    const container = document.getElementById(`tsa-steps-${cacheKey}`);
+    const progFill  = document.getElementById(`tsa-prog-fill-${cacheKey}`);
+    const progLabel = document.getElementById(`tsa-prog-label-${cacheKey}`);
+    const progPct   = document.getElementById(`tsa-prog-pct-${cacheKey}`);
+    const total     = steps.length;
 
     for (let i = 0; i < total; i++) {
-        const step = TSA_STEPS[i];
+        const step = steps[i];
         await pause(step.ms);
 
         container.querySelectorAll('.step-dot.spinning').forEach(d => {
@@ -5658,13 +5832,13 @@ async function runTsaGenerate() {
     });
     progFill.style.width  = '100%';
     progPct.textContent   = '100%';
-    progLabel.textContent = 'Tickets created!';
+    progLabel.textContent = 'Ticket created!';
 
     await pause(320);
 
     const stepsSnap = container.innerHTML;
 
-    area.innerHTML = `
+    rpBody.innerHTML = `
         <div class="reasoning-acc">
             <div class="reasoning-acc-header" onclick="toggleReasoningAcc(this)">
                 <span>Agent reasoning</span>
@@ -5676,54 +5850,107 @@ async function runTsaGenerate() {
                 <div class="reasoning-acc-inner">${stepsSnap}</div>
             </div>
         </div>
-        <div id="tsa-ticket-list"></div>
-        <div class="tsa-impact-note">
-            <span class="tsa-impact-icon">✦</span>
-            <span>Going forward, this agent can automatically analyze every completed survey, detect negative sentiment, and assign tickets to the right team in real time — helping you resolve customer experience issues faster.</span>
-        </div>
+        ${buildTsaTicketHTML(ticket)}
     `;
 
-    tsaIsGenerating = false;
-    tsaGenerated = true;
-    renderTsaTickets();
-
-    // Open Outcome accordion the first time tickets are generated
-    const outcomeBody = document.getElementById('body-outcome');
-    if (outcomeBody.classList.contains('collapsed')) {
-        recalcTsaROI();
-        forceOpenAcc('outcome');
-        setTimeout(() => {
-            document.getElementById('acc-outcome').scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 150);
-    }
+    if (onDone) onDone();
 }
 
-function renderTsaTickets() {
-    const listEl = document.getElementById('tsa-ticket-list');
-    if (!listEl) return;
+// ---- GENERATE TICKET FOR SELECTED RESPONSE ----
+async function generateTsaTicket() {
+    if (!tsaSelectedResponseId || tsaIsGenerating) return;
+    tsaIsGenerating = true;
 
-    const checked = getCheckedTsaTemplates();
-    const tickets = TSA_TICKETS.filter(t => checked.includes(t.templateKey));
+    const genBtn = document.getElementById('btn-tsa-gen');
+    genBtn.disabled = true;
+    genBtn.innerHTML = '<span class="pulsing">⚙</span>&nbsp;Analyzing…';
 
-    listEl.innerHTML = tickets.map((t, idx) => `
-        <div class="rec-card fade-up" style="animation-delay:${idx * 60}ms;">
-            <div class="rec-card-top">
-                <div style="flex:1;min-width:0;">
-                    <div class="rec-field-label">${t.category}</div>
-                    <div class="rec-title">${t.title}</div>
-                </div>
-            </div>
-            <p class="rec-detail" style="font-style:italic;">${t.quote}</p>
-            <div class="sr-chip-row">
-                <span class="sr-chip tsa-chip-template">${t.template}</span>
-                <span class="sr-chip tsa-chip-score">${t.score}</span>
-            </div>
-            <div class="tsa-assign-row">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                <span>Ticket created and assigned to ${t.assignee} · ${t.team}</span>
-            </div>
-        </div>
-    `).join('');
+    const id = tsaSelectedResponseId;
+    const type = TSA_SURVEY_TYPES[tsaSelectedType];
+    const response = type.responses.find(r => r.id === id);
+    const bizName = getSharedBizName() || 'your business';
+    const ticket = buildTsaTicket(response, type, bizName);
+
+    await runTsaTicketFlow('tsa-rp-body', TSA_STEPS, ticket, id, () => {
+        tsaTicketCache[id] = ticket;
+        tsaIsGenerating = false;
+        tsaGenerated = true;
+        genBtn.innerHTML = '↺ Regenerate';
+        genBtn.disabled = false;
+
+        const outcomeBody = document.getElementById('body-outcome');
+        if (outcomeBody.classList.contains('collapsed')) {
+            recalcTsaROI();
+            forceOpenAcc('outcome');
+            setTimeout(() => {
+                document.getElementById('acc-outcome').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 150);
+        }
+    });
+}
+
+// ---- CUSTOM RESPONSE ----
+function toggleTsaCustomResponse() {
+    const trigger = document.getElementById('tsa-custom-trigger');
+    const form    = document.getElementById('tsa-custom-form');
+    const isOpen  = form.classList.toggle('open');
+    trigger.classList.toggle('expanded', isOpen);
+}
+
+async function generateTsaCustomTicket() {
+    if (tsaCustomIsGenerating) return;
+
+    const type = TSA_SURVEY_TYPES[tsaSelectedType];
+    const textInput = document.getElementById('tsa-custom-text');
+    const scoreInput = document.getElementById('tsa-custom-score');
+    const text = textInput.value.trim();
+    const score = scoreInput.value === '' ? NaN : parseInt(scoreInput.value, 10);
+
+    if (!text) {
+        textInput.style.borderColor = '#fca5a5';
+        textInput.placeholder = 'Please enter a survey response to assess.';
+        setTimeout(() => { textInput.style.borderColor = ''; }, 2000);
+        return;
+    }
+
+    if (isNaN(score) || score < 0 || score > type.scoreMax) {
+        scoreInput.style.borderColor = '#fca5a5';
+        setTimeout(() => { scoreInput.style.borderColor = ''; }, 2000);
+        return;
+    }
+
+    tsaCustomIsGenerating = true;
+    const btn = document.getElementById('btn-tsa-cr-gen');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="pulsing">⚙</span>&nbsp;Analyzing…';
+
+    const tier = tsaScoreTier(score, type.scoreMax);
+    const theme = tier === 'good' ? 'a positive response worth highlighting' : tier === 'mid' ? 'a lukewarm, passive experience' : 'a negative experience complaint';
+    const team = tier === 'good' ? 'Marketing Team' : 'Support';
+    const action = tier === 'good'
+        ? 'no immediate follow-up needed — flag for a testimonial or case study request.'
+        : 'review the linked feedback and follow up with the customer directly.';
+
+    const bizName = getSharedBizName() || 'your business';
+    const ticket = buildTsaTicket({ score, theme, team, action }, type, bizName);
+
+    document.getElementById('tsa-cr-response-area').innerHTML = `<div id="tsa-cr-rp-body" style="margin-top:16px;"></div>`;
+
+    await runTsaTicketFlow('tsa-cr-rp-body', TSA_STEPS, ticket, 'tsa-custom-' + Date.now(), () => {
+        tsaCustomIsGenerating = false;
+        tsaGenerated = true;
+        btn.innerHTML = '✦ Assess for Ticket';
+        btn.disabled = false;
+
+        const outcomeBody = document.getElementById('body-outcome');
+        if (outcomeBody.classList.contains('collapsed')) {
+            recalcTsaROI();
+            forceOpenAcc('outcome');
+            setTimeout(() => {
+                document.getElementById('acc-outcome').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 150);
+        }
+    });
 }
 
 function recalcTsaROI() {
