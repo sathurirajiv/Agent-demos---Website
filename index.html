@@ -419,6 +419,69 @@
             box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
         }
 
+        .chip-input {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 4px;
+            width: 100%;
+            min-height: 42px;
+            padding: 7px 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            background: white;
+            cursor: text;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .chip-list {
+            display: inline-flex;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+        .chip-input:focus-within {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+        }
+        .chip-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 6px 4px 10px;
+            background: #eff6ff;
+            color: #2563eb;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            line-height: 1.3;
+        }
+        .chip-remove {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 16px;
+            height: 16px;
+            border: none;
+            background: none;
+            color: #2563eb;
+            font-size: 15px;
+            line-height: 1;
+            cursor: pointer;
+            border-radius: 4px;
+            padding: 0;
+        }
+        .chip-remove:hover { background: rgba(37,99,235,0.15); }
+        .chip-input-field {
+            flex: 1;
+            min-width: 90px;
+            border: none;
+            outline: none;
+            font-size: 14px;
+            font-family: inherit;
+            color: #0f172a;
+            padding: 4px 2px;
+            background: transparent;
+        }
+
         .slider-label-row { display: flex; justify-content: space-between; font-size: 11px; color: #94a3b8; margin-top: 7px; }
 
         input[type="range"] {
@@ -547,8 +610,8 @@
         }
         .input-inline-link:hover { text-decoration: underline; }
 
-        /* Business profile summary card */
-        .biz-summary-card { position: relative; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px 16px; background: #f8fafc; }
+        /* Business details summary card */
+        .biz-summary-card { position: relative; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px 16px; background: #ffffff; }
         .biz-summary-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
         .biz-summary-title { font-size: 13px; font-weight: 500; color: #374151; }
         .biz-edit-btn {
@@ -657,6 +720,11 @@
         .competitor-suggest-item:hover { background: #f8fafc; }
         .cs-name { font-size: 13px; font-weight: 400; color: #0f172a; }
         .cs-sub { font-size: 11.5px; color: #94a3b8; margin-top: 1px; }
+        .competitor-suggest-cant-find {
+            font-size: 13px; font-weight: 500; color: #2563eb;
+            border-top: 1px solid #e2e8f0; position: sticky; bottom: 0; background: white;
+        }
+        .competitor-suggest-cant-find:hover { background: #eff6ff; }
 
         .btn-remove-row {
             width: 30px; height: 30px; flex-shrink: 0;
@@ -1920,7 +1988,7 @@
         <div class="acc-header" onclick="toggleAcc('basic')">
             <div class="acc-header-content">
                 <span class="acc-title">Basic details</span>
-                <span class="acc-subtitle">Business profile and agent preferences</span>
+                <span class="acc-subtitle">Business details and agent preferences</span>
             </div>
             <button class="acc-toggle" id="toggle-basic">−</button>
         </div>
@@ -1929,20 +1997,25 @@
                 <!-- ── Shared business details (all agents) ── -->
                 <div id="shared-biz-section">
                     <div class="form-group" style="margin-bottom:16px;">
-                        <label class="form-label">Business name <span class="req">*</span></label>
+                        <div class="field-label-row">
+                            <label class="form-label" style="margin-bottom:0;">Business name <span class="req">*</span></label>
+                            <span class="tooltip-wrap">
+                                <span class="tooltip-icon">i</span>
+                                <span class="tooltip-bubble">Search any business to auto-populate the profile below</span>
+                            </span>
+                        </div>
                         <div class="input-wrap">
                             <input type="text" class="form-input" id="shared-biz-name" value="Aspen Dental Group" placeholder="Enter your brand name" style="padding-left:36px;padding-right:98px;" oninput="handleSharedBizNameInput(this)" onfocus="handleSharedBizNameFocus()" onblur="hideSharedBizNameSuggestions()">
                             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0f172a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;left:13px;top:50%;transform:translateY(-50%);pointer-events:none;"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
                             <a href="#" class="input-inline-link" id="shared-view-profile-link" onclick="openGoogleBusinessProfile(event)" style="display:none;">View profile ↗</a>
                             <div class="competitor-suggest-panel" id="shared-biz-name-suggest-panel"></div>
                         </div>
-                        <div class="field-sub">Search any business to auto-populate the profile below</div>
                     </div>
 
                     <div class="form-group" style="margin-bottom:20px;">
                         <div class="biz-summary-card" id="biz-profile-card">
                             <div class="biz-summary-top">
-                                <span class="biz-summary-title">Business profile</span>
+                                <span class="biz-summary-title">Business details</span>
                                 <button type="button" class="biz-edit-btn" id="biz-edit-btn" onclick="toggleBizEdit()">
                                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                                     Edit
@@ -1950,13 +2023,11 @@
                             </div>
 
                             <div id="biz-summary-view">
-                                <div class="biz-summary-row"><span class="bs-label">No. of locations</span><span class="bs-value" id="bs-locations">1-3 locations</span></div>
-                                <div class="biz-summary-row"><span class="bs-label">Full name</span><span class="bs-value" id="bs-fullname">John Doe</span></div>
-                                <div class="biz-summary-row"><span class="bs-label">Mobile number</span><span class="bs-value" id="bs-mobile">(512) 555-0148</span></div>
-                                <div class="biz-summary-row"><span class="bs-label">Email address</span><span class="bs-value" id="bs-email">john.doe@aspendental.com</span></div>
-                                <div class="biz-summary-row"><span class="bs-label">Industry</span><span class="bs-value" id="bs-industry">Dental</span></div>
+                                <div class="biz-summary-row"><span class="bs-label">Industry <span class="req">*</span></span><span class="bs-value" id="bs-industry">Dental</span></div>
                                 <div class="biz-summary-row"><span class="bs-label">Address</span><span class="bs-value" id="bs-address">123 W 6th St, Austin, TX 78701</span></div>
-                                <div class="biz-summary-row"><span class="bs-label">Primary category</span><span class="bs-value" id="bs-primary">Dentist</span></div>
+                                <div class="biz-summary-row" id="bs-zip-row" style="display:none;"><span class="bs-label">ZIP code <span class="req">*</span></span><span class="bs-value" id="bs-zip">—</span></div>
+                                <div class="biz-summary-row" id="bs-country-row" style="display:none;"><span class="bs-label">Country <span class="req">*</span></span><span class="bs-value" id="bs-country">—</span></div>
+                                <div class="biz-summary-row" id="bs-state-row" style="display:none;"><span class="bs-label">State <span class="req">*</span></span><span class="bs-value" id="bs-state">—</span></div>
                                 <div class="biz-summary-row" id="bs-additional-row" style="display:none;"><span class="bs-label">Additional categories</span><span class="bs-value" id="bs-additional">None selected</span></div>
                                 <div class="biz-summary-row"><span class="bs-label">Services</span><span class="bs-value" id="bs-services">Root canal</span></div>
                                 <div class="biz-summary-row"><span class="bs-label">Description</span><span class="bs-value" id="bs-description">Aspen Dental Group provides comprehensive family dental care in Austin, TX, including routine checkups, cleanings, and restorative treatment.</span></div>
@@ -1965,52 +2036,18 @@
 
                             <div class="biz-edit-fields" id="biz-edit-fields" style="display:none;">
                                 <div class="form-group" style="margin-bottom:16px;">
-                                    <label class="form-label">No. of locations <span class="req">*</span></label>
-                                    <div class="cdd-anchor" id="cdd-locations">
-                                        <div class="cdd-trigger" onclick="toggleCatDropdown('locations', event)">
-                                            <span id="cdd-locations-label">1-3 locations</span>
-                                            <span class="cdd-chevron"><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                                        </div>
-                                        <div class="cdd-panel">
-                                            <div class="dd-option selected" onclick="selectLocations('1-3 locations', this)">1-3 locations</div>
-                                            <div class="dd-option" onclick="selectLocations('4-9 locations', this)">4-9 locations</div>
-                                            <div class="dd-option" onclick="selectLocations('10-39 locations', this)">10-39 locations</div>
-                                            <div class="dd-option" onclick="selectLocations('40-249 locations', this)">40-249 locations</div>
-                                            <div class="dd-option" onclick="selectLocations('250-999 locations', this)">250-999 locations</div>
-                                            <div class="dd-option" onclick="selectLocations('1000+ locations', this)">1000+ locations</div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-row" style="margin-bottom:16px;">
-                                    <div class="form-group">
-                                        <label class="form-label">Full name <span class="req">*</span></label>
-                                        <input type="text" class="form-input" id="lead-gen-fullname" value="John Doe" placeholder="Full name" oninput="updateContinueButton()">
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="form-label">Mobile number <span class="req">*</span></label>
-                                        <input type="tel" class="form-input" id="lead-gen-mobile" value="(512) 555-0148" placeholder="Mobile number" oninput="updateContinueButton()">
-                                    </div>
-                                </div>
-
-                                <div class="form-row" style="margin-bottom:16px;">
-                                    <div class="form-group">
-                                        <label class="form-label">Email address <span class="req">*</span></label>
-                                        <input type="email" class="form-input" id="lead-gen-email" value="john.doe@aspendental.com" placeholder="Email address" oninput="updateContinueButton()">
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="form-label">Industry</label>
-                                        <select class="form-select" id="shared-biz-industry">
-                                            <option>Dental</option>
-                                            <option>Healthcare</option>
-                                            <option>Real Estate</option>
-                                            <option>Automotive</option>
-                                            <option>Restaurants</option>
-                                            <option>Legal</option>
-                                            <option>Retail</option>
-                                            <option>Hospitality</option>
-                                        </select>
-                                    </div>
+                                    <label class="form-label">Industry <span class="req">*</span></label>
+                                    <select class="form-select" id="shared-biz-industry" disabled onchange="updateContinueButton()">
+                                        <option value="" disabled hidden>Select industry</option>
+                                        <option>Dental</option>
+                                        <option>Healthcare</option>
+                                        <option>Real Estate</option>
+                                        <option>Automotive</option>
+                                        <option>Restaurants</option>
+                                        <option>Legal</option>
+                                        <option>Retail</option>
+                                        <option>Hospitality</option>
+                                    </select>
                                 </div>
 
                                 <div class="form-group" style="margin-bottom:16px;">
@@ -2018,38 +2055,28 @@
                                     <input type="text" class="form-input" id="shared-biz-address" value="123 W 6th St, Austin, TX 78701">
                                 </div>
 
-                                <div class="form-row" style="margin-bottom:16px;">
-                                    <div class="form-group">
-                                        <label class="form-label">Primary category</label>
-                                        <div class="cdd-anchor" id="cdd-primary">
-                                            <div class="cdd-trigger" onclick="toggleCatDropdown('primary', event)">
-                                                <span id="cdd-primary-label">Dentist</span>
-                                                <span class="cdd-chevron"><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                                            </div>
-                                            <div class="cdd-panel">
-                                                <div class="dd-option selected" onclick="selectPrimaryCategory('Dentist', this)">Dentist</div>
-                                                <div class="dd-option" onclick="selectPrimaryCategory('Cosmetic dentist', this)">Cosmetic dentist</div>
-                                                <div class="dd-option" onclick="selectPrimaryCategory('Orthodontist', this)">Orthodontist</div>
-                                                <div class="dd-option" onclick="selectPrimaryCategory('Pediatric dentist', this)">Pediatric dentist</div>
-                                                <div class="dd-option" onclick="selectPrimaryCategory('Emergency dental clinic', this)">Emergency dental clinic</div>
-                                            </div>
+                                <div id="biz-manual-fields" style="display:none;">
+                                    <div class="form-group" style="margin-bottom:16px;">
+                                        <label class="form-label">Country <span class="req">*</span></label>
+                                        <select class="form-select" id="shared-biz-country" onchange="updateContinueButton()"></select>
+                                    </div>
+                                    <div class="form-row" style="margin-bottom:16px;">
+                                        <div class="form-group">
+                                            <label class="form-label">ZIP code <span class="req">*</span></label>
+                                            <input type="text" class="form-input" id="shared-biz-zip" placeholder="ZIP code" oninput="updateContinueButton()">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">State <span class="req">*</span></label>
+                                            <select class="form-select" id="shared-biz-state" onchange="updateContinueButton()"></select>
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label class="form-label">Services</label>
-                                        <div class="cdd-anchor" id="cdd-services">
-                                            <div class="cdd-trigger" onclick="toggleCatDropdown('services', event)">
-                                                <span id="cdd-services-label">Root canal</span>
-                                                <span class="cdd-chevron"><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                                            </div>
-                                            <div class="cdd-panel">
-                                                <div class="dd-option-check" onclick="toggleServiceItem(this)"><span class="dd-check-box checked"></span>Root canal</div>
-                                                <div class="dd-option-check" onclick="toggleServiceItem(this)"><span class="dd-check-box"></span>Teeth whitening</div>
-                                                <div class="dd-option-check" onclick="toggleServiceItem(this)"><span class="dd-check-box"></span>Dental implants</div>
-                                                <div class="dd-option-check" onclick="toggleServiceItem(this)"><span class="dd-check-box"></span>Emergency dental care</div>
-                                                <div class="dd-option-check" onclick="toggleServiceItem(this)"><span class="dd-check-box"></span>Pediatric checkups</div>
-                                            </div>
-                                        </div>
+                                </div>
+
+                                <div class="form-group" style="margin-bottom:16px;">
+                                    <label class="form-label">Services</label>
+                                    <div class="chip-input" id="services-chip-input" onclick="document.getElementById('services-chip-field').focus()">
+                                        <span id="services-chip-list" class="chip-list"></span>
+                                        <input type="text" class="chip-input-field" id="services-chip-field" placeholder="Add a service" onkeydown="handleServiceChipKeydown(event)" onblur="commitServiceChipInput(this)">
                                     </div>
                                 </div>
 
@@ -2081,7 +2108,65 @@
                                 </div>
                             </div>
 
-                            <div class="biz-fetching-overlay" id="biz-fetching-overlay"><span class="pulsing">⚙</span> Fetching business profile…</div>
+                            <div class="biz-fetching-overlay" id="biz-fetching-overlay"><span class="pulsing">⚙</span> Fetching business details…</div>
+                        </div>
+                    </div>
+
+                    <!-- ── User details (all agents) ── -->
+                    <div class="form-group" style="margin-bottom:20px;">
+                        <div class="biz-summary-card" id="user-profile-card">
+                            <div class="biz-summary-top">
+                                <span class="biz-summary-title">User details</span>
+                                <button type="button" class="biz-edit-btn" id="user-edit-btn" onclick="toggleUserEdit()">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                                    Edit
+                                </button>
+                            </div>
+
+                            <div id="user-summary-view">
+                                <div class="biz-summary-row"><span class="bs-label">Full name <span class="req">*</span></span><span class="bs-value" id="us-fullname">John Doe</span></div>
+                                <div class="biz-summary-row"><span class="bs-label">Mobile number <span class="req">*</span></span><span class="bs-value" id="us-mobile">(512) 555-0148</span></div>
+                                <div class="biz-summary-row"><span class="bs-label">Email address <span class="req">*</span></span><span class="bs-value" id="us-email">john.doe@aspendental.com</span></div>
+                                <div class="biz-summary-row"><span class="bs-label">No. of locations <span class="req">*</span></span><span class="bs-value" id="us-locations">—</span></div>
+                            </div>
+
+                            <div class="biz-edit-fields" id="user-edit-fields" style="display:none;">
+                                <div class="form-row" style="margin-bottom:16px;">
+                                    <div class="form-group">
+                                        <label class="form-label">Full name <span class="req">*</span></label>
+                                        <input type="text" class="form-input" id="lead-gen-fullname" value="John Doe" placeholder="Full name" oninput="updateContinueButton()">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Mobile number <span class="req">*</span></label>
+                                        <input type="tel" class="form-input" id="lead-gen-mobile" value="(512) 555-0148" placeholder="Mobile number" oninput="updateContinueButton()">
+                                    </div>
+                                </div>
+
+                                <div class="form-group" style="margin-bottom:16px;">
+                                    <label class="form-label">Email address <span class="req">*</span></label>
+                                    <input type="email" class="form-input" id="lead-gen-email" value="john.doe@aspendental.com" placeholder="Email address" oninput="updateContinueButton()">
+                                </div>
+
+                                <div class="form-group" style="margin-bottom:16px;">
+                                    <label class="form-label">No. of locations <span class="req">*</span></label>
+                                    <div class="cdd-anchor" id="cdd-locations">
+                                        <div class="cdd-trigger" onclick="toggleCatDropdown('locations', event)">
+                                            <span id="cdd-locations-label" class="cdd-placeholder">Select</span>
+                                            <span class="cdd-chevron"><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                                        </div>
+                                        <div class="cdd-panel">
+                                            <div class="dd-option" onclick="selectLocations('1-3 locations', this)">1-3 locations</div>
+                                            <div class="dd-option" onclick="selectLocations('4-9 locations', this)">4-9 locations</div>
+                                            <div class="dd-option" onclick="selectLocations('10-39 locations', this)">10-39 locations</div>
+                                            <div class="dd-option" onclick="selectLocations('40-249 locations', this)">40-249 locations</div>
+                                            <div class="dd-option" onclick="selectLocations('250-999 locations', this)">250-999 locations</div>
+                                            <div class="dd-option" onclick="selectLocations('1000+ locations', this)">1000+ locations</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="field-sub">By continuing, you agree to Birdeye's <a href="#">Privacy Policy</a> &amp; <a href="#">Terms</a> and consent to receive communications from us.</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -2592,7 +2677,7 @@
                 <div class="continue-row">
                     <span class="continue-tooltip-wrap">
                         <button class="btn-continue" id="btn-continue" onclick="runContinue()" disabled>Continue →</button>
-                        <span class="continue-tooltip-bubble">Please fill the mandatory fields in the business profile section to continue.</span>
+                        <span class="continue-tooltip-bubble">Please fill the mandatory fields in the Business details and User details sections to continue.</span>
                     </span>
                 </div>
             </div>
@@ -3387,6 +3472,7 @@ const LISTINGS_BUSINESS_PROFILES = [
     {
         name: 'Aspen Dental Group', website: 'aspendental.com', google: 'g.co/kgs/AspenDental', industry: 'Dental',
         address: '123 W 6th St, Austin, TX 78701', primaryCategory: 'Dentist',
+        phone: '(512) 555-0199', email: 'info@aspendental.com',
         additionalCategories: ['Cosmetic dentist', 'Emergency dental service', 'Teeth whitening service'],
         services: ['Root canal', 'Teeth whitening'],
         description: 'Aspen Dental Group provides comprehensive family dental care in Austin, TX, including routine checkups, cleanings, and restorative treatment.'
@@ -3394,6 +3480,7 @@ const LISTINGS_BUSINESS_PROFILES = [
     {
         name: 'Bright Smiles Dental', website: 'brightsmilesdental.com', google: 'g.co/kgs/BrightSmiles', industry: 'Dental',
         address: '450 Congress Ave, Austin, TX 78701', primaryCategory: 'Cosmetic dentist',
+        phone: '(512) 555-0212', email: 'hello@brightsmilesdental.com',
         additionalCategories: ['Teeth whitening service', 'Orthodontist'],
         services: ['Teeth whitening', 'Dental implants'],
         description: 'Bright Smiles Dental specializes in cosmetic dentistry and teeth whitening for patients across Austin, TX.'
@@ -3401,6 +3488,7 @@ const LISTINGS_BUSINESS_PROFILES = [
     {
         name: 'Austin Family Dentistry', website: 'austinfamilydentistry.com', google: 'g.co/kgs/AustinFamily', industry: 'Dental',
         address: '2100 S Lamar Blvd, Austin, TX 78704', primaryCategory: 'Dentist',
+        phone: '(512) 555-0173', email: 'contact@austinfamilydentistry.com',
         additionalCategories: ['Pediatric dentist', 'Emergency dental service'],
         services: ['Pediatric checkups', 'Emergency dental care'],
         description: 'Austin Family Dentistry offers general and pediatric dental care for the whole family, with same-day emergency appointments.'
@@ -3408,6 +3496,7 @@ const LISTINGS_BUSINESS_PROFILES = [
     {
         name: 'Premier Dental Care', website: 'premierdentalcare.com', google: 'g.co/kgs/PremierDental', industry: 'Dental',
         address: '8300 N Mopac Expy, Austin, TX 78759', primaryCategory: 'Orthodontist',
+        phone: '(512) 555-0184', email: 'info@premierdentalcare.com',
         additionalCategories: ['Cosmetic dentist', 'Pediatric dentist'],
         services: ['Dental implants', 'Emergency dental care'],
         description: 'Premier Dental Care provides orthodontic and cosmetic dental services for patients of all ages in North Austin.'
@@ -3790,35 +3879,35 @@ function selectAgent(name, el) {
     const outSub    = document.querySelector('#acc-output .acc-subtitle');
     const outcomeSub = document.querySelector('#acc-outcome .acc-subtitle');
     if (type === 'social-pub') {
-        bdSub.textContent    = 'Business profile, content strategy, and platform settings';
+        bdSub.textContent    = 'Business details, content strategy, and platform settings';
         outSub.textContent   = 'AI-generated weekly content calendar';
         outcomeSub.textContent = 'Content output and efficiency metrics';
     } else if (type === 'social-eng') {
-        bdSub.textContent    = 'Business profile, tone, and engagement preferences';
+        bdSub.textContent    = 'Business details, tone, and engagement preferences';
         outSub.textContent   = 'Social comments with AI-generated responses';
         outcomeSub.textContent = 'Engagement metrics and time savings';
     } else if (type === 'listings-opt') {
-        bdSub.textContent    = 'Business profile, keywords, and recommendation types';
+        bdSub.textContent    = 'Business details, keywords, and recommendation types';
         outSub.textContent   = 'AI-generated listing optimization recommendations';
         outcomeSub.textContent = 'Estimated time savings and cost impact';
     } else if (type === 'review-marketing') {
-        bdSub.textContent    = 'Business profile, review layout, and posting channels';
+        bdSub.textContent    = 'Business details, review layout, and posting channels';
         outSub.textContent   = 'Ready-to-publish post built from your best review';
         outcomeSub.textContent = 'Estimated time savings and cost impact';
     } else if (type === 'search-reco') {
-        bdSub.textContent    = 'Business profile and recommendation types';
+        bdSub.textContent    = 'Business details and recommendation types';
         outSub.textContent   = 'Recommendations to improve AI search visibility';
         outcomeSub.textContent = 'Estimated time savings and cost impact';
     } else if (type === 'ticketing-survey') {
-        bdSub.textContent    = 'Business profile and survey templates to monitor';
+        bdSub.textContent    = 'Business details and survey templates to monitor';
         outSub.textContent   = 'Negative survey responses flagged and auto-routed to the right team';
         outcomeSub.textContent = 'Estimated time savings and cost impact';
     } else if (type === 'ticketing-review') {
-        bdSub.textContent    = 'Business profile';
+        bdSub.textContent    = 'Business details';
         outSub.textContent   = 'Negative reviews flagged and auto-routed to the right team';
         outcomeSub.textContent = 'Estimated time savings and cost impact';
     } else {
-        bdSub.textContent    = 'Business profile and response preferences';
+        bdSub.textContent    = 'Business details and response preferences';
         outSub.textContent   = 'Sample reviews with AI-generated responses';
         outcomeSub.textContent = 'Estimated time savings and cost impact';
     }
@@ -3906,6 +3995,9 @@ document.addEventListener('DOMContentLoaded', () => {
     recalcROI();
 
     renderRmaThumbGrid();
+    renderServiceChips();
+    populateManualAddressDropdowns();
+    setBusinessSource(true);
     updateSharedProfileExtras(getAgentType());
     updateContinueButton();
     updateActiveAgentCount();
@@ -3997,30 +4089,105 @@ function displayOrDash(value) {
 
 function syncBizSummary() {
     const val = id => document.getElementById(id)?.value ?? '';
-    const locLabel = document.getElementById('cdd-locations-label');
-    const locText = locLabel?.classList.contains('cdd-placeholder') ? '' : (locLabel?.textContent || '');
 
-    document.getElementById('bs-locations').textContent    = displayOrDash(locText);
-    document.getElementById('bs-fullname').textContent     = displayOrDash(val('lead-gen-fullname'));
-    document.getElementById('bs-mobile').textContent     = displayOrDash(val('lead-gen-mobile'));
-    document.getElementById('bs-email').textContent        = displayOrDash(val('lead-gen-email'));
     document.getElementById('bs-industry').textContent     = displayOrDash(document.getElementById('shared-biz-industry')?.value);
     document.getElementById('bs-address').textContent      = displayOrDash(val('shared-biz-address'));
-    document.getElementById('bs-primary').textContent      = displayOrDash(document.getElementById('cdd-primary-label')?.textContent);
+    document.getElementById('bs-zip').textContent           = displayOrDash(val('shared-biz-zip'));
+    document.getElementById('bs-country').textContent       = displayOrDash(val('shared-biz-country'));
+    document.getElementById('bs-state').textContent         = displayOrDash(val('shared-biz-state'));
     document.getElementById('bs-additional').textContent   = displayOrDash(document.getElementById('cdd-additional-label')?.textContent);
-    document.getElementById('bs-services').textContent     = displayOrDash(document.getElementById('cdd-services-label')?.textContent);
+    document.getElementById('bs-services').textContent     = displayOrDash(currentServices.join(', '));
     document.getElementById('bs-description').textContent  = displayOrDash(val('shared-biz-desc'));
     document.getElementById('bs-website').textContent      = displayOrDash(val('shared-biz-website'));
 }
 
+function toggleUserEdit() {
+    const summary = document.getElementById('user-summary-view');
+    const fields  = document.getElementById('user-edit-fields');
+    const btn     = document.getElementById('user-edit-btn');
+    const isEditing = fields.style.display === 'block';
+
+    if (isEditing) {
+        syncUserSummary();
+        fields.style.display = 'none';
+        summary.style.display = 'block';
+        btn.innerHTML = BIZ_EDIT_BTN_HTML;
+        updateContinueButton();
+    } else {
+        summary.style.display = 'none';
+        fields.style.display = 'block';
+        btn.innerHTML = BIZ_SAVE_BTN_HTML;
+    }
+}
+
+function syncUserSummary() {
+    const val = id => document.getElementById(id)?.value ?? '';
+    const locLabel = document.getElementById('cdd-locations-label');
+    const locText = locLabel?.classList.contains('cdd-placeholder') ? '' : (locLabel?.textContent || '');
+
+    document.getElementById('us-locations').textContent = displayOrDash(locText);
+    document.getElementById('us-fullname').textContent = displayOrDash(val('lead-gen-fullname'));
+    document.getElementById('us-mobile').textContent    = displayOrDash(val('lead-gen-mobile'));
+    document.getElementById('us-email').textContent     = displayOrDash(val('lead-gen-email'));
+}
+
 let currentGoogleProfileUrl = '';
-let locationsSelected = true;
+let locationsSelected = false;
+let businessFromGoogle = true;
+
+// US states first since the demo data is US-based; other countries listed below
+const US_STATES = [
+    'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware',
+    'District of Columbia', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa',
+    'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota',
+    'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey',
+    'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon',
+    'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah',
+    'Vermont', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'
+];
+
+const COUNTRIES = [
+    'United States', 'Canada', 'United Kingdom', 'Australia', 'India', 'Germany', 'France', 'Spain',
+    'Italy', 'Mexico', 'Brazil', 'Japan', 'China', 'Singapore', 'United Arab Emirates', 'South Africa',
+    'New Zealand', 'Ireland', 'Netherlands', 'Other'
+];
+
+function populateManualAddressDropdowns() {
+    const stateSelect = document.getElementById('shared-biz-state');
+    const countrySelect = document.getElementById('shared-biz-country');
+    stateSelect.innerHTML = '<option value="" disabled hidden selected>Select state</option>' +
+        US_STATES.map(s => `<option>${s}</option>`).join('');
+    countrySelect.innerHTML = '<option value="" disabled hidden selected>Select country</option>' +
+        COUNTRIES.map(c => `<option>${c}</option>`).join('');
+}
+
+// Toggles the Business details fields between a locked, Google-sourced profile
+// and manual entry (triggered via "Can't find your business?")
+function setBusinessSource(fromGoogle) {
+    businessFromGoogle = fromGoogle;
+    const industrySelect = document.getElementById('shared-biz-industry');
+    industrySelect.disabled = fromGoogle;
+    if (!fromGoogle) industrySelect.value = '';
+
+    document.getElementById('biz-manual-fields').style.display = fromGoogle ? 'none' : 'block';
+    document.getElementById('bs-zip-row').style.display     = fromGoogle ? 'none' : 'flex';
+    document.getElementById('bs-country-row').style.display = fromGoogle ? 'none' : 'flex';
+    document.getElementById('bs-state-row').style.display   = fromGoogle ? 'none' : 'flex';
+    if (fromGoogle) {
+        document.getElementById('shared-biz-zip').value     = '';
+        document.getElementById('shared-biz-country').value = '';
+        document.getElementById('shared-biz-state').value   = '';
+    }
+    syncBizSummary();
+    updateContinueButton();
+}
 
 function updateSharedProfileExtras(type) {
     const isListings = type === 'listings-opt';
     document.getElementById('bs-additional-row').style.display = isListings ? 'flex' : 'none';
     document.getElementById('biz-additional-edit').style.display = isListings ? 'block' : 'none';
     syncBizSummary();
+    syncUserSummary();
 }
 
 function isBasicDetailsValid() {
@@ -4028,7 +4195,13 @@ function isBasicDetailsValid() {
     const fullName = document.getElementById('lead-gen-fullname')?.value.trim();
     const mobile = document.getElementById('lead-gen-mobile')?.value.trim();
     const email = document.getElementById('lead-gen-email')?.value.trim();
-    return !!(bizName && locationsSelected && fullName && mobile && email && email.includes('@'));
+    const manualFieldsValid = businessFromGoogle || !!(
+        document.getElementById('shared-biz-industry')?.value &&
+        document.getElementById('shared-biz-zip')?.value.trim() &&
+        document.getElementById('shared-biz-country')?.value.trim() &&
+        document.getElementById('shared-biz-state')?.value.trim()
+    );
+    return !!(bizName && locationsSelected && fullName && mobile && email && email.includes('@') && manualFieldsValid);
 }
 
 function updateContinueButton() {
@@ -4070,13 +4243,15 @@ function selectLocations(value, el) {
 function renderSharedBizNameSuggestions(matches) {
     const panel = document.getElementById('shared-biz-name-suggest-panel');
     if (!panel) return;
-    if (!matches.length) { panel.style.display = 'none'; panel.innerHTML = ''; return; }
-    panel.innerHTML = matches.map(p => `
+    const items = matches.map(p => `
         <div class="competitor-suggest-item" onmousedown="selectSharedBizNameSuggestion('${p.name.replace(/'/g, "\\'")}')">
             <div class="cs-name">${p.name}</div>
             <div class="cs-sub">${p.website} · ${p.google}</div>
         </div>
     `).join('');
+    panel.innerHTML = items + `
+        <div class="competitor-suggest-item competitor-suggest-cant-find" onmousedown="selectCantFindBusiness()">Can't find your business?</div>
+    `;
     panel.style.display = 'block';
 }
 
@@ -4106,6 +4281,24 @@ async function selectSharedBizNameSuggestion(name) {
     const panel = document.getElementById('shared-biz-name-suggest-panel');
     if (panel) panel.style.display = 'none';
     await fetchBusinessProfile(name);
+    updateContinueButton();
+}
+
+function selectCantFindBusiness() {
+    const panel = document.getElementById('shared-biz-name-suggest-panel');
+    if (panel) panel.style.display = 'none';
+
+    document.getElementById('shared-biz-address').value = '';
+    document.getElementById('shared-biz-website').value = '';
+    document.getElementById('shared-biz-desc').value = '';
+    setServices([]);
+    updateViewProfileLink(null);
+    setBusinessSource(false);
+
+    document.getElementById('biz-summary-view').style.display = 'none';
+    document.getElementById('biz-edit-fields').style.display = 'block';
+    document.getElementById('biz-edit-btn').innerHTML = BIZ_SAVE_BTN_HTML;
+
     updateContinueButton();
 }
 
@@ -4150,12 +4343,11 @@ async function fetchBusinessProfile(name) {
     document.getElementById('shared-biz-address').value = profile.address;
     document.getElementById('shared-biz-website').value = profile.website;
     document.getElementById('shared-biz-desc').value    = profile.description;
-    selectPrimaryCategoryByValue(profile.primaryCategory);
     if (getAgentType() === 'listings-opt') {
         setAdditionalCategories(profile.additionalCategories);
     }
     setServices(profile.services || []);
-    syncBizSummary();
+    setBusinessSource(true);
     updateViewProfileLink(profile);
 
     overlay.style.display = 'none';
@@ -4485,21 +4677,6 @@ function toggleCatDropdown(which, event) {
     if (!isOpen) anchor.classList.add('open');
 }
 
-function selectPrimaryCategory(value, el) {
-    el.parentElement.querySelectorAll('.dd-option').forEach(o => o.classList.remove('selected'));
-    el.classList.add('selected');
-    document.getElementById('cdd-primary-label').textContent = value;
-    document.getElementById('cdd-primary').classList.remove('open');
-}
-
-// Programmatic set (used when a business profile is fetched) — no click event/element involved
-function selectPrimaryCategoryByValue(value) {
-    document.querySelectorAll('#cdd-primary .dd-option').forEach(o => {
-        o.classList.toggle('selected', o.textContent.trim() === value);
-    });
-    document.getElementById('cdd-primary-label').textContent = value;
-}
-
 function updateAdditionalCategoriesLabel() {
     const checked = Array.from(document.querySelectorAll('#cdd-additional .dd-option-check'))
         .filter(o => o.querySelector('.dd-check-box').classList.contains('checked'));
@@ -4526,30 +4703,60 @@ function setAdditionalCategories(list) {
     updateAdditionalCategoriesLabel();
 }
 
-function updateServicesLabel() {
-    const checked = Array.from(document.querySelectorAll('#cdd-services .dd-option-check'))
-        .filter(o => o.querySelector('.dd-check-box').classList.contains('checked'));
-    const label = document.getElementById('cdd-services-label');
-    if (!checked.length) {
-        label.textContent = 'None selected';
-    } else {
-        const first = checked[0].textContent.trim();
-        label.textContent = checked.length > 1 ? `${first}, +${checked.length - 1} more` : first;
+// ---- SERVICES: CHIP INPUT ----
+let currentServices = ['Root canal'];
+
+function renderServiceChips() {
+    const list = document.getElementById('services-chip-list');
+    list.innerHTML = '';
+    currentServices.forEach(s => {
+        const chip = document.createElement('span');
+        chip.className = 'chip-tag';
+        chip.textContent = s;
+        const removeBtn = document.createElement('button');
+        removeBtn.type = 'button';
+        removeBtn.className = 'chip-remove';
+        removeBtn.innerHTML = '&times;';
+        removeBtn.onclick = () => removeServiceChip(s);
+        chip.appendChild(removeBtn);
+        list.appendChild(chip);
+    });
+    syncBizSummary();
+}
+
+function addServiceChip(value) {
+    const trimmed = value.trim();
+    if (!trimmed || currentServices.some(s => s.toLowerCase() === trimmed.toLowerCase())) return;
+    currentServices.push(trimmed);
+    renderServiceChips();
+}
+
+function removeServiceChip(value) {
+    currentServices = currentServices.filter(s => s !== value);
+    renderServiceChips();
+}
+
+function handleServiceChipKeydown(event) {
+    if (event.key === 'Enter' || event.key === ',') {
+        event.preventDefault();
+        addServiceChip(event.target.value);
+        event.target.value = '';
+    } else if (event.key === 'Backspace' && !event.target.value && currentServices.length) {
+        removeServiceChip(currentServices[currentServices.length - 1]);
     }
 }
 
-function toggleServiceItem(el) {
-    el.querySelector('.dd-check-box').classList.toggle('checked');
-    updateServicesLabel();
+function commitServiceChipInput(input) {
+    if (input.value.trim()) {
+        addServiceChip(input.value);
+        input.value = '';
+    }
 }
 
 // Programmatic set (used when a business profile is fetched)
 function setServices(list) {
-    document.querySelectorAll('#cdd-services .dd-option-check').forEach(o => {
-        const label = o.textContent.trim();
-        o.querySelector('.dd-check-box').classList.toggle('checked', list.includes(label));
-    });
-    updateServicesLabel();
+    currentServices = [...list];
+    renderServiceChips();
 }
 
 // ---- CONTINUE ----
