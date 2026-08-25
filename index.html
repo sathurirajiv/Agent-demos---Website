@@ -87,6 +87,8 @@
             opacity: 1; transform: scale(1) translateY(0); pointer-events: auto;
         }
         .header:not(.agent-docked) #header-pill-anchor .agent-dropdown { display: none !important; }
+        /* Old design: no sticky header agent picker — hero pill only */
+        body:not(.theme-new) .header-pill-anchor { display: none !important; }
         body.theme-new .header-agent-pill { background: #ffffff; border: 1px solid #e6e2e0; color: #212121; }
         body.theme-new .header-agent-pill:hover { background: #f9f8f6; }
         body.theme-new .header-agent-avatar { border: 1px solid #e6e2e0; }
