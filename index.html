@@ -7,12 +7,12 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <title>Birdeye AI Agents – Review Response Agent</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif;
             background: #f8fafc;
             color: #0f172a;
             min-height: 100vh;
@@ -50,9 +50,46 @@
             transition: background 0.2s, transform 0.15s;
             display: inline-flex;
             align-items: center;
+            gap: 7px;
             text-decoration: none;
         }
         .btn-schedule:hover { background: linear-gradient(135deg, #6d28d9, #5b21b6); transform: translateY(-1px); }
+
+        /* Mini agent pill that docks into the sticky header once the full
+           agent-selector scrolls out of view; shares #agent-dropdown with
+           the hero pill via reparenting (see moveDropdownTo in JS).
+           Sits in header-right (next to the CTA), not header-center, so it
+           never collides with the fixed, viewport-centered #design-toggle. */
+        .header-right { display: flex; align-items: center; gap: 16px; }
+        .header-pill-anchor {
+            position: relative; display: inline-flex; justify-content: center;
+        }
+        #header-pill-anchor .agent-dropdown { left: auto; right: 0; transform: none; }
+        @keyframes dropFadeRight {
+            from { opacity: 0; transform: translateY(-6px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        #header-pill-anchor .agent-dropdown.open { animation: dropFadeRight 0.18s ease; }
+        .header-agent-pill {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: linear-gradient(135deg, #ede9fe, #e0e7ff);
+            border: 1.5px solid #c4b5fd; padding: 6px 14px 6px 6px; border-radius: 999px;
+            cursor: pointer; font-size: 13px; font-weight: 600; color: #4c1d95;
+            opacity: 0; transform: scale(0.8) translateY(-6px); pointer-events: none;
+            transition: opacity 0.3s cubic-bezier(0.16,1,0.3,1), transform 0.3s cubic-bezier(0.16,1,0.3,1), background 0.2s;
+            user-select: none; white-space: nowrap;
+        }
+        .header-agent-pill:hover { background: linear-gradient(135deg, #ddd6fe, #c7d2fe); }
+        .header-agent-avatar { width: 26px; height: 26px; border-radius: 50%; object-fit: cover; flex-shrink: 0; background: #fff; }
+        .header-agent-pill .chevron { display: flex; align-items: center; opacity: 0.8; transition: transform 0.2s; flex-shrink: 0; }
+        .header-agent-pill.open .chevron { transform: rotate(180deg); }
+        .header.agent-docked .header-agent-pill {
+            opacity: 1; transform: scale(1) translateY(0); pointer-events: auto;
+        }
+        .header:not(.agent-docked) #header-pill-anchor .agent-dropdown { display: none !important; }
+        body.theme-new .header-agent-pill { background: #ffffff; border: 1px solid #e6e2e0; color: #212121; }
+        body.theme-new .header-agent-pill:hover { background: #f9f8f6; }
+        body.theme-new .header-agent-avatar { border: 1px solid #e6e2e0; }
 
         /* ===== HERO BANNER ===== */
         .hero-banner {
@@ -218,7 +255,7 @@
         .dd-nav-item:hover { background: #f1f5f9; }
         .dd-nav-item.selected { background: white; box-shadow: 0 1px 4px rgba(15,23,42,0.1); }
         .dd-nav-label { font-size: 13px; font-weight: 500; color: #374151; overflow: hidden; text-overflow: ellipsis; }
-        .dd-nav-item.selected .dd-nav-label { color: #2563eb; }
+        .dd-nav-item.selected .dd-nav-label { color: #4d403a; }
         .dd-nav-sep { color: #cbd5e1; font-size: 12px; flex-shrink: 0; }
         .dd-poc-name { font-size: 12.5px; font-weight: 400; color: #94a3b8; flex-shrink: 0; }
         .dd-count-badge {
@@ -260,8 +297,8 @@
         .dd-option:hover { background: #f8fafc; }
 
         .dd-option.selected {
-            background: #eff6ff;
-            color: #2563eb;
+            background: #f1f0ee;
+            color: #4d403a;
             font-weight: 600;
         }
 
@@ -273,20 +310,28 @@
             flex-shrink: 0;
         }
 
-        .dd-option.selected .dd-dot { background: #2563eb; }
+        .dd-option.selected .dd-dot { background: #4d403a; }
 
-        .dd-option.disabled { color: #cbd5e1; cursor: not-allowed; }
+        .dd-option.disabled { color: #909090; cursor: not-allowed; position: relative; }
         .dd-option.disabled:hover { background: none; }
         #agent-dropdown .dd-option.selected { font-weight: 400; }
-        .dd-soon-tag {
-            margin-left: auto;
-            font-size: 10px;
-            font-weight: 400;
-            color: #94a3b8;
-            background: #f1f5f9;
-            padding: 3px 7px;
-            border-radius: 5px;
-            flex-shrink: 0;
+        .dd-tooltip-wrap { position: relative; width: 100%; }
+        .dd-tooltip-bubble {
+            position: absolute; bottom: calc(100% + 8px); left: 50%;
+            transform: translateX(-50%) translateY(3px);
+            background: #212121; color: #ffffff; font-size: 11.5px; font-weight: 400;
+            line-height: 1.4; padding: 6px 10px; border-radius: 6px; white-space: nowrap;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+            opacity: 0; visibility: hidden; pointer-events: none; z-index: 30;
+            transition: opacity 0.15s, transform 0.15s;
+        }
+        .dd-tooltip-bubble::after {
+            content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+            border: 5px solid transparent; border-top-color: #212121;
+        }
+        .dd-option.disabled:hover .dd-tooltip-bubble,
+        .dd-tooltip-wrap:hover .dd-tooltip-bubble {
+            opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0);
         }
 
         .agent-hint {
@@ -368,12 +413,14 @@
             overflow: hidden;
             transition: max-height 0.42s cubic-bezier(0.4,0,0.2,1),
                         padding 0.35s ease,
-                        border-top-color 0.3s ease;
+                        border-top-width 0.25s ease,
+                        border-top-color 0.25s ease;
         }
         .acc-body.collapsed {
-            padding-top: 0;
-            padding-bottom: 0;
-            border-top-color: transparent;
+            max-height: 0 !important;
+            padding: 0 !important;
+            border-top: none;
+            overflow: hidden !important;
         }
 
         /* ===== FORM ===== */
@@ -564,8 +611,8 @@
         }
 
         .ao-checkbox.checked {
-            background: #2563eb;
-            border-color: #2563eb;
+            background: #4d403a;
+            border-color: #4d403a;
         }
 
         .ao-checkbox.checked::after {
@@ -609,6 +656,10 @@
             white-space: nowrap; background: white; padding-left: 6px;
         }
         .input-inline-link:hover { text-decoration: underline; }
+
+        .view-profile-wrap { position: absolute; right: 13px; top: 50%; transform: translateY(-50%); background: white; display: inline-flex; align-items: center; }
+        .view-profile-icon-link { display: flex; color: #0f172a; }
+        .view-profile-icon-link:hover { color: #000000; }
 
         /* Business details summary card */
         .biz-summary-card { position: relative; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px 16px; background: #ffffff; }
@@ -654,6 +705,22 @@
         }
         .tooltip-wrap:hover .tooltip-bubble { opacity: 1; visibility: visible; transform: translateY(0); }
 
+        /* Compact icon-only tooltip (Edit button, View profile link) */
+        .icon-tooltip-wrap { position: relative; display: inline-flex; align-items: center; }
+        .icon-tooltip-bubble {
+            position: absolute; bottom: calc(100% + 8px); right: 0;
+            background: #1e293b; color: white; font-size: 11.5px; font-weight: 400;
+            line-height: 1.4; padding: 6px 10px; border-radius: 6px; white-space: nowrap;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+            opacity: 0; visibility: hidden; transform: translateY(3px);
+            transition: opacity 0.15s, transform 0.15s; pointer-events: none; z-index: 20;
+        }
+        .icon-tooltip-bubble::after {
+            content: ''; position: absolute; top: 100%; right: 8px;
+            border: 5px solid transparent; border-top-color: #1e293b;
+        }
+        .icon-tooltip-wrap:hover .icon-tooltip-bubble { opacity: 1; visibility: visible; transform: translateY(0); }
+
         /* Recommendation type cards */
         .rt-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
         .rt-card {
@@ -661,8 +728,8 @@
             gap: 8px; border: 1.5px solid #e2e8f0; border-radius: 10px; padding: 16px 8px 14px;
             cursor: pointer; transition: all 0.15s; background: white;
         }
-        .rt-card:hover { border-color: #93c5fd; }
-        .rt-card.selected { border-color: #2563eb; }
+        .rt-card:hover { border-color: #cdc4c0; }
+        .rt-card.selected { border-color: #4d403a; }
         .rt-card-icon {
             width: 22px; height: 22px;
             display: flex; align-items: center; justify-content: center;
@@ -678,16 +745,16 @@
             cursor: pointer; transition: border-color 0.15s; margin-bottom: 10px; background: white;
         }
         .survey-type-option:last-child { margin-bottom: 0; }
-        .survey-type-option:hover { border-color: #93c5fd; }
-        .survey-type-option.selected { border-color: #2563eb; background: #fafbff; }
+        .survey-type-option:hover { border-color: #cdc4c0; }
+        .survey-type-option.selected { border-color: #4d403a; background: #f9f8f6; }
         .survey-type-radio {
             width: 16px; height: 16px; border: 1.5px solid #d1d5db; border-radius: 50%;
             flex-shrink: 0; margin-top: 2px; display: flex; align-items: center; justify-content: center;
             transition: all 0.15s;
         }
-        .survey-type-option.selected .survey-type-radio { border-color: #2563eb; }
+        .survey-type-option.selected .survey-type-radio { border-color: #4d403a; }
         .survey-type-option.selected .survey-type-radio::after {
-            content: ''; width: 8px; height: 8px; border-radius: 50%; background: #2563eb;
+            content: ''; width: 8px; height: 8px; border-radius: 50%; background: #4d403a;
         }
         .survey-type-icon { width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; color: #64748b; flex-shrink: 0; margin-top: 1px; }
         .survey-type-text { flex: 1; }
@@ -722,7 +789,7 @@
             width: 16px; height: 16px; border: 1.5px solid #d1d5db; border-radius: 4px;
             flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.15s;
         }
-        .dd-check-box.checked { background: #2563eb; border-color: #2563eb; }
+        .dd-check-box.checked { background: #4d403a; border-color: #4d403a; }
         .dd-check-box.checked::after {
             content: ''; width: 8px; height: 5px; border-left: 1.5px solid white; border-bottom: 1.5px solid white;
             transform: rotate(-45deg) translateY(-1px); display: block;
@@ -898,22 +965,22 @@
             position: relative; border: 1.5px solid #e2e8f0; border-radius: 10px;
             padding: 12px; cursor: pointer; transition: border-color 0.15s; background: white;
         }
-        .layout-card:hover { border-color: #93c5fd; }
-        .layout-card.selected { border-color: #2563eb; }
+        .layout-card:hover { border-color: #cdc4c0; }
+        .layout-card.selected { border-color: #4d403a; }
         .layout-check {
             position: absolute; top: 10px; left: 10px; width: 16px; height: 16px;
             border: 1.5px solid #d1d5db; border-radius: 4px; transition: all 0.15s;
         }
-        .layout-card.selected .layout-check { background: #2563eb; border-color: #2563eb; }
+        .layout-card.selected .layout-check { background: #4d403a; border-color: #4d403a; }
         .layout-card.selected .layout-check::after {
             content: ''; width: 8px; height: 5px; margin: 3px auto 0;
             border-left: 1.5px solid white; border-bottom: 1.5px solid white;
             transform: rotate(-45deg) translateY(-1px); display: block;
         }
         .layout-check.radio { border-radius: 50%; }
-        .layout-card.selected .layout-check.radio { background: white; border-color: #2563eb; }
+        .layout-card.selected .layout-check.radio { background: white; border-color: #4d403a; }
         .layout-card.selected .layout-check.radio::after {
-            content: ''; width: 8px; height: 8px; border-radius: 50%; background: #2563eb;
+            content: ''; width: 8px; height: 8px; border-radius: 50%; background: #4d403a;
             margin: 3px auto 0; border: none; transform: none; display: block;
         }
         .layout-preview {
@@ -931,8 +998,8 @@
             border: 1.5px solid #e2e8f0; border-radius: 10px; padding: 12px 14px;
             margin-bottom: 10px; cursor: pointer; transition: all 0.15s;
         }
-        .rma-review-pick:hover { border-color: #93c5fd; }
-        .rma-review-pick.selected { border-color: #2563eb; background: #fafbff; }
+        .rma-review-pick:hover { border-color: #cdc4c0; }
+        .rma-review-pick.selected { border-color: #4d403a; background: #f9f8f6; }
         .rma-review-pick-top { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; flex-wrap: wrap; }
         .rma-review-pick .review-text { font-size: 12.5px; margin: 0; }
         .rma-review-pick .reviewer-name { font-size: 12.5px; }
@@ -958,7 +1025,7 @@
         }
         .rma-thumb-item { overflow: hidden; border: 2px solid #e2e8f0; }
         .rma-thumb-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
-        .rma-thumb-item.active { border-color: #2563eb; }
+        .rma-thumb-item.active { border-color: #4d403a; }
         .rma-thumb-remove {
             position: absolute; top: 3px; right: 3px; width: 18px; height: 18px; border-radius: 50%;
             background: rgba(15,23,42,0.65); color: white; border: none; font-size: 12px; line-height: 1;
@@ -968,9 +1035,9 @@
             border: 1.5px dashed #d1d5db; border-radius: 10px; flex-direction: column; gap: 4px;
             color: #94a3b8; font-size: 11px; background: white; transition: border-color 0.15s, color 0.15s;
         }
-        .rma-thumb-add:hover { border-color: #93c5fd; color: #2563eb; }
-        .rma-thumb-add-icon { font-size: 18px; line-height: 1; color: #93c5fd; }
-        .rma-thumb-add:hover .rma-thumb-add-icon { color: #2563eb; }
+        .rma-thumb-add:hover { border-color: #cdc4c0; color: #4d403a; }
+        .rma-thumb-add-icon { font-size: 18px; line-height: 1; color: #cdc4c0; }
+        .rma-thumb-add:hover .rma-thumb-add-icon { color: #4d403a; }
 
         /* Post preview row (Facebook + LinkedIn, side by side or full-width for a single channel) */
         .rma-day-row { display: flex; align-items: flex-start; }
@@ -1028,23 +1095,23 @@
             background: white; color: #64748b; cursor: pointer; font-family: inherit; transition: all 0.15s;
             display: flex; align-items: center; justify-content: center;
         }
-        .rma-align-btn:hover { border-color: #93c5fd; }
-        .rma-align-btn.active { border-color: #2563eb; color: #2563eb; background: #eff6ff; }
+        .rma-align-btn:hover { border-color: #cdc4c0; }
+        .rma-align-btn.active { border-color: #4d403a; color: #4d403a; background: #f1f0ee; }
         .rma-bg-radio-row { display: flex; gap: 10px; flex-wrap: wrap; }
         .rma-bg-radio { display: flex; align-items: center; gap: 5px; font-size: 12px; color: #374151; cursor: pointer; }
-        .rma-bg-radio input[type="radio"] { margin: 0; accent-color: #2563eb; cursor: pointer; }
+        .rma-bg-radio input[type="radio"] { margin: 0; accent-color: #4d403a; cursor: pointer; }
         .rma-swatch-row { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
         .rma-swatch {
             width: 22px; height: 22px; border-radius: 6px; border: 1.5px solid transparent; cursor: pointer; padding: 0;
         }
-        .rma-swatch.active { border-color: #0f172a; box-shadow: 0 0 0 2px white inset; }
+        .rma-swatch.active { border-color: #4d403a; box-shadow: 0 0 0 2px white inset; }
         .rma-custom-swatch {
             width: 22px; height: 22px; border-radius: 6px; border: 1.5px solid #e2e8f0; cursor: pointer;
             position: relative; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
             background: white; color: #94a3b8; overflow: hidden;
         }
-        .rma-custom-swatch:hover { border-color: #93c5fd; color: #2563eb; }
-        .rma-custom-swatch.active { border-color: #0f172a; box-shadow: 0 0 0 2px white inset; color: white; }
+        .rma-custom-swatch:hover { border-color: #cdc4c0; color: #4d403a; }
+        .rma-custom-swatch.active { border-color: #4d403a; box-shadow: 0 0 0 2px white inset; color: white; }
         .rma-custom-swatch.active svg { filter: drop-shadow(0 0 1.5px rgba(0,0,0,0.7)); }
         .rma-custom-swatch svg { pointer-events: none; position: relative; z-index: 1; }
         .rma-custom-swatch input[type="color"] {
@@ -1081,12 +1148,12 @@
             text-align: center;
         }
 
-        .resp-opt:hover { border-color: #93c5fd; color: #2563eb; }
+        .resp-opt:hover { border-color: #cdc4c0; color: #4d403a; }
 
         .resp-opt.selected {
-            border-color: #2563eb;
-            background: #eff6ff;
-            color: #2563eb;
+            border-color: #4d403a;
+            background: #f1f0ee;
+            color: #4d403a;
         }
 
         .resp-opt-name {
@@ -1096,7 +1163,7 @@
             line-height: 1;
         }
 
-        .resp-opt.selected .resp-opt-name { color: #2563eb; }
+        .resp-opt.selected .resp-opt-name { color: #4d403a; }
 
         .resp-opt-desc {
             font-size: 11px;
@@ -1104,7 +1171,7 @@
             line-height: 1.3;
         }
 
-        .resp-opt.selected .resp-opt-desc { color: #93c5fd; }
+        .resp-opt.selected .resp-opt-desc { color: #a89f9a; }
 
         /* Continue button — right-aligned, auto-width */
         .continue-row {
@@ -1200,7 +1267,7 @@
         }
 
         .review-card:hover { border-color: #93c5fd; box-shadow: 0 2px 10px rgba(37,99,235,0.07); transform: translateY(-1px); }
-        .review-card.selected { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,0.12); background: #fafbff; }
+        .review-card.selected { border-color: #4d403a; box-shadow: 0 0 0 3px rgba(77,64,58,0.12); background: #f9f8f6; }
 
         /* Review card — Google-style layout */
         .review-card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
@@ -1784,8 +1851,8 @@
         /* Platform tabs */
         .drawer-tabs { display: flex; border-bottom: 1px solid #e2e8f0; flex-shrink: 0; padding: 0 20px; position: sticky; top: 63px; background: white; z-index: 1; }
         .drawer-tab { padding: 11px 14px; font-size: 13px; font-weight: 500; color: #64748b; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all 0.15s; user-select: none; white-space: nowrap; }
-        .drawer-tab:hover { color: #2563eb; }
-        .drawer-tab.active { color: #2563eb; border-bottom-color: #2563eb; }
+        .drawer-tab:hover { color: #4d403a; }
+        .drawer-tab.active { color: #4d403a; border-bottom-color: #4d403a; }
         /* Drawer body */
         .drawer-body-content { padding: 20px 20px 28px; }
         .drawer-post-img { width: 100%; height: 200px; object-fit: cover; display: block; background: #e2e8f0; }
@@ -1809,10 +1876,10 @@
         /* Post length for social publishing */
         .post-len-group { display: flex; gap: 8px; }
         .post-len-opt { flex: 1; display: flex; flex-direction: column; gap: 4px; padding: 12px 10px; border: 1.5px solid #e2e8f0; border-radius: 10px; background: white; cursor: pointer; font-family: inherit; transition: all 0.15s; text-align: left; }
-        .post-len-opt:hover { border-color: #93c5fd; }
-        .post-len-opt.selected { border-color: #2563eb; background: #eff6ff; }
+        .post-len-opt:hover { border-color: #cdc4c0; }
+        .post-len-opt.selected { border-color: #4d403a; background: #f1f0ee; }
         .post-len-name { font-size: 13px; font-weight: 400; color: #374151; }
-        .post-len-opt.selected .post-len-name { color: #2563eb; }
+        .post-len-opt.selected .post-len-name { color: #4d403a; }
         .post-len-desc { font-size: 11px; color: #94a3b8; line-height: 1.3; }
         .post-len-eng { font-size: 10px; font-weight: 400; color: #16a34a; margin-top: 2px; }
         .post-len-eng.med { color: #d97706; }
@@ -1822,13 +1889,13 @@
         .content-focus-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
         .cf-opt { display: flex; align-items: center; gap: 7px; padding: 7px 10px; border: 1.5px solid #e2e8f0; border-radius: 7px; cursor: pointer; transition: border-color 0.15s; user-select: none; }
         .cf-opt:hover { border-color: #cbd5e1; }
-        .cf-opt.checked { border-color: #e2e8f0; }
+        .cf-opt.checked { border-color: #4d403a; background: #f9f8f6; }
         .cf-opt .ao-checkbox { flex-shrink: 0; margin-top: 0; }
         .cf-opt-label { font-size: 13px; color: #374151; }
         .plat-check-row { display: flex; gap: 10px; }
         .plat-check-opt { display: flex; align-items: center; gap: 7px; padding: 9px 12px; border: 1.5px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: border-color 0.15s; flex: 1; user-select: none; }
         .plat-check-opt:hover { border-color: #cbd5e1; }
-        .plat-check-opt.checked { border-color: #e2e8f0; }
+        .plat-check-opt.checked { border-color: #4d403a; background: #f9f8f6; }
         .plat-check-opt .ao-checkbox { flex-shrink: 0; margin-top: 0; }
         .plat-check-name { font-size: 13px; color: #374151; }
         .form-section-label { font-size: 13px; font-weight: 500; color: #374151; margin-bottom: 8px; }
@@ -1870,8 +1937,8 @@
 
         /* ===== SOCIAL ENGAGEMENT CARDS ===== */
         .sc-card { border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 16px; cursor: pointer; transition: all 0.18s; position: relative; background: white; margin-bottom: 10px; }
-        .sc-card:hover { border-color: #93c5fd; box-shadow: 0 2px 10px rgba(37,99,235,0.07); transform: translateY(-1px); }
-        .sc-card.selected { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,0.12); background: #fafbff; }
+        .sc-card:hover { border-color: #cdc4c0; box-shadow: 0 2px 10px rgba(77,64,58,0.07); transform: translateY(-1px); }
+        .sc-card.selected { border-color: #4d403a; box-shadow: 0 0 0 3px rgba(77,64,58,0.12); background: #f9f8f6; }
         .sc-hdr { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
         .sc-icon { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .sc-icon-fb { background: #1877f2; }
@@ -1881,7 +1948,7 @@
         .sc-uname { font-size: 13px; font-weight: 400; color: #0f172a; }
         .sc-info { font-size: 12px; color: #94a3b8; display: flex; align-items: center; flex-wrap: wrap; gap: 0; }
         .sc-text { font-size: 13px; color: #374151; line-height: 1.6; }
-        .sc-chk { position: absolute; top: 14px; right: 14px; width: 22px; height: 22px; border-radius: 50%; background: #2563eb; display: none; align-items: center; justify-content: center; color: white; font-size: 11px; font-weight: 700; }
+        .sc-chk { position: absolute; top: 14px; right: 14px; width: 22px; height: 22px; border-radius: 50%; background: #4d403a; display: none; align-items: center; justify-content: center; color: white; font-size: 11px; font-weight: 700; }
         .sc-card.selected .sc-chk { display: flex; }
 
         /* ===== RESPONSIVE ===== */
@@ -1898,9 +1965,429 @@
             .rt-grid { grid-template-columns: repeat(2, 1fr); }
             .rt-grid-icon { grid-template-columns: repeat(2, 1fr); }
         }
+
+        /* ================================================================
+           DESIGN SYSTEM SWITCHER
+           Toggle between the classic (default) look and a new theme built
+           from the real Birdeye "Digital Design System" Figma file
+           (fetched via the Figma REST API — Color Primitives, Colors,
+           Radius Corner, Spacing, Typography:Desktop, Buttons, Cards).
+           ================================================================ */
+        .design-toggle {
+            position: fixed; top: 16px; left: 50%; transform: translateX(-50%); z-index: 9999;
+            display: flex; gap: 2px; background: #eeece7; border-radius: 999px; padding: 3px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15); font-family: 'Geist', -apple-system, sans-serif;
+        }
+        .design-toggle-opt {
+            padding: 7px 14px; border-radius: 999px; border: none; background: transparent;
+            font-size: 12.5px; font-weight: 500; color: #646464; cursor: pointer; font-family: inherit;
+            transition: all 0.15s; white-space: nowrap;
+        }
+        .design-toggle-opt.active { background: #212121; color: #ffffff; }
+        .design-toggle-opt:not(.active):hover { color: #212121; }
+
+        /* Coworker tabs — dept label + agent count (selected agent lives in pill below) */
+        .coworker-tabs {
+            display: none; align-items: center; gap: 4px; position: relative; z-index: 10;
+            margin: 0 auto 10px; padding: 6px; background: #eeece7; border-radius: 999px;
+            width: fit-content; max-width: 900px;
+        }
+        .coworker-tab {
+            display: flex; align-items: center; gap: 10px; padding: 8px 18px 8px 8px;
+            border-radius: 999px; cursor: pointer; transition: background 0.15s; min-width: 0;
+            position: relative;
+        }
+        .coworker-tab:hover { background: rgba(255,255,255,0.5); }
+        .coworker-tab.selected { background: #ffffff; box-shadow: 0 1px 4px rgba(33,33,33,0.12); }
+        .coworker-avatar {
+            width: 44px; height: 44px; border-radius: 50%; object-fit: cover; flex-shrink: 0;
+            background: #ffffff; border: 1px solid #e6e2e0;
+        }
+        .coworker-tab-text { display: flex; flex-direction: column; line-height: 1.3; min-width: 0; }
+        .coworker-name { font-family: 'Geist', sans-serif; font-weight: 500; font-size: 15px; color: #212121; }
+        .coworker-dept {
+            font-family: 'Geist', sans-serif; font-size: 12.5px; color: #909090;
+            display: inline-flex; align-items: center; gap: 6px; min-width: 0;
+        }
+        .coworker-dept-sep {
+            width: 3px; height: 3px; border-radius: 50%; background: #cdc4c0; flex-shrink: 0;
+        }
+        .coworker-tab.selected .coworker-dept-count { color: #909090; font-weight: 400; }
+        .coworker-tab.dept-unavailable { cursor: not-allowed; }
+        .coworker-tab.dept-unavailable:hover { background: transparent; }
+        .coworker-tab-tooltip {
+            position: absolute; bottom: calc(100% + 10px); left: 50%;
+            transform: translateX(-50%) translateY(3px);
+            background: #212121; color: #ffffff; font-size: 11.5px; font-weight: 400;
+            line-height: 1.4; padding: 6px 12px; border-radius: 6px; white-space: nowrap;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+            opacity: 0; visibility: hidden; pointer-events: none; z-index: 40;
+            transition: opacity 0.15s, transform 0.15s;
+        }
+        .coworker-tab-tooltip::after {
+            content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+            border: 5px solid transparent; border-top-color: #212121;
+        }
+        .coworker-tab.dept-unavailable:hover .coworker-tab-tooltip {
+            opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0);
+        }
+
+        /* Theme visibility */
+        .new-footer { display: none; }
+        body.theme-new .classic-only { display: none !important; }
+        body.theme-new .new-footer { display: block; }
+
+        /* Secondary button (beige) — Figma "beige" variant on white surfaces */
+        .btn-secondary {
+            background: #f1f0ee; color: #212121; border: 1px solid #e6e2e0;
+            border-radius: 999px; font-family: 'Geist', sans-serif; font-size: 14px; font-weight: 400;
+            padding: 8px 20px; cursor: pointer; transition: background 0.15s, border-color 0.15s;
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            white-space: nowrap; line-height: 1;
+        }
+        .btn-secondary:hover:not(:disabled) { background: #eeece7; border-color: #cdc4c0; }
+        .btn-secondary:disabled { opacity: 0.55; cursor: not-allowed; }
+        .btn-secondary .btn-icon { flex-shrink: 0; display: block; }
+
+        /* ===== NEW FOOTER (New design only) ===== */
+        .new-footer {
+            background: #f1f0ee; padding: 0 40px 32px; margin-top: 0;
+            font-family: 'Geist', -apple-system, sans-serif;
+        }
+        .new-footer-inner { max-width: 1200px; margin: 0 auto; }
+        .view-banner {
+            display: flex; align-items: center; gap: 24px; flex-wrap: wrap;
+            background: #1a2332; border-radius: 20px; padding: 22px 28px; margin-bottom: 40px;
+        }
+        .view-banner-logo {
+            font-family: 'Geist', sans-serif; font-weight: 700; font-size: 28px; color: #ffffff;
+            letter-spacing: -0.5px; white-space: nowrap;
+        }
+        .view-banner-year { font-weight: 400; margin-left: 4px; }
+        .view-banner-text {
+            flex: 1; min-width: 200px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+            font-size: 14px; color: rgba(255,255,255,0.92); line-height: 1.4;
+        }
+        .view-banner-title { font-weight: 600; color: #ffffff; }
+        .view-banner-sep { color: rgba(255,255,255,0.45); }
+        .view-banner-desc { color: rgba(255,255,255,0.78); }
+        .view-banner-cta {
+            background: #ffffff; color: #212121; border-radius: 999px; padding: 10px 22px;
+            font-family: 'Geist', sans-serif; font-size: 14px; font-weight: 500; text-decoration: none;
+            white-space: nowrap; transition: background 0.15s;
+        }
+        .view-banner-cta:hover { background: #eeece7; }
+        .new-footer-grid {
+            display: grid; grid-template-columns: 1.2fr repeat(4, 1fr); gap: 28px 24px;
+            margin-bottom: 28px;
+        }
+        .new-footer-grid-secondary { grid-template-columns: repeat(4, 1fr); }
+        .new-footer-brand .logo { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; }
+        .new-footer-brand .logo-text { font-family: 'Geist', sans-serif; font-weight: 600; font-size: 18px; color: #212121; }
+        .new-footer-brand .logo-icon { height: 24px; filter: brightness(0); }
+        .new-footer-col h4 {
+            font-family: 'Geist', sans-serif; font-size: 15px; font-weight: 500; color: #212121;
+            margin-bottom: 2px;
+        }
+        .new-footer-col-sub {
+            display: block; font-size: 12px; color: #909090; margin-bottom: 12px;
+        }
+        .new-footer-col ul { list-style: none; }
+        .new-footer-col ul li { margin-bottom: 8px; }
+        .new-footer-col ul li a {
+            font-size: 13px; color: #646464; text-decoration: none; transition: color 0.15s;
+        }
+        .new-footer-col ul li a:hover { color: #212121; }
+        .new-footer-muted { color: #909090 !important; }
+        .new-footer-show-more { font-weight: 500; color: #212121 !important; }
+        .new-footer-divider { height: 1px; background: #e6e2e0; margin: 24px 0; }
+        .new-footer-social-row {
+            display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+            padding: 4px 0;
+        }
+        .new-footer-social-icons { display: flex; gap: 10px; flex-wrap: wrap; }
+        .social-circle {
+            width: 36px; height: 36px; border-radius: 50%; background: #212121; color: #ffffff;
+            display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600;
+            text-decoration: none; transition: background 0.15s;
+        }
+        .social-circle:hover { background: #4d403a; }
+        .new-footer-app-row { display: flex; align-items: center; gap: 10px; font-size: 13px; color: #646464; }
+        .app-badge {
+            width: 36px; height: 36px; border-radius: 50%; background: #4d403a; color: #ffffff;
+            display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 14px;
+        }
+        .new-footer-bottom {
+            display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px 20px;
+            font-size: 12px; color: #646464; padding-top: 4px;
+        }
+        .new-footer-legal { display: flex; flex-wrap: wrap; gap: 14px; }
+        .new-footer-legal a { color: #646464; text-decoration: none; }
+        .new-footer-legal a:hover { color: #212121; }
+        .new-footer-region { color: #646464; white-space: nowrap; }
+        @media (max-width: 900px) {
+            .new-footer-grid, .new-footer-grid-secondary { grid-template-columns: repeat(2, 1fr); }
+            .new-footer-brand { grid-column: 1 / -1; }
+            .view-banner { flex-direction: column; align-items: flex-start; }
+        }
+        @media (max-width: 640px) {
+            .new-footer { padding: 0 20px 28px; }
+            .new-footer-grid, .new-footer-grid-secondary { grid-template-columns: 1fr; }
+        }
+
+        /* ================================================================
+           NEW THEME — scoped to body.theme-new, applied to the Review
+           Response Agent only (agent switching is locked while active)
+
+           Token source (Figma "Digital Design System", UI Library page):
+           - Fonts: Geist (site-wide, headings/buttons/body) — Color
+             Primitives: black 0–1000 (#b5b5b5→#000), beige 50–1000
+             (#f1f0ee→#0d0b0a), green/red/orange 100–1000 for status
+           - Semantic: bg beige/50 #f1f0ee, TEXT dark-primary #212121 /
+             dark-secondary #646464 / dark-tertiary #909090, buttons dark
+             #4d403a (hover #27201d, pressed #0d0b0a)
+           - Radius scale: none 0, small 4, medium 8, x-medium 12,
+             large 16, x-large 20, xl-large 24, round 999
+           - Buttons: fully pill (radius 999), 12px vertical padding
+           - Cards: fill #eeece7, stroke #646464, radius 24
+           ================================================================ */
+        body.theme-new {
+            font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f1f0ee;
+            color: #212121;
+        }
+        body.theme-new .header { background: #f1f0ee; }
+        body.theme-new .logo-text { color: #212121; }
+        body.theme-new .logo-icon { filter: brightness(0); }
+        body.theme-new .btn-schedule {
+            border-radius: 999px; font-family: 'Geist', sans-serif; font-size: 14px; font-weight: 400;
+            background: #4d403a; padding: 10px 22px;
+        }
+        body.theme-new .btn-schedule:hover { background: #27201d; transform: none; box-shadow: none; }
+
+        body.theme-new .hero-banner { background: #f1f0ee; }
+        body.theme-new .hero-banner::before,
+        body.theme-new .hero-banner::after { display: none; }
+        body.theme-new .hero-eyebrow { display: none; }
+        body.theme-new .hero h1 {
+            font-family: 'Geist', sans-serif; font-weight: 400; color: #212121;
+            letter-spacing: -1.12px; line-height: 1.07;
+        }
+        body.theme-new .hero-purple { color: #212121; }
+        body.theme-new .hero p { display: none; }
+
+        body.theme-new .coworker-tabs { display: flex; }
+
+        body.theme-new .agent-selector-pill {
+            background: #ffffff; border: 1px solid #e6e2e0; color: #212121; border-radius: 999px;
+            font-family: 'Geist', sans-serif;
+        }
+        body.theme-new .agent-selector-pill:hover { background: #ffffff; }
+        body.theme-new .pill-dot-sep,
+        body.theme-new .pill-dept-label { display: none; }
+
+        body.theme-new .agent-hint { color: #212121; }
+        body.theme-new .info-circle { display: none; }
+
+        /* Flat single-column dropdown — the coworker tabs already do the department switching */
+        body.theme-new .agent-dropdown { width: 320px; border: 1px solid #e6e2e0; border-radius: 16px; box-shadow: 0 8px 28px rgba(33,33,33,0.14); }
+        body.theme-new .dd-nav { display: none; }
+        body.theme-new .dd-list-panel { height: auto; max-height: 320px; padding: 8px 0; }
+        body.theme-new .dd-count-badge { background: #eeece7; color: #646464; }
+        body.theme-new .dd-option.selected { background: #f1f0ee; color: #212121; }
+        body.theme-new .dd-option.selected .dd-dot { background: #4d403a; }
+        body.theme-new .dd-search-input:focus { border-color: #4d403a; }
+        body.theme-new .dd-soon-tag { background: #eeece7; color: #909090; }
+
+        body.theme-new .main { max-width: 900px; }
+
+        body.theme-new .accordion {
+            background: #ffffff; border: 1px solid #e6e2e0; border-radius: 24px;
+            box-shadow: none;
+        }
+        body.theme-new .accordion:hover { box-shadow: none; }
+        body.theme-new .acc-header { padding: 24px 28px; gap: 16px; }
+        body.theme-new .acc-header-content { gap: 4px; }
+        body.theme-new .acc-title { font-family: 'Geist', sans-serif; font-weight: 500; font-size: 18px; color: #212121; }
+        body.theme-new .acc-subtitle {
+            display: none; color: #646464; font-family: 'Geist', sans-serif; font-size: 13px;
+        }
+        body.theme-new .accordion.is-closed .acc-subtitle { display: block; }
+        body.theme-new .acc-body:not(.collapsed) {
+            border-top: 1px solid #eeece7;
+            padding: 0 28px 28px;
+        }
+        body.theme-new .acc-body.collapsed {
+            max-height: 0 !important;
+            padding: 0 !important;
+            border-top: none;
+            overflow: hidden !important;
+        }
+        body.theme-new .acc-toggle { background: #f1f0ee; color: #212121; border-radius: 999px; }
+        body.theme-new .acc-toggle:hover { background: #e6e2e0; }
+
+        body.theme-new .resp-opt.selected { border-color: #4d403a; background: #f1f0ee; color: #4d403a; }
+        body.theme-new .resp-opt.selected .resp-opt-name { color: #212121; }
+        body.theme-new .resp-opt.selected .resp-opt-desc { color: #646464; }
+        body.theme-new .resp-opt:hover { border-color: #4d403a; color: #4d403a; }
+        body.theme-new .more-options-label { color: #212121; }
+        body.theme-new .more-options-toggle:hover .more-options-label { color: #000000; }
+        body.theme-new .more-options-chevron path { stroke: #212121; }
+
+        body.theme-new .main { max-width: 900px; }
+
+        body.theme-new .form-label {
+            font-size: 13px; font-weight: 500; text-transform: none; letter-spacing: 0; color: #646464;
+            font-family: 'Geist', sans-serif;
+        }
+        body.theme-new .tooltip-icon {
+            border-color: #cdc4c0; color: #909090;
+        }
+        body.theme-new .tooltip-bubble,
+        body.theme-new .icon-tooltip-bubble {
+            background: #212121; color: #ffffff;
+        }
+        body.theme-new .tooltip-bubble::after,
+        body.theme-new .icon-tooltip-bubble::after { border-top-color: #212121; }
+        body.theme-new .field-sub,
+        body.theme-new .user-consent-text { color: #909090; font-size: 12px; line-height: 1.5; }
+        body.theme-new .user-consent-text a { color: #646464; text-decoration: underline; }
+        body.theme-new .ao-desc { color: #909090; }
+        body.theme-new .form-input, body.theme-new .form-select, body.theme-new .chip-input {
+            border-radius: 12px; border-color: #e6e2e0; font-family: 'Geist', sans-serif;
+        }
+        body.theme-new .form-input:focus, body.theme-new .form-select:focus, body.theme-new .chip-input:focus-within {
+            border-color: #4d403a; box-shadow: 0 0 0 3px rgba(77,64,58,0.12);
+        }
+        body.theme-new .chip-tag {
+            background: #212121; color: #ffffff; border-radius: 999px;
+        }
+        body.theme-new .chip-remove { color: #ffffff; }
+        body.theme-new .chip-remove:hover { background: rgba(255,255,255,0.15); }
+        body.theme-new .chip-input:focus-within {
+            border-color: #4d403a; box-shadow: 0 0 0 3px rgba(77,64,58,0.12);
+        }
+
+        body.theme-new .biz-summary-card { border-radius: 16px; border-color: #e6e2e0; }
+        body.theme-new .biz-summary-title { font-family: 'Geist', sans-serif; font-weight: 500; color: #212121; }
+        body.theme-new .bs-label { color: #909090; }
+
+        body.theme-new .btn-continue {
+            background: #4d403a; border-radius: 999px; font-family: 'Geist', sans-serif;
+            padding: 12px 26px;
+        }
+        body.theme-new .btn-continue:hover:not(:disabled) { background: #27201d; box-shadow: none; transform: none; }
+        body.theme-new .btn-continue:disabled { background: #e6e2e0; color: #ffffff; }
+
+        body.theme-new .btn-generate, body.theme-new .btn-cr-generate {
+            background: #4d403a; border-radius: 999px; font-family: 'Geist', sans-serif;
+        }
+        body.theme-new .btn-generate:hover:not(:disabled), body.theme-new .btn-cr-generate:hover:not(:disabled) {
+            background: #27201d; box-shadow: none; transform: none;
+        }
+        body.theme-new .biz-edit-btn {
+            font-family: 'Geist', sans-serif; color: #212121; padding: 0;
+            border: none; background: none; border-radius: 0;
+        }
+        body.theme-new .biz-edit-btn:hover { color: #212121; background: none; }
+        body.theme-new .biz-edit-btn svg { stroke: #212121; }
+        body.theme-new .biz-edit-btn.is-save {
+            padding: 8px 20px; border-radius: 999px; background: #f1f0ee;
+            border: 1px solid #e6e2e0; font-family: 'Geist', sans-serif; font-size: 14px; font-weight: 400;
+        }
+        body.theme-new .biz-edit-btn.is-save:hover { background: #eeece7; border-color: #cdc4c0; }
+        body.theme-new .cdd-trigger:hover { border-color: #cdc4c0; }
+        body.theme-new .cdd-anchor.open .cdd-trigger { border-color: #4d403a; }
+        body.theme-new .dd-option:hover { background: #f1f0ee; }
+
+        body.theme-new .review-card, body.theme-new .rec-card, body.theme-new .gen-response,
+        body.theme-new .response-panel, body.theme-new .custom-review-trigger, body.theme-new .custom-review-form {
+            border-radius: 16px; border-color: #e6e2e0;
+        }
+        body.theme-new .custom-review-trigger:hover {
+            border-color: #cdc4c0; color: #4d403a; background: #f9f8f6;
+        }
+        body.theme-new .custom-review-trigger.expanded {
+            border-style: solid; border-color: #4d403a; color: #212121; background: #f9f8f6;
+            border-bottom-left-radius: 0; border-bottom-right-radius: 0; border-bottom: none;
+        }
+        body.theme-new .custom-review-trigger:hover .cr-plus,
+        body.theme-new .custom-review-trigger.expanded .cr-plus {
+            border-color: #4d403a; color: #4d403a;
+        }
+        body.theme-new .custom-review-form {
+            border: 1.5px solid #4d403a; border-top: none; background: #f9f8f6;
+        }
+        body.theme-new .cr-textarea:focus,
+        body.theme-new .cr-name-input:focus {
+            border-color: #4d403a; box-shadow: 0 0 0 3px rgba(77,64,58,0.12);
+        }
+        body.theme-new .tsa-question-box {
+            background: #f9f8f6; border-color: #e6e2e0;
+        }
+        body.theme-new .tsa-question-text { color: #212121; }
+        body.theme-new .rec-field-label { color: #909090; }
+        body.theme-new .tsa-assign-row {
+            background: #f9f8f6; border-color: #e6e2e0; color: #212121;
+        }
+        body.theme-new .tsa-assign-row svg { color: #4d403a; }
+        body.theme-new .tsa-impact-note {
+            background: #f9f8f6; border-color: #e6e2e0; color: #212121;
+        }
+        body.theme-new .tsa-impact-icon { color: #4d403a; }
+        body.theme-new .review-card.selected { border-color: #4d403a; box-shadow: 0 0 0 3px rgba(77,64,58,0.12); background: #f9f8f6; }
+        body.theme-new .select-check { background: #4d403a; }
+        body.theme-new .gen-response-head { background: #f1f0ee; border-bottom-color: #e6e2e0; }
+        body.theme-new .gen-label { color: #4d403a; font-family: 'Geist', sans-serif; }
+        body.theme-new .gen-response-foot { background: #f9f8f6; border-top-color: #e6e2e0; }
+        body.theme-new .time-saved-label { color: #009951; }
+        body.theme-new .rp-header { background: #f1f0ee; border-bottom-color: #e6e2e0; }
+        body.theme-new .s-positive { background: #ebffee; color: #008043; }
+        body.theme-new .s-negative { background: #fee9e7; color: #900b09; }
+        body.theme-new .s-neutral { background: #fcd7bc; color: #924813; }
+
+        body.theme-new .metric-card { border-radius: 16px; background: #eeece7; border-color: #e6e2e0; }
+        body.theme-new .metric-val { font-family: 'Geist', sans-serif; font-weight: 500; color: #212121; }
+        body.theme-new .metric-lbl { color: #646464; font-family: 'Geist', sans-serif; }
+        body.theme-new .metric-sub { font-family: 'Geist', sans-serif; }
+
+        body.theme-new .reasoning-acc, body.theme-new .reasoning-block { border-radius: 12px; border-color: #e6e2e0; }
+
+        body.theme-new .ao-checkbox.checked,
+        body.theme-new .dd-check-box.checked {
+            background: #4d403a; border-color: #4d403a;
+        }
+
+        body.theme-new .btn-copy {
+            background: #f1f0ee; border: 1px solid #e6e2e0; color: #212121;
+            border-radius: 999px; padding: 8px 20px; font-family: 'Geist', sans-serif;
+            font-size: 14px; font-weight: 400;
+        }
+        body.theme-new .btn-copy:hover { background: #eeece7; border-color: #cdc4c0; }
+
+        body.theme-new .btn-generate.btn-secondary,
+        body.theme-new .btn-cr-generate.btn-secondary,
+        body.theme-new .btn-drawer-refresh {
+            background: #f1f0ee; color: #212121; border: 1px solid #e6e2e0;
+            border-radius: 999px; font-family: 'Geist', sans-serif; font-size: 14px; font-weight: 400;
+            padding: 9px 20px; box-shadow: none; transform: none;
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        body.theme-new .btn-generate.btn-secondary:hover:not(:disabled),
+        body.theme-new .btn-cr-generate.btn-secondary:hover:not(:disabled),
+        body.theme-new .btn-drawer-refresh:hover:not(:disabled) {
+            background: #eeece7; border-color: #cdc4c0; transform: none; box-shadow: none;
+        }
+        body.theme-new .btn-drawer-refresh { width: auto; }
     </style>
 </head>
 <body>
+
+<!-- ===== DESIGN SYSTEM SWITCHER ===== -->
+<div class="design-toggle" id="design-toggle">
+    <button type="button" class="design-toggle-opt active" id="design-toggle-classic" onclick="setDesignTheme('classic')">Old design</button>
+    <button type="button" class="design-toggle-opt" id="design-toggle-new" onclick="setDesignTheme('new')">New design</button>
+</div>
 
 <!-- ===== HEADER ===== -->
 <header class="header">
@@ -1908,7 +2395,16 @@
         <img src="birdeye-logo.png" class="logo-icon" alt="Birdeye">
         <span class="logo-text">Birdeye</span>
     </a>
-    <a href="https://birdeye.com/free-demo/" target="_blank" rel="noopener" class="btn-schedule" style="text-decoration:none;">Watch Demo ↗</a>
+    <div class="header-right">
+        <div class="header-pill-anchor" id="header-pill-anchor">
+            <div class="header-agent-pill" id="header-agent-pill" onclick="toggleHeaderDropdown(event)">
+                <img class="header-agent-avatar" id="header-agent-avatar" src="assets/coworker-jay.png" alt="">
+                <span class="header-agent-label" id="header-agent-label">Review Response Agent</span>
+                <span class="chevron"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </div>
+        </div>
+        <a href="https://birdeye.com/free-demo/" target="_blank" rel="noopener" class="btn-schedule" style="text-decoration:none;">Watch Demo<svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M11 2h3v3M8 8l6-6M7 2H3a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    </div>
 </header>
 
 <!-- ===== HERO BANNER ===== -->
@@ -1923,9 +2419,49 @@
     <p>Choose from a list of <span id="active-agent-count">6</span> agents that automate your reputation, listings and social presence with measurable outcomes.</p>
 </section>
 
+<!-- ===== COWORKER TABS (New design only) ===== -->
+<div class="coworker-tabs" id="coworker-tabs">
+    <div class="coworker-tab selected" data-dept="marketing" onclick="selectCoworkerTab('marketing', this, event)">
+        <img class="coworker-avatar" src="assets/coworker-jay.png" alt="Jay">
+        <span class="coworker-tab-text">
+            <span class="coworker-name">Jay</span>
+            <span class="coworker-dept">
+                Marketing
+                <span class="coworker-dept-sep" aria-hidden="true"></span>
+                <span class="coworker-dept-count" id="coworker-count-marketing">7</span>
+            </span>
+        </span>
+        <span class="coworker-tab-tooltip" aria-hidden="true"></span>
+    </div>
+    <div class="coworker-tab" data-dept="operations" onclick="selectCoworkerTab('operations', this, event)">
+        <img class="coworker-avatar" src="assets/coworker-myna.png" alt="Myna">
+        <span class="coworker-tab-text">
+            <span class="coworker-name">Myna</span>
+            <span class="coworker-dept">
+                Operations
+                <span class="coworker-dept-sep" aria-hidden="true"></span>
+                <span class="coworker-dept-count" id="coworker-count-operations">1</span>
+            </span>
+        </span>
+        <span class="coworker-tab-tooltip" aria-hidden="true"></span>
+    </div>
+    <div class="coworker-tab" data-dept="cx" onclick="selectCoworkerTab('cx', this, event)">
+        <img class="coworker-avatar" src="assets/coworker-robin.png" alt="Robin">
+        <span class="coworker-tab-text">
+            <span class="coworker-name">Robin</span>
+            <span class="coworker-dept">
+                Customer Experience
+                <span class="coworker-dept-sep" aria-hidden="true"></span>
+                <span class="coworker-dept-count" id="coworker-count-cx">2</span>
+            </span>
+        </span>
+        <span class="coworker-tab-tooltip" aria-hidden="true"></span>
+    </div>
+</div>
+
 <!-- ===== AGENT SELECTOR ===== -->
 <div class="agent-selector-wrap" id="agent-selector-wrap">
-    <div class="pill-anchor">
+    <div class="pill-anchor" id="hero-pill-anchor">
     <div class="agent-selector-pill" id="agent-pill" onclick="toggleDropdown(event)">
         <span>✦</span>
         <span class="pill-label-col">
@@ -1981,16 +2517,14 @@
                     <div class="dd-option" onclick="selectAgent('Search Recommendations Agent', this)">
                         Search Recommendations Agent
                     </div>
-                    <div class="dd-option disabled" title="Coming soon">
-                        Routing &amp; Tagging Agent
-                        <span class="dd-soon-tag">Coming soon</span>
+                    <div class="dd-option disabled">
+                        <span class="dd-tooltip-wrap">Routing &amp; Tagging Agent<span class="dd-tooltip-bubble">Want to experience this agent? Contact Sales.</span></span>
                     </div>
                     <div class="dd-no-results">No agents match your search</div>
                 </div>
                 <div class="dd-list" id="dd-list-operations">
-                    <div class="dd-option disabled" title="Coming soon">
-                        Front Desk Agent
-                        <span class="dd-soon-tag">Coming soon</span>
+                    <div class="dd-option disabled">
+                        <span class="dd-tooltip-wrap">Front Desk Agent<span class="dd-tooltip-bubble">Want to experience this agent? Contact Sales.</span></span>
                     </div>
                 </div>
                 <div class="dd-list" id="dd-list-cx">
@@ -2040,7 +2574,14 @@
                         <div class="input-wrap">
                             <input type="text" class="form-input" id="shared-biz-name" value="Aspen Dental Group" placeholder="Enter your brand name" style="padding-left:36px;padding-right:98px;" oninput="handleSharedBizNameInput(this)" onfocus="handleSharedBizNameFocus()" onblur="hideSharedBizNameSuggestions()">
                             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0f172a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;left:13px;top:50%;transform:translateY(-50%);pointer-events:none;"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                            <a href="#" class="input-inline-link" id="shared-view-profile-link" onclick="openGoogleBusinessProfile(event)" style="display:none;">View profile ↗</a>
+                            <span class="view-profile-wrap" id="shared-view-profile-wrap" style="display:none;">
+                                <span class="icon-tooltip-wrap">
+                                    <a href="#" class="view-profile-icon-link" id="shared-view-profile-link" onclick="openGoogleBusinessProfile(event)">
+                                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                                    </a>
+                                    <span class="icon-tooltip-bubble">View Google profile</span>
+                                </span>
+                            </span>
                             <div class="competitor-suggest-panel" id="shared-biz-name-suggest-panel"></div>
                         </div>
                     </div>
@@ -2049,14 +2590,17 @@
                         <div class="biz-summary-card" id="biz-profile-card">
                             <div class="biz-summary-top">
                                 <span class="biz-summary-title">Business details</span>
-                                <button type="button" class="biz-edit-btn" id="biz-edit-btn" onclick="toggleBizEdit()">
-                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-                                    Edit
-                                </button>
+                                <span class="icon-tooltip-wrap">
+                                    <button type="button" class="biz-edit-btn" id="biz-edit-btn" onclick="toggleBizEdit()">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
+                                    </button>
+                                    <span class="icon-tooltip-bubble" id="biz-edit-tooltip">Edit</span>
+                                </span>
                             </div>
 
                             <div id="biz-summary-view">
                                 <div class="biz-summary-row"><span class="bs-label">Industry <span class="req">*</span></span><span class="bs-value" id="bs-industry">Dental</span></div>
+                                <div class="biz-summary-row"><span class="bs-label">No. of locations <span class="req">*</span></span><span class="bs-value" id="bs-locations">—</span></div>
                                 <div class="biz-summary-row"><span class="bs-label">Address</span><span class="bs-value" id="bs-address">123 W 6th St, Austin, TX 78701</span></div>
                                 <div class="biz-summary-row" id="bs-zip-row" style="display:none;"><span class="bs-label">ZIP code <span class="req">*</span></span><span class="bs-value" id="bs-zip">—</span></div>
                                 <div class="biz-summary-row" id="bs-country-row" style="display:none;"><span class="bs-label">Country <span class="req">*</span></span><span class="bs-value" id="bs-country">—</span></div>
@@ -2081,6 +2625,21 @@
                                         <option>Retail</option>
                                         <option>Hospitality</option>
                                     </select>
+                                </div>
+
+                                <div class="form-group" style="margin-bottom:16px;">
+                                    <label class="form-label">No. of locations <span class="req">*</span></label>
+                                    <div class="cdd-anchor" id="cdd-locations">
+                                        <div class="cdd-trigger" onclick="toggleCatDropdown('locations', event)">
+                                            <span id="cdd-locations-label" class="cdd-placeholder">Select</span>
+                                            <span class="cdd-chevron"><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                                        </div>
+                                        <div class="cdd-panel">
+                                            <div class="dd-option" onclick="selectLocations('1-3', this)">1-3</div>
+                                            <div class="dd-option" onclick="selectLocations('4-9', this)">4-9</div>
+                                            <div class="dd-option" onclick="selectLocations('10-39', this)">10-39</div>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="form-group" style="margin-bottom:16px;">
@@ -2150,17 +2709,18 @@
                         <div class="biz-summary-card" id="user-profile-card">
                             <div class="biz-summary-top">
                                 <span class="biz-summary-title">User details</span>
-                                <button type="button" class="biz-edit-btn" id="user-edit-btn" onclick="toggleUserEdit()">
-                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-                                    Edit
-                                </button>
+                                <span class="icon-tooltip-wrap">
+                                    <button type="button" class="biz-edit-btn" id="user-edit-btn" onclick="toggleUserEdit()">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
+                                    </button>
+                                    <span class="icon-tooltip-bubble" id="user-edit-tooltip">Edit</span>
+                                </span>
                             </div>
 
                             <div id="user-summary-view">
                                 <div class="biz-summary-row"><span class="bs-label">Full name <span class="req">*</span></span><span class="bs-value" id="us-fullname">John Doe</span></div>
                                 <div class="biz-summary-row"><span class="bs-label">Mobile number <span class="req">*</span></span><span class="bs-value" id="us-mobile">(512) 555-0148</span></div>
                                 <div class="biz-summary-row"><span class="bs-label">Email address <span class="req">*</span></span><span class="bs-value" id="us-email">john.doe@aspendental.com</span></div>
-                                <div class="biz-summary-row"><span class="bs-label">No. of locations <span class="req">*</span></span><span class="bs-value" id="us-locations">—</span></div>
                             </div>
 
                             <div class="biz-edit-fields" id="user-edit-fields" style="display:none;">
@@ -2180,25 +2740,7 @@
                                     <input type="email" class="form-input" id="lead-gen-email" value="john.doe@aspendental.com" placeholder="Email address" oninput="updateContinueButton()">
                                 </div>
 
-                                <div class="form-group" style="margin-bottom:16px;">
-                                    <label class="form-label">No. of locations <span class="req">*</span></label>
-                                    <div class="cdd-anchor" id="cdd-locations">
-                                        <div class="cdd-trigger" onclick="toggleCatDropdown('locations', event)">
-                                            <span id="cdd-locations-label" class="cdd-placeholder">Select</span>
-                                            <span class="cdd-chevron"><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                                        </div>
-                                        <div class="cdd-panel">
-                                            <div class="dd-option" onclick="selectLocations('1-3 locations', this)">1-3 locations</div>
-                                            <div class="dd-option" onclick="selectLocations('4-9 locations', this)">4-9 locations</div>
-                                            <div class="dd-option" onclick="selectLocations('10-39 locations', this)">10-39 locations</div>
-                                            <div class="dd-option" onclick="selectLocations('40-249 locations', this)">40-249 locations</div>
-                                            <div class="dd-option" onclick="selectLocations('250-999 locations', this)">250-999 locations</div>
-                                            <div class="dd-option" onclick="selectLocations('1000+ locations', this)">1000+ locations</div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="field-sub">By continuing, you agree to Birdeye's <a href="#">Privacy Policy</a> &amp; <a href="#">Terms</a> and consent to receive communications from us.</div>
+                                <div class="field-sub user-consent-text">By continuing, you agree to Birdeye's <a href="#">Privacy Policy</a> &amp; <a href="#">Terms</a> and consent to receive communications from us.</div>
                             </div>
                         </div>
                     </div>
@@ -3226,16 +3768,16 @@
 </main>
 
 <!-- ===== WHY BIRDEYE ===== -->
-<section class="why-birdeye">
+<section class="why-birdeye classic-only">
     <div class="why-birdeye-inner">
         <h2>Learn why Birdeye is the<br><span class="why-birdeye-accent">#1 Agentic Marketing Platform</span></h2>
         <p>Watch a guided demo or let us scan your brand's health across search, social, and reputation in under 60 seconds.</p>
-        <a href="https://birdeye.com/free-demo/" target="_blank" rel="noopener" class="btn-watch-demo" style="text-decoration:none;">Watch Demo &nbsp;↗</a>
+        <a href="https://birdeye.com/free-demo/" target="_blank" rel="noopener" class="btn-watch-demo" style="text-decoration:none;">Watch Demo<svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M11 2h3v3M8 8l6-6M7 2H3a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
     </div>
 </section>
 
 <!-- ===== COMPETITION ===== -->
-<div class="competition-section">
+<div class="competition-section classic-only">
     <h2 class="competition-title">Birdeye outranks the competition</h2>
     <div class="star-block">
         <div class="stars-row-lg">★★★★★</div>
@@ -3251,7 +3793,7 @@
 </div>
 
 <!-- ===== FOOTER ===== -->
-<footer>
+<footer class="classic-only">
     <div class="footer-inner">
         <div class="footer-grid">
             <div class="footer-col">
@@ -3343,6 +3885,159 @@
                 <a href="#">HIPAA</a>
             </div>
             <span class="footer-copy">© 2021 Birdeye Inc.</span>
+        </div>
+    </div>
+</footer>
+
+<!-- ===== NEW FOOTER (New design only) ===== -->
+<footer class="new-footer" id="new-footer">
+    <div class="new-footer-inner">
+        <div class="view-banner">
+            <div class="view-banner-logo">VIEW<span class="view-banner-year">2026</span></div>
+            <div class="view-banner-text">
+                <span class="view-banner-title">Agents at Work</span>
+                <span class="view-banner-sep">&bull;</span>
+                <span class="view-banner-desc">AI visibility, convert demand, and drive consistent experience at every location</span>
+            </div>
+            <a href="https://birdeye.com/" target="_blank" rel="noopener" class="view-banner-cta">Register Now</a>
+        </div>
+
+        <div class="new-footer-grid">
+            <div class="new-footer-brand">
+                <a href="https://birdeye.com/" class="logo">
+                    <img src="birdeye-logo.png" class="logo-icon" alt="Birdeye">
+                    <span class="logo-text">Birdeye</span>
+                </a>
+            </div>
+            <div class="new-footer-col">
+                <h4>BirdAI</h4>
+                <span class="new-footer-col-sub">The agentic platform</span>
+                <ul>
+                    <li><a href="#">The Agent OS</a></li>
+                    <li><a href="#">Agents</a></li>
+                    <li><a href="#">Integrations</a></li>
+                    <li><a href="#">Google Partnership</a></li>
+                    <li><a href="#">Trust and Security</a></li>
+                </ul>
+            </div>
+            <div class="new-footer-col">
+                <h4>Jay</h4>
+                <span class="new-footer-col-sub">Marketing coworker</span>
+                <ul>
+                    <li><a href="#">Search AI</a></li>
+                    <li><a href="#">Reviews</a></li>
+                    <li><a href="#">Social</a></li>
+                    <li><a href="#">Listings</a></li>
+                    <li><a href="#">Marketing Automation</a></li>
+                    <li><a href="#">Messaging</a></li>
+                    <li><a href="#">Mass Texting</a></li>
+                </ul>
+            </div>
+            <div class="new-footer-col">
+                <h4>Myna</h4>
+                <span class="new-footer-col-sub">Operations coworker</span>
+                <ul>
+                    <li><a href="#">Chatbot</a></li>
+                    <li><a href="#">Pages</a></li>
+                    <li><a href="#" class="new-footer-muted">Front Desk (Beta)</a></li>
+                    <li><a href="#" class="new-footer-muted">Appointments (Beta)</a></li>
+                </ul>
+            </div>
+            <div class="new-footer-col">
+                <h4>Robin</h4>
+                <span class="new-footer-col-sub">CX coworker</span>
+                <ul>
+                    <li><a href="#">Surveys</a></li>
+                    <li><a href="#">Referrals</a></li>
+                    <li><a href="#">Insights</a></li>
+                    <li><a href="#">Competitors</a></li>
+                    <li><a href="#">Ticketing</a></li>
+                    <li><a href="#">Reporting</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="new-footer-divider"></div>
+
+        <div class="new-footer-grid new-footer-grid-secondary">
+            <div class="new-footer-col">
+                <h4>Industries</h4>
+                <ul>
+                    <li><a href="#">Healthcare</a></li>
+                    <li><a href="#">Automotive</a></li>
+                    <li><a href="#">Real Estate</a></li>
+                    <li><a href="#">Dental</a></li>
+                    <li><a href="#">Property Management</a></li>
+                    <li><a href="#">Restaurants</a></li>
+                    <li><a href="#">Home Services</a></li>
+                    <li><a href="#" class="new-footer-show-more">Show 6 More +</a></li>
+                </ul>
+            </div>
+            <div class="new-footer-col">
+                <h4>Tools</h4>
+                <ul>
+                    <li><a href="#">Scan Your Brand</a></li>
+                    <li><a href="#">Scan Your Business</a></li>
+                    <li><a href="#">Find a Business</a></li>
+                    <li><a href="#">For Developers</a></li>
+                    <li><a href="#">Refer a Business</a></li>
+                    <li><a href="#">Social Media Tools</a></li>
+                </ul>
+            </div>
+            <div class="new-footer-col">
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="#">Case Studies</a></li>
+                    <li><a href="#">Birdeye Results</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Guides</a></li>
+                    <li><a href="#">Webinars</a></li>
+                    <li><a href="#">Podcast</a></li>
+                </ul>
+            </div>
+            <div class="new-footer-col">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Partners</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="new-footer-divider"></div>
+
+        <div class="new-footer-social-row">
+            <div class="new-footer-social-icons">
+                <a href="#" class="social-circle" aria-label="Facebook">f</a>
+                <a href="#" class="social-circle" aria-label="X">X</a>
+                <a href="#" class="social-circle" aria-label="LinkedIn">in</a>
+                <a href="#" class="social-circle" aria-label="Instagram">ig</a>
+                <a href="#" class="social-circle" aria-label="YouTube">▶</a>
+                <a href="#" class="social-circle" aria-label="Glassdoor">G</a>
+            </div>
+            <div class="new-footer-app-row">
+                <span>Get the App:</span>
+                <a href="#" class="app-badge" aria-label="App Store"></a>
+                <a href="#" class="app-badge" aria-label="Google Play">▶</a>
+            </div>
+        </div>
+
+        <div class="new-footer-divider"></div>
+
+        <div class="new-footer-bottom">
+            <span>© 2026 Birdeye Inc</span>
+            <div class="new-footer-legal">
+                <a href="#">Terms &amp; Conditions</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Security</a>
+                <a href="#">GDPR</a>
+                <a href="#">HIPAA</a>
+                <a href="#">CCPA</a>
+                <a href="#">AI Policy</a>
+            </div>
+            <span class="new-footer-region">Select Region: USA 🇺🇸</span>
         </div>
     </div>
 </footer>
@@ -3822,6 +4517,57 @@ let rmaFillColor = RMA_FILL_PRESETS[0];
 let rmaAlign = 'center';
 
 // ---- DROPDOWN ----
+function getAgentNameFromOption(opt) {
+    const clone = opt.cloneNode(true);
+    clone.querySelectorAll('.dd-soon-tag').forEach(el => el.remove());
+    return clone.textContent.trim();
+}
+
+function selectFirstAgentInDept(dept) {
+    const navItem = document.querySelector(`.dd-nav-item[data-dept="${dept}"]`);
+    if (navItem) selectDeptNav(dept, navItem);
+
+    const list = document.getElementById('dd-list-' + dept);
+    if (!list) return;
+
+    const preferred = {
+        marketing: 'Review Response Agent',
+        operations: 'Front Desk Agent',
+        cx: 'Ticketing Survey Agent'
+    }[dept];
+
+    let opt = preferred
+        ? Array.from(list.querySelectorAll('.dd-option')).find(o => getAgentNameFromOption(o) === preferred)
+        : null;
+    if (!opt || opt.classList.contains('disabled')) {
+        opt = list.querySelector('.dd-option:not(.disabled)') || list.querySelector('.dd-option');
+    }
+    if (!opt) return;
+
+    const name = getAgentNameFromOption(opt);
+    if (!opt.classList.contains('disabled')) {
+        selectAgent(name, opt);
+    } else {
+        currentAgent = name;
+        document.getElementById('pill-label').textContent = name;
+        document.getElementById('pill-dept-label').textContent = AGENT_DEPARTMENTS[name] || '';
+        document.getElementById('agent-hint-text').textContent = AGENT_HINTS[name] || '';
+        document.querySelectorAll('.dd-option').forEach(o => o.classList.remove('selected'));
+        opt.classList.add('selected');
+        syncHeaderAgentPill();
+        updateCoworkerTabAgentLabel(dept, name);
+        syncCoworkerTabDisplay();
+    }
+}
+
+function syncAgentDropdownToCoworkerTab() {
+    if (!document.body.classList.contains('theme-new')) return;
+    const deptKey = getDeptKeyFromLabel(AGENT_DEPARTMENTS[currentAgent] || '');
+    if (!deptKey) return;
+    const navItem = document.querySelector(`.dd-nav-item[data-dept="${deptKey}"]`);
+    if (navItem) selectDeptNav(deptKey, navItem);
+}
+
 function selectDeptNav(dept, el) {
     document.querySelectorAll('.dd-nav-item').forEach(n => n.classList.remove('selected'));
     el.classList.add('selected');
@@ -3844,12 +4590,214 @@ function filterDeptAgents(input) {
     if (noResults) noResults.style.display = anyVisible ? 'none' : 'block';
 }
 
+// ---- BUTTON HELPERS (New design secondary CTAs) ----
+function setRegenerateButton(btn, label) {
+    const text = label || 'Regenerate';
+    if (document.body.classList.contains('theme-new')) {
+        btn.textContent = text;
+        btn.classList.add('btn-secondary');
+    } else {
+        btn.innerHTML = `↺ ${text}`;
+        btn.classList.remove('btn-secondary');
+    }
+}
+
+function setGenerateButton(btn, label) {
+    btn.innerHTML = `✦ ${label || 'Generate Response'}`;
+    btn.classList.remove('btn-secondary');
+}
+
+const AGENT_SALES_TOOLTIP = 'Want to experience this agent? Contact Sales.';
+const COWORKER_SALES_TOOLTIP = 'Want to experience {name}-specific agents? Contact Sales.';
+
+const deptSelectedAgents = {
+    marketing: 'Review Response Agent',
+    operations: 'Front Desk Agent',
+    cx: 'Ticketing Survey Agent'
+};
+
+function getDeptKeyFromLabel(label) {
+    if (label === 'Marketing') return 'marketing';
+    if (label === 'Operations') return 'operations';
+    if (label === 'Customer Experience') return 'cx';
+    return null;
+}
+
+function getDeptAgentCount(dept) {
+    const list = document.getElementById('dd-list-' + dept);
+    if (!list) return 0;
+    return list.querySelectorAll('.dd-option').length;
+}
+
+function deptHasEnabledAgents(dept) {
+    const list = document.getElementById('dd-list-' + dept);
+    return !!(list && list.querySelector('.dd-option:not(.disabled)'));
+}
+
+function formatDeptAgentCount(count) {
+    return String(count);
+}
+
+function syncCoworkerTabDisplay() {
+    const activeDept = getDeptKeyFromLabel(AGENT_DEPARTMENTS[currentAgent] || '');
+    document.querySelectorAll('.coworker-tab').forEach(tab => {
+        const dept = tab.dataset.dept;
+        const unavailable = !deptHasEnabledAgents(dept);
+        tab.classList.toggle('selected', dept === activeDept && !unavailable);
+        tab.classList.toggle('dept-unavailable', unavailable);
+        const countEl = document.getElementById('coworker-count-' + dept);
+        if (countEl) countEl.textContent = formatDeptAgentCount(getDeptAgentCount(dept));
+        const tip = tab.querySelector('.coworker-tab-tooltip');
+        if (tip) {
+            const name = tab.querySelector('.coworker-name')?.textContent?.trim() || '';
+            tip.textContent = COWORKER_SALES_TOOLTIP.replace('{name}', name);
+        }
+    });
+}
+
+function updateCoworkerTabAgentLabel(dept, name) {
+    deptSelectedAgents[dept] = name;
+}
+
+function ensureAgentListsInPanel() {
+    const panel = document.querySelector('.dd-list-panel');
+    if (!panel) return;
+    ['marketing', 'operations', 'cx'].forEach(dept => {
+        const list = document.getElementById('dd-list-' + dept);
+        if (list && list.parentElement !== panel) panel.appendChild(list);
+    });
+}
+
+function selectCoworkerTab(dept, el, event) {
+    if (event) event.stopPropagation();
+    if (!deptHasEnabledAgents(dept)) return;
+    const list = document.getElementById('dd-list-' + dept);
+    if (!list) return;
+    const name = deptSelectedAgents[dept];
+    let opt = name
+        ? Array.from(list.querySelectorAll('.dd-option')).find(o => getAgentNameFromOption(o) === name)
+        : null;
+    if (!opt || opt.classList.contains('disabled')) {
+        selectFirstAgentInDept(dept);
+    } else {
+        selectAgent(name, opt);
+    }
+    closeAgentDropdown();
+}
+
+// ---- DESIGN SYSTEM SWITCHER ----
+function setDesignTheme(theme) {
+    const isNew = theme === 'new';
+    document.body.classList.toggle('theme-new', isNew);
+    document.getElementById('design-toggle-classic').classList.toggle('active', !isNew);
+    document.getElementById('design-toggle-new').classList.toggle('active', isNew);
+    localStorage.setItem('birdeye-demo-theme', theme);
+
+    if (isNew) {
+        ensureAgentListsInPanel();
+        selectFirstAgentInDept('marketing');
+    } else {
+        ensureAgentListsInPanel();
+    }
+    closeAgentDropdown();
+    syncRegenerateButtonsForTheme();
+    syncHeaderAgentPill();
+    syncCoworkerTabDisplay();
+}
+
+function syncRegenerateButtonsForTheme() {
+    ['btn-gen', 'btn-sc-gen', 'btn-tsa-gen', 'btn-cr-gen'].forEach(id => {
+        const btn = document.getElementById(id);
+        if (!btn) return;
+        const label = btn.textContent.replace(/^↺\s*/, '').trim();
+        if (/regenerate/i.test(label)) setRegenerateButton(btn, label);
+        else if (/generate/i.test(label) && !/regenerate/i.test(label)) setGenerateButton(btn, label);
+    });
+    const drawerBtn = document.getElementById('btn-regenerate');
+    if (drawerBtn) setRegenerateButton(drawerBtn, 'Regenerate');
+}
+
+function initDisabledAgentTooltips() {
+    document.querySelectorAll('.agent-dropdown .dd-option.disabled').forEach(opt => {
+        if (opt.querySelector('.dd-tooltip-wrap')) return;
+        const name = getAgentNameFromOption(opt);
+        opt.textContent = '';
+        opt.innerHTML = `<span class="dd-tooltip-wrap">${name}<span class="dd-tooltip-bubble">${AGENT_SALES_TOOLTIP}</span></span>`;
+    });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    initDisabledAgentTooltips();
+    ensureAgentListsInPanel();
+    if (localStorage.getItem('birdeye-demo-theme') === 'new') setDesignTheme('new');
+    else syncCoworkerTabDisplay();
+});
+
+// ---- COWORKER TABS (New design only) ----
+// Pill bar switches department; each tab shows dept + agent count (#909090).
+// Selected agent name lives in the agent pill below.
+
+// ---- SHARED DROPDOWN (hero pill + sticky header pill) ----
+// #agent-dropdown is a single DOM node reparented between the hero pill and
+// the header mini pill depending on which one triggered it, so every
+// existing open/close/select code path keeps working unmodified.
+function moveDropdownTo(anchorId) {
+    const anchor = document.getElementById(anchorId);
+    const dd = document.getElementById('agent-dropdown');
+    if (dd.parentElement !== anchor) anchor.appendChild(dd);
+}
+
+function closeAgentDropdown() {
+    document.getElementById('agent-dropdown').classList.remove('open');
+    document.getElementById('agent-pill').classList.remove('open');
+    document.getElementById('header-agent-pill').classList.remove('open');
+}
+
+function openAgentDropdown(anchorId, pillId) {
+    const deptKey = getDeptKeyFromLabel(AGENT_DEPARTMENTS[currentAgent] || '');
+    if (deptKey && !deptHasEnabledAgents(deptKey)) return;
+    moveDropdownTo(anchorId);
+    document.getElementById('agent-dropdown').classList.add('open');
+    document.getElementById(pillId).classList.add('open');
+    syncAgentDropdownToCoworkerTab();
+}
+
 function toggleDropdown(e) {
     e.stopPropagation();
-    const pill = document.getElementById('agent-pill');
-    const dd   = document.getElementById('agent-dropdown');
-    const isOpen = dd.classList.toggle('open');
-    pill.classList.toggle('open', isOpen);
+    const deptKey = getDeptKeyFromLabel(AGENT_DEPARTMENTS[currentAgent] || '');
+    if (deptKey && !deptHasEnabledAgents(deptKey)) return;
+    const dd = document.getElementById('agent-dropdown');
+    const alreadyOpenHere = dd.classList.contains('open') && dd.parentElement === document.getElementById('hero-pill-anchor');
+    closeAgentDropdown();
+    if (!alreadyOpenHere) openAgentDropdown('hero-pill-anchor', 'agent-pill');
+}
+
+// The header pill also opens on hover, so a click here only needs to
+// guarantee it's open (e.g. for touch/keyboard) — it never toggles closed,
+// since that would immediately re-close a panel a mouse user just hovered open.
+function toggleHeaderDropdown(e) {
+    e.stopPropagation();
+    if (!document.querySelector('.header').classList.contains('agent-docked')) return;
+    const deptKey = getDeptKeyFromLabel(AGENT_DEPARTMENTS[currentAgent] || '');
+    if (deptKey && !deptHasEnabledAgents(deptKey)) return;
+    const dd = document.getElementById('agent-dropdown');
+    const alreadyOpenHere = dd.classList.contains('open') && dd.parentElement === document.getElementById('header-pill-anchor');
+    if (!alreadyOpenHere) openAgentDropdown('header-pill-anchor', 'header-agent-pill');
+}
+
+// Mirrors the current agent + department's coworker avatar into the mini
+// pill that docks into the header once the full picker scrolls out of view.
+const HEADER_PILL_AVATARS = {
+    Marketing: 'assets/coworker-jay.png',
+    Operations: 'assets/coworker-myna.png',
+    'Customer Experience': 'assets/coworker-robin.png'
+};
+function syncHeaderAgentPill() {
+    const dept = AGENT_DEPARTMENTS[currentAgent] || 'Marketing';
+    const avatarEl = document.getElementById('header-agent-avatar');
+    const labelEl = document.getElementById('header-agent-label');
+    if (avatarEl) avatarEl.src = HEADER_PILL_AVATARS[dept] || HEADER_PILL_AVATARS.Marketing;
+    if (labelEl) labelEl.textContent = currentAgent;
 }
 
 function getAgentType() {
@@ -3866,12 +4814,17 @@ function getAgentType() {
 function selectAgent(name, el) {
     currentAgent = name;
     document.getElementById('pill-label').textContent = name;
-    document.getElementById('pill-dept-label').textContent = AGENT_DEPARTMENTS[name] || '';
+    const dept = AGENT_DEPARTMENTS[name] || '';
+    document.getElementById('pill-dept-label').textContent = dept;
     document.getElementById('agent-hint-text').textContent = AGENT_HINTS[name] || '';
-    document.querySelectorAll('#agent-dropdown .dd-option').forEach(o => o.classList.remove('selected'));
+    document.querySelectorAll('.dd-option').forEach(o => o.classList.remove('selected'));
     el.classList.add('selected');
-    document.getElementById('agent-dropdown').classList.remove('open');
-    document.getElementById('agent-pill').classList.remove('open');
+    closeAgentDropdown();
+
+    const deptKey = getDeptKeyFromLabel(dept);
+    if (deptKey) deptSelectedAgents[deptKey] = name;
+    syncHeaderAgentPill();
+    syncCoworkerTabDisplay();
 
     // Reset output/outcome accordions on agent change
     ['output','outcome'].forEach(id => {
@@ -3879,7 +4832,11 @@ function selectAgent(name, el) {
         if (!body.classList.contains('collapsed')) {
             body.style.maxHeight = body.scrollHeight + 'px';
             body.classList.add('collapsed');
-            requestAnimationFrame(() => requestAnimationFrame(() => { body.style.maxHeight = '0'; }));
+            requestAnimationFrame(() => requestAnimationFrame(() => {
+                body.style.maxHeight = '0';
+                body.style.padding = '0';
+                body.style.overflow = 'hidden';
+            }));
             document.getElementById('toggle-' + id).textContent = '+';
             document.getElementById('acc-' + id).classList.add('is-closed');
         }
@@ -3997,9 +4954,47 @@ function selectAgent(name, el) {
 }
 
 document.addEventListener('click', () => {
-    document.getElementById('agent-dropdown').classList.remove('open');
-    document.getElementById('agent-pill').classList.remove('open');
+    closeAgentDropdown();
     document.querySelectorAll('.cdd-anchor.open').forEach(a => a.classList.remove('open'));
+});
+
+// ---- STICKY HEADER AGENT PILL ----
+// Docks a minimized copy of the agent picker into the header once the full
+// picker scrolls out of view, and undocks it again on scroll back up.
+document.addEventListener('DOMContentLoaded', () => {
+    syncHeaderAgentPill();
+
+    const sentinel = document.getElementById('coworker-tabs') || document.getElementById('agent-selector-wrap');
+    const header = document.querySelector('.header');
+    if (sentinel && header && 'IntersectionObserver' in window) {
+        const io = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                header.classList.toggle('agent-docked', !entry.isIntersecting);
+                if (entry.isIntersecting) closeAgentDropdown();
+            });
+        }, { rootMargin: '-64px 0px 0px 0px', threshold: 0 });
+        io.observe(sentinel);
+    }
+
+    const headerAnchor = document.getElementById('header-pill-anchor');
+    const dd = document.getElementById('agent-dropdown');
+    let headerDdCloseTimer = null;
+    headerAnchor.addEventListener('mouseenter', () => {
+        clearTimeout(headerDdCloseTimer);
+        if (!header.classList.contains('agent-docked')) return;
+        openAgentDropdown('header-pill-anchor', 'header-agent-pill');
+    });
+    headerAnchor.addEventListener('mouseleave', () => {
+        headerDdCloseTimer = setTimeout(() => {
+            if (dd.parentElement === headerAnchor) closeAgentDropdown();
+        }, 280);
+    });
+    dd.addEventListener('mouseenter', () => clearTimeout(headerDdCloseTimer));
+    dd.addEventListener('mouseleave', () => {
+        if (dd.parentElement === headerAnchor) {
+            headerDdCloseTimer = setTimeout(() => closeAgentDropdown(), 280);
+        }
+    });
 });
 
 // ---- ACCORDION ----
@@ -4010,15 +5005,26 @@ function toggleAcc(id) {
 
     if (isOpen) {
         body.style.overflow = 'hidden';
+        body.style.padding = '';
         body.style.maxHeight = body.scrollHeight + 'px';
         body.classList.add('collapsed');
         requestAnimationFrame(() => requestAnimationFrame(() => {
             body.style.maxHeight = '0';
+            body.style.padding = '0';
         }));
         btn.textContent = '+';
         document.getElementById('acc-' + id).classList.add('is-closed');
+        body.addEventListener('transitionend', function h(e) {
+            if (e.propertyName === 'max-height' && body.classList.contains('collapsed')) {
+                body.style.overflow = 'hidden';
+                body.style.maxHeight = '0';
+                body.style.padding = '0';
+                body.removeEventListener('transitionend', h);
+            }
+        });
     } else {
         body.classList.remove('collapsed');
+        body.style.padding = '';
         body.style.maxHeight = body.scrollHeight + 'px';
         body.addEventListener('transitionend', function h(e) {
             if (e.propertyName === 'max-height') {
@@ -4035,6 +5041,7 @@ function toggleAcc(id) {
 function openAcc(id) {
     const body = document.getElementById('body-' + id);
     body.classList.remove('collapsed');
+    body.style.padding = '';
     body.style.maxHeight = body.scrollHeight + 'px';
     body.addEventListener('transitionend', function h(e) {
         if (e.propertyName === 'max-height') {
@@ -4051,11 +5058,14 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.acc-body').forEach(el => {
         if (el.classList.contains('collapsed')) {
             el.style.maxHeight = '0';
+            el.style.overflow = 'hidden';
+            el.style.padding = '0';
         } else {
             // Already open on first paint (e.g. Basic details) — never passes through the
             // toggle/open transition that would otherwise flip this to visible, so dropdown
             // panels inside it would stay clipped by the collapse animation's overflow:hidden.
             el.style.overflow = 'visible';
+            el.style.maxHeight = 'none';
         }
     });
 
@@ -4130,13 +5140,14 @@ function toggleRecCard(card) {
 }
 
 // ---- LISTINGS: BUSINESS PROFILE SUMMARY / EDIT TOGGLE ----
-const BIZ_EDIT_BTN_HTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit`;
-const BIZ_SAVE_BTN_HTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Save`;
+const BIZ_EDIT_BTN_HTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0f172a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>`;
+const BIZ_SAVE_BTN_HTML = `Save`;
 
 function toggleBizEdit() {
     const summary = document.getElementById('biz-summary-view');
     const fields  = document.getElementById('biz-edit-fields');
     const btn     = document.getElementById('biz-edit-btn');
+    const tooltip = document.getElementById('biz-edit-tooltip');
     const isEditing = fields.style.display === 'block';
 
     if (isEditing) {
@@ -4144,11 +5155,15 @@ function toggleBizEdit() {
         fields.style.display = 'none';
         summary.style.display = 'block';
         btn.innerHTML = BIZ_EDIT_BTN_HTML;
+        btn.classList.remove('is-save');
+        tooltip.style.display = '';
         updateContinueButton();
     } else {
         summary.style.display = 'none';
         fields.style.display = 'block';
         btn.innerHTML = BIZ_SAVE_BTN_HTML;
+        btn.classList.add('is-save');
+        tooltip.style.display = 'none';
     }
 }
 
@@ -4159,8 +5174,11 @@ function displayOrDash(value) {
 
 function syncBizSummary() {
     const val = id => document.getElementById(id)?.value ?? '';
+    const locLabel = document.getElementById('cdd-locations-label');
+    const locText = locLabel?.classList.contains('cdd-placeholder') ? '' : (locLabel?.textContent || '');
 
     document.getElementById('bs-industry').textContent     = displayOrDash(document.getElementById('shared-biz-industry')?.value);
+    document.getElementById('bs-locations').textContent    = displayOrDash(locText);
     document.getElementById('bs-address').textContent      = displayOrDash(val('shared-biz-address'));
     document.getElementById('bs-zip').textContent           = displayOrDash(val('shared-biz-zip'));
     document.getElementById('bs-country').textContent       = displayOrDash(val('shared-biz-country'));
@@ -4175,6 +5193,7 @@ function toggleUserEdit() {
     const summary = document.getElementById('user-summary-view');
     const fields  = document.getElementById('user-edit-fields');
     const btn     = document.getElementById('user-edit-btn');
+    const tooltip = document.getElementById('user-edit-tooltip');
     const isEditing = fields.style.display === 'block';
 
     if (isEditing) {
@@ -4182,20 +5201,21 @@ function toggleUserEdit() {
         fields.style.display = 'none';
         summary.style.display = 'block';
         btn.innerHTML = BIZ_EDIT_BTN_HTML;
+        btn.classList.remove('is-save');
+        tooltip.style.display = '';
         updateContinueButton();
     } else {
         summary.style.display = 'none';
         fields.style.display = 'block';
         btn.innerHTML = BIZ_SAVE_BTN_HTML;
+        btn.classList.add('is-save');
+        tooltip.style.display = 'none';
     }
 }
 
 function syncUserSummary() {
     const val = id => document.getElementById(id)?.value ?? '';
-    const locLabel = document.getElementById('cdd-locations-label');
-    const locText = locLabel?.classList.contains('cdd-placeholder') ? '' : (locLabel?.textContent || '');
 
-    document.getElementById('us-locations').textContent = displayOrDash(locText);
     document.getElementById('us-fullname').textContent = displayOrDash(val('lead-gen-fullname'));
     document.getElementById('us-mobile').textContent    = displayOrDash(val('lead-gen-mobile'));
     document.getElementById('us-email').textContent     = displayOrDash(val('lead-gen-email'));
@@ -4287,14 +5307,14 @@ function openGoogleBusinessProfile(event) {
 }
 
 function updateViewProfileLink(profile) {
-    const link = document.getElementById('shared-view-profile-link');
-    if (!link) return;
+    const wrap = document.getElementById('shared-view-profile-wrap');
+    if (!wrap) return;
     if (profile?.google) {
         currentGoogleProfileUrl = profile.google;
-        link.style.display = '';
+        wrap.style.display = '';
     } else {
         currentGoogleProfileUrl = '';
-        link.style.display = 'none';
+        wrap.style.display = 'none';
     }
 }
 
@@ -4368,6 +5388,8 @@ function selectCantFindBusiness() {
     document.getElementById('biz-summary-view').style.display = 'none';
     document.getElementById('biz-edit-fields').style.display = 'block';
     document.getElementById('biz-edit-btn').innerHTML = BIZ_SAVE_BTN_HTML;
+    document.getElementById('biz-edit-btn').classList.add('is-save');
+    document.getElementById('biz-edit-tooltip').style.display = 'none';
 
     updateContinueButton();
 }
@@ -4404,6 +5426,8 @@ async function fetchBusinessProfile(name) {
     document.getElementById('biz-edit-fields').style.display = 'none';
     document.getElementById('biz-summary-view').style.display = 'block';
     document.getElementById('biz-edit-btn').innerHTML = BIZ_EDIT_BTN_HTML;
+    document.getElementById('biz-edit-btn').classList.remove('is-save');
+    document.getElementById('biz-edit-tooltip').style.display = '';
 
     const overlay = document.getElementById('biz-fetching-overlay');
     overlay.style.display = 'flex';
@@ -4833,6 +5857,7 @@ function setServices(list) {
 function forceOpenAcc(id) {
     const body = document.getElementById('body-' + id);
     body.classList.remove('collapsed');
+    body.style.padding = '';
     body.style.maxHeight = 'none';
     body.style.overflow = 'visible';
     document.getElementById('toggle-' + id).textContent = '−';
@@ -5257,13 +6282,13 @@ function selectReview(id) {
 
     if (generatedCache[id]) {
         renderStoredResponse(id);
-        genBtn.innerHTML = '↺ Regenerate';
+        setRegenerateButton(genBtn);
         genBtn.disabled = false;
     } else {
         document.getElementById('rp-body').innerHTML = `
             <p class="rp-empty">Click "Generate Response" to have the AI craft a personalized, brand-consistent reply to this review.</p>
         `;
-        genBtn.innerHTML = '✦ Generate Response';
+        setGenerateButton(genBtn, 'Generate Response');
         genBtn.disabled = false;
     }
 
@@ -5287,7 +6312,7 @@ async function generateResponse() {
         () => {
             generatedCache[selectedId] = RESPONSES[selectedId].text;
             isGenerating = false;
-            genBtn.innerHTML = '↺ Regenerate';
+            setRegenerateButton(genBtn);
             genBtn.disabled = false;
 
             // Open Outcome accordion the first time a response is generated
@@ -5513,7 +6538,7 @@ async function generateCustomResponse() {
         'custom-' + Date.now(),
         () => {
             crIsGenerating = false;
-            btn.innerHTML = '↺ Regenerate Response';
+            setRegenerateButton(btn, 'Regenerate Response');
             btn.disabled = false;
         }
     );
@@ -5732,11 +6757,12 @@ function selectTsaResponse(id) {
     const genBtn = document.getElementById('btn-tsa-gen');
     if (tsaTicketCache[id]) {
         document.getElementById('tsa-rp-body').innerHTML = buildTsaTicketHTML(tsaTicketCache[id]);
-        genBtn.innerHTML = '↺ Regenerate';
+        setRegenerateButton(genBtn);
         genBtn.disabled = false;
     } else {
         document.getElementById('tsa-rp-body').innerHTML = `<p class="rp-empty">Click "Create Ticket" to have the AI assess this response and draft a support ticket.</p>`;
         genBtn.innerHTML = '✦ Create Ticket';
+        genBtn.classList.remove('btn-secondary');
         genBtn.disabled = false;
     }
     setTimeout(() => panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 80);
@@ -5875,7 +6901,7 @@ async function generateTsaTicket() {
         tsaTicketCache[id] = ticket;
         tsaIsGenerating = false;
         tsaGenerated = true;
-        genBtn.innerHTML = '↺ Regenerate';
+        setRegenerateButton(genBtn);
         genBtn.disabled = false;
 
         const outcomeBody = document.getElementById('body-outcome');
@@ -6829,6 +7855,8 @@ function renderDrawerContent() {
             </div>
             <button class="btn-drawer-refresh" id="btn-regenerate" onclick="refreshDrawerPost()">Regenerate</button>
         </div>`;
+    const drawerBtn = document.getElementById('btn-regenerate');
+    if (drawerBtn) setRegenerateButton(drawerBtn, 'Regenerate');
 }
 
 function switchDrawerTab(plt) {
@@ -7056,11 +8084,11 @@ function selectComment(id) {
     const genBtn = document.getElementById('btn-sc-gen');
     if (socialCommentCache[id]) {
         document.getElementById('sc-rp-body').innerHTML = buildResponseHTML(socialCommentCache[id], 'sc-' + id, 'copy-sc-' + id);
-        genBtn.innerHTML = '↺ Regenerate';
+        setRegenerateButton(genBtn);
         genBtn.disabled = false;
     } else {
         document.getElementById('sc-rp-body').innerHTML = `<p class="rp-empty">Click "Generate Response" to have the AI craft a personalized reply to this comment.</p>`;
-        genBtn.innerHTML = '✦ Generate Response';
+        setGenerateButton(genBtn, 'Generate Response');
         genBtn.disabled = false;
     }
     setTimeout(() => panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 80);
@@ -7083,7 +8111,7 @@ async function generateSocialResponse() {
         () => {
             socialCommentCache[cid] = SOCIAL_RESPONSES[cid].text;
             scIsGenerating = false;
-            genBtn.innerHTML = '↺ Regenerate';
+            setRegenerateButton(genBtn);
             genBtn.disabled = false;
 
             const outcomeBody = document.getElementById('body-outcome');
