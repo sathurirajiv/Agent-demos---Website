@@ -669,9 +669,9 @@
         .biz-summary-title { font-size: 13px; font-weight: 500; color: #374151; }
         .biz-edit-btn {
             display: inline-flex; align-items: center; gap: 5px; font-size: 12.5px; font-weight: 500;
-            color: #2563eb; background: none; border: none; cursor: pointer; font-family: inherit; padding: 2px 0;
+            color: #0f172a; background: none; border: none; cursor: pointer; font-family: inherit; padding: 2px 0;
         }
-        .biz-edit-btn:hover { color: #1d4ed8; }
+        .biz-edit-btn:hover { color: #0f172a; }
         .biz-summary-row { display: flex; gap: 12px; font-size: 13px; padding: 7px 0; border-top: 1px solid #e2e8f0; }
         .biz-summary-row:first-of-type { border-top: none; }
         .bs-label { color: #94a3b8; flex-shrink: 0; width: 150px; }
@@ -2481,19 +2481,19 @@
                     <span class="dd-nav-label">Marketing</span>
                     <span class="dd-nav-sep">&bull;</span>
                     <span class="dd-poc-name">Jay</span>
-                    <span class="dd-count-badge">7</span>
+                    <span class="dd-count-badge" id="dd-count-marketing">11</span>
                 </div>
                 <div class="dd-nav-item" data-dept="operations" onclick="selectDeptNav('operations', this)">
                     <span class="dd-nav-label">Operations</span>
                     <span class="dd-nav-sep">&bull;</span>
                     <span class="dd-poc-name">Myna</span>
-                    <span class="dd-count-badge">1</span>
+                    <span class="dd-count-badge" id="dd-count-operations">7</span>
                 </div>
                 <div class="dd-nav-item" data-dept="cx" onclick="selectDeptNav('cx', this)">
                     <span class="dd-nav-label">Customer Experience</span>
                     <span class="dd-nav-sep">&bull;</span>
                     <span class="dd-poc-name">Robin</span>
-                    <span class="dd-count-badge">2</span>
+                    <span class="dd-count-badge" id="dd-count-cx">5</span>
                 </div>
             </div>
             <div class="dd-list-panel">
@@ -2517,18 +2517,22 @@
                     <div class="dd-option" onclick="selectAgent('Listings Optimization Agent', this)">
                         Listings Optimization Agent
                     </div>
-                    <div class="dd-option" onclick="selectAgent('Search Recommendations Agent', this)">
-                        Search Recommendations Agent
-                    </div>
-                    <div class="dd-option disabled">
-                        <span class="dd-tooltip-wrap">Routing &amp; Tagging Agent<span class="dd-tooltip-bubble">Want to experience this agent? Contact Sales.</span></span>
-                    </div>
+                    <div class="dd-option disabled">Search Recommendations Agent</div>
+                    <div class="dd-option disabled">Workflow Agent</div>
+                    <div class="dd-option disabled">Lead Gen Agent</div>
+                    <div class="dd-option disabled">Segmentation Agent</div>
+                    <div class="dd-option disabled">Review Generation Agent</div>
+                    <div class="dd-option disabled">Routing &amp; Tagging Agent</div>
                     <div class="dd-no-results">No agents match your search</div>
                 </div>
                 <div class="dd-list" id="dd-list-operations">
-                    <div class="dd-option disabled">
-                        <span class="dd-tooltip-wrap">Front Desk Agent<span class="dd-tooltip-bubble">Want to experience this agent? Contact Sales.</span></span>
-                    </div>
+                    <div class="dd-option disabled">Front Desk Agent</div>
+                    <div class="dd-option disabled">Waitlist Agent</div>
+                    <div class="dd-option disabled">Reminder Agent</div>
+                    <div class="dd-option disabled">Pre Visit Agent</div>
+                    <div class="dd-option disabled">Recall Agent</div>
+                    <div class="dd-option disabled">Treatment Planning Agent</div>
+                    <div class="dd-option disabled">Revenue Agent</div>
                 </div>
                 <div class="dd-list" id="dd-list-cx">
                     <div class="dd-option" onclick="selectAgent('Ticketing Survey Agent', this)">
@@ -2537,6 +2541,9 @@
                     <div class="dd-option" onclick="selectAgent('Ticketing Review Agent', this)">
                         Ticketing Review Agent
                     </div>
+                    <div class="dd-option disabled">Survey Creation Agent</div>
+                    <div class="dd-option disabled">Survey Distribution Agent</div>
+                    <div class="dd-option disabled">Survey Response Agent</div>
                 </div>
             </div>
         </div>
@@ -4073,14 +4080,27 @@ const AGENT_HINTS = {
 
 // Department each agent belongs to, shown as a small subtext under the pill label so it reads clearly even with the dropdown closed
 const AGENT_DEPARTMENTS = {
+    'Listings Optimization Agent': 'Marketing',
+    'Search Recommendations Agent': 'Marketing',
+    'Workflow Agent': 'Marketing',
+    'Lead Gen Agent': 'Marketing',
+    'Segmentation Agent': 'Marketing',
+    'Review Generation Agent': 'Marketing',
     'Review Response Agent': 'Marketing',
     'Review Marketing Agent': 'Marketing',
     'Social Publishing Agent': 'Marketing',
     'Social Engagement Agent': 'Marketing',
-    'Listings Optimization Agent': 'Marketing',
-    'Search Recommendations Agent': 'Marketing',
     'Routing & Tagging Agent': 'Marketing',
     'Front Desk Agent': 'Operations',
+    'Waitlist Agent': 'Operations',
+    'Reminder Agent': 'Operations',
+    'Pre Visit Agent': 'Operations',
+    'Recall Agent': 'Operations',
+    'Treatment Planning Agent': 'Operations',
+    'Revenue Agent': 'Operations',
+    'Survey Creation Agent': 'Customer Experience',
+    'Survey Distribution Agent': 'Customer Experience',
+    'Survey Response Agent': 'Customer Experience',
     'Ticketing Survey Agent': 'Customer Experience',
     'Ticketing Review Agent': 'Customer Experience'
 };
@@ -4655,6 +4675,12 @@ function syncCoworkerTabDisplay() {
             const name = tab.querySelector('.coworker-name')?.textContent?.trim() || '';
             tip.textContent = COWORKER_SALES_TOOLTIP.replace('{name}', name);
         }
+    });
+    // Keep the dropdown's own department-nav badges (dd-count-badge) in sync too,
+    // so adding/removing agents from a dd-list never requires a manual count edit.
+    ['marketing', 'operations', 'cx'].forEach(dept => {
+        const badge = document.getElementById('dd-count-' + dept);
+        if (badge) badge.textContent = formatDeptAgentCount(getDeptAgentCount(dept));
     });
 }
 
