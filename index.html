@@ -35,6 +35,7 @@
 
         .logo { display: flex; align-items: center; gap: 8px; text-decoration: none; }
         .logo-icon { height: 26px; width: auto; display: block; }
+        .logo-icon-new { display: none; }
         .logo-text { font-size: 20px; font-weight: 700; color: #1e293b; letter-spacing: -0.3px; }
 
         .btn-schedule {
@@ -211,6 +212,11 @@
         }
 
         .agent-selector-pill:hover { background: linear-gradient(135deg, #ddd6fe, #c7d2fe); }
+        .agent-pill-sparkle {
+            width: 18px; height: 18px; display: block; flex-shrink: 0;
+            object-fit: contain; filter: brightness(0);
+        }
+        body.theme-new .agent-pill-sparkle { filter: brightness(0); }
         .agent-selector-pill .chevron { display: flex; align-items: center; opacity: 0.8; margin-left: 2px; transition: transform 0.2s; flex-shrink: 0; }
         .pill-label-col { display: inline-flex; align-items: baseline; gap: 6px; }
         #pill-label { font-weight: 400; }
@@ -322,7 +328,8 @@
             position: absolute; bottom: calc(100% + 8px); left: 50%;
             transform: translateX(-50%) translateY(3px);
             background: #212121; color: #ffffff; font-size: 11.5px; font-weight: 400;
-            line-height: 1.4; padding: 6px 10px; border-radius: 6px; white-space: nowrap;
+            line-height: 1.45; padding: 8px 12px; border-radius: 6px;
+            white-space: normal; width: max-content; max-width: 240px; text-align: left;
             box-shadow: 0 6px 18px rgba(0,0,0,0.18);
             opacity: 0; visibility: hidden; pointer-events: none; z-index: 30;
             transition: opacity 0.15s, transform 0.15s;
@@ -333,7 +340,7 @@
         }
         .dd-option.disabled:hover .dd-tooltip-bubble,
         .dd-tooltip-wrap:hover .dd-tooltip-bubble {
-            opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0);
+            opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); pointer-events: auto;
         }
 
         .agent-hint {
@@ -399,13 +406,17 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            font-size: 20px;
-            font-weight: 300;
             color: #475569;
             line-height: 1;
             transition: all 0.2s;
             flex-shrink: 0;
+            padding: 0;
         }
+        .acc-toggle .acc-chevron {
+            width: 14px; height: 14px; display: block;
+            transition: transform 0.2s ease;
+        }
+        .acc-toggle.is-open .acc-chevron { transform: rotate(180deg); }
 
         .acc-toggle:hover { background: #e2e8f0; color: #1e293b; }
 
@@ -782,6 +793,10 @@
             display: none; max-height: 220px; overflow-y: auto;
         }
         .cdd-anchor.open .cdd-panel { display: block; animation: dropFade 0.15s ease; }
+        .cdd-trigger.disabled { opacity: 0.55; cursor: not-allowed; pointer-events: none; }
+        .form-select-native {
+            position: absolute; opacity: 0; pointer-events: none; height: 0; width: 0; margin: 0; padding: 0; border: 0;
+        }
         .dd-option-check {
             padding: 9px 14px; font-size: 13.5px; color: #374151; cursor: pointer;
             display: flex; align-items: center; gap: 9px; transition: background 0.12s;
@@ -2019,17 +2034,34 @@
         .coworker-tab.dept-unavailable { cursor: not-allowed; }
         .coworker-tab.dept-unavailable:hover { background: transparent; }
         .coworker-tab-tooltip {
-            position: absolute; bottom: calc(100% + 10px); left: 50%;
-            transform: translateX(-50%) translateY(3px);
+            position: absolute; top: calc(100% + 12px); left: 50%; bottom: auto;
+            transform: translateX(-50%) translateY(-4px);
             background: #212121; color: #ffffff; font-size: 11.5px; font-weight: 400;
-            line-height: 1.4; padding: 6px 12px; border-radius: 6px; white-space: nowrap;
+            line-height: 1.45; padding: 10px 14px; border-radius: 8px;
+            white-space: normal; width: max-content; max-width: 300px; text-align: left;
             box-shadow: 0 6px 18px rgba(0,0,0,0.18);
-            opacity: 0; visibility: hidden; pointer-events: none; z-index: 40;
+            opacity: 0; visibility: hidden; pointer-events: none; z-index: 460;
             transition: opacity 0.15s, transform 0.15s;
         }
+        .coworker-tab-tooltip-title { display: block; font-weight: 500; margin-bottom: 6px; }
+        .coworker-tab-tooltip-list {
+            list-style: disc; padding-left: 18px; margin: 0 0 8px;
+            color: rgba(255,255,255,0.92);
+        }
+        .coworker-tab-tooltip-list li { margin-bottom: 3px; }
+        .coworker-tab-tooltip-link {
+            display: inline-block; margin-top: 2px; color: #ffffff; font-weight: 500;
+            text-decoration: underline; pointer-events: auto;
+        }
+        .coworker-tab.dept-unavailable:hover .coworker-tab-tooltip { pointer-events: auto; }
+        .dd-tooltip-link {
+            display: inline-block; margin-top: 6px; color: #ffffff; font-weight: 500;
+            text-decoration: underline;
+        }
         .coworker-tab-tooltip::after {
-            content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
-            border: 5px solid transparent; border-top-color: #212121;
+            content: ''; position: absolute; bottom: 100%; left: 50%; top: auto;
+            transform: translateX(-50%);
+            border: 5px solid transparent; border-bottom-color: #212121; border-top-color: transparent;
         }
         .coworker-tab.dept-unavailable:hover .coworker-tab-tooltip {
             opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0);
@@ -2052,91 +2084,21 @@
         .btn-secondary:disabled { opacity: 0.55; cursor: not-allowed; }
         .btn-secondary .btn-icon { flex-shrink: 0; display: block; }
 
-        /* ===== NEW FOOTER (New design only) ===== */
-        .new-footer {
-            background: #f1f0ee; padding: 0 40px 32px; margin-top: 0;
-            font-family: 'Geist', -apple-system, sans-serif;
+        /* ===== NEW FOOTER (New design only) — footer screenshot image ===== */
+        footer.new-footer {
+            background: #f1f0ee;
+            border: none;
+            border-top: none;
+            padding: 36px 0 0;
+            margin: 0;
         }
-        .new-footer-inner { max-width: 1200px; margin: 0 auto; }
-        .view-banner {
-            display: flex; align-items: center; gap: 24px; flex-wrap: wrap;
-            background: #1a2332; border-radius: 20px; padding: 22px 28px; margin-bottom: 40px;
+        .new-footer-img {
+            width: 100%;
+            height: auto;
+            display: block;
+            max-width: 100%;
         }
-        .view-banner-logo {
-            font-family: 'Geist', sans-serif; font-weight: 700; font-size: 28px; color: #ffffff;
-            letter-spacing: -0.5px; white-space: nowrap;
-        }
-        .view-banner-year { font-weight: 400; margin-left: 4px; }
-        .view-banner-text {
-            flex: 1; min-width: 200px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
-            font-size: 14px; color: rgba(255,255,255,0.92); line-height: 1.4;
-        }
-        .view-banner-title { font-weight: 600; color: #ffffff; }
-        .view-banner-sep { color: rgba(255,255,255,0.45); }
-        .view-banner-desc { color: rgba(255,255,255,0.78); }
-        .view-banner-cta {
-            background: #ffffff; color: #212121; border-radius: 999px; padding: 10px 22px;
-            font-family: 'Geist', sans-serif; font-size: 14px; font-weight: 500; text-decoration: none;
-            white-space: nowrap; transition: background 0.15s;
-        }
-        .view-banner-cta:hover { background: #eeece7; }
-        .new-footer-grid {
-            display: grid; grid-template-columns: 1.2fr repeat(4, 1fr); gap: 28px 24px;
-            margin-bottom: 28px;
-        }
-        .new-footer-grid-secondary { grid-template-columns: repeat(4, 1fr); }
-        .new-footer-brand .logo { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; }
-        .new-footer-brand .logo-text { font-family: 'Geist', sans-serif; font-weight: 600; font-size: 18px; color: #212121; }
-        .new-footer-brand .logo-icon { height: 24px; filter: brightness(0); }
-        .new-footer-col h4 {
-            font-family: 'Geist', sans-serif; font-size: 15px; font-weight: 500; color: #212121;
-            margin-bottom: 2px;
-        }
-        .new-footer-col-sub {
-            display: block; font-size: 12px; color: #909090; margin-bottom: 12px;
-        }
-        .new-footer-col ul { list-style: none; }
-        .new-footer-col ul li { margin-bottom: 8px; }
-        .new-footer-col ul li a {
-            font-size: 13px; color: #646464; text-decoration: none; transition: color 0.15s;
-        }
-        .new-footer-col ul li a:hover { color: #212121; }
-        .new-footer-muted { color: #909090 !important; }
-        .new-footer-show-more { font-weight: 500; color: #212121 !important; }
-        .new-footer-divider { height: 1px; background: #e6e2e0; margin: 24px 0; }
-        .new-footer-social-row {
-            display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;
-            padding: 4px 0;
-        }
-        .new-footer-social-icons { display: flex; gap: 10px; flex-wrap: wrap; }
-        .social-circle {
-            width: 36px; height: 36px; border-radius: 50%; background: #212121; color: #ffffff;
-            display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600;
-            text-decoration: none; transition: background 0.15s;
-        }
-        .social-circle:hover { background: #4d403a; }
-        .new-footer-app-row { display: flex; align-items: center; gap: 10px; font-size: 13px; color: #646464; }
-        .app-badge {
-            width: 36px; height: 36px; border-radius: 50%; background: #4d403a; color: #ffffff;
-            display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 14px;
-        }
-        .new-footer-bottom {
-            display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px 20px;
-            font-size: 12px; color: #646464; padding-top: 4px;
-        }
-        .new-footer-legal { display: flex; flex-wrap: wrap; gap: 14px; }
-        .new-footer-legal a { color: #646464; text-decoration: none; }
-        .new-footer-legal a:hover { color: #212121; }
-        .new-footer-region { color: #646464; white-space: nowrap; }
-        @media (max-width: 900px) {
-            .new-footer-grid, .new-footer-grid-secondary { grid-template-columns: repeat(2, 1fr); }
-            .new-footer-brand { grid-column: 1 / -1; }
-            .view-banner { flex-direction: column; align-items: flex-start; }
-        }
-        @media (max-width: 640px) {
-            .new-footer { padding: 0 20px 28px; }
-            .new-footer-grid, .new-footer-grid-secondary { grid-template-columns: 1fr; }
-        }
+        body.theme-new .main { padding-bottom: 0; }
 
         /* ================================================================
            NEW THEME — scoped to body.theme-new, applied to the Review
@@ -2159,16 +2121,20 @@
             background: #f1f0ee;
             color: #212121;
         }
-        body.theme-new .header { background: #f1f0ee; }
-        body.theme-new .logo-text { color: #212121; }
-        body.theme-new .logo-icon { filter: brightness(0); }
+        body.theme-new .header { background: #f1f0ee; box-shadow: none; border-bottom: 1px solid #e6e2e0; }
+        body.theme-new .logo-text { display: none; }
+        body.theme-new .logo-icon-classic { display: none; }
+        body.theme-new .logo-icon-new { display: block; height: 28px; width: auto; filter: none; }
         body.theme-new .btn-schedule {
             border-radius: 999px; font-family: 'Geist', sans-serif; font-size: 14px; font-weight: 400;
             background: #4d403a; padding: 10px 22px;
         }
         body.theme-new .btn-schedule:hover { background: #27201d; transform: none; box-shadow: none; }
 
-        body.theme-new .hero-banner { background: #f1f0ee; }
+        body.theme-new .hero-banner { background: #f1f0ee; overflow: visible; }
+        body.theme-new .coworker-tabs { overflow: visible; }
+        body.theme-new .accordion { overflow: visible; }
+        body.theme-new .acc-body:not(.collapsed) { overflow: visible; }
         body.theme-new .hero-banner::before,
         body.theme-new .hero-banner::after { display: none; }
         body.theme-new .hero-eyebrow { display: none; }
@@ -2179,7 +2145,7 @@
         body.theme-new .hero-purple { color: #212121; }
         body.theme-new .hero p { display: none; }
 
-        body.theme-new .coworker-tabs { display: flex; }
+        body.theme-new .coworker-tabs { display: flex; overflow: visible; position: relative; z-index: 450; }
 
         body.theme-new .agent-selector-pill {
             background: #ffffff; border: 1px solid #e6e2e0; color: #212121; border-radius: 999px;
@@ -2193,16 +2159,39 @@
         body.theme-new .info-circle { display: none; }
 
         /* Flat single-column dropdown — the coworker tabs already do the department switching */
-        body.theme-new .agent-dropdown { width: 320px; border: 1px solid #e6e2e0; border-radius: 16px; box-shadow: 0 8px 28px rgba(33,33,33,0.14); }
+        body.theme-new .agent-dropdown { width: 320px; border: 1px solid #e6e2e0; border-radius: 16px; box-shadow: 0 8px 28px rgba(33,33,33,0.14); z-index: 300; overflow: visible; }
+        body.theme-new .agent-dropdown .dd-option.disabled { z-index: 1; }
+        body.theme-new .agent-dropdown .dd-option.disabled:hover { z-index: 50; }
+        body.theme-new .agent-dropdown .dd-tooltip-bubble {
+            z-index: 500;
+            top: calc(100% + 8px); bottom: auto;
+            transform: translateX(-50%) translateY(-3px);
+        }
+        body.theme-new .agent-dropdown .dd-tooltip-bubble::after {
+            top: auto; bottom: 100%;
+            border-top-color: transparent; border-bottom-color: #212121;
+        }
+        body.theme-new .agent-dropdown .dd-option.disabled:hover .dd-tooltip-bubble,
+        body.theme-new .agent-dropdown .dd-tooltip-wrap:hover .dd-tooltip-bubble {
+            transform: translateX(-50%) translateY(0);
+        }
         body.theme-new .dd-nav { display: none; }
         body.theme-new .dd-list-panel { height: auto; max-height: 320px; padding: 8px 0; }
         body.theme-new .dd-count-badge { background: #eeece7; color: #646464; }
-        body.theme-new .dd-option.selected { background: #f1f0ee; color: #212121; }
-        body.theme-new .dd-option.selected .dd-dot { background: #4d403a; }
+        body.theme-new .dd-option {
+            font-family: 'Geist', sans-serif; font-size: 13.5px; color: #374151; font-weight: 400;
+        }
+        body.theme-new .dd-option.selected {
+            background: #f1f0ee; color: #212121; font-weight: 400;
+        }
+        body.theme-new .dd-option:hover:not(.disabled) { background: #f1f0ee; }
+        body.theme-new .dd-option.disabled { color: #909090; cursor: not-allowed; }
+        body.theme-new .dd-option.disabled:hover { background: none; color: #909090; }
+        body.theme-new #agent-dropdown .dd-option.selected { font-weight: 400; }
         body.theme-new .dd-search-input:focus { border-color: #4d403a; }
         body.theme-new .dd-soon-tag { background: #eeece7; color: #909090; }
 
-        body.theme-new .main { max-width: 900px; }
+        body.theme-new .main { max-width: 900px; background: transparent; }
 
         body.theme-new .accordion {
             background: #ffffff; border: 1px solid #e6e2e0; border-radius: 24px;
@@ -2237,7 +2226,7 @@
         body.theme-new .more-options-toggle:hover .more-options-label { color: #000000; }
         body.theme-new .more-options-chevron path { stroke: #212121; }
 
-        body.theme-new .main { max-width: 900px; }
+        body.theme-new .main { max-width: 900px; background: transparent; }
 
         body.theme-new .form-label {
             font-size: 13px; font-weight: 500; text-transform: none; letter-spacing: 0; color: #646464;
@@ -2301,7 +2290,13 @@
         body.theme-new .biz-edit-btn.is-save:hover { background: #eeece7; border-color: #cdc4c0; }
         body.theme-new .cdd-trigger:hover { border-color: #cdc4c0; }
         body.theme-new .cdd-anchor.open .cdd-trigger { border-color: #4d403a; }
-        body.theme-new .dd-option:hover { background: #f1f0ee; }
+        body.theme-new .cdd-trigger {
+            border-color: #e6e2e0; border-radius: 8px; font-family: 'Geist', sans-serif;
+        }
+        body.theme-new .cdd-panel {
+            border: 1px solid #e6e2e0; border-radius: 16px;
+            box-shadow: 0 8px 28px rgba(33,33,33,0.14); z-index: 60;
+        }
 
         body.theme-new .review-card, body.theme-new .rec-card, body.theme-new .gen-response,
         body.theme-new .response-panel, body.theme-new .custom-review-trigger, body.theme-new .custom-review-form {
@@ -2394,8 +2389,9 @@
 
 <!-- ===== HEADER ===== -->
 <header class="header">
-    <a href="https://birdeye.com/" class="logo">
-        <img src="birdeye-logo.png" class="logo-icon" alt="Birdeye">
+    <a href="https://myna.ai/" target="_blank" rel="noopener" class="logo">
+        <img src="birdeye-logo.png" class="logo-icon logo-icon-classic" alt="Birdeye">
+        <img src="assets/birdeye-logo-dark.png" class="logo-icon logo-icon-new" alt="Birdeye">
         <span class="logo-text">Birdeye</span>
     </a>
     <div class="header-right">
@@ -2466,7 +2462,7 @@
 <div class="agent-selector-wrap" id="agent-selector-wrap">
     <div class="pill-anchor" id="hero-pill-anchor">
     <div class="agent-selector-pill" id="agent-pill" onclick="toggleDropdown(event)">
-        <span>✦</span>
+        <img src="assets/agent-sparkle.png" class="agent-pill-sparkle" alt="" aria-hidden="true">
         <span class="pill-label-col">
             <span id="pill-label">Review Response Agent</span>
             <span class="pill-dot-sep">&bull;</span>
@@ -2530,6 +2526,7 @@
                     <div class="dd-option disabled">Waitlist Agent</div>
                     <div class="dd-option disabled">Reminder Agent</div>
                     <div class="dd-option disabled">Pre Visit Agent</div>
+                    <div class="dd-option disabled">Insurance Verification Agent</div>
                     <div class="dd-option disabled">Recall Agent</div>
                     <div class="dd-option disabled">Treatment Planning Agent</div>
                     <div class="dd-option disabled">Revenue Agent</div>
@@ -2567,7 +2564,7 @@
                 <span class="acc-title">Basic details</span>
                 <span class="acc-subtitle">Business details and agent preferences</span>
             </div>
-            <button class="acc-toggle" id="toggle-basic">−</button>
+            <button type="button" class="acc-toggle is-open" id="toggle-basic" aria-expanded="true" aria-label="Toggle Basic details"><svg class="acc-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
         </div>
         <div class="acc-body" id="body-basic">
             <div class="form-grid">
@@ -3276,7 +3273,7 @@
                 <span class="acc-title">Output</span>
                 <span class="acc-subtitle">Sample reviews with AI-generated responses</span>
             </div>
-            <button class="acc-toggle" id="toggle-output">+</button>
+            <button type="button" class="acc-toggle" id="toggle-output" aria-expanded="false" aria-label="Toggle Output"><svg class="acc-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
         </div>
         <div class="acc-body collapsed" id="body-output">
             <div id="output-placeholder" class="acc-placeholder">
@@ -3471,7 +3468,7 @@
                 <span class="acc-title">Outcome</span>
                 <span class="acc-subtitle">Estimated time savings and cost impact</span>
             </div>
-            <button class="acc-toggle" id="toggle-outcome">+</button>
+            <button type="button" class="acc-toggle" id="toggle-outcome" aria-expanded="false" aria-label="Toggle Outcome"><svg class="acc-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
         </div>
         <div class="acc-body collapsed" id="body-outcome">
             <div id="outcome-placeholder" class="acc-placeholder">
@@ -3901,155 +3898,7 @@
 
 <!-- ===== NEW FOOTER (New design only) ===== -->
 <footer class="new-footer" id="new-footer">
-    <div class="new-footer-inner">
-        <div class="view-banner">
-            <div class="view-banner-logo">VIEW<span class="view-banner-year">2026</span></div>
-            <div class="view-banner-text">
-                <span class="view-banner-title">Agents at Work</span>
-                <span class="view-banner-sep">&bull;</span>
-                <span class="view-banner-desc">AI visibility, convert demand, and drive consistent experience at every location</span>
-            </div>
-            <a href="https://birdeye.com/" target="_blank" rel="noopener" class="view-banner-cta">Register Now</a>
-        </div>
-
-        <div class="new-footer-grid">
-            <div class="new-footer-brand">
-                <a href="https://birdeye.com/" class="logo">
-                    <img src="birdeye-logo.png" class="logo-icon" alt="Birdeye">
-                    <span class="logo-text">Birdeye</span>
-                </a>
-            </div>
-            <div class="new-footer-col">
-                <h4>BirdAI</h4>
-                <span class="new-footer-col-sub">The agentic platform</span>
-                <ul>
-                    <li><a href="#">The Agent OS</a></li>
-                    <li><a href="#">Agents</a></li>
-                    <li><a href="#">Integrations</a></li>
-                    <li><a href="#">Google Partnership</a></li>
-                    <li><a href="#">Trust and Security</a></li>
-                </ul>
-            </div>
-            <div class="new-footer-col">
-                <h4>Jay</h4>
-                <span class="new-footer-col-sub">Marketing coworker</span>
-                <ul>
-                    <li><a href="#">Search AI</a></li>
-                    <li><a href="#">Reviews</a></li>
-                    <li><a href="#">Social</a></li>
-                    <li><a href="#">Listings</a></li>
-                    <li><a href="#">Marketing Automation</a></li>
-                    <li><a href="#">Messaging</a></li>
-                    <li><a href="#">Mass Texting</a></li>
-                </ul>
-            </div>
-            <div class="new-footer-col">
-                <h4>Myna</h4>
-                <span class="new-footer-col-sub">Operations coworker</span>
-                <ul>
-                    <li><a href="#">Chatbot</a></li>
-                    <li><a href="#">Pages</a></li>
-                    <li><a href="#" class="new-footer-muted">Front Desk (Beta)</a></li>
-                    <li><a href="#" class="new-footer-muted">Appointments (Beta)</a></li>
-                </ul>
-            </div>
-            <div class="new-footer-col">
-                <h4>Robin</h4>
-                <span class="new-footer-col-sub">CX coworker</span>
-                <ul>
-                    <li><a href="#">Surveys</a></li>
-                    <li><a href="#">Referrals</a></li>
-                    <li><a href="#">Insights</a></li>
-                    <li><a href="#">Competitors</a></li>
-                    <li><a href="#">Ticketing</a></li>
-                    <li><a href="#">Reporting</a></li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="new-footer-divider"></div>
-
-        <div class="new-footer-grid new-footer-grid-secondary">
-            <div class="new-footer-col">
-                <h4>Industries</h4>
-                <ul>
-                    <li><a href="#">Healthcare</a></li>
-                    <li><a href="#">Automotive</a></li>
-                    <li><a href="#">Real Estate</a></li>
-                    <li><a href="#">Dental</a></li>
-                    <li><a href="#">Property Management</a></li>
-                    <li><a href="#">Restaurants</a></li>
-                    <li><a href="#">Home Services</a></li>
-                    <li><a href="#" class="new-footer-show-more">Show 6 More +</a></li>
-                </ul>
-            </div>
-            <div class="new-footer-col">
-                <h4>Tools</h4>
-                <ul>
-                    <li><a href="#">Scan Your Brand</a></li>
-                    <li><a href="#">Scan Your Business</a></li>
-                    <li><a href="#">Find a Business</a></li>
-                    <li><a href="#">For Developers</a></li>
-                    <li><a href="#">Refer a Business</a></li>
-                    <li><a href="#">Social Media Tools</a></li>
-                </ul>
-            </div>
-            <div class="new-footer-col">
-                <h4>Resources</h4>
-                <ul>
-                    <li><a href="#">Case Studies</a></li>
-                    <li><a href="#">Birdeye Results</a></li>
-                    <li><a href="#">Blog</a></li>
-                    <li><a href="#">Guides</a></li>
-                    <li><a href="#">Webinars</a></li>
-                    <li><a href="#">Podcast</a></li>
-                </ul>
-            </div>
-            <div class="new-footer-col">
-                <h4>Company</h4>
-                <ul>
-                    <li><a href="#">About</a></li>
-                    <li><a href="#">Careers</a></li>
-                    <li><a href="#">Partners</a></li>
-                    <li><a href="#">Contact Us</a></li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="new-footer-divider"></div>
-
-        <div class="new-footer-social-row">
-            <div class="new-footer-social-icons">
-                <a href="#" class="social-circle" aria-label="Facebook">f</a>
-                <a href="#" class="social-circle" aria-label="X">X</a>
-                <a href="#" class="social-circle" aria-label="LinkedIn">in</a>
-                <a href="#" class="social-circle" aria-label="Instagram">ig</a>
-                <a href="#" class="social-circle" aria-label="YouTube">▶</a>
-                <a href="#" class="social-circle" aria-label="Glassdoor">G</a>
-            </div>
-            <div class="new-footer-app-row">
-                <span>Get the App:</span>
-                <a href="#" class="app-badge" aria-label="App Store"></a>
-                <a href="#" class="app-badge" aria-label="Google Play">▶</a>
-            </div>
-        </div>
-
-        <div class="new-footer-divider"></div>
-
-        <div class="new-footer-bottom">
-            <span>© 2026 Birdeye Inc</span>
-            <div class="new-footer-legal">
-                <a href="#">Terms &amp; Conditions</a>
-                <a href="#">Privacy Policy</a>
-                <a href="#">Security</a>
-                <a href="#">GDPR</a>
-                <a href="#">HIPAA</a>
-                <a href="#">CCPA</a>
-                <a href="#">AI Policy</a>
-            </div>
-            <span class="new-footer-region">Select Region: USA 🇺🇸</span>
-        </div>
-    </div>
+    <img src="assets/footer-new-design.png?v=2" alt="Birdeye footer" class="new-footer-img">
 </footer>
 
 <!-- ===== POST DRAWER ===== -->
@@ -4095,6 +3944,7 @@ const AGENT_DEPARTMENTS = {
     'Waitlist Agent': 'Operations',
     'Reminder Agent': 'Operations',
     'Pre Visit Agent': 'Operations',
+    'Insurance Verification Agent': 'Operations',
     'Recall Agent': 'Operations',
     'Treatment Planning Agent': 'Operations',
     'Revenue Agent': 'Operations',
@@ -4632,6 +4482,29 @@ function setGenerateButton(btn, label) {
 
 const AGENT_SALES_TOOLTIP = 'Want to experience this agent? Contact Sales.';
 const COWORKER_SALES_TOOLTIP = 'Want to experience {name}-specific agents? Contact Sales.';
+const MYNA_AI_URL = 'https://myna.ai/';
+const MYNA_OPERATIONS_AGENTS = [
+    'Front Desk Agent',
+    'Waitlist Agent',
+    'Reminder Agent',
+    'Pre Visit Agent',
+    'Insurance Verification Agent',
+    'Recall Agent',
+    'Treatment Planning Agent',
+    'Revenue Agent'
+];
+
+function buildCoworkerTabTooltip(dept, coworkerName) {
+    if (dept === 'operations') {
+        const items = MYNA_OPERATIONS_AGENTS.map(name => `<li>${name}</li>`).join('');
+        return `<span class="coworker-tab-tooltip-title">Want to experience ${coworkerName}-specific agents?</span><ul class="coworker-tab-tooltip-list">${items}</ul><a class="coworker-tab-tooltip-link" href="${MYNA_AI_URL}" target="_blank" rel="noopener">Visit myna.ai</a>`;
+    }
+    return COWORKER_SALES_TOOLTIP.replace('{name}', coworkerName);
+}
+
+function buildDisabledAgentTooltip(name) {
+    return `${AGENT_SALES_TOOLTIP}<a class="dd-tooltip-link" href="${MYNA_AI_URL}" target="_blank" rel="noopener">Visit myna.ai</a>`;
+}
 
 const deptSelectedAgents = {
     marketing: 'Review Response Agent',
@@ -4673,7 +4546,11 @@ function syncCoworkerTabDisplay() {
         const tip = tab.querySelector('.coworker-tab-tooltip');
         if (tip) {
             const name = tab.querySelector('.coworker-name')?.textContent?.trim() || '';
-            tip.textContent = COWORKER_SALES_TOOLTIP.replace('{name}', name);
+            if (unavailable) {
+                tip.innerHTML = buildCoworkerTabTooltip(dept, name);
+            } else {
+                tip.textContent = '';
+            }
         }
     });
     // Keep the dropdown's own department-nav badges (dd-count-badge) in sync too,
@@ -4751,7 +4628,7 @@ function initDisabledAgentTooltips() {
         if (opt.querySelector('.dd-tooltip-wrap')) return;
         const name = getAgentNameFromOption(opt);
         opt.textContent = '';
-        opt.innerHTML = `<span class="dd-tooltip-wrap">${name}<span class="dd-tooltip-bubble">${AGENT_SALES_TOOLTIP}</span></span>`;
+        opt.innerHTML = `<span class="dd-tooltip-wrap">${name}<span class="dd-tooltip-bubble">${buildDisabledAgentTooltip(name)}</span></span>`;
     });
 }
 
@@ -4785,6 +4662,7 @@ function closeAgentDropdown() {
 function openAgentDropdown(anchorId, pillId) {
     const deptKey = getDeptKeyFromLabel(AGENT_DEPARTMENTS[currentAgent] || '');
     if (deptKey && !deptHasEnabledAgents(deptKey)) return;
+    document.querySelectorAll('.cdd-anchor.open').forEach(a => a.classList.remove('open'));
     moveDropdownTo(anchorId);
     document.getElementById('agent-dropdown').classList.add('open');
     document.getElementById(pillId).classList.add('open');
@@ -4797,7 +4675,7 @@ function toggleDropdown(e) {
     if (deptKey && !deptHasEnabledAgents(deptKey)) return;
     const dd = document.getElementById('agent-dropdown');
     const alreadyOpenHere = dd.classList.contains('open') && dd.parentElement === document.getElementById('hero-pill-anchor');
-    closeAgentDropdown();
+    closeAllDropdownPanels();
     if (!alreadyOpenHere) openAgentDropdown('hero-pill-anchor', 'agent-pill');
 }
 
@@ -4846,7 +4724,8 @@ function selectAgent(name, el) {
     const dept = AGENT_DEPARTMENTS[name] || '';
     document.getElementById('pill-dept-label').textContent = dept;
     document.getElementById('agent-hint-text').textContent = AGENT_HINTS[name] || '';
-    document.querySelectorAll('.dd-option').forEach(o => o.classList.remove('selected'));
+    const scope = el.closest('.dd-list') || document.getElementById('agent-dropdown');
+    if (scope) scope.querySelectorAll('.dd-option').forEach(o => o.classList.remove('selected'));
     el.classList.add('selected');
     closeAgentDropdown();
 
@@ -4866,7 +4745,7 @@ function selectAgent(name, el) {
                 body.style.padding = '0';
                 body.style.overflow = 'hidden';
             }));
-            document.getElementById('toggle-' + id).textContent = '+';
+            setAccToggleOpen(id, false);
             document.getElementById('acc-' + id).classList.add('is-closed');
         }
     });
@@ -4983,8 +4862,7 @@ function selectAgent(name, el) {
 }
 
 document.addEventListener('click', () => {
-    closeAgentDropdown();
-    document.querySelectorAll('.cdd-anchor.open').forEach(a => a.classList.remove('open'));
+    closeAllDropdownPanels();
 });
 
 // ---- STICKY HEADER AGENT PILL ----
@@ -5027,6 +4905,13 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ---- ACCORDION ----
+function setAccToggleOpen(id, isOpen) {
+    const btn = document.getElementById('toggle-' + id);
+    if (!btn) return;
+    btn.classList.toggle('is-open', isOpen);
+    btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+}
+
 function toggleAcc(id) {
     const body = document.getElementById('body-' + id);
     const btn  = document.getElementById('toggle-' + id);
@@ -5041,7 +4926,7 @@ function toggleAcc(id) {
             body.style.maxHeight = '0';
             body.style.padding = '0';
         }));
-        btn.textContent = '+';
+        setAccToggleOpen(id, false);
         document.getElementById('acc-' + id).classList.add('is-closed');
         body.addEventListener('transitionend', function h(e) {
             if (e.propertyName === 'max-height' && body.classList.contains('collapsed')) {
@@ -5062,7 +4947,7 @@ function toggleAcc(id) {
                 body.removeEventListener('transitionend', h);
             }
         });
-        btn.textContent = '−';
+        setAccToggleOpen(id, true);
         document.getElementById('acc-' + id).classList.remove('is-closed');
     }
 }
@@ -5079,7 +4964,7 @@ function openAcc(id) {
             body.removeEventListener('transitionend', h);
         }
     });
-    document.getElementById('toggle-' + id).textContent = '−';
+    setAccToggleOpen(id, true);
     document.getElementById('acc-' + id).classList.remove('is-closed');
 }
 
@@ -5106,6 +4991,7 @@ document.addEventListener('DOMContentLoaded', () => {
     renderRmaThumbGrid();
     renderServiceChips();
     populateManualAddressDropdowns();
+    enhanceAllFormSelects();
     setBusinessSource(true);
     updateSharedProfileExtras(getAgentType());
     updateContinueButton();
@@ -5278,6 +5164,8 @@ function populateManualAddressDropdowns() {
         US_STATES.map(s => `<option>${s}</option>`).join('');
     countrySelect.innerHTML = '<option value="" disabled hidden selected>Select country</option>' +
         COUNTRIES.map(c => `<option>${c}</option>`).join('');
+    rebuildFormSelectCddPanel('shared-biz-state');
+    rebuildFormSelectCddPanel('shared-biz-country');
 }
 
 // Toggles the Business details fields between a locked, Google-sourced profile
@@ -5287,6 +5175,8 @@ function setBusinessSource(fromGoogle) {
     const industrySelect = document.getElementById('shared-biz-industry');
     industrySelect.disabled = fromGoogle;
     if (!fromGoogle) industrySelect.value = '';
+    syncFormSelectCddDisabled('shared-biz-industry');
+    if (industrySelect.dataset.cddEnhanced === '1') rebuildFormSelectCddPanel('shared-biz-industry');
 
     document.getElementById('biz-manual-fields').style.display = fromGoogle ? 'none' : 'block';
     document.getElementById('bs-zip-row').style.display     = fromGoogle ? 'none' : 'flex';
@@ -5791,12 +5681,135 @@ function selectCompetitorSuggestion(item) {
     item.closest('.competitor-suggest-panel').style.display = 'none';
 }
 
+// ---- FORM SELECT → CDD DROPDOWNS (matches locations / agent picker) ----
+const CDD_CHEVRON_SVG = '<svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+function getFormSelectDisplayValue(select) {
+    if (!select) return '';
+    const selected = select.options[select.selectedIndex];
+    if (selected && selected.value !== '') return selected.textContent.trim();
+    const placeholder = select.querySelector('option[disabled]');
+    return placeholder ? placeholder.textContent.trim() : 'Select';
+}
+
+function syncFormSelectCddLabel(id) {
+    const select = document.getElementById(id);
+    const label = document.getElementById('cdd-' + id + '-label');
+    if (!select || !label) return;
+    const text = getFormSelectDisplayValue(select);
+    label.textContent = text;
+    const isPlaceholder = !select.value;
+    label.classList.toggle('cdd-placeholder', isPlaceholder);
+}
+
+function rebuildFormSelectCddPanel(id) {
+    const select = document.getElementById(id);
+    const panel = document.getElementById('cdd-' + id + '-panel');
+    if (!select || !panel) return;
+
+    panel.innerHTML = '';
+    Array.from(select.options).forEach(opt => {
+        if (opt.hidden) return;
+        if (opt.disabled && opt.value === '') return;
+
+        const optionEl = document.createElement('div');
+        optionEl.className = 'dd-option';
+        optionEl.textContent = opt.textContent.trim();
+        optionEl.onclick = () => selectFormSelectCddOption(id, opt.value || opt.textContent.trim(), optionEl);
+        if (opt.selected && opt.value !== '') optionEl.classList.add('selected');
+        panel.appendChild(optionEl);
+    });
+    syncFormSelectCddLabel(id);
+}
+
+function syncFormSelectCddDisabled(id) {
+    const select = document.getElementById(id);
+    const trigger = document.querySelector('#cdd-wrap-' + id + ' .cdd-trigger');
+    if (select && trigger) trigger.classList.toggle('disabled', select.disabled);
+}
+
+function enhanceFormSelect(select) {
+    if (!select || select.dataset.cddEnhanced === '1' || !select.id) return;
+
+    const id = select.id;
+    const wrapper = document.createElement('div');
+    wrapper.className = 'cdd-anchor form-cdd';
+    wrapper.id = 'cdd-wrap-' + id;
+
+    const trigger = document.createElement('div');
+    trigger.className = 'cdd-trigger';
+    trigger.onclick = (e) => toggleFormSelectCdd(id, e);
+
+    const labelSpan = document.createElement('span');
+    labelSpan.id = 'cdd-' + id + '-label';
+    labelSpan.className = 'cdd-placeholder';
+    labelSpan.textContent = getFormSelectDisplayValue(select);
+
+    const chevron = document.createElement('span');
+    chevron.className = 'cdd-chevron';
+    chevron.innerHTML = CDD_CHEVRON_SVG;
+
+    trigger.appendChild(labelSpan);
+    trigger.appendChild(chevron);
+
+    const panel = document.createElement('div');
+    panel.className = 'cdd-panel';
+    panel.id = 'cdd-' + id + '-panel';
+
+    wrapper.appendChild(trigger);
+    wrapper.appendChild(panel);
+    select.parentNode.insertBefore(wrapper, select);
+    select.classList.add('form-select-native');
+    select.dataset.cddEnhanced = '1';
+
+    rebuildFormSelectCddPanel(id);
+    syncFormSelectCddDisabled(id);
+}
+
+function enhanceAllFormSelects() {
+    document.querySelectorAll('select.form-select').forEach(enhanceFormSelect);
+}
+
+function toggleFormSelectCdd(id, event) {
+    event.stopPropagation();
+    const select = document.getElementById(id);
+    if (!select || select.disabled) return;
+    const anchor = document.getElementById('cdd-wrap-' + id);
+    if (!anchor) return;
+    const isOpen = anchor.classList.contains('open');
+    closeAllDropdownPanels();
+    if (!isOpen) anchor.classList.add('open');
+}
+
+function selectFormSelectCddOption(id, value, el) {
+    const select = document.getElementById(id);
+    if (!select || select.disabled) return;
+
+    const match = Array.from(select.options).find(o => (o.value || o.textContent.trim()) === value);
+    if (match) select.value = match.value || match.textContent.trim();
+    else select.value = value;
+
+    el.parentElement.querySelectorAll('.dd-option').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+
+    const anchor = document.getElementById('cdd-wrap-' + id);
+    if (anchor) anchor.classList.remove('open');
+
+    syncFormSelectCddLabel(id);
+    select.dispatchEvent(new Event('change', { bubbles: true }));
+}
+
+function closeAllDropdownPanels() {
+    closeAgentDropdown();
+    document.querySelectorAll('.cdd-anchor.open').forEach(a => a.classList.remove('open'));
+}
+
 // ---- LISTINGS: CATEGORY DROPDOWNS ----
 function toggleCatDropdown(which, event) {
     event.stopPropagation();
     const anchor = document.getElementById('cdd-' + which);
     const isOpen = anchor.classList.contains('open');
-    document.querySelectorAll('.cdd-anchor.open').forEach(a => a.classList.remove('open'));
+    closeAllDropdownPanels();
     if (!isOpen) anchor.classList.add('open');
 }
 
@@ -5889,7 +5902,7 @@ function forceOpenAcc(id) {
     body.style.padding = '';
     body.style.maxHeight = 'none';
     body.style.overflow = 'visible';
-    document.getElementById('toggle-' + id).textContent = '−';
+    setAccToggleOpen(id, true);
     document.getElementById('acc-' + id).classList.remove('is-closed');
 }
 
