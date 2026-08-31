@@ -322,8 +322,18 @@
 
         .dd-option.disabled { color: #909090; cursor: not-allowed; position: relative; }
         .dd-option.disabled:hover { background: none; }
+        .dd-disabled-sales-footer {
+            margin: 6px 14px 10px; padding: 10px 12px 0;
+            border-top: 1px solid #eeece7;
+            font-size: 11.5px; line-height: 1.5; color: #646464;
+            font-family: 'Geist', sans-serif;
+        }
+        .dd-disabled-sales-footer a {
+            color: #212121; font-weight: 500; text-decoration: underline;
+        }
         #agent-dropdown .dd-option.selected { font-weight: 400; }
-        .dd-tooltip-wrap { position: relative; width: 100%; }
+        .dd-tooltip-wrap { position: relative; width: 100%; display: block; }
+        .dd-option-label { display: block; }
         .dd-tooltip-bubble {
             position: absolute; bottom: calc(100% + 8px); left: 50%;
             transform: translateX(-50%) translateY(3px);
@@ -694,6 +704,17 @@
             border-radius: 10px; z-index: 5;
         }
 
+        /* CX compact profile row — Ticketing Survey + Review agents, new design only */
+        .profile-compact-text {
+            display: none; align-items: center; flex-wrap: wrap; min-width: 0; flex: 1; gap: 0;
+            font-size: 13px; line-height: 1.45;
+        }
+        .profile-compact-title { font-weight: 500; color: #374151; flex-shrink: 0; }
+        .profile-compact-sep { margin: 0 6px; color: #94a3b8; flex-shrink: 0; }
+        .profile-compact-summary { color: #64748b; font-weight: 400; min-width: 0; }
+        .profile-compact-summary.is-mandatory-only { color: #dc2626; }
+        .profile-compact-mandatory { color: #dc2626; font-weight: 400; margin-left: 6px; }
+
         /* Field label + tooltip icon */
         .field-label-row { display: flex; align-items: center; gap: 6px; margin-bottom: 7px; }
         .field-label-row .form-label { margin-bottom: 0; }
@@ -772,7 +793,7 @@
         .survey-type-icon { width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; color: #64748b; flex-shrink: 0; margin-top: 1px; }
         .survey-type-text { flex: 1; }
         .survey-type-label { font-size: 13px; font-weight: 400; color: #374151; margin-bottom: 2px; }
-        .survey-type-desc { font-size: 12px; font-weight: 400; color: #94a3b8; line-height: 1.5; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .survey-type-desc { font-size: 12px; font-weight: 400; color: #909090; line-height: 1.5; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
         /* Custom category dropdown */
         .cdd-anchor { position: relative; }
@@ -782,16 +803,17 @@
             font-size: 14px; color: #0f172a; background: white; cursor: pointer;
             transition: border-color 0.2s, box-shadow 0.2s;
         }
-        .cdd-trigger:hover { border-color: #93c5fd; }
+        .cdd-trigger:hover { border-color: #cdc4c0; }
         .cdd-trigger span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .cdd-chevron { display: flex; align-items: center; color: #64748b; flex-shrink: 0; transition: transform 0.2s; }
         .cdd-anchor.open .cdd-chevron { transform: rotate(180deg); }
         .cdd-panel {
             position: absolute; top: calc(100% + 6px); left: 0; right: 0;
             background: white; border: 1px solid #e2e8f0; border-radius: 10px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.1); z-index: 30; overflow: hidden;
-            display: none; max-height: 220px; overflow-y: auto;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1); z-index: 30;
+            display: none; max-height: 220px; overflow-y: auto; overflow-x: hidden;
         }
+        .cdd-anchor.open { z-index: 50; }
         .cdd-anchor.open .cdd-panel { display: block; animation: dropFade 0.15s ease; }
         .cdd-trigger.disabled { opacity: 0.55; cursor: not-allowed; pointer-events: none; }
         .form-select-native {
@@ -874,8 +896,8 @@
 
         .rec-card-top { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 6px; }
         .rec-field-label {
-            font-size: 10.5px; font-weight: 400; text-transform: uppercase;
-            letter-spacing: 0.05em; color: #94a3b8; margin-bottom: 4px;
+            font-size: 13px; font-weight: 500; text-transform: none;
+            letter-spacing: 0; color: #64748b; margin-bottom: 4px;
         }
         .rec-title { font-size: 14px; font-weight: 400; color: #0f172a; line-height: 1.4; }
 
@@ -969,8 +991,8 @@
         /* Before/after content */
         .before-after-box { border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px; margin-bottom: 12px; }
         .ba-label {
-            font-size: 10px; font-weight: 400; text-transform: uppercase;
-            letter-spacing: 0.06em; margin-bottom: 7px; display: flex; align-items: center; gap: 6px;
+            font-size: 12px; font-weight: 500; text-transform: none;
+            letter-spacing: 0; margin-bottom: 7px; display: flex; align-items: center; gap: 6px;
         }
         .ba-before .ba-label { color: #dc2626; }
         .ba-after .ba-label { color: #16a34a; }
@@ -1204,7 +1226,7 @@
             border: none;
             border-radius: 9px;
             font-size: 14px;
-            font-weight: 600;
+            font-weight: 400;
             cursor: pointer;
             font-family: inherit;
             transition: all 0.2s;
@@ -1339,6 +1361,21 @@
 
         .review-card.selected .select-check { display: flex; }
 
+        .review-card.expanded { cursor: default; overflow: hidden; }
+        .review-card-expand {
+            margin-top: 14px; padding-top: 14px;
+            border-top: 1px solid #e2e8f0;
+        }
+        .review-card-cta-only { padding-top: 2px; }
+        .review-card-post-head {
+            display: flex; align-items: center; justify-content: space-between;
+            gap: 12px; flex-wrap: wrap; margin-bottom: 12px;
+        }
+        .review-card-action-label { font-size: 14px; font-weight: 500; color: #0f172a; }
+        .review-card-output { min-height: 0; }
+        .review-card-output .gen-response { margin-top: 0; }
+        .review-card-output .reasoning-acc:first-child { margin-top: 0; }
+
         /* ===== CUSTOM REVIEW ===== */
         .custom-review-trigger {
             margin-top: 10px;
@@ -1394,18 +1431,18 @@
         .cr-field:last-of-type { margin-bottom: 16px; }
 
         .cr-label {
-            font-size: 10px;
-            font-weight: 400;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
+            font-size: 13px;
+            font-weight: 500;
+            text-transform: none;
+            letter-spacing: 0;
             color: #64748b;
             margin-bottom: 8px;
             display: block;
         }
 
         .cr-label-soft {
-            font-size: 12px;
-            font-weight: 500;
+            font-size: 13px;
+            font-weight: 400;
             color: #94a3b8;
             margin-bottom: 6px;
             display: block;
@@ -1490,6 +1527,7 @@
         }
 
         .response-panel.active { border-color: #c4b5fd; }
+        .legacy-review-panel { display: none !important; }
 
         .rp-header {
             padding: 14px 20px;
@@ -1607,7 +1645,7 @@
         }
 
         /* Generated response */
-        .gen-response { border: 1.5px solid #e0e7ff; border-radius: 12px; overflow: hidden; }
+        .gen-response { border: 1.5px solid #e0e7ff; border-radius: 12px; overflow: hidden; isolation: isolate; }
 
         .gen-response-head {
             background: linear-gradient(135deg, #f0f4ff, #faf5ff);
@@ -1618,6 +1656,11 @@
             justify-content: space-between;
             flex-wrap: wrap;
             gap: 8px;
+            border-radius: 12px 12px 0 0;
+        }
+        .gen-response-head-compact {
+            justify-content: flex-end;
+            padding: 10px 16px;
         }
 
         .gen-label { font-size: 12px; font-weight: 400; color: #4f46e5; }
@@ -1696,10 +1739,10 @@
         .roi-input-group { display: flex; flex-direction: column; gap: 5px; }
 
         .roi-input-label {
-            font-size: 10px;
-            font-weight: 400;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
+            font-size: 13px;
+            font-weight: 500;
+            text-transform: none;
+            letter-spacing: 0;
             color: #64748b;
         }
 
@@ -2037,25 +2080,28 @@
             position: absolute; top: calc(100% + 12px); left: 50%; bottom: auto;
             transform: translateX(-50%) translateY(-4px);
             background: #212121; color: #ffffff; font-size: 11.5px; font-weight: 400;
-            line-height: 1.45; padding: 10px 14px; border-radius: 8px;
-            white-space: normal; width: max-content; max-width: 300px; text-align: left;
+            line-height: 1.45; padding: 8px 12px; border-radius: 8px;
+            white-space: normal; width: max-content; max-width: 280px; text-align: left;
             box-shadow: 0 6px 18px rgba(0,0,0,0.18);
             opacity: 0; visibility: hidden; pointer-events: none; z-index: 460;
             transition: opacity 0.15s, transform 0.15s;
         }
         .coworker-tab-tooltip-title { display: block; font-weight: 500; margin-bottom: 6px; }
         .coworker-tab-tooltip-list {
-            list-style: disc; padding-left: 18px; margin: 0 0 8px;
+            list-style: disc; padding-left: 18px; margin: 0 0 6px;
             color: rgba(255,255,255,0.92);
         }
-        .coworker-tab-tooltip-list li { margin-bottom: 3px; }
+        .coworker-tab-tooltip-list li { margin-bottom: 2px; }
         .coworker-tab-tooltip-link {
-            display: inline-block; margin-top: 2px; color: #ffffff; font-weight: 500;
+            display: inline; color: #ffffff; font-weight: 500;
             text-decoration: underline; pointer-events: auto;
+        }
+        .coworker-tab-tooltip-footer {
+            display: block; margin-top: 0; color: rgba(255,255,255,0.92);
         }
         .coworker-tab.dept-unavailable:hover .coworker-tab-tooltip { pointer-events: auto; }
         .dd-tooltip-link {
-            display: inline-block; margin-top: 6px; color: #ffffff; font-weight: 500;
+            display: inline; color: #ffffff; font-weight: 500;
             text-decoration: underline;
         }
         .coworker-tab-tooltip::after {
@@ -2063,8 +2109,10 @@
             transform: translateX(-50%);
             border: 5px solid transparent; border-bottom-color: #212121; border-top-color: transparent;
         }
-        .coworker-tab.dept-unavailable:hover .coworker-tab-tooltip {
+        .coworker-tab.dept-unavailable:not([data-dept="cx"]):hover .coworker-tab-tooltip,
+        body.theme-new .coworker-tab[data-dept="operations"]:hover .coworker-tab-tooltip {
             opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0);
+            pointer-events: auto;
         }
 
         /* Theme visibility */
@@ -2145,7 +2193,16 @@
         body.theme-new .hero-purple { color: #212121; }
         body.theme-new .hero p { display: none; }
 
-        body.theme-new .coworker-tabs { display: flex; overflow: visible; position: relative; z-index: 450; }
+        body.theme-new .coworker-tabs { display: flex; overflow: visible; position: relative; z-index: 1; }
+        /* Elevate only while a tooltip tab is hovered — above main (2), agent pill (10), dropdown (300) */
+        body.theme-new .coworker-tabs:has(.coworker-tab[data-dept="operations"]:hover),
+        body.theme-new .coworker-tabs:has(.coworker-tab.dept-unavailable:not([data-dept="cx"]):hover) {
+            z-index: 350;
+        }
+        body.theme-new .coworker-tab[data-dept="operations"]:hover,
+        body.theme-new .coworker-tab.dept-unavailable:not([data-dept="cx"]):hover {
+            z-index: 1;
+        }
 
         body.theme-new .agent-selector-pill {
             background: #ffffff; border: 1px solid #e6e2e0; color: #212121; border-radius: 999px;
@@ -2159,27 +2216,33 @@
         body.theme-new .info-circle { display: none; }
 
         /* Flat single-column dropdown — the coworker tabs already do the department switching */
-        body.theme-new .agent-dropdown { width: 320px; border: 1px solid #e6e2e0; border-radius: 16px; box-shadow: 0 8px 28px rgba(33,33,33,0.14); z-index: 300; overflow: visible; }
+        body.theme-new .agent-dropdown {
+            width: 320px; background: #ffffff;
+            border: 1px solid #e6e2e0; border-radius: 16px;
+            box-shadow: 0 8px 28px rgba(33,33,33,0.14); z-index: 300; overflow: visible;
+        }
+        body.theme-new .agent-dropdown .dd-split { overflow: visible; }
         body.theme-new .agent-dropdown .dd-option.disabled { z-index: 1; }
         body.theme-new .agent-dropdown .dd-option.disabled:hover { z-index: 50; }
         body.theme-new .agent-dropdown .dd-tooltip-bubble {
-            z-index: 500;
-            top: calc(100% + 8px); bottom: auto;
-            transform: translateX(-50%) translateY(-3px);
+            z-index: 600;
+            bottom: calc(100% + 8px); top: auto;
+            transform: translateX(-50%) translateY(3px);
         }
         body.theme-new .agent-dropdown .dd-tooltip-bubble::after {
-            top: auto; bottom: 100%;
-            border-top-color: transparent; border-bottom-color: #212121;
+            top: 100%; bottom: auto;
+            border-top-color: #212121; border-bottom-color: transparent;
         }
         body.theme-new .agent-dropdown .dd-option.disabled:hover .dd-tooltip-bubble,
         body.theme-new .agent-dropdown .dd-tooltip-wrap:hover .dd-tooltip-bubble {
             transform: translateX(-50%) translateY(0);
         }
         body.theme-new .dd-nav { display: none; }
-        body.theme-new .dd-list-panel { height: auto; max-height: 320px; padding: 8px 0; }
+        body.theme-new .dd-list-panel { height: auto; max-height: none; overflow: visible; padding: 8px 0; }
         body.theme-new .dd-count-badge { background: #eeece7; color: #646464; }
         body.theme-new .dd-option {
             font-family: 'Geist', sans-serif; font-size: 13.5px; color: #374151; font-weight: 400;
+            padding: 9px 14px;
         }
         body.theme-new .dd-option.selected {
             background: #f1f0ee; color: #212121; font-weight: 400;
@@ -2187,9 +2250,47 @@
         body.theme-new .dd-option:hover:not(.disabled) { background: #f1f0ee; }
         body.theme-new .dd-option.disabled { color: #909090; cursor: not-allowed; }
         body.theme-new .dd-option.disabled:hover { background: none; color: #909090; }
+        body.theme-new .dd-disabled-sales-footer {
+            color: #646464; border-top-color: #e6e2e0; font-family: 'Geist', sans-serif;
+        }
+        body.theme-new .dd-disabled-sales-footer a { color: #212121; }
+        body.theme-new .dd-option-check {
+            font-family: 'Geist', sans-serif; font-size: 13.5px; color: #374151;
+            padding: 9px 14px;
+        }
+        body.theme-new .dd-option-check:hover { background: #f1f0ee; }
         body.theme-new #agent-dropdown .dd-option.selected { font-weight: 400; }
         body.theme-new .dd-search-input:focus { border-color: #4d403a; }
         body.theme-new .dd-soon-tag { background: #eeece7; color: #909090; }
+
+        /* Unified dropdown triggers + menus (form fields, locations, business name, agent picker) */
+        body.theme-new .cdd-trigger {
+            border: 1px solid #e6e2e0; border-radius: 12px; background: #ffffff;
+            color: #212121; font-family: 'Geist', sans-serif; font-size: 14px;
+        }
+        body.theme-new .cdd-trigger:hover { border-color: #cdc4c0; background: #ffffff; }
+        body.theme-new .cdd-anchor.open .cdd-trigger { border-color: #4d403a; }
+        body.theme-new .cdd-chevron { color: #646464; }
+        body.theme-new .cdd-trigger .cdd-placeholder { color: #909090; }
+        body.theme-new .cdd-panel,
+        body.theme-new .competitor-suggest-panel {
+            background: #ffffff; border: 1px solid #e6e2e0; border-radius: 16px;
+            box-shadow: 0 8px 28px rgba(33,33,33,0.14); z-index: 60;
+        }
+        body.theme-new .competitor-suggest-panel {
+            top: calc(100% + 6px); max-height: 220px;
+        }
+        body.theme-new .competitor-suggest-item {
+            padding: 9px 14px; font-family: 'Geist', sans-serif; font-size: 13.5px;
+        }
+        body.theme-new .competitor-suggest-item:hover { background: #f1f0ee; }
+        body.theme-new .cs-name { font-size: 13.5px; color: #212121; }
+        body.theme-new .cs-sub { font-size: 12px; color: #909090; }
+        body.theme-new .competitor-suggest-cant-find {
+            color: #646464; font-weight: 400; border-top: 1px solid #e6e2e0;
+            background: #ffffff;
+        }
+        body.theme-new .competitor-suggest-cant-find:hover { background: #f1f0ee; color: #212121; }
 
         body.theme-new .main { max-width: 900px; background: transparent; }
 
@@ -2215,8 +2316,13 @@
             border-top: none;
             overflow: hidden !important;
         }
-        body.theme-new .acc-toggle { background: #f1f0ee; color: #212121; border-radius: 999px; }
-        body.theme-new .acc-toggle:hover { background: #e6e2e0; }
+        body.theme-new .acc-toggle {
+            width: auto; height: auto; min-width: 0; padding: 2px;
+            background: transparent; border: none; border-radius: 0;
+            color: #646464;
+        }
+        body.theme-new .acc-toggle:hover { background: transparent; color: #212121; }
+        body.theme-new .acc-toggle .acc-chevron { width: 16px; height: 16px; }
 
         body.theme-new .resp-opt.selected { border-color: #4d403a; background: #f1f0ee; color: #4d403a; }
         body.theme-new .resp-opt.selected .resp-opt-name { color: #212121; }
@@ -2251,6 +2357,13 @@
         body.theme-new .form-input:focus, body.theme-new .form-select:focus, body.theme-new .chip-input:focus-within {
             border-color: #4d403a; box-shadow: 0 0 0 3px rgba(77,64,58,0.12);
         }
+        body.theme-new .form-input::placeholder,
+        body.theme-new textarea.form-input::placeholder { color: #b5b5b5; }
+        body.theme-new #tsa-custom-instruction::placeholder { color: #b5b5b5; }
+        body.theme-new .form-grid,
+        body.theme-new #shared-biz-section,
+        body.theme-new .biz-edit-fields { overflow: visible; }
+        body.theme-new .cdd-anchor.open { z-index: 80; }
         body.theme-new .chip-tag {
             background: #212121; color: #ffffff; border-radius: 999px;
         }
@@ -2262,11 +2375,147 @@
 
         body.theme-new .biz-summary-card { border-radius: 16px; border-color: #e6e2e0; }
         body.theme-new .biz-summary-title { font-family: 'Geist', sans-serif; font-weight: 500; color: #212121; }
-        body.theme-new .bs-label { color: #909090; }
+        body.theme-new .biz-summary-card.cx-compact-profile { padding: 17px 16px; }
+        body.theme-new .biz-summary-card.cx-compact-profile .biz-summary-top { margin-bottom: 0; }
+        body.theme-new .biz-summary-card.cx-compact-profile #biz-summary-title-expanded,
+        body.theme-new .biz-summary-card.cx-compact-profile #user-summary-title-expanded { display: none; }
+        body.theme-new .biz-summary-card.cx-compact-profile .profile-compact-text { display: flex; }
+        body.theme-new .biz-summary-card.cx-compact-profile #biz-summary-view,
+        body.theme-new .biz-summary-card.cx-compact-profile #user-summary-view { display: none !important; }
+        body.theme-new .biz-summary-card.cx-compact-profile.is-editing .profile-compact-text { display: none !important; }
+        body.theme-new .biz-summary-card.cx-compact-profile.is-editing #biz-summary-title-expanded,
+        body.theme-new .biz-summary-card.cx-compact-profile.is-editing #user-summary-title-expanded { display: block; }
+        body.theme-new .biz-summary-card.cx-compact-profile.is-editing .biz-summary-top { margin-bottom: 8px; }
+        body.theme-new #shared-biz-section.cx-compact-profiles > .form-group:nth-child(2) { margin-bottom: 16px !important; }
+        body.theme-new #shared-biz-section.cx-compact-profiles { overflow: visible; }
+        body.theme-new #shared-biz-section.cx-compact-profiles > .form-group { overflow: visible; }
+        body.theme-new .profile-compact-title {
+            font-family: 'Geist', sans-serif; font-weight: 500; font-size: 13px; color: #212121;
+        }
+        body.theme-new .profile-compact-sep { color: #909090; }
+        body.theme-new .profile-compact-summary {
+            font-family: 'Geist', sans-serif; font-weight: 400; font-size: 13px; color: #646464;
+        }
+        body.theme-new .profile-compact-summary.is-mandatory-only,
+        body.theme-new .profile-compact-mandatory { color: #dc2626; font-family: 'Geist', sans-serif; font-size: 13px; }
+        body.theme-new .biz-summary-card.cx-compact-profile { overflow: visible; }
+        body.theme-new .profile-compact-text { overflow: visible; }
+        body.theme-new .biz-summary-card.cx-compact-profile:has(.profile-compact-more-wrap:hover),
+        body.theme-new #user-profile-card.cx-compact-profile:has(.profile-compact-more-wrap:hover),
+        body.theme-new .biz-summary-card.tsa-merged-profile:has(.profile-compact-more-wrap:hover) {
+            z-index: 460;
+            position: relative;
+        }
+        body.theme-new .biz-summary-card.tsa-merged-profile #biz-compact-view { display: none !important; }
+        body.theme-new .profile-merged-compact {
+            display: none; flex: 1; min-width: 0; align-items: center; gap: 12px; overflow: visible;
+        }
+        body.theme-new .biz-summary-card.tsa-merged-profile .profile-merged-compact { display: flex; }
+        body.theme-new .biz-summary-card.tsa-merged-profile.is-editing .profile-merged-compact { display: none !important; }
+        body.theme-new .profile-merged-row {
+            display: flex; align-items: center; min-width: 0; flex: 1 1 0; overflow: visible;
+        }
+        body.theme-new .profile-merged-vrule {
+            width: 1px; height: 14px; background: #e6e2e0; flex-shrink: 0;
+        }
+        body.theme-new .profile-merged-edit-sep {
+            height: 1px; background: #e6e2e0; margin: 20px 0 16px;
+        }
+        body.theme-new .profile-merged-user-edit-title {
+            margin: 0 0 12px; font-family: 'Geist', sans-serif; font-weight: 500; color: #212121;
+        }
+        body.theme-new #shared-biz-section.tsa-merged-profiles #user-profile-form-group { display: none !important; }
+        body.theme-new #shared-biz-section.tsa-merged-profiles > .form-group:nth-child(2) { margin-bottom: 20px !important; }
+        body.theme-new .profile-compact-more-wrap { position: relative; display: inline; z-index: 1; }
+        body.theme-new .profile-compact-more-trigger {
+            cursor: default; color: #646464;
+        }
+        body.theme-new .profile-compact-more-wrap:hover .profile-compact-more-trigger { color: #212121; }
+        body.theme-new .profile-compact-detail-tooltip {
+            position: absolute; bottom: calc(100% + 10px); left: 0;
+            transform: translateY(4px);
+            padding: 14px 16px;
+            background: #ffffff; border: 1px solid #e6e2e0; border-radius: 12px;
+            box-shadow: 0 8px 28px rgba(33,33,33,0.14);
+            opacity: 0; visibility: hidden; pointer-events: none; z-index: 500;
+            transition: opacity 0.15s, transform 0.15s; text-align: left;
+            display: flex; flex-direction: column; gap: 10px;
+        }
+        body.theme-new .profile-compact-detail-tooltip--biz {
+            width: 480px; max-width: min(480px, calc(100vw - 48px));
+        }
+        body.theme-new .profile-compact-detail-tooltip--user {
+            width: 420px; max-width: min(420px, calc(100vw - 48px));
+        }
+        body.theme-new .profile-compact-more-wrap:hover .profile-compact-detail-tooltip {
+            opacity: 1; visibility: visible; transform: translateY(0); pointer-events: auto;
+        }
+        body.theme-new .profile-compact-detail-tooltip::after {
+            content: ''; position: absolute; top: 100%; left: 28px;
+            border: 6px solid transparent; border-top-color: #ffffff;
+            filter: drop-shadow(0 1px 0 #e6e2e0);
+        }
+        body.theme-new .profile-detail-tooltip-row {
+            display: grid; grid-template-columns: 132px 1fr; gap: 8px 16px;
+            padding: 0; align-items: start;
+        }
+        body.theme-new .profile-detail-tooltip-label {
+            font-family: 'Geist', sans-serif; font-size: 12px; font-weight: 400;
+            color: #909090; line-height: 1.45;
+        }
+        body.theme-new .profile-detail-tooltip-value {
+            font-family: 'Geist', sans-serif; font-size: 12px; font-weight: 400;
+            color: #212121; line-height: 1.45; min-width: 0;
+        }
+        body.theme-new .profile-detail-tooltip-value--desc {
+            line-height: 1.5;
+            display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 4;
+            overflow: hidden;
+        }
+        body.theme-new .profile-detail-tooltip-value--single {
+            white-space: nowrap;
+        }
+        body.theme-new .bs-label {
+            color: #646464; font-family: 'Geist', sans-serif;
+            font-size: 13px; font-weight: 500; text-transform: none; letter-spacing: 0;
+        }
+        body.theme-new .ao-label {
+            font-family: 'Geist', sans-serif; font-size: 13px; font-weight: 500;
+            color: #646464; text-transform: none; letter-spacing: 0;
+        }
+        body.theme-new .survey-type-label {
+            font-family: 'Geist', sans-serif; font-weight: 500; color: #212121;
+        }
+        body.theme-new .survey-type-desc {
+            font-family: 'Geist', sans-serif; font-size: 12px; font-weight: 400; color: #909090;
+        }
+        body.theme-new .survey-type-icon { color: #909090; }
+        body.theme-new .survey-type-option {
+            border-color: #e6e2e0; border-radius: 12px; background: #ffffff;
+        }
+        body.theme-new .survey-type-option.selected { border-color: #4d403a; background: #f9f8f6; }
+        body.theme-new .outcomes-intro {
+            color: #646464; font-family: 'Geist', sans-serif; font-size: 14px;
+        }
+        body.theme-new .roi-input-label {
+            font-family: 'Geist', sans-serif; font-size: 13px; font-weight: 500;
+            color: #646464; text-transform: none; letter-spacing: 0;
+        }
+        body.theme-new .ba-label {
+            font-family: 'Geist', sans-serif; font-size: 12px; font-weight: 500;
+            text-transform: none; letter-spacing: 0;
+        }
+
+        body.theme-new .metric-card,
+        body.theme-new .metric-card.blue,
+        body.theme-new .metric-card.green,
+        body.theme-new .metric-card.purple {
+            border-radius: 16px; background: #f9f8f6; border: none;
+        }
 
         body.theme-new .btn-continue {
             background: #4d403a; border-radius: 999px; font-family: 'Geist', sans-serif;
-            padding: 12px 26px;
+            font-weight: 400; padding: 12px 26px;
         }
         body.theme-new .btn-continue:hover:not(:disabled) { background: #27201d; box-shadow: none; transform: none; }
         body.theme-new .btn-continue:disabled { background: #e6e2e0; color: #ffffff; }
@@ -2288,20 +2537,12 @@
             border: 1px solid #e6e2e0; font-family: 'Geist', sans-serif; font-size: 14px; font-weight: 400;
         }
         body.theme-new .biz-edit-btn.is-save:hover { background: #eeece7; border-color: #cdc4c0; }
-        body.theme-new .cdd-trigger:hover { border-color: #cdc4c0; }
-        body.theme-new .cdd-anchor.open .cdd-trigger { border-color: #4d403a; }
-        body.theme-new .cdd-trigger {
-            border-color: #e6e2e0; border-radius: 8px; font-family: 'Geist', sans-serif;
-        }
-        body.theme-new .cdd-panel {
-            border: 1px solid #e6e2e0; border-radius: 16px;
-            box-shadow: 0 8px 28px rgba(33,33,33,0.14); z-index: 60;
-        }
 
         body.theme-new .review-card, body.theme-new .rec-card, body.theme-new .gen-response,
         body.theme-new .response-panel, body.theme-new .custom-review-trigger, body.theme-new .custom-review-form {
             border-radius: 16px; border-color: #e6e2e0;
         }
+        body.theme-new .response-panel { overflow: visible; }
         body.theme-new .custom-review-trigger:hover {
             border-color: #cdc4c0; color: #4d403a; background: #f9f8f6;
         }
@@ -2320,11 +2561,79 @@
         body.theme-new .cr-name-input:focus {
             border-color: #4d403a; box-shadow: 0 0 0 3px rgba(77,64,58,0.12);
         }
+        body.theme-new .custom-review-form .cr-field {
+            display: flex; flex-direction: column; gap: 7px;
+            margin-bottom: 16px;
+        }
+        body.theme-new .custom-review-form .cr-field:last-of-type { margin-bottom: 16px; }
+        body.theme-new .custom-review-form .form-label { display: block; margin-bottom: 0; }
+        body.theme-new .cr-textarea,
+        body.theme-new .cr-name-input {
+            border-radius: 12px; border: 1px solid #e6e2e0;
+            font-family: 'Geist', sans-serif; font-size: 14px; color: #212121; background: #ffffff;
+            padding: 10px 14px;
+        }
+        body.theme-new .cr-textarea::placeholder,
+        body.theme-new .cr-name-input::placeholder { color: #909090; }
+        body.theme-new #body-output:not(.collapsed),
+        body.theme-new #body-output:not(.collapsed) .output-wrap {
+            overflow: visible;
+        }
+        body.theme-new .custom-review-form.open { overflow: visible; }
+
+        body.theme-new .review-card.expanded { border-color: #4d403a; }
+        body.theme-new .review-card-expand { border-top-color: #e6e2e0; }
+        body.theme-new .review-card-post-head .review-card-action-label {
+            font-family: 'Geist', sans-serif; font-weight: 500; color: #212121;
+        }
+        body.theme-new .gen-response-head-compact {
+            background: #f9f8f6; border-bottom-color: #e6e2e0; border-radius: 0;
+        }
+        body.theme-new .gen-response { border-color: #e6e2e0; overflow: hidden; border-radius: 16px; }
+        body.theme-new .gen-response-head {
+            background: #f1f0ee; border-bottom-color: #e6e2e0; border-radius: 16px 16px 0 0;
+        }
+        body.theme-new .gen-label { color: #212121; font-family: 'Geist', sans-serif; font-weight: 500; }
+        body.theme-new .meta-tag {
+            background: #f1f0ee; border: 1px solid #e6e2e0; color: #646464;
+            border-radius: 999px; font-weight: 400; font-size: 11px; padding: 3px 10px;
+            font-family: 'Geist', sans-serif;
+        }
+        body.theme-new .gen-response-foot { background: #f9f8f6; border-top-color: #e6e2e0; }
+        body.theme-new .reasoning-acc-header {
+            background: #f9f8f6; color: #646464; font-family: 'Geist', sans-serif;
+        }
+        body.theme-new .reasoning-acc-header:hover { background: #f1f0ee; color: #212121; }
+        body.theme-new .reasoning-heading { color: #646464; font-family: 'Geist', sans-serif; }
+        /* In-progress reasoning: no filled panel — clean steps + bar on page surface */
+        body.theme-new .reasoning-block {
+            background: transparent; border: none; border-radius: 0; padding: 0;
+        }
+        body.theme-new .progress-block { background: transparent; border: none; }
+        body.theme-new .progress-track {
+            background: #ffffff; border: 1px solid #e6e2e0; height: 6px;
+        }
+        body.theme-new .progress-fill { background: linear-gradient(90deg, #4d403a, #6b5b52); }
+        body.theme-new .progress-meta { color: #646464; font-family: 'Geist', sans-serif; }
+        body.theme-new .reasoning-block .step-dot.spinning {
+            background: #ffffff; border: 1.5px solid #e6e2e0; color: #4d403a;
+        }
+        body.theme-new .reasoning-block .step-dot.done {
+            background: #ffffff; border: 1.5px solid #e6e2e0; color: #646464;
+        }
+        body.theme-new .step-dot.spinning { background: #f1f0ee; color: #4d403a; }
+        body.theme-new .step-dot.done { background: #eeece7; color: #646464; }
+        body.theme-new .reasoning-acc {
+            border: 1px solid #e6e2e0; border-radius: 12px; overflow: hidden;
+        }
         body.theme-new .tsa-question-box {
             background: #f9f8f6; border-color: #e6e2e0;
         }
         body.theme-new .tsa-question-text { color: #212121; }
-        body.theme-new .rec-field-label { color: #909090; }
+        body.theme-new .rec-field-label {
+            color: #909090; text-transform: none; letter-spacing: 0;
+            font-size: 13px; font-weight: 500; font-family: 'Geist', sans-serif;
+        }
         body.theme-new .tsa-assign-row {
             background: #f9f8f6; border-color: #e6e2e0; color: #212121;
         }
@@ -2335,21 +2644,15 @@
         body.theme-new .tsa-impact-icon { color: #4d403a; }
         body.theme-new .review-card.selected { border-color: #4d403a; box-shadow: 0 0 0 3px rgba(77,64,58,0.12); background: #f9f8f6; }
         body.theme-new .select-check { background: #4d403a; }
-        body.theme-new .gen-response-head { background: #f1f0ee; border-bottom-color: #e6e2e0; }
-        body.theme-new .gen-label { color: #4d403a; font-family: 'Geist', sans-serif; }
-        body.theme-new .gen-response-foot { background: #f9f8f6; border-top-color: #e6e2e0; }
         body.theme-new .time-saved-label { color: #009951; }
         body.theme-new .rp-header { background: #f1f0ee; border-bottom-color: #e6e2e0; }
         body.theme-new .s-positive { background: #ebffee; color: #008043; }
         body.theme-new .s-negative { background: #fee9e7; color: #900b09; }
         body.theme-new .s-neutral { background: #fcd7bc; color: #924813; }
 
-        body.theme-new .metric-card { border-radius: 16px; background: #eeece7; border-color: #e6e2e0; }
         body.theme-new .metric-val { font-family: 'Geist', sans-serif; font-weight: 500; color: #212121; }
         body.theme-new .metric-lbl { color: #646464; font-family: 'Geist', sans-serif; }
-        body.theme-new .metric-sub { font-family: 'Geist', sans-serif; }
-
-        body.theme-new .reasoning-acc, body.theme-new .reasoning-block { border-radius: 12px; border-color: #e6e2e0; }
+        body.theme-new .metric-sub { color: #909090; font-family: 'Geist', sans-serif; }
 
         body.theme-new .ao-checkbox.checked,
         body.theme-new .dd-check-box.checked {
@@ -2596,7 +2899,28 @@
                     <div class="form-group" style="margin-bottom:20px;">
                         <div class="biz-summary-card" id="biz-profile-card">
                             <div class="biz-summary-top">
-                                <span class="biz-summary-title">Business details</span>
+                                <span class="biz-summary-title" id="biz-summary-title-expanded">Business details</span>
+                                <div id="biz-compact-view" class="profile-compact-text" aria-hidden="true">
+                                    <span class="profile-compact-title">Business details</span>
+                                    <span class="profile-compact-sep">·</span>
+                                    <span class="profile-compact-summary" id="biz-compact-summary"></span>
+                                    <span class="profile-compact-mandatory" id="biz-compact-mandatory" style="display:none;"></span>
+                                </div>
+                                <div id="merged-profile-compact" class="profile-merged-compact" aria-hidden="true">
+                                    <div class="profile-merged-row">
+                                        <span class="profile-compact-title">Business details</span>
+                                        <span class="profile-compact-sep">·</span>
+                                        <span class="profile-compact-summary" id="merged-biz-compact-summary"></span>
+                                        <span class="profile-compact-mandatory" id="merged-biz-compact-mandatory" style="display:none;"></span>
+                                    </div>
+                                    <span class="profile-merged-vrule" aria-hidden="true"></span>
+                                    <div class="profile-merged-row">
+                                        <span class="profile-compact-title">User details</span>
+                                        <span class="profile-compact-sep">·</span>
+                                        <span class="profile-compact-summary" id="merged-user-compact-summary"></span>
+                                        <span class="profile-compact-mandatory" id="merged-user-compact-mandatory" style="display:none;"></span>
+                                    </div>
+                                </div>
                                 <span class="icon-tooltip-wrap">
                                     <button type="button" class="biz-edit-btn" id="biz-edit-btn" onclick="toggleBizEdit()">
                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
@@ -2621,16 +2945,22 @@
                             <div class="biz-edit-fields" id="biz-edit-fields" style="display:none;">
                                 <div class="form-group" style="margin-bottom:16px;">
                                     <label class="form-label">Industry <span class="req">*</span></label>
-                                    <select class="form-select" id="shared-biz-industry" disabled onchange="updateContinueButton()">
+                                    <select class="form-select" id="shared-biz-industry" onchange="updateContinueButton(); syncBizSummary();">
                                         <option value="" disabled hidden>Select industry</option>
-                                        <option>Dental</option>
+                                        <option selected>Dental</option>
                                         <option>Healthcare</option>
-                                        <option>Real Estate</option>
                                         <option>Automotive</option>
-                                        <option>Restaurants</option>
                                         <option>Legal</option>
+                                        <option>Real Estate</option>
+                                        <option>Restaurants</option>
                                         <option>Retail</option>
                                         <option>Hospitality</option>
+                                        <option>Home Services</option>
+                                        <option>Financial Services</option>
+                                        <option>Property Management</option>
+                                        <option>Self Storage</option>
+                                        <option>Wellness</option>
+                                        <option>Other</option>
                                     </select>
                                 </div>
 
@@ -2642,9 +2972,9 @@
                                             <span class="cdd-chevron"><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                                         </div>
                                         <div class="cdd-panel">
-                                            <div class="dd-option" onclick="selectLocations('1-3', this)">1-3</div>
-                                            <div class="dd-option" onclick="selectLocations('4-9', this)">4-9</div>
-                                            <div class="dd-option" onclick="selectLocations('10-39', this)">10-39</div>
+                                            <div class="dd-option" onclick="selectLocations('1-3', this, event)">1-3</div>
+                                            <div class="dd-option" onclick="selectLocations('4-9', this, event)">4-9</div>
+                                            <div class="dd-option" onclick="selectLocations('10-39', this, event)">10-39</div>
                                         </div>
                                     </div>
                                 </div>
@@ -2687,11 +3017,11 @@
                                             <span class="cdd-chevron"><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                                         </div>
                                         <div class="cdd-panel">
-                                            <div class="dd-option-check" onclick="toggleAdditionalCategory(this)"><span class="dd-check-box"></span>Cosmetic dentist</div>
-                                            <div class="dd-option-check" onclick="toggleAdditionalCategory(this)"><span class="dd-check-box"></span>Emergency dental service</div>
-                                            <div class="dd-option-check" onclick="toggleAdditionalCategory(this)"><span class="dd-check-box"></span>Teeth whitening service</div>
-                                            <div class="dd-option-check" onclick="toggleAdditionalCategory(this)"><span class="dd-check-box"></span>Pediatric dentist</div>
-                                            <div class="dd-option-check" onclick="toggleAdditionalCategory(this)"><span class="dd-check-box"></span>Orthodontist</div>
+                                            <div class="dd-option-check" onclick="toggleAdditionalCategory(this, event)"><span class="dd-check-box"></span>Cosmetic dentist</div>
+                                            <div class="dd-option-check" onclick="toggleAdditionalCategory(this, event)"><span class="dd-check-box"></span>Emergency dental service</div>
+                                            <div class="dd-option-check" onclick="toggleAdditionalCategory(this, event)"><span class="dd-check-box"></span>Teeth whitening service</div>
+                                            <div class="dd-option-check" onclick="toggleAdditionalCategory(this, event)"><span class="dd-check-box"></span>Pediatric dentist</div>
+                                            <div class="dd-option-check" onclick="toggleAdditionalCategory(this, event)"><span class="dd-check-box"></span>Orthodontist</div>
                                         </div>
                                     </div>
                                 </div>
@@ -2707,15 +3037,25 @@
                                 </div>
                             </div>
 
+                            <div id="merged-profile-edit-sep" class="profile-merged-edit-sep" style="display:none;"></div>
+                            <div class="biz-summary-title profile-merged-user-edit-title" id="user-edit-section-title" style="display:none;">User details</div>
+                            <div id="merged-user-edit-slot"></div>
+
                             <div class="biz-fetching-overlay" id="biz-fetching-overlay"><span class="pulsing">⚙</span> Fetching business details…</div>
                         </div>
                     </div>
 
                     <!-- ── User details (all agents) ── -->
-                    <div class="form-group" style="margin-bottom:20px;">
+                    <div class="form-group" id="user-profile-form-group" style="margin-bottom:20px;">
                         <div class="biz-summary-card" id="user-profile-card">
                             <div class="biz-summary-top">
-                                <span class="biz-summary-title">User details</span>
+                                <span class="biz-summary-title" id="user-summary-title-expanded">User details</span>
+                                <div id="user-compact-view" class="profile-compact-text" aria-hidden="true">
+                                    <span class="profile-compact-title">User details</span>
+                                    <span class="profile-compact-sep">·</span>
+                                    <span class="profile-compact-summary" id="user-compact-summary"></span>
+                                    <span class="profile-compact-mandatory" id="user-compact-mandatory" style="display:none;"></span>
+                                </div>
                                 <span class="icon-tooltip-wrap">
                                     <button type="button" class="biz-edit-btn" id="user-edit-btn" onclick="toggleUserEdit()">
                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
@@ -3217,7 +3557,7 @@
                                 <div class="survey-type-radio"></div>
                                 <div class="survey-type-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12a10 10 0 0 1 20 0"/><path d="M12 12l4-4"/><circle cx="12" cy="12" r="1"/></svg></div>
                                 <div class="survey-type-text">
-                                    <div class="survey-type-label">NPS Survey</div>
+                                    <div class="survey-type-label">NPS survey</div>
                                     <div class="survey-type-desc">Measures loyalty — how likely they'd recommend you.</div>
                                 </div>
                             </div>
@@ -3225,7 +3565,7 @@
                                 <div class="survey-type-radio"></div>
                                 <div class="survey-type-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg></div>
                                 <div class="survey-type-text">
-                                    <div class="survey-type-label">CSAT Survey</div>
+                                    <div class="survey-type-label">CSAT survey</div>
                                     <div class="survey-type-desc">Measures satisfaction of your recent visit.</div>
                                 </div>
                             </div>
@@ -3295,7 +3635,7 @@
                         </div>
                         <div class="custom-review-form" id="custom-form">
                             <div class="cr-field">
-                                <label class="cr-label">Star Rating</label>
+                                <label class="form-label">Star rating</label>
                                 <div class="cr-stars" id="cr-stars">
                                     <span class="cr-star" data-val="1" onmouseenter="hoverStars(1)" onmouseleave="unhoverStars()" onclick="setCustomStars(1)">★</span>
                                     <span class="cr-star" data-val="2" onmouseenter="hoverStars(2)" onmouseleave="unhoverStars()" onclick="setCustomStars(2)">★</span>
@@ -3305,20 +3645,20 @@
                                 </div>
                             </div>
                             <div class="cr-field">
-                                <label class="cr-label">Review Text</label>
+                                <label class="form-label">Review text</label>
                                 <textarea class="cr-textarea" id="cr-text" placeholder="Paste or type a review here..."></textarea>
                             </div>
                             <div class="cr-field">
-                                <label class="cr-label-soft">Reviewer name (optional)</label>
+                                <label class="form-label">Reviewer name (optional)</label>
                                 <input type="text" class="cr-name-input" id="cr-name" placeholder="e.g. Alex K.">
                             </div>
-                            <button class="btn-cr-generate" id="btn-cr-gen" onclick="generateCustomResponse()">✦ Generate AI Response</button>
+                            <button class="btn-cr-generate" id="btn-cr-gen" onclick="generateCustomResponse()">Generate AI Response</button>
                             <div class="cr-response-area" id="cr-response-area"></div>
                         </div>
-                        <div class="response-panel" id="response-panel" style="display:none;">
+                        <div class="response-panel legacy-review-panel" id="response-panel" style="display:none;" hidden aria-hidden="true">
                             <div class="rp-header">
                                 <span class="rp-title" id="rp-label">Generate AI Response</span>
-                                <button class="btn-generate" id="btn-gen" onclick="generateResponse()">✦ Generate Response</button>
+                                <button class="btn-generate" id="btn-gen" onclick="generateResponse()">Generate Response</button>
                             </div>
                             <div class="rp-body" id="rp-body">
                                 <p class="rp-empty">Select a review above and click "Generate Response" to see the agent in action.</p>
@@ -3364,7 +3704,7 @@
                         <div class="response-panel" id="social-response-panel" style="display:none;">
                             <div class="rp-header">
                                 <span class="rp-title" id="sc-rp-label">Generate AI Response</span>
-                                <button class="btn-generate" id="btn-sc-gen" onclick="generateSocialResponse()">✦ Generate Response</button>
+                                <button class="btn-generate" id="btn-sc-gen" onclick="generateSocialResponse()">Generate Response</button>
                             </div>
                             <div class="rp-body" id="sc-rp-body">
                                 <p class="rp-empty">Select a comment above and click "Generate Response" to see the agent in action.</p>
@@ -3421,24 +3761,24 @@
                         </div>
                         <div class="custom-review-form" id="tsa-custom-form">
                             <div class="cr-field">
-                                <label class="cr-label">Score (<span id="tsa-custom-score-range">0–10</span>)</label>
+                                <label class="form-label">Score (<span id="tsa-custom-score-range">0–10</span>)</label>
                                 <input type="number" class="cr-name-input" id="tsa-custom-score" min="0" max="10" placeholder="e.g. 3">
                             </div>
                             <div class="cr-field">
-                                <label class="cr-label">Response Text</label>
+                                <label class="form-label">Response text</label>
                                 <textarea class="cr-textarea" id="tsa-custom-text" placeholder="Paste or type a survey response here..."></textarea>
                             </div>
                             <div class="cr-field">
-                                <label class="cr-label-soft">Respondent name (optional)</label>
+                                <label class="form-label">Respondent name (optional)</label>
                                 <input type="text" class="cr-name-input" id="tsa-custom-name" placeholder="e.g. Alex K.">
                             </div>
-                            <button class="btn-cr-generate" id="btn-tsa-cr-gen" onclick="generateTsaCustomTicket()">✦ Assess for Ticket</button>
+                            <button class="btn-cr-generate" id="btn-tsa-cr-gen" onclick="generateTsaCustomTicket()">Assess for ticket</button>
                             <div class="cr-response-area" id="tsa-cr-response-area"></div>
                         </div>
                         <div class="response-panel" id="tsa-response-panel" style="display:none;">
                             <div class="rp-header">
                                 <span class="rp-title" id="tsa-rp-label">Assessing response</span>
-                                <button class="btn-generate" id="btn-tsa-gen" onclick="generateTsaTicket()">✦ Create Ticket</button>
+                                <button class="btn-generate" id="btn-tsa-gen" onclick="generateTsaTicket()">Create ticket</button>
                             </div>
                             <div class="rp-body" id="tsa-rp-body">
                                 <p class="rp-empty">Select a response above and click "Create Ticket" to see the agent in action.</p>
@@ -3482,11 +3822,11 @@
                         <p class="outcomes-intro">Here are some key outcomes of this agent.</p>
                         <div class="roi-calc-inputs" style="margin-bottom:20px;">
                             <div class="form-group">
-                                <label class="form-label">Monthly Review Volume</label>
+                                <label class="form-label">Monthly review volume</label>
                                 <input type="number" class="form-input" id="roi-volume" value="200" min="1" max="10000" oninput="recalcROI()">
                             </div>
                             <div class="form-group">
-                                <label class="form-label">Staff Cost ($/hr)</label>
+                                <label class="form-label">Staff cost ($/hr)</label>
                                 <input type="number" class="form-input" id="roi-rate" value="25" min="1" max="500" oninput="recalcROI()">
                             </div>
                         </div>
@@ -3520,7 +3860,7 @@
                                 <input type="number" class="form-input" id="sp-posts-pw" value="14" min="1" max="100" oninput="recalcSocialPub()">
                             </div>
                             <div class="form-group">
-                                <label class="form-label">Staff Cost ($/hr)</label>
+                                <label class="form-label">Staff cost ($/hr)</label>
                                 <input type="number" class="form-input" id="sp-rate" value="25" min="1" max="500" oninput="recalcSocialPub()">
                             </div>
                         </div>
@@ -3550,11 +3890,11 @@
                         <p class="outcomes-intro">Here are some key outcomes of the Social Engagement Agent.</p>
                         <div class="roi-calc-inputs" style="margin-bottom:20px;">
                             <div class="form-group">
-                                <label class="form-label">Daily Comment Volume</label>
+                                <label class="form-label">Daily comment volume</label>
                                 <input type="number" class="form-input" id="se-comments-day" value="8" min="1" max="1000" oninput="recalcSocialEng()">
                             </div>
                             <div class="form-group">
-                                <label class="form-label">Staff Cost ($/hr)</label>
+                                <label class="form-label">Staff cost ($/hr)</label>
                                 <input type="number" class="form-input" id="se-rate" value="25" min="1" max="500" oninput="recalcSocialEng()">
                             </div>
                         </div>
@@ -4010,7 +4350,6 @@ const REVIEWS = [
 // ---- RESPONSE DATA ----
 const RESPONSES = {
     3: {
-        label: "Responding to Mike R.",
         steps: [
             { txt: "Detecting review sentiment — 5-star positive signal identified", ms: 550 },
             { txt: "Identifying highlights: Dr. Kim, team culture, facility quality", ms: 650 },
@@ -4021,7 +4360,6 @@ const RESPONSES = {
         text: "Wow, Mike — thank you so much! Reviews like yours genuinely make our day. Dr. Kim and the entire team pour their heart into every patient interaction, and it means the world to hear that it shows. We believe a dental visit should feel comfortable — even enjoyable — so knowing you actually look forward to coming in is the highest compliment we could receive. We're lucky to have patients like you, and we'll see you at your next visit!"
     },
     2: {
-        label: "Responding to Sarah M.",
         steps: [
             { txt: "Detecting review sentiment — 4-star mixed-positive signal", ms: 550 },
             { txt: "Identifying key highlights: Dr. Patel, hygienist Lisa — names flagged", ms: 650 },
@@ -4032,7 +4370,6 @@ const RESPONSES = {
         text: "Thank you so much for the kind words, Sarah! We're thrilled to hear that Dr. Patel and Lisa made such a positive impression — we'll be sure to pass along your feedback to them directly. Your point about the waiting area is well taken and something we're actively working to improve. We want every aspect of your visit to feel as welcoming as the clinical care itself. We look forward to seeing you at your next appointment!"
     },
     1: {
-        label: "Responding to John D.",
         steps: [
             { txt: "Detecting review sentiment — 1-star negative signal identified", ms: 600 },
             { txt: "Extracting pain points: excessive wait time, front-desk communication", ms: 700 },
@@ -4364,6 +4701,7 @@ let currentAgent  = 'Review Response Agent';
 let selectedId    = null;
 let isGenerating  = false;
 let generatedCache = {};
+let reviewOutputHtmlCache = {};
 let customStarVal = 0;
 let crIsGenerating = false;
 let socialPubGenerated = false;
@@ -4391,8 +4729,10 @@ let rmaAlign = 'center';
 
 // ---- DROPDOWN ----
 function getAgentNameFromOption(opt) {
+    const label = opt.querySelector('.dd-option-label');
+    if (label) return label.textContent.trim();
     const clone = opt.cloneNode(true);
-    clone.querySelectorAll('.dd-soon-tag').forEach(el => el.remove());
+    clone.querySelectorAll('.dd-soon-tag, .dd-tooltip-bubble').forEach(el => el.remove());
     return clone.textContent.trim();
 }
 
@@ -4476,34 +4816,56 @@ function setRegenerateButton(btn, label) {
 }
 
 function setGenerateButton(btn, label) {
-    btn.innerHTML = `✦ ${label || 'Generate Response'}`;
+    btn.textContent = label || 'Generate Response';
     btn.classList.remove('btn-secondary');
 }
 
-const AGENT_SALES_TOOLTIP = 'Want to experience this agent? Contact Sales.';
-const COWORKER_SALES_TOOLTIP = 'Want to experience {name}-specific agents? Contact Sales.';
-const MYNA_AI_URL = 'https://myna.ai/';
-const MYNA_OPERATIONS_AGENTS = [
-    'Front Desk Agent',
-    'Waitlist Agent',
-    'Reminder Agent',
-    'Pre Visit Agent',
-    'Insurance Verification Agent',
-    'Recall Agent',
-    'Treatment Planning Agent',
-    'Revenue Agent'
-];
-
-function buildCoworkerTabTooltip(dept, coworkerName) {
-    if (dept === 'operations') {
-        const items = MYNA_OPERATIONS_AGENTS.map(name => `<li>${name}</li>`).join('');
-        return `<span class="coworker-tab-tooltip-title">Want to experience ${coworkerName}-specific agents?</span><ul class="coworker-tab-tooltip-list">${items}</ul><a class="coworker-tab-tooltip-link" href="${MYNA_AI_URL}" target="_blank" rel="noopener">Visit myna.ai</a>`;
-    }
-    return COWORKER_SALES_TOOLTIP.replace('{name}', coworkerName);
+function refreshAccBodyHeight(id) {
+    const body = document.getElementById('body-' + id);
+    if (!body || body.classList.contains('collapsed')) return;
+    const bump = () => {
+        body.style.overflow = 'visible';
+        body.style.maxHeight = body.scrollHeight + 'px';
+        requestAnimationFrame(() => {
+            body.style.maxHeight = 'none';
+            body.style.overflow = 'visible';
+        });
+    };
+    bump();
+    requestAnimationFrame(bump);
+    setTimeout(bump, 300);
 }
 
-function buildDisabledAgentTooltip(name) {
-    return `${AGENT_SALES_TOOLTIP}<a class="dd-tooltip-link" href="${MYNA_AI_URL}" target="_blank" rel="noopener">Visit myna.ai</a>`;
+function maybeRefreshOutputAcc(el) {
+    const outputBody = document.getElementById('body-output');
+    if (outputBody && el && outputBody.contains(el) && !outputBody.classList.contains('collapsed')) {
+        refreshAccBodyHeight('output');
+    }
+}
+
+const MYNA_AI_URL = 'https://myna.ai/';
+
+function getDeptAgentNames(dept) {
+    const list = document.getElementById('dd-list-' + dept);
+    if (!list) return [];
+    return Array.from(list.querySelectorAll('.dd-option')).map(o => getAgentNameFromOption(o)).filter(Boolean);
+}
+
+function buildMynaAiLink(className) {
+    return `<a class="${className}" href="${MYNA_AI_URL}" target="_blank" rel="noopener">visit myna.ai</a>`;
+}
+
+function buildCoworkerTabTooltip(dept, coworkerName) {
+    const agents = getDeptAgentNames(dept);
+    const items = agents.map(name => `<li>${name}</li>`).join('');
+    const title = coworkerName
+        ? `<span class="coworker-tab-tooltip-title">Want to experience ${coworkerName}-specific agents?</span>`
+        : '';
+    return `${title}<ul class="coworker-tab-tooltip-list">${items}</ul><span class="coworker-tab-tooltip-footer">To experience this agent, contact sales or ${buildMynaAiLink('coworker-tab-tooltip-link')}</span>`;
+}
+
+function buildDisabledAgentTooltip() {
+    return `To experience this agent, contact sales or to know more, ${buildMynaAiLink('dd-tooltip-link')}`;
 }
 
 const deptSelectedAgents = {
@@ -4545,9 +4907,9 @@ function syncCoworkerTabDisplay() {
         if (countEl) countEl.textContent = formatDeptAgentCount(getDeptAgentCount(dept));
         const tip = tab.querySelector('.coworker-tab-tooltip');
         if (tip) {
-            const name = tab.querySelector('.coworker-name')?.textContent?.trim() || '';
-            if (unavailable) {
-                tip.innerHTML = buildCoworkerTabTooltip(dept, name);
+            const coworkerName = tab.querySelector('.coworker-name')?.textContent?.trim() || '';
+            if (dept === 'operations' || (unavailable && dept !== 'cx')) {
+                tip.innerHTML = buildCoworkerTabTooltip(dept, coworkerName);
             } else {
                 tip.textContent = '';
             }
@@ -4609,10 +4971,13 @@ function setDesignTheme(theme) {
     syncRegenerateButtonsForTheme();
     syncHeaderAgentPill();
     syncCoworkerTabDisplay();
+    initDisabledAgentTooltips();
+    applyCxCompactProfileLayout();
 }
 
 function syncRegenerateButtonsForTheme() {
-    ['btn-gen', 'btn-sc-gen', 'btn-tsa-gen', 'btn-cr-gen'].forEach(id => {
+    Object.keys(generatedCache).forEach(id => updateReviewGenButton(id));
+    ['btn-cr-gen'].forEach(id => {
         const btn = document.getElementById(id);
         if (!btn) return;
         const label = btn.textContent.replace(/^↺\s*/, '').trim();
@@ -4624,12 +4989,20 @@ function syncRegenerateButtonsForTheme() {
 }
 
 function initDisabledAgentTooltips() {
+    document.querySelectorAll('.dd-disabled-sales-footer').forEach(el => el.remove());
     document.querySelectorAll('.agent-dropdown .dd-option.disabled').forEach(opt => {
         if (opt.querySelector('.dd-tooltip-wrap')) return;
         const name = getAgentNameFromOption(opt);
         opt.textContent = '';
-        opt.innerHTML = `<span class="dd-tooltip-wrap">${name}<span class="dd-tooltip-bubble">${buildDisabledAgentTooltip(name)}</span></span>`;
+        opt.innerHTML = `<span class="dd-tooltip-wrap"><span class="dd-option-label">${name}</span><span class="dd-tooltip-bubble">${buildDisabledAgentTooltip()}</span></span>`;
     });
+}
+
+function updateReviewGenButton(reviewId) {
+    const btn = document.getElementById('btn-gen-' + reviewId);
+    if (!btn) return;
+    if (generatedCache[reviewId]) setRegenerateButton(btn, 'Regenerate response');
+    else setGenerateButton(btn, 'Generate response');
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -4859,9 +5232,12 @@ function selectAgent(name, el) {
     tsaCustomIsGenerating = false;
     trvGenerated = false;
     trvIsGenerating = false;
+    resetProfileEditPanels();
+    applyCxCompactProfileLayout();
 }
 
-document.addEventListener('click', () => {
+document.addEventListener('click', (e) => {
+    if (e.target.closest('.cdd-anchor, .agent-dropdown, .agent-selector-pill, .header-agent-pill, .header-pill-anchor, .pill-anchor')) return;
     closeAllDropdownPanels();
 });
 
@@ -4886,22 +5262,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const headerAnchor = document.getElementById('header-pill-anchor');
     const dd = document.getElementById('agent-dropdown');
     let headerDdCloseTimer = null;
-    headerAnchor.addEventListener('mouseenter', () => {
-        clearTimeout(headerDdCloseTimer);
-        if (!header.classList.contains('agent-docked')) return;
-        openAgentDropdown('header-pill-anchor', 'header-agent-pill');
-    });
-    headerAnchor.addEventListener('mouseleave', () => {
-        headerDdCloseTimer = setTimeout(() => {
-            if (dd.parentElement === headerAnchor) closeAgentDropdown();
-        }, 280);
-    });
-    dd.addEventListener('mouseenter', () => clearTimeout(headerDdCloseTimer));
-    dd.addEventListener('mouseleave', () => {
-        if (dd.parentElement === headerAnchor) {
-            headerDdCloseTimer = setTimeout(() => closeAgentDropdown(), 280);
-        }
-    });
+    if (headerAnchor && dd) {
+        headerAnchor.addEventListener('mouseenter', () => {
+            clearTimeout(headerDdCloseTimer);
+            if (!header.classList.contains('agent-docked')) return;
+            openAgentDropdown('header-pill-anchor', 'header-agent-pill');
+        });
+        headerAnchor.addEventListener('mouseleave', () => {
+            headerDdCloseTimer = setTimeout(() => {
+                if (dd.parentElement === headerAnchor) closeAgentDropdown();
+            }, 280);
+        });
+        dd.addEventListener('mouseenter', () => clearTimeout(headerDdCloseTimer));
+        dd.addEventListener('mouseleave', () => {
+            if (dd.parentElement === headerAnchor) {
+                headerDdCloseTimer = setTimeout(() => closeAgentDropdown(), 280);
+            }
+        });
+    }
 });
 
 // ---- ACCORDION ----
@@ -4949,6 +5327,7 @@ function toggleAcc(id) {
         });
         setAccToggleOpen(id, true);
         document.getElementById('acc-' + id).classList.remove('is-closed');
+        requestAnimationFrame(() => refreshAccBodyHeight(id));
     }
 }
 
@@ -4990,12 +5369,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     renderRmaThumbGrid();
     renderServiceChips();
-    populateManualAddressDropdowns();
     enhanceAllFormSelects();
+    populateManualAddressDropdowns();
     setBusinessSource(true);
     updateSharedProfileExtras(getAgentType());
     updateContinueButton();
     updateActiveAgentCount();
+    applyCxCompactProfileLayout();
 });
 
 // ---- RESPONSE LENGTH ----
@@ -5055,10 +5435,294 @@ function toggleRecCard(card) {
 }
 
 // ---- LISTINGS: BUSINESS PROFILE SUMMARY / EDIT TOGGLE ----
-const BIZ_EDIT_BTN_HTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0f172a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>`;
+const BIZ_EDIT_BTN_HTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>`;
 const BIZ_SAVE_BTN_HTML = `Save`;
 
+const COMPACT_PROFILE_AGENT_TYPES = new Set([
+    'review', 'review-marketing', 'social-pub', 'social-eng', 'listings-opt', 'search-reco',
+    'ticketing-review'
+]);
+
+function isTsaMergedProfileMode() {
+    return document.body.classList.contains('theme-new') && getAgentType() === 'ticketing-survey';
+}
+
+function isCxCompactProfileMode() {
+    return document.body.classList.contains('theme-new')
+        && COMPACT_PROFILE_AGENT_TYPES.has(getAgentType());
+}
+
+function ensureMergedUserEditPlacement() {
+    const userFields = document.getElementById('user-edit-fields');
+    const slot = document.getElementById('merged-user-edit-slot');
+    const userCard = document.getElementById('user-profile-card');
+    if (!userFields || !slot || !userCard) return;
+
+    if (isTsaMergedProfileMode()) {
+        if (userFields.parentElement !== slot) slot.appendChild(userFields);
+    } else if (userFields.parentElement !== userCard) {
+        userCard.appendChild(userFields);
+    }
+}
+
+function formatMandatoryFieldLabel(count) {
+    return count === 1 ? '1 mandatory field' : `${count} mandatory fields`;
+}
+
+function truncateCompactValue(value, maxLen = 36) {
+    const v = (value || '').trim();
+    if (v.length <= maxLen) return v;
+    return v.slice(0, maxLen - 1) + '…';
+}
+
+function escapeHtml(str) {
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+}
+
+function buildCompactProfileSummary(fields) {
+    const filled = fields.filter(f => (f.value || '').trim());
+    const missingMandatory = fields.filter(f => f.mandatory && !(f.value || '').trim()).length;
+
+    if (!filled.length && missingMandatory > 0) {
+        const label = formatMandatoryFieldLabel(missingMandatory);
+        return {
+            mandatoryOnly: true,
+            mandatorySuffix: '',
+            primaryText: label,
+            hiddenFields: [],
+            moreCount: 0
+        };
+    }
+
+    const hiddenFields = filled.slice(1).map(f => ({
+        label: f.label,
+        value: (f.value || '').trim()
+    }));
+
+    return {
+        mandatoryOnly: false,
+        mandatorySuffix: missingMandatory > 0 ? formatMandatoryFieldLabel(missingMandatory) : '',
+        primaryText: truncateCompactValue(filled[0].value),
+        hiddenFields,
+        moreCount: hiddenFields.length
+    };
+}
+
+function buildProfileDetailTooltipHtml(fields, type) {
+    if (!fields.length) return '';
+    const rows = fields.map(f => {
+        let valueClass = '';
+        if (f.label === 'Business description') valueClass = ' profile-detail-tooltip-value--desc';
+        else if (f.label === 'Website' || f.label === 'Email address') valueClass = ' profile-detail-tooltip-value--single';
+        return `
+        <div class="profile-detail-tooltip-row">
+            <span class="profile-detail-tooltip-label">${escapeHtml(f.label)}</span>
+            <span class="profile-detail-tooltip-value${valueClass}">${escapeHtml(f.value)}</span>
+        </div>`;
+    }).join('');
+    return `<span class="profile-compact-detail-tooltip profile-compact-detail-tooltip--${type}" role="tooltip">${rows}</span>`;
+}
+
+function getBizCompactProfileSummary() {
+    const val = id => document.getElementById(id)?.value?.trim() || '';
+    const locLabel = document.getElementById('cdd-locations-label');
+    const loc = locLabel?.classList.contains('cdd-placeholder') ? '' : (locLabel?.textContent?.trim() || '');
+    const industry = document.getElementById('shared-biz-industry')?.value?.trim() || '';
+
+    const fields = [
+        { label: 'Industry', mandatory: true, value: industry },
+        { label: 'No. of locations', mandatory: true, value: loc },
+        { label: 'Business address', mandatory: false, value: val('shared-biz-address') },
+    ];
+    if (!businessFromGoogle) {
+        fields.push(
+            { label: 'Country', mandatory: true, value: val('shared-biz-country') },
+            { label: 'ZIP code', mandatory: true, value: val('shared-biz-zip') },
+            { label: 'State', mandatory: true, value: val('shared-biz-state') }
+        );
+    }
+    if (getAgentType() === 'listings-opt') {
+        const addLabel = document.getElementById('cdd-additional-label');
+        const add = addLabel?.textContent?.trim() === 'None selected' ? '' : (addLabel?.textContent?.trim() || '');
+        fields.push({ label: 'Additional categories', mandatory: false, value: add });
+    }
+    fields.push(
+        { label: 'Services', mandatory: false, value: currentServices.join(', ') },
+        { label: 'Business description', mandatory: false, value: val('shared-biz-desc') },
+        { label: 'Website', mandatory: false, value: val('shared-biz-website') }
+    );
+
+    return buildCompactProfileSummary(fields);
+}
+
+function getUserCompactProfileSummary() {
+    const val = id => document.getElementById(id)?.value?.trim() || '';
+    const fields = [
+        { label: 'Full name', mandatory: true, value: val('lead-gen-fullname') },
+        { label: 'Mobile number', mandatory: true, value: val('lead-gen-mobile') },
+        { label: 'Email address', mandatory: true, value: val('lead-gen-email') },
+    ];
+    return buildCompactProfileSummary(fields);
+}
+
+function renderCompactSummary(targetPrefix, data) {
+    const summaryEl = document.getElementById(targetPrefix + '-compact-summary');
+    const mandatoryEl = document.getElementById(targetPrefix + '-compact-mandatory');
+    if (!summaryEl || !mandatoryEl) return;
+
+    const tooltipType = targetPrefix.startsWith('merged-') ? targetPrefix.slice(7) : targetPrefix;
+    summaryEl.classList.toggle('is-mandatory-only', data.mandatoryOnly);
+
+    if (data.mandatoryOnly) {
+        summaryEl.textContent = data.primaryText;
+    } else if (data.moreCount > 0) {
+        const tooltipHtml = buildProfileDetailTooltipHtml(data.hiddenFields, tooltipType);
+        summaryEl.innerHTML = `${escapeHtml(data.primaryText)}, <span class="profile-compact-more-wrap"><span class="profile-compact-more-trigger">+${data.moreCount} more</span>${tooltipHtml}</span>`;
+    } else {
+        summaryEl.textContent = data.primaryText;
+    }
+
+    if (data.mandatorySuffix) {
+        mandatoryEl.textContent = '· ' + data.mandatorySuffix;
+        mandatoryEl.style.display = '';
+    } else {
+        mandatoryEl.textContent = '';
+        mandatoryEl.style.display = 'none';
+    }
+}
+
+function syncCompactProfileSummaries() {
+    if (isTsaMergedProfileMode()) {
+        renderCompactSummary('merged-biz', getBizCompactProfileSummary());
+        renderCompactSummary('merged-user', getUserCompactProfileSummary());
+        return;
+    }
+    if (!isCxCompactProfileMode()) return;
+    renderCompactSummary('biz', getBizCompactProfileSummary());
+    renderCompactSummary('user', getUserCompactProfileSummary());
+}
+
+function applyCxCompactProfileLayout() {
+    ensureMergedUserEditPlacement();
+
+    const merged = isTsaMergedProfileMode();
+    const compact = isCxCompactProfileMode();
+    const bizCard = document.getElementById('biz-profile-card');
+    const userCard = document.getElementById('user-profile-card');
+    const userFormGroup = document.getElementById('user-profile-form-group');
+    const bizSection = document.getElementById('shared-biz-section');
+    const mergedCompact = document.getElementById('merged-profile-compact');
+    const mergedSep = document.getElementById('merged-profile-edit-sep');
+    const userEditTitle = document.getElementById('user-edit-section-title');
+    const userFields = document.getElementById('user-edit-fields');
+
+    bizSection?.classList.toggle('tsa-merged-profiles', merged);
+    bizSection?.classList.toggle('cx-compact-profiles', compact);
+    bizCard?.classList.toggle('tsa-merged-profile', merged);
+    bizCard?.classList.toggle('cx-compact-profile', compact || merged);
+    userCard?.classList.toggle('cx-compact-profile', compact);
+
+    if (merged) {
+        const bizEditing = document.getElementById('biz-edit-fields')?.style.display === 'block';
+        bizCard?.classList.toggle('is-editing', bizEditing);
+        userCard?.classList.toggle('is-editing', false);
+
+        if (userFormGroup) userFormGroup.style.display = 'none';
+        if (mergedSep) mergedSep.style.display = bizEditing ? 'block' : 'none';
+        if (userEditTitle) userEditTitle.style.display = bizEditing ? 'block' : 'none';
+        if (userFields) userFields.style.display = bizEditing ? 'block' : 'none';
+        if (mergedCompact) mergedCompact.setAttribute('aria-hidden', bizEditing ? 'true' : 'false');
+
+        document.getElementById('biz-summary-view').style.display = 'none';
+        document.getElementById('user-summary-view').style.display = 'none';
+        if (!bizEditing) syncCompactProfileSummaries();
+        refreshBasicAccForDropdown();
+        return;
+    }
+
+    if (userFormGroup) userFormGroup.style.display = '';
+    if (mergedSep) mergedSep.style.display = 'none';
+    if (userEditTitle) userEditTitle.style.display = 'none';
+    if (mergedCompact) mergedCompact.setAttribute('aria-hidden', 'true');
+
+    const bizEditing = document.getElementById('biz-edit-fields')?.style.display === 'block';
+    const userEditing = document.getElementById('user-edit-fields')?.style.display === 'block';
+    bizCard?.classList.toggle('is-editing', compact && bizEditing);
+    userCard?.classList.toggle('is-editing', compact && userEditing);
+
+    const bizCompact = document.getElementById('biz-compact-view');
+    const userCompact = document.getElementById('user-compact-view');
+    if (bizCompact) bizCompact.setAttribute('aria-hidden', compact && !bizEditing ? 'false' : 'true');
+    if (userCompact) userCompact.setAttribute('aria-hidden', compact && !userEditing ? 'false' : 'true');
+
+    if (compact) {
+        document.getElementById('biz-summary-view').style.display = 'none';
+        document.getElementById('user-summary-view').style.display = 'none';
+        syncCompactProfileSummaries();
+    } else {
+        if (!bizEditing) document.getElementById('biz-summary-view').style.display = 'block';
+        if (!userEditing) document.getElementById('user-summary-view').style.display = 'block';
+    }
+}
+
+function resetProfileEditPanels() {
+    const bizFields = document.getElementById('biz-edit-fields');
+    const userFields = document.getElementById('user-edit-fields');
+    const bizBtn = document.getElementById('biz-edit-btn');
+    const userBtn = document.getElementById('user-edit-btn');
+
+    if (bizFields?.style.display === 'block') {
+        syncBizSummary();
+        bizFields.style.display = 'none';
+        if (bizBtn) {
+            bizBtn.innerHTML = BIZ_EDIT_BTN_HTML;
+            bizBtn.classList.remove('is-save');
+        }
+        const bizTooltip = document.getElementById('biz-edit-tooltip');
+        if (bizTooltip) bizTooltip.style.display = '';
+    }
+    if (userFields?.style.display === 'block') {
+        syncUserSummary();
+        userFields.style.display = 'none';
+        if (userBtn) {
+            userBtn.innerHTML = BIZ_EDIT_BTN_HTML;
+            userBtn.classList.remove('is-save');
+        }
+        const userTooltip = document.getElementById('user-edit-tooltip');
+        if (userTooltip) userTooltip.style.display = '';
+    }
+}
+
 function toggleBizEdit() {
+    if (isTsaMergedProfileMode()) {
+        const fields  = document.getElementById('biz-edit-fields');
+        const btn     = document.getElementById('biz-edit-btn');
+        const tooltip = document.getElementById('biz-edit-tooltip');
+        const isEditing = fields.style.display === 'block';
+
+        if (isEditing) {
+            syncBizSummary();
+            syncUserSummary();
+            fields.style.display = 'none';
+            btn.innerHTML = BIZ_EDIT_BTN_HTML;
+            btn.classList.remove('is-save');
+            tooltip.style.display = '';
+            updateContinueButton();
+        } else {
+            fields.style.display = 'block';
+            btn.innerHTML = BIZ_SAVE_BTN_HTML;
+            btn.classList.add('is-save');
+            tooltip.style.display = 'none';
+        }
+        applyCxCompactProfileLayout();
+        refreshBasicAccForDropdown();
+        return;
+    }
+
     const summary = document.getElementById('biz-summary-view');
     const fields  = document.getElementById('biz-edit-fields');
     const btn     = document.getElementById('biz-edit-btn');
@@ -5068,17 +5732,19 @@ function toggleBizEdit() {
     if (isEditing) {
         syncBizSummary();
         fields.style.display = 'none';
-        summary.style.display = 'block';
+        summary.style.display = isCxCompactProfileMode() ? 'none' : 'block';
         btn.innerHTML = BIZ_EDIT_BTN_HTML;
         btn.classList.remove('is-save');
         tooltip.style.display = '';
         updateContinueButton();
+        applyCxCompactProfileLayout();
     } else {
         summary.style.display = 'none';
         fields.style.display = 'block';
         btn.innerHTML = BIZ_SAVE_BTN_HTML;
         btn.classList.add('is-save');
         tooltip.style.display = 'none';
+        applyCxCompactProfileLayout();
     }
 }
 
@@ -5102,9 +5768,15 @@ function syncBizSummary() {
     document.getElementById('bs-services').textContent     = displayOrDash(currentServices.join(', '));
     document.getElementById('bs-description').textContent  = displayOrDash(val('shared-biz-desc'));
     document.getElementById('bs-website').textContent      = displayOrDash(val('shared-biz-website'));
+    syncCompactProfileSummaries();
 }
 
 function toggleUserEdit() {
+    if (isTsaMergedProfileMode()) {
+        toggleBizEdit();
+        return;
+    }
+
     const summary = document.getElementById('user-summary-view');
     const fields  = document.getElementById('user-edit-fields');
     const btn     = document.getElementById('user-edit-btn');
@@ -5114,17 +5786,19 @@ function toggleUserEdit() {
     if (isEditing) {
         syncUserSummary();
         fields.style.display = 'none';
-        summary.style.display = 'block';
+        summary.style.display = isCxCompactProfileMode() ? 'none' : 'block';
         btn.innerHTML = BIZ_EDIT_BTN_HTML;
         btn.classList.remove('is-save');
         tooltip.style.display = '';
         updateContinueButton();
+        applyCxCompactProfileLayout();
     } else {
         summary.style.display = 'none';
         fields.style.display = 'block';
         btn.innerHTML = BIZ_SAVE_BTN_HTML;
         btn.classList.add('is-save');
         tooltip.style.display = 'none';
+        applyCxCompactProfileLayout();
     }
 }
 
@@ -5134,6 +5808,7 @@ function syncUserSummary() {
     document.getElementById('us-fullname').textContent = displayOrDash(val('lead-gen-fullname'));
     document.getElementById('us-mobile').textContent    = displayOrDash(val('lead-gen-mobile'));
     document.getElementById('us-email').textContent     = displayOrDash(val('lead-gen-email'));
+    syncCompactProfileSummaries();
 }
 
 let currentGoogleProfileUrl = '';
@@ -5160,6 +5835,7 @@ const COUNTRIES = [
 function populateManualAddressDropdowns() {
     const stateSelect = document.getElementById('shared-biz-state');
     const countrySelect = document.getElementById('shared-biz-country');
+    if (!stateSelect || !countrySelect) return;
     stateSelect.innerHTML = '<option value="" disabled hidden selected>Select state</option>' +
         US_STATES.map(s => `<option>${s}</option>`).join('');
     countrySelect.innerHTML = '<option value="" disabled hidden selected>Select country</option>' +
@@ -5173,8 +5849,8 @@ function populateManualAddressDropdowns() {
 function setBusinessSource(fromGoogle) {
     businessFromGoogle = fromGoogle;
     const industrySelect = document.getElementById('shared-biz-industry');
-    industrySelect.disabled = fromGoogle;
-    if (!fromGoogle) industrySelect.value = '';
+    industrySelect.disabled = false;
+    if (fromGoogle && !industrySelect.value) industrySelect.value = 'Dental';
     syncFormSelectCddDisabled('shared-biz-industry');
     if (industrySelect.dataset.cddEnhanced === '1') rebuildFormSelectCddPanel('shared-biz-industry');
 
@@ -5210,12 +5886,14 @@ function isBasicDetailsValid() {
         document.getElementById('shared-biz-country')?.value.trim() &&
         document.getElementById('shared-biz-state')?.value.trim()
     );
-    return !!(bizName && locationsSelected && fullName && mobile && email && email.includes('@') && manualFieldsValid);
+    const industryValid = !!document.getElementById('shared-biz-industry')?.value;
+    return !!(bizName && locationsSelected && fullName && mobile && email && email.includes('@') && industryValid && manualFieldsValid);
 }
 
 function updateContinueButton() {
     const btn = document.getElementById('btn-continue');
     if (btn) btn.disabled = !isBasicDetailsValid();
+    syncCompactProfileSummaries();
 }
 
 function openGoogleBusinessProfile(event) {
@@ -5237,7 +5915,13 @@ function updateViewProfileLink(profile) {
     }
 }
 
-function selectLocations(value, el) {
+function refreshBasicAccForDropdown() {
+    const basic = document.getElementById('body-basic');
+    if (basic && !basic.classList.contains('collapsed')) refreshAccBodyHeight('basic');
+}
+
+function selectLocations(value, el, event) {
+    if (event) event.stopPropagation();
     el.parentElement.querySelectorAll('.dd-option').forEach(o => o.classList.remove('selected'));
     el.classList.add('selected');
     const label = document.getElementById('cdd-locations-label');
@@ -5246,6 +5930,7 @@ function selectLocations(value, el) {
     document.getElementById('cdd-locations').classList.remove('open');
     locationsSelected = true;
     updateContinueButton();
+    refreshBasicAccForDropdown();
 }
 
 // ---- SHARED: BUSINESS NAME SEARCH ----
@@ -5310,6 +5995,7 @@ function selectCantFindBusiness() {
     document.getElementById('biz-edit-btn').classList.add('is-save');
     document.getElementById('biz-edit-tooltip').style.display = 'none';
 
+    applyCxCompactProfileLayout();
     updateContinueButton();
 }
 
@@ -5364,6 +6050,8 @@ async function fetchBusinessProfile(name) {
     updateViewProfileLink(profile);
 
     overlay.style.display = 'none';
+    syncBizSummary();
+    applyCxCompactProfileLayout();
     await afterBusinessProfileFetched(name);
 }
 
@@ -5715,7 +6403,11 @@ function rebuildFormSelectCddPanel(id) {
         const optionEl = document.createElement('div');
         optionEl.className = 'dd-option';
         optionEl.textContent = opt.textContent.trim();
-        optionEl.onclick = () => selectFormSelectCddOption(id, opt.value || opt.textContent.trim(), optionEl);
+        optionEl.onmousedown = (e) => e.preventDefault();
+        optionEl.onclick = (e) => {
+            e.stopPropagation();
+            selectFormSelectCddOption(id, opt.value || opt.textContent.trim(), optionEl);
+        };
         if (opt.selected && opt.value !== '') optionEl.classList.add('selected');
         panel.appendChild(optionEl);
     });
@@ -5778,7 +6470,10 @@ function toggleFormSelectCdd(id, event) {
     if (!anchor) return;
     const isOpen = anchor.classList.contains('open');
     closeAllDropdownPanels();
-    if (!isOpen) anchor.classList.add('open');
+    if (!isOpen) {
+        anchor.classList.add('open');
+        refreshBasicAccForDropdown();
+    }
 }
 
 function selectFormSelectCddOption(id, value, el) {
@@ -5797,6 +6492,7 @@ function selectFormSelectCddOption(id, value, el) {
 
     syncFormSelectCddLabel(id);
     select.dispatchEvent(new Event('change', { bubbles: true }));
+    refreshBasicAccForDropdown();
 }
 
 function closeAllDropdownPanels() {
@@ -5810,7 +6506,10 @@ function toggleCatDropdown(which, event) {
     const anchor = document.getElementById('cdd-' + which);
     const isOpen = anchor.classList.contains('open');
     closeAllDropdownPanels();
-    if (!isOpen) anchor.classList.add('open');
+    if (!isOpen) {
+        anchor.classList.add('open');
+        refreshBasicAccForDropdown();
+    }
 }
 
 function updateAdditionalCategoriesLabel() {
@@ -5823,9 +6522,11 @@ function updateAdditionalCategoriesLabel() {
         const first = checked[0].textContent.trim();
         label.textContent = checked.length > 1 ? `${first}, +${checked.length - 1} more` : first;
     }
+    syncBizSummary();
 }
 
-function toggleAdditionalCategory(el) {
+function toggleAdditionalCategory(el, event) {
+    if (event) event.stopPropagation();
     el.querySelector('.dd-check-box').classList.toggle('checked');
     updateAdditionalCategoriesLabel();
 }
@@ -5904,6 +6605,7 @@ function forceOpenAcc(id) {
     body.style.overflow = 'visible';
     setAccToggleOpen(id, true);
     document.getElementById('acc-' + id).classList.remove('is-closed');
+    requestAnimationFrame(() => refreshAccBodyHeight(id));
 }
 
 function runContinue() {
@@ -6263,6 +6965,13 @@ function closeRecPreview(id) {
     if (openRecPreviewId === id) openRecPreviewId = null;
 }
 
+function getReviewResponseLabel(reviewId) {
+    const review = REVIEWS.find(r => r.id === reviewId);
+    if (!review) return 'Response';
+    const first = review.name.split(' ')[0].replace(/\.$/, '');
+    return `Response to ${first}`;
+}
+
 // ---- RENDER REVIEWS ----
 function renderReviews() {
     const list = document.getElementById('reviews-list');
@@ -6275,12 +6984,40 @@ function renderReviews() {
 
         const sentLabel = r.sentiment.charAt(0).toUpperCase() + r.sentiment.slice(1);
         const isSelected = r.id === selectedId;
+        const resp = RESPONSES[r.id];
+        const hasGenerated = !!generatedCache[r.id];
 
         const card = document.createElement('div');
-        card.className = 'review-card fade-up' + (isSelected ? ' selected' : '');
+        card.className = 'review-card fade-up' + (isSelected ? ' selected expanded' : '');
         card.style.animationDelay = (idx * 55) + 'ms';
         card.dataset.id = r.id;
         card.onclick = () => selectReview(r.id);
+
+        let expandHTML = '';
+        if (isSelected && resp) {
+            const hasOutput = hasGenerated || !!reviewOutputHtmlCache[r.id];
+            let outputHTML = reviewOutputHtmlCache[r.id]
+                || (hasGenerated ? buildResponseHTML(generatedCache[r.id], r.id, 'copy-' + r.id, getReviewResponseLabel(r.id), true) : '');
+
+            if (hasOutput) {
+                expandHTML = `
+                    <div class="review-card-expand">
+                        <div class="review-card-post-head">
+                            <span class="review-card-action-label">${getReviewResponseLabel(r.id)}</span>
+                            <button type="button" class="btn-generate" id="btn-gen-${r.id}" onclick="event.stopPropagation(); generateResponse(${r.id})">Regenerate response</button>
+                        </div>
+                        <div class="review-card-output" id="rp-body-${r.id}">${outputHTML}</div>
+                    </div>`;
+            } else {
+                expandHTML = `
+                    <div class="review-card-expand">
+                        <div class="review-card-cta-only" id="review-cta-${r.id}">
+                            <button type="button" class="btn-generate" id="btn-gen-${r.id}" onclick="event.stopPropagation(); generateResponse(${r.id})">Generate response</button>
+                        </div>
+                        <div class="review-card-output" id="rp-body-${r.id}" style="display:none" hidden></div>
+                    </div>`;
+            }
+        }
 
         card.innerHTML = `
             <div class="select-check">✓</div>
@@ -6304,60 +7041,57 @@ function renderReviews() {
                 </div>
             </div>
             <p class="review-text">${r.text}</p>
+            ${expandHTML}
         `;
         list.appendChild(card);
+
+        if (isSelected) updateReviewGenButton(r.id);
     });
 }
 
 // ---- SELECT REVIEW ----
 function selectReview(id) {
     selectedId = id;
+    const scrollY = window.scrollY;
     renderReviews();
-
-    const panel = document.getElementById('response-panel');
-    panel.style.display = 'block';
-    panel.classList.add('active');
-
-    document.getElementById('rp-label').textContent = RESPONSES[id].label;
-
-    const genBtn = document.getElementById('btn-gen');
-
-    if (generatedCache[id]) {
-        renderStoredResponse(id);
-        setRegenerateButton(genBtn);
-        genBtn.disabled = false;
-    } else {
-        document.getElementById('rp-body').innerHTML = `
-            <p class="rp-empty">Click "Generate Response" to have the AI craft a personalized, brand-consistent reply to this review.</p>
-        `;
-        setGenerateButton(genBtn, 'Generate Response');
-        genBtn.disabled = false;
-    }
-
-    setTimeout(() => panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 80);
+    requestAnimationFrame(() => window.scrollTo(0, scrollY));
+    refreshAccBodyHeight('output');
 }
 
 // ---- GENERATE RESPONSE ----
-async function generateResponse() {
-    if (!selectedId || isGenerating) return;
+async function generateResponse(reviewId) {
+    const id = reviewId || selectedId;
+    if (!id || isGenerating) return;
+    selectedId = id;
     isGenerating = true;
 
-    const genBtn = document.getElementById('btn-gen');
-    genBtn.disabled = true;
-    genBtn.innerHTML = '<span class="pulsing">⚙</span>&nbsp;Analyzing…';
+    const genBtn = document.getElementById('btn-gen-' + id);
+    const ctaRow = document.getElementById('review-cta-' + id);
+    const outEl  = document.getElementById('rp-body-' + id);
+    if (ctaRow) ctaRow.style.display = 'none';
+    if (outEl) {
+        outEl.hidden = false;
+        outEl.style.display = 'block';
+        outEl.innerHTML = '';
+    }
+    if (genBtn) {
+        genBtn.disabled = true;
+        genBtn.innerHTML = '<span class="pulsing">⚙</span>&nbsp;Analyzing…';
+    }
 
     await runReasoningFlow(
-        'rp-body',
-        RESPONSES[selectedId].steps,
-        RESPONSES[selectedId].text,
-        selectedId,
+        'rp-body-' + id,
+        RESPONSES[id].steps,
+        RESPONSES[id].text,
+        id,
         () => {
-            generatedCache[selectedId] = RESPONSES[selectedId].text;
+            generatedCache[id] = RESPONSES[id].text;
+            reviewOutputHtmlCache[id] = document.getElementById('rp-body-' + id).innerHTML;
             isGenerating = false;
-            setRegenerateButton(genBtn);
-            genBtn.disabled = false;
+            updateReviewGenButton(id);
+            if (genBtn) genBtn.disabled = false;
 
-            // Open Outcome accordion the first time a response is generated
+            // Prepare Outcome data in the background — stay in Output (no accordion open / scroll)
             const outcomeBody = document.getElementById('body-outcome');
             if (outcomeBody.classList.contains('collapsed')) {
                 document.getElementById('outcome-placeholder').style.display = 'none';
@@ -6368,23 +7102,21 @@ async function generateResponse() {
                 document.getElementById('outcome-listings-opt').style.display = 'none';
                 document.getElementById('outcome-review-marketing').style.display = 'none';
                 recalcROI();
-                forceOpenAcc('outcome');
-                setTimeout(() => {
-                    document.querySelectorAll('.roi-bar[data-target]').forEach(bar => {
-                        bar.style.width = bar.dataset.target + '%';
-                    });
-                }, 300);
-                setTimeout(() => {
-                    document.getElementById('acc-outcome').scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 150);
             }
+            refreshAccBodyHeight('output');
+            const scrollY = window.scrollY;
+            renderReviews();
+            requestAnimationFrame(() => window.scrollTo(0, scrollY));
         }
     );
 }
 
 // ---- SHOW STORED RESPONSE ----
 function renderStoredResponse(id) {
-    document.getElementById('rp-body').innerHTML = buildResponseHTML(generatedCache[id], id, 'copy-main');
+    const body = document.getElementById('rp-body-' + id);
+    if (!body) return;
+    body.innerHTML = reviewOutputHtmlCache[id]
+        || buildResponseHTML(generatedCache[id], id, 'copy-' + id, getReviewResponseLabel(id), true);
 }
 
 // ---- REASONING ACCORDION TOGGLE ----
@@ -6441,6 +7173,7 @@ async function runReasoningFlow(bodyId, steps, responseText, cacheKey, onDone) {
         progFill.style.width  = pct + '%';
         progPct.textContent   = pct + '%';
         progLabel.textContent = step.txt;
+        maybeRefreshOutputAcc(rpBody);
     }
 
     await pause(400);
@@ -6471,23 +7204,30 @@ async function runReasoningFlow(bodyId, steps, responseText, cacheKey, onDone) {
                 <div class="reasoning-acc-inner">${stepsSnap}</div>
             </div>
         </div>
-        ${buildResponseHTML(responseText, cacheKey, 'copy-' + cacheKey)}
+        ${buildResponseHTML(responseText, cacheKey, 'copy-' + cacheKey, RESPONSES[cacheKey] ? getReviewResponseLabel(Number(cacheKey)) : null, !!RESPONSES[cacheKey])}
     `;
 
     await typeOut(`resp-body-${cacheKey}`, responseText, 14);
 
     if (onDone) onDone();
+    maybeRefreshOutputAcc(rpBody);
 }
 
-function buildResponseHTML(text, cacheKey, copyId) {
+function buildResponseHTML(text, cacheKey, copyId, headLabel, reviewCompact) {
+    const headInner = reviewCompact
+        ? `<div class="meta-tags">
+                    <span class="meta-tag">Brand consistent</span>
+                    <span class="meta-tag">HIPAA safe</span>
+                </div>`
+        : `<span class="gen-label">${headLabel || 'AI-generated response'}</span>
+                <div class="meta-tags">
+                    <span class="meta-tag">Brand consistent</span>
+                    <span class="meta-tag">HIPAA safe</span>
+                </div>`;
     return `
         <div class="gen-response fade-up">
-            <div class="gen-response-head">
-                <span class="gen-label">AI-Generated Response</span>
-                <div class="meta-tags">
-                    <span class="meta-tag">Brand-consistent</span>
-                    <span class="meta-tag">HIPAA-safe</span>
-                </div>
+            <div class="gen-response-head${reviewCompact ? ' gen-response-head-compact' : ''}">
+                ${headInner}
             </div>
             <div class="gen-response-body" id="resp-body-${cacheKey}">${text || ''}</div>
             <div class="gen-response-foot">
@@ -6504,6 +7244,7 @@ function toggleCustomReview() {
     const form    = document.getElementById('custom-form');
     const isOpen  = form.classList.toggle('open');
     trigger.classList.toggle('expanded', isOpen);
+    refreshAccBodyHeight('output');
 }
 
 // Star hover/select
@@ -6803,7 +7544,7 @@ function selectTsaResponse(id) {
         genBtn.disabled = false;
     } else {
         document.getElementById('tsa-rp-body').innerHTML = `<p class="rp-empty">Click "Create Ticket" to have the AI assess this response and draft a support ticket.</p>`;
-        genBtn.innerHTML = '✦ Create Ticket';
+        genBtn.textContent = 'Create ticket';
         genBtn.classList.remove('btn-secondary');
         genBtn.disabled = false;
     }
@@ -6963,6 +7704,7 @@ function toggleTsaCustomResponse() {
     const form    = document.getElementById('tsa-custom-form');
     const isOpen  = form.classList.toggle('open');
     trigger.classList.toggle('expanded', isOpen);
+    refreshAccBodyHeight('output');
 }
 
 async function generateTsaCustomTicket() {
@@ -7007,7 +7749,7 @@ async function generateTsaCustomTicket() {
     await runTsaTicketFlow('tsa-cr-rp-body', TSA_STEPS, ticket, 'tsa-custom-' + Date.now(), () => {
         tsaCustomIsGenerating = false;
         tsaGenerated = true;
-        btn.innerHTML = '✦ Assess for Ticket';
+        btn.textContent = 'Assess for ticket';
         btn.disabled = false;
 
         const outcomeBody = document.getElementById('body-outcome');
