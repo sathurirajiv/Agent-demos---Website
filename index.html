@@ -2374,7 +2374,12 @@
         }
 
         body.theme-new .biz-summary-card { border-radius: 16px; border-color: #e6e2e0; }
-        body.theme-new .biz-summary-title { font-family: 'Geist', sans-serif; font-weight: 500; color: #212121; }
+        body.theme-new .biz-summary-title,
+        body.theme-new .profile-compact-title,
+        body.theme-new .profile-merged-user-edit-title {
+            font-family: 'Geist', sans-serif; font-size: 13px; font-weight: 500;
+            color: #646464; text-transform: none; letter-spacing: 0;
+        }
         body.theme-new .biz-summary-card.cx-compact-profile { padding: 17px 16px; }
         body.theme-new .biz-summary-card.cx-compact-profile .biz-summary-top { margin-bottom: 0; }
         body.theme-new .biz-summary-card.cx-compact-profile #biz-summary-title-expanded,
@@ -2389,9 +2394,6 @@
         body.theme-new #shared-biz-section.cx-compact-profiles > .form-group:nth-child(2) { margin-bottom: 16px !important; }
         body.theme-new #shared-biz-section.cx-compact-profiles { overflow: visible; }
         body.theme-new #shared-biz-section.cx-compact-profiles > .form-group { overflow: visible; }
-        body.theme-new .profile-compact-title {
-            font-family: 'Geist', sans-serif; font-weight: 500; font-size: 13px; color: #212121;
-        }
         body.theme-new .profile-compact-sep { color: #909090; }
         body.theme-new .profile-compact-summary {
             font-family: 'Geist', sans-serif; font-weight: 400; font-size: 13px; color: #646464;
@@ -2402,30 +2404,63 @@
         body.theme-new .profile-compact-text { overflow: visible; }
         body.theme-new .biz-summary-card.cx-compact-profile:has(.profile-compact-more-wrap:hover),
         body.theme-new #user-profile-card.cx-compact-profile:has(.profile-compact-more-wrap:hover),
-        body.theme-new .biz-summary-card.tsa-merged-profile:has(.profile-compact-more-wrap:hover) {
-            z-index: 460;
+        body.theme-new .biz-summary-card.ticketing-merged-profile:has(.profile-compact-more-wrap:hover) {
+            z-index: 902;
             position: relative;
         }
-        body.theme-new .biz-summary-card.tsa-merged-profile #biz-compact-view { display: none !important; }
+        body.theme-new #acc-basic:has(.ticketing-merged-profile .profile-compact-more-wrap:hover) {
+            position: relative;
+            z-index: 900;
+        }
+        body.theme-new .biz-summary-card.ticketing-merged-profile { position: relative; overflow: visible; }
+        body.theme-new .biz-summary-card.ticketing-merged-profile #biz-compact-view { display: none !important; }
+        body.theme-new .biz-summary-card.ticketing-merged-profile .biz-summary-top { align-items: flex-start; }
+        body.theme-new .biz-summary-card.ticketing-merged-profile .biz-summary-top .icon-tooltip-wrap { flex-shrink: 0; margin-top: 1px; }
         body.theme-new .profile-merged-compact {
-            display: none; flex: 1; min-width: 0; align-items: center; gap: 12px; overflow: visible;
+            display: none; flex: 1; min-width: 0; align-items: center; flex-wrap: wrap;
+            gap: 0; row-gap: 2px; overflow: visible; padding-right: 12px;
+            font-size: 13px; line-height: 1.45;
         }
-        body.theme-new .biz-summary-card.tsa-merged-profile .profile-merged-compact { display: flex; }
-        body.theme-new .biz-summary-card.tsa-merged-profile.is-editing .profile-merged-compact { display: none !important; }
-        body.theme-new .profile-merged-row {
-            display: flex; align-items: center; min-width: 0; flex: 1 1 0; overflow: visible;
-        }
-        body.theme-new .profile-merged-vrule {
-            width: 1px; height: 14px; background: #e6e2e0; flex-shrink: 0;
-        }
+        body.theme-new .biz-summary-card.ticketing-merged-profile .profile-merged-compact { display: flex; }
+        body.theme-new .biz-summary-card.ticketing-merged-profile.is-editing .profile-merged-compact { display: none !important; }
         body.theme-new .profile-merged-edit-sep {
             height: 1px; background: #e6e2e0; margin: 20px 0 16px;
         }
-        body.theme-new .profile-merged-user-edit-title {
-            margin: 0 0 12px; font-family: 'Geist', sans-serif; font-weight: 500; color: #212121;
+        body.theme-new .profile-merged-user-edit-title { margin: 0 0 12px; }
+        body.theme-new #shared-biz-section.ticketing-merged-profiles #user-profile-form-group { display: none !important; }
+        body.theme-new #shared-biz-section.ticketing-merged-profiles > .form-group:nth-child(2) { margin-bottom: 20px !important; }
+        body.theme-new #shared-biz-section.ticketing-merged-profiles > .form-group:nth-child(2) { position: relative; z-index: 1; }
+        body.theme-new #shared-biz-section.ticketing-merged-profiles > .form-group:nth-child(2):has(.profile-compact-more-wrap:hover) {
+            z-index: 901;
         }
-        body.theme-new #shared-biz-section.tsa-merged-profiles #user-profile-form-group { display: none !important; }
-        body.theme-new #shared-biz-section.tsa-merged-profiles > .form-group:nth-child(2) { margin-bottom: 20px !important; }
+        body.theme-new #ticketing-survey-fields,
+        body.theme-new #ticketing-review-fields { position: relative; z-index: 1; }
+        body.theme-new .profile-compact-sep--dot { color: #909090; margin: 0 6px; }
+        body.theme-new .biz-summary-card.ticketing-merged-profile .profile-compact-more-wrap {
+            position: relative; z-index: 2;
+        }
+        body.theme-new .biz-summary-card.ticketing-merged-profile .profile-compact-detail-tooltip--merged {
+            top: calc(100% + 4px); bottom: auto; left: 0; right: auto;
+            transform: translateY(2px);
+            width: 520px; max-width: min(520px, calc(100vw - 48px));
+            z-index: 960; padding: 16px 18px;
+        }
+        body.theme-new .biz-summary-card.ticketing-merged-profile .profile-compact-more-wrap:hover .profile-compact-detail-tooltip--merged {
+            opacity: 1; visibility: visible; transform: translateY(0); pointer-events: auto;
+        }
+        body.theme-new .biz-summary-card.ticketing-merged-profile .profile-compact-detail-tooltip--merged::after {
+            top: auto; bottom: 100%; left: 50%; margin-left: -6px;
+            border: 6px solid transparent; border-top-color: transparent; border-bottom-color: #ffffff;
+            filter: drop-shadow(0 -1px 0 #e6e2e0); transform: none;
+        }
+        body.theme-new .profile-detail-tooltip-section-title {
+            font-family: 'Geist', sans-serif; font-size: 12px; font-weight: 500; color: #646464;
+            line-height: 1.45; margin-bottom: 2px;
+        }
+        body.theme-new .profile-detail-tooltip-divider {
+            height: 1px; background: #e6e2e0; margin: 6px 0;
+        }
+        body.theme-new .profile-detail-tooltip-section { display: flex; flex-direction: column; gap: 10px; }
         body.theme-new .profile-compact-more-wrap { position: relative; display: inline; z-index: 1; }
         body.theme-new .profile-compact-more-trigger {
             cursor: default; color: #646464;
@@ -2484,7 +2519,7 @@
             color: #646464; text-transform: none; letter-spacing: 0;
         }
         body.theme-new .survey-type-label {
-            font-family: 'Geist', sans-serif; font-weight: 500; color: #212121;
+            font-family: 'Geist', sans-serif; font-size: 13px; font-weight: 400; color: #212121;
         }
         body.theme-new .survey-type-desc {
             font-family: 'Geist', sans-serif; font-size: 12px; font-weight: 400; color: #909090;
@@ -2907,19 +2942,11 @@
                                     <span class="profile-compact-mandatory" id="biz-compact-mandatory" style="display:none;"></span>
                                 </div>
                                 <div id="merged-profile-compact" class="profile-merged-compact" aria-hidden="true">
-                                    <div class="profile-merged-row">
-                                        <span class="profile-compact-title">Business details</span>
-                                        <span class="profile-compact-sep">·</span>
-                                        <span class="profile-compact-summary" id="merged-biz-compact-summary"></span>
-                                        <span class="profile-compact-mandatory" id="merged-biz-compact-mandatory" style="display:none;"></span>
-                                    </div>
-                                    <span class="profile-merged-vrule" aria-hidden="true"></span>
-                                    <div class="profile-merged-row">
-                                        <span class="profile-compact-title">User details</span>
-                                        <span class="profile-compact-sep">·</span>
-                                        <span class="profile-compact-summary" id="merged-user-compact-summary"></span>
-                                        <span class="profile-compact-mandatory" id="merged-user-compact-mandatory" style="display:none;"></span>
-                                    </div>
+                                    <span class="profile-compact-title">Business and user details</span>
+                                    <span class="profile-compact-sep">·</span>
+                                    <span class="profile-compact-summary" id="merged-profile-compact-summary"></span>
+                                    <span class="profile-compact-sep profile-compact-sep--dot" id="merged-profile-compact-dot" style="display:none;" aria-hidden="true">·</span>
+                                    <span class="profile-compact-mandatory" id="merged-profile-compact-mandatory" style="display:none;"></span>
                                 </div>
                                 <span class="icon-tooltip-wrap">
                                     <button type="button" class="biz-edit-btn" id="biz-edit-btn" onclick="toggleBizEdit()">
@@ -5439,12 +5466,14 @@ const BIZ_EDIT_BTN_HTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill=
 const BIZ_SAVE_BTN_HTML = `Save`;
 
 const COMPACT_PROFILE_AGENT_TYPES = new Set([
-    'review', 'review-marketing', 'social-pub', 'social-eng', 'listings-opt', 'search-reco',
-    'ticketing-review'
+    'review', 'review-marketing', 'social-pub', 'social-eng', 'listings-opt', 'search-reco'
 ]);
 
-function isTsaMergedProfileMode() {
-    return document.body.classList.contains('theme-new') && getAgentType() === 'ticketing-survey';
+const TICKETING_MERGED_PROFILE_TYPES = new Set(['ticketing-survey', 'ticketing-review']);
+
+function isTicketingMergedProfileMode() {
+    return document.body.classList.contains('theme-new')
+        && TICKETING_MERGED_PROFILE_TYPES.has(getAgentType());
 }
 
 function isCxCompactProfileMode() {
@@ -5458,7 +5487,7 @@ function ensureMergedUserEditPlacement() {
     const userCard = document.getElementById('user-profile-card');
     if (!userFields || !slot || !userCard) return;
 
-    if (isTsaMergedProfileMode()) {
+    if (isTicketingMergedProfileMode()) {
         if (userFields.parentElement !== slot) slot.appendChild(userFields);
     } else if (userFields.parentElement !== userCard) {
         userCard.appendChild(userFields);
@@ -5512,9 +5541,8 @@ function buildCompactProfileSummary(fields) {
     };
 }
 
-function buildProfileDetailTooltipHtml(fields, type) {
-    if (!fields.length) return '';
-    const rows = fields.map(f => {
+function buildProfileDetailTooltipRows(fields) {
+    return fields.map(f => {
         let valueClass = '';
         if (f.label === 'Business description') valueClass = ' profile-detail-tooltip-value--desc';
         else if (f.label === 'Website' || f.label === 'Email address') valueClass = ' profile-detail-tooltip-value--single';
@@ -5524,10 +5552,32 @@ function buildProfileDetailTooltipHtml(fields, type) {
             <span class="profile-detail-tooltip-value${valueClass}">${escapeHtml(f.value)}</span>
         </div>`;
     }).join('');
-    return `<span class="profile-compact-detail-tooltip profile-compact-detail-tooltip--${type}" role="tooltip">${rows}</span>`;
 }
 
-function getBizCompactProfileSummary() {
+function buildProfileDetailTooltipHtml(fields, type) {
+    if (!fields.length) return '';
+    return `<span class="profile-compact-detail-tooltip profile-compact-detail-tooltip--${type}" role="tooltip">${buildProfileDetailTooltipRows(fields)}</span>`;
+}
+
+function buildTicketingMergedTooltipHtml(bizFields, userFields) {
+    const bizRows = buildProfileDetailTooltipRows(bizFields);
+    const userRows = buildProfileDetailTooltipRows(userFields);
+    if (!bizRows && !userRows) return '';
+
+    let body = '';
+    if (bizRows) {
+        body += `<div class="profile-detail-tooltip-section"><div class="profile-detail-tooltip-section-title">Business details</div>${bizRows}</div>`;
+    }
+    if (bizRows && userRows) {
+        body += `<div class="profile-detail-tooltip-divider"></div>`;
+    }
+    if (userRows) {
+        body += `<div class="profile-detail-tooltip-section"><div class="profile-detail-tooltip-section-title">User details</div>${userRows}</div>`;
+    }
+    return `<span class="profile-compact-detail-tooltip profile-compact-detail-tooltip--merged" role="tooltip">${body}</span>`;
+}
+
+function getBizProfileFieldDefs() {
     const val = id => document.getElementById(id)?.value?.trim() || '';
     const locLabel = document.getElementById('cdd-locations-label');
     const loc = locLabel?.classList.contains('cdd-placeholder') ? '' : (locLabel?.textContent?.trim() || '');
@@ -5555,18 +5605,89 @@ function getBizCompactProfileSummary() {
         { label: 'Business description', mandatory: false, value: val('shared-biz-desc') },
         { label: 'Website', mandatory: false, value: val('shared-biz-website') }
     );
-
-    return buildCompactProfileSummary(fields);
+    return fields;
 }
 
-function getUserCompactProfileSummary() {
+function getUserProfileFieldDefs() {
     const val = id => document.getElementById(id)?.value?.trim() || '';
-    const fields = [
+    return [
         { label: 'Full name', mandatory: true, value: val('lead-gen-fullname') },
         { label: 'Mobile number', mandatory: true, value: val('lead-gen-mobile') },
         { label: 'Email address', mandatory: true, value: val('lead-gen-email') },
     ];
-    return buildCompactProfileSummary(fields);
+}
+
+function getTicketingMergedProfileSummary() {
+    const bizFields = getBizProfileFieldDefs();
+    const userFields = getUserProfileFieldDefs();
+    const allFields = [...bizFields, ...userFields];
+    const missingMandatory = allFields.filter(f => f.mandatory && !(f.value || '').trim()).length;
+    const industry = bizFields.find(f => f.label === 'Industry')?.value?.trim() || '';
+
+    const bizHiddenFields = bizFields
+        .filter(f => (f.value || '').trim() && f.label !== 'Industry')
+        .map(f => ({ label: f.label, value: (f.value || '').trim() }));
+    const userHiddenFields = userFields
+        .filter(f => (f.value || '').trim())
+        .map(f => ({ label: f.label, value: (f.value || '').trim() }));
+    const moreCount = bizHiddenFields.length + userHiddenFields.length;
+
+    if (!industry && missingMandatory > 0 && !moreCount) {
+        return {
+            mandatoryOnly: true,
+            mandatorySuffix: '',
+            primaryText: formatMandatoryFieldLabel(missingMandatory),
+            bizHiddenFields,
+            userHiddenFields,
+            moreCount: 0
+        };
+    }
+
+    return {
+        mandatoryOnly: false,
+        mandatorySuffix: missingMandatory > 0 ? formatMandatoryFieldLabel(missingMandatory) : '',
+        primaryText: industry,
+        bizHiddenFields,
+        userHiddenFields,
+        moreCount
+    };
+}
+
+function renderTicketingMergedSummary(data) {
+    const summaryEl = document.getElementById('merged-profile-compact-summary');
+    const mandatoryEl = document.getElementById('merged-profile-compact-mandatory');
+    const dotEl = document.getElementById('merged-profile-compact-dot');
+    if (!summaryEl || !mandatoryEl) return;
+
+    summaryEl.classList.toggle('is-mandatory-only', data.mandatoryOnly);
+
+    if (data.mandatoryOnly) {
+        summaryEl.textContent = data.primaryText;
+    } else if (data.moreCount > 0) {
+        const tooltipHtml = buildTicketingMergedTooltipHtml(data.bizHiddenFields, data.userHiddenFields);
+        const prefix = data.primaryText ? `${escapeHtml(data.primaryText)}, ` : '';
+        summaryEl.innerHTML = `${prefix}<span class="profile-compact-more-wrap"><span class="profile-compact-more-trigger">+${data.moreCount} more</span>${tooltipHtml}</span>`;
+    } else {
+        summaryEl.textContent = data.primaryText;
+    }
+
+    if (data.mandatorySuffix) {
+        if (dotEl) dotEl.style.display = '';
+        mandatoryEl.textContent = data.mandatorySuffix;
+        mandatoryEl.style.display = '';
+    } else {
+        if (dotEl) dotEl.style.display = 'none';
+        mandatoryEl.textContent = '';
+        mandatoryEl.style.display = 'none';
+    }
+}
+
+function getBizCompactProfileSummary() {
+    return buildCompactProfileSummary(getBizProfileFieldDefs());
+}
+
+function getUserCompactProfileSummary() {
+    return buildCompactProfileSummary(getUserProfileFieldDefs());
 }
 
 function renderCompactSummary(targetPrefix, data) {
@@ -5596,9 +5717,8 @@ function renderCompactSummary(targetPrefix, data) {
 }
 
 function syncCompactProfileSummaries() {
-    if (isTsaMergedProfileMode()) {
-        renderCompactSummary('merged-biz', getBizCompactProfileSummary());
-        renderCompactSummary('merged-user', getUserCompactProfileSummary());
+    if (isTicketingMergedProfileMode()) {
+        renderTicketingMergedSummary(getTicketingMergedProfileSummary());
         return;
     }
     if (!isCxCompactProfileMode()) return;
@@ -5609,7 +5729,7 @@ function syncCompactProfileSummaries() {
 function applyCxCompactProfileLayout() {
     ensureMergedUserEditPlacement();
 
-    const merged = isTsaMergedProfileMode();
+    const merged = isTicketingMergedProfileMode();
     const compact = isCxCompactProfileMode();
     const bizCard = document.getElementById('biz-profile-card');
     const userCard = document.getElementById('user-profile-card');
@@ -5620,9 +5740,9 @@ function applyCxCompactProfileLayout() {
     const userEditTitle = document.getElementById('user-edit-section-title');
     const userFields = document.getElementById('user-edit-fields');
 
-    bizSection?.classList.toggle('tsa-merged-profiles', merged);
+    bizSection?.classList.toggle('ticketing-merged-profiles', merged);
     bizSection?.classList.toggle('cx-compact-profiles', compact);
-    bizCard?.classList.toggle('tsa-merged-profile', merged);
+    bizCard?.classList.toggle('ticketing-merged-profile', merged);
     bizCard?.classList.toggle('cx-compact-profile', compact || merged);
     userCard?.classList.toggle('cx-compact-profile', compact);
 
@@ -5698,7 +5818,7 @@ function resetProfileEditPanels() {
 }
 
 function toggleBizEdit() {
-    if (isTsaMergedProfileMode()) {
+    if (isTicketingMergedProfileMode()) {
         const fields  = document.getElementById('biz-edit-fields');
         const btn     = document.getElementById('biz-edit-btn');
         const tooltip = document.getElementById('biz-edit-tooltip');
@@ -5772,7 +5892,7 @@ function syncBizSummary() {
 }
 
 function toggleUserEdit() {
-    if (isTsaMergedProfileMode()) {
+    if (isTicketingMergedProfileMode()) {
         toggleBizEdit();
         return;
     }
