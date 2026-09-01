@@ -718,6 +718,7 @@
         /* Field label + tooltip icon */
         .field-label-row { display: flex; align-items: center; gap: 6px; margin-bottom: 7px; }
         .field-label-row .form-label { margin-bottom: 0; }
+        .form-group .field-label-row { margin-bottom: 0; }
         .tooltip-wrap { position: relative; display: inline-flex; align-items: center; }
         .tooltip-icon {
             width: 15px; height: 15px; border-radius: 50%;
@@ -1253,15 +1254,15 @@
         .continue-tooltip-wrap { position: relative; display: inline-flex; }
         .continue-tooltip-bubble {
             position: absolute; bottom: calc(100% + 8px); right: 0;
-            background: #1e293b; color: white; font-size: 11.5px; font-weight: 400;
-            line-height: 1.5; padding: 9px 11px; border-radius: 8px; width: 230px;
+            background: #212121; color: #ffffff; font-size: 11.5px; font-weight: 400;
+            line-height: 1.45; padding: 8px 12px; border-radius: 8px; width: 230px;
             box-shadow: 0 6px 18px rgba(0,0,0,0.18); text-align: left;
             opacity: 0; visibility: hidden; transform: translateY(3px);
             transition: opacity 0.15s, transform 0.15s; pointer-events: none; z-index: 20;
         }
         .continue-tooltip-bubble::after {
             content: ''; position: absolute; top: 100%; right: 24px;
-            border: 5px solid transparent; border-top-color: #1e293b;
+            border: 5px solid transparent; border-top-color: #212121;
         }
         .continue-tooltip-wrap:hover .btn-continue:disabled + .continue-tooltip-bubble {
             opacity: 1; visibility: visible; transform: translateY(0);
@@ -2528,7 +2529,7 @@
         }
         body.theme-new .survey-type-icon { color: #909090; }
         body.theme-new .survey-type-option {
-            border-color: #e6e2e0; border-radius: 12px; background: #ffffff;
+            border-color: #e6e2e0; background: #ffffff;
         }
         body.theme-new .survey-type-option.selected { border-color: #4d403a; background: #f9f8f6; }
 
@@ -2696,6 +2697,10 @@
         }
         body.theme-new .btn-continue:hover:not(:disabled) { background: #27201d; box-shadow: none; transform: none; }
         body.theme-new .btn-continue:disabled { background: #e6e2e0; color: #ffffff; }
+        body.theme-new .continue-tooltip-bubble {
+            background: #212121; color: #ffffff; font-family: 'Geist', sans-serif;
+        }
+        body.theme-new .continue-tooltip-bubble::after { border-top-color: #212121; }
 
         body.theme-new .btn-generate, body.theme-new .btn-cr-generate {
             background: #4d403a; border-radius: 999px; font-family: 'Geist', sans-serif;
@@ -2715,8 +2720,15 @@
         }
         body.theme-new .biz-edit-btn.is-save:hover { background: #eeece7; border-color: #cdc4c0; }
 
+        /* Card radius — match business/user profile cards (16px) */
         body.theme-new .review-card, body.theme-new .rec-card, body.theme-new .gen-response,
-        body.theme-new .response-panel, body.theme-new .custom-review-trigger, body.theme-new .custom-review-form {
+        body.theme-new .response-panel, body.theme-new .custom-review-trigger, body.theme-new .custom-review-form,
+        body.theme-new .rt-card, body.theme-new .layout-card, body.theme-new .survey-type-option,
+        body.theme-new .rma-review-pick, body.theme-new .rma-review-select, body.theme-new .rma-social-preview,
+        body.theme-new .sc-card, body.theme-new .cal-post-card, body.theme-new .cal-gen-bar,
+        body.theme-new .post-preview-card, body.theme-new .post-len-opt, body.theme-new .resp-opt,
+        body.theme-new .before-after-box, body.theme-new .drawer-bp, body.theme-new .tsa-question-box,
+        body.theme-new .reasoning-acc {
             border-radius: 16px; border-color: #e6e2e0;
         }
         body.theme-new .response-panel { overflow: visible; }
@@ -2801,7 +2813,7 @@
         body.theme-new .step-dot.spinning { background: #f1f0ee; color: #4d403a; }
         body.theme-new .step-dot.done { background: #eeece7; color: #646464; }
         body.theme-new .reasoning-acc {
-            border: 1px solid #e6e2e0; border-radius: 12px; overflow: hidden;
+            border: 1px solid #e6e2e0; overflow: hidden;
         }
         body.theme-new .tsa-question-box {
             background: #f9f8f6; border-color: #e6e2e0;
