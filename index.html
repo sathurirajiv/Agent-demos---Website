@@ -1687,6 +1687,7 @@
             align-items: center;
             justify-content: space-between;
         }
+        .gen-response-foot-review .meta-tags { margin-left: auto; }
 
         .time-saved-label { font-size: 12px; color: #16a34a; font-weight: 400; }
 
@@ -2530,6 +2531,146 @@
             border-color: #e6e2e0; border-radius: 12px; background: #ffffff;
         }
         body.theme-new .survey-type-option.selected { border-color: #4d403a; background: #f9f8f6; }
+
+        /* New design: pill form fields — Basic details, Outcomes, Output custom forms */
+        body.theme-new #acc-basic input.form-input,
+        body.theme-new #acc-basic .cdd-trigger,
+        body.theme-new #acc-basic .chip-input,
+        body.theme-new #body-outcome input.form-input {
+            background: #f8f7f4;
+            border: 1px solid #e6e2e0;
+            border-radius: 999px;
+            padding: 11px 18px;
+            font-family: 'Geist', sans-serif;
+            font-size: 14px;
+            font-weight: 400;
+            color: #212121;
+        }
+        body.theme-new #acc-basic textarea.form-input {
+            background: #f8f7f4;
+            border: 1px solid #e6e2e0;
+            border-radius: 20px;
+            padding: 14px 18px;
+            font-family: 'Geist', sans-serif;
+            font-size: 14px;
+            font-weight: 400;
+            color: #212121;
+            resize: vertical;
+        }
+        body.theme-new #acc-basic input.form-input:focus,
+        body.theme-new #acc-basic textarea.form-input:focus,
+        body.theme-new #acc-basic .cdd-anchor.open .cdd-trigger,
+        body.theme-new #acc-basic .chip-input:focus-within,
+        body.theme-new #body-outcome input.form-input:focus {
+            border-color: #4d403a;
+            box-shadow: 0 0 0 3px rgba(77,64,58,0.12);
+            outline: none;
+        }
+        body.theme-new #acc-basic input.form-input::placeholder,
+        body.theme-new #acc-basic textarea.form-input::placeholder {
+            color: #909090;
+        }
+        body.theme-new #acc-basic .cdd-trigger:hover {
+            border-color: #cdc4c0;
+            background: #f8f7f4;
+        }
+        body.theme-new #acc-basic .chip-input {
+            min-height: 44px;
+            padding: 7px 14px;
+        }
+        body.theme-new #acc-basic .chip-input-field {
+            background: transparent;
+            border: none;
+            padding: 4px 2px;
+            font-family: 'Geist', sans-serif;
+            font-size: 14px;
+        }
+        body.theme-new #acc-basic .chip-input-field:focus { outline: none; }
+        /* Single-select dropdown menus: radio-style options (not survey-type cards) */
+        body.theme-new #acc-basic .form-cdd .cdd-panel .dd-option,
+        body.theme-new #acc-basic #cdd-locations .cdd-panel .dd-option {
+            position: relative;
+            padding: 10px 14px 10px 42px;
+            background: transparent;
+            color: #212121;
+        }
+        body.theme-new #acc-basic .form-cdd .cdd-panel .dd-option:hover,
+        body.theme-new #acc-basic #cdd-locations .cdd-panel .dd-option:hover {
+            background: #f9f8f6;
+        }
+        body.theme-new #acc-basic .form-cdd .cdd-panel .dd-option.selected,
+        body.theme-new #acc-basic #cdd-locations .cdd-panel .dd-option.selected {
+            background: transparent;
+            color: #212121;
+            font-weight: 400;
+        }
+        body.theme-new #acc-basic .form-cdd .cdd-panel .dd-option::before,
+        body.theme-new #acc-basic #cdd-locations .cdd-panel .dd-option::before {
+            content: '';
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 16px;
+            height: 16px;
+            border: 1.5px solid #212121;
+            border-radius: 50%;
+            box-sizing: border-box;
+        }
+        body.theme-new #acc-basic .form-cdd .cdd-panel .dd-option.selected::after,
+        body.theme-new #acc-basic #cdd-locations .cdd-panel .dd-option.selected::after {
+            content: '';
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #212121;
+        }
+
+        /* Output — Try with your own review/response (all agents) */
+        body.theme-new #body-output .custom-review-form .cr-name-input {
+            background: #f8f7f4;
+            border: 1px solid #e6e2e0;
+            border-radius: 999px;
+            padding: 11px 18px;
+            font-family: 'Geist', sans-serif;
+            font-size: 14px;
+            font-weight: 400;
+            color: #212121;
+        }
+        body.theme-new #body-output .custom-review-form .cr-textarea {
+            background: #f8f7f4;
+            border: 1px solid #e6e2e0;
+            border-radius: 20px;
+            padding: 14px 18px;
+            font-family: 'Geist', sans-serif;
+            font-size: 14px;
+            font-weight: 400;
+            color: #212121;
+            resize: vertical;
+            min-height: 80px;
+            line-height: 1.55;
+        }
+        body.theme-new #body-output .custom-review-form .cr-name-input:focus,
+        body.theme-new #body-output .custom-review-form .cr-textarea:focus {
+            border-color: #4d403a;
+            box-shadow: 0 0 0 3px rgba(77,64,58,0.12);
+            outline: none;
+        }
+        body.theme-new #body-output .custom-review-form .cr-name-input::placeholder,
+        body.theme-new #body-output .custom-review-form .cr-textarea::placeholder {
+            color: #909090;
+        }
+        body.theme-new #body-output .custom-review-form .form-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: #646464;
+            font-family: 'Geist', sans-serif;
+        }
+
         body.theme-new .outcomes-intro {
             color: #646464; font-family: 'Geist', sans-serif; font-size: 14px;
         }
@@ -2867,7 +3008,7 @@
                     <div class="dd-option disabled">Pre Visit Agent</div>
                     <div class="dd-option disabled">Insurance Verification Agent</div>
                     <div class="dd-option disabled">Recall Agent</div>
-                    <div class="dd-option disabled">Treatment Planning Agent</div>
+                    <div class="dd-option disabled">Treatment Plan Agent</div>
                     <div class="dd-option disabled">Revenue Agent</div>
                 </div>
                 <div class="dd-list" id="dd-list-cx">
@@ -3659,7 +3800,6 @@
                         <div class="custom-review-trigger" id="custom-trigger" onclick="toggleCustomReview()">
                             <div class="cr-plus">+</div>
                             <span>Try with your own review</span>
-                            <span class="cr-hint">Any review, any industry</span>
                         </div>
                         <div class="custom-review-form" id="custom-form">
                             <div class="cr-field">
@@ -3785,7 +3925,6 @@
                         <div class="custom-review-trigger" id="tsa-custom-trigger" onclick="toggleTsaCustomResponse()">
                             <div class="cr-plus">+</div>
                             <span>Try with your own response</span>
-                            <span class="cr-hint">Any name, score, and text</span>
                         </div>
                         <div class="custom-review-form" id="tsa-custom-form">
                             <div class="cr-field">
@@ -3822,6 +3961,26 @@
                             <div class="output-subtext" id="trv-output-subtext">For demo purposes, here are example negative reviews for <span id="trv-out-biz-name">Aspen Dental Group</span>. Each is automatically categorized and routed to the right team.</div>
                         </div>
                         <div id="trv-output-area"></div>
+                        <div class="custom-review-trigger" id="trv-custom-trigger" onclick="toggleTrvCustomResponse()">
+                            <div class="cr-plus">+</div>
+                            <span>Try with your own response</span>
+                        </div>
+                        <div class="custom-review-form" id="trv-custom-form">
+                            <div class="cr-field">
+                                <label class="form-label">Score (1–5)</label>
+                                <input type="number" class="cr-name-input" id="trv-custom-score" min="1" max="5" placeholder="e.g. 2">
+                            </div>
+                            <div class="cr-field">
+                                <label class="form-label">Review text</label>
+                                <textarea class="cr-textarea" id="trv-custom-text" placeholder="Paste or type a review here..."></textarea>
+                            </div>
+                            <div class="cr-field">
+                                <label class="form-label">Reviewer name (optional)</label>
+                                <input type="text" class="cr-name-input" id="trv-custom-name" placeholder="e.g. Alex K.">
+                            </div>
+                            <button class="btn-cr-generate" id="btn-trv-cr-gen" onclick="generateTrvCustomTicket()">Assess for ticket</button>
+                            <div class="cr-response-area" id="trv-cr-response-area"></div>
+                        </div>
                     </div>
                 </div>
 
@@ -4314,7 +4473,7 @@ const AGENT_DEPARTMENTS = {
     'Pre Visit Agent': 'Operations',
     'Insurance Verification Agent': 'Operations',
     'Recall Agent': 'Operations',
-    'Treatment Planning Agent': 'Operations',
+    'Treatment Plan Agent': 'Operations',
     'Revenue Agent': 'Operations',
     'Survey Creation Agent': 'Customer Experience',
     'Survey Distribution Agent': 'Customer Experience',
@@ -4322,6 +4481,59 @@ const AGENT_DEPARTMENTS = {
     'Ticketing Survey Agent': 'Customer Experience',
     'Ticketing Review Agent': 'Customer Experience'
 };
+
+// Sentence-case labels for the new design agent picker (Jay + Robin departments)
+const AGENT_DISPLAY_NAMES = {
+    'Review Response Agent': 'Review response agent',
+    'Review Marketing Agent': 'Review marketing agent',
+    'Social Publishing Agent': 'Social publishing agent',
+    'Social Engagement Agent': 'Social engagement agent',
+    'Listings Optimization Agent': 'Listings optimization agent',
+    'Search Recommendations Agent': 'Search recommendations agent',
+    'Workflow Agent': 'Workflow agent',
+    'Lead Gen Agent': 'Lead gen agent',
+    'Segmentation Agent': 'Segmentation agent',
+    'Review Generation Agent': 'Review generation agent',
+    'Routing & Tagging Agent': 'Routing & tagging agent',
+    'Front Desk Agent': 'Front desk agent',
+    'Waitlist Agent': 'Waitlist agent',
+    'Reminder Agent': 'Reminder agent',
+    'Pre Visit Agent': 'Pre-visit agent',
+    'Insurance Verification Agent': 'Insurance verification agent',
+    'Recall Agent': 'Recall agent',
+    'Treatment Plan Agent': 'Treatment plan agent',
+    'Revenue Agent': 'Revenue agent',
+    'Ticketing Survey Agent': 'Ticketing survey agent',
+    'Ticketing Review Agent': 'Ticketing review agent',
+    'Survey Creation Agent': 'Survey creation agent',
+    'Survey Distribution Agent': 'Survey distribution agent',
+    'Survey Response Agent': 'Survey response agent'
+};
+
+function getAgentDisplayName(name) {
+    if (!name) return '';
+    if (!document.body.classList.contains('theme-new')) return name;
+    return AGENT_DISPLAY_NAMES[name] || name;
+}
+
+function ensureAgentOptionCanonical(opt) {
+    if (opt.dataset.agent) return opt.dataset.agent;
+    const onclick = opt.getAttribute('onclick') || '';
+    const fromOnclick = onclick.match(/selectAgent\('([^']+)'/);
+    const canonical = fromOnclick ? fromOnclick[1] : opt.textContent.trim();
+    opt.dataset.agent = canonical;
+    return canonical;
+}
+
+function syncAgentDropdownLabels() {
+    document.querySelectorAll('.agent-dropdown .dd-option').forEach(opt => {
+        const canonical = ensureAgentOptionCanonical(opt);
+        const display = getAgentDisplayName(canonical);
+        const label = opt.querySelector('.dd-option-label');
+        if (label) label.textContent = display;
+        else if (!opt.querySelector('.dd-tooltip-wrap')) opt.textContent = display;
+    });
+}
 
 // Reflects the true number of built/active agents in the hero subtext — counts every
 // non-disabled option across all department lists, so it stays correct as agents are added.
@@ -4730,6 +4942,7 @@ let selectedId    = null;
 let isGenerating  = false;
 let generatedCache = {};
 let reviewOutputHtmlCache = {};
+let reasoningAccOpenCache = {};
 let customStarVal = 0;
 let crIsGenerating = false;
 let socialPubGenerated = false;
@@ -4757,11 +4970,7 @@ let rmaAlign = 'center';
 
 // ---- DROPDOWN ----
 function getAgentNameFromOption(opt) {
-    const label = opt.querySelector('.dd-option-label');
-    if (label) return label.textContent.trim();
-    const clone = opt.cloneNode(true);
-    clone.querySelectorAll('.dd-soon-tag, .dd-tooltip-bubble').forEach(el => el.remove());
-    return clone.textContent.trim();
+    return ensureAgentOptionCanonical(opt);
 }
 
 function selectFirstAgentInDept(dept) {
@@ -4790,7 +4999,7 @@ function selectFirstAgentInDept(dept) {
         selectAgent(name, opt);
     } else {
         currentAgent = name;
-        document.getElementById('pill-label').textContent = name;
+        document.getElementById('pill-label').textContent = getAgentDisplayName(name);
         document.getElementById('pill-dept-label').textContent = AGENT_DEPARTMENTS[name] || '';
         document.getElementById('agent-hint-text').textContent = AGENT_HINTS[name] || '';
         document.querySelectorAll('.dd-option').forEach(o => o.classList.remove('selected'));
@@ -4883,9 +5092,11 @@ function buildMynaAiLink(className) {
     return `<a class="${className}" href="${MYNA_AI_URL}" target="_blank" rel="noopener">visit myna.ai</a>`;
 }
 
+const COWORKER_TAB_TOOLTIP_EXCLUDED = new Set(['Insurance Verification Agent']);
+
 function buildCoworkerTabTooltip(dept, coworkerName) {
-    const agents = getDeptAgentNames(dept);
-    const items = agents.map(name => `<li>${name}</li>`).join('');
+    const agents = getDeptAgentNames(dept).filter(name => !COWORKER_TAB_TOOLTIP_EXCLUDED.has(name));
+    const items = agents.map(name => `<li>${getAgentDisplayName(name)}</li>`).join('');
     const title = coworkerName
         ? `<span class="coworker-tab-tooltip-title">Want to experience ${coworkerName}-specific agents?</span>`
         : '';
@@ -4997,9 +5208,10 @@ function setDesignTheme(theme) {
     }
     closeAgentDropdown();
     syncRegenerateButtonsForTheme();
+    initDisabledAgentTooltips();
+    syncAgentDropdownLabels();
     syncHeaderAgentPill();
     syncCoworkerTabDisplay();
-    initDisabledAgentTooltips();
     applyCxCompactProfileLayout();
 }
 
@@ -5019,10 +5231,15 @@ function syncRegenerateButtonsForTheme() {
 function initDisabledAgentTooltips() {
     document.querySelectorAll('.dd-disabled-sales-footer').forEach(el => el.remove());
     document.querySelectorAll('.agent-dropdown .dd-option.disabled').forEach(opt => {
-        if (opt.querySelector('.dd-tooltip-wrap')) return;
-        const name = getAgentNameFromOption(opt);
+        const name = ensureAgentOptionCanonical(opt);
+        const display = getAgentDisplayName(name);
+        if (opt.querySelector('.dd-tooltip-wrap')) {
+            const label = opt.querySelector('.dd-option-label');
+            if (label) label.textContent = display;
+            return;
+        }
         opt.textContent = '';
-        opt.innerHTML = `<span class="dd-tooltip-wrap"><span class="dd-option-label">${name}</span><span class="dd-tooltip-bubble">${buildDisabledAgentTooltip()}</span></span>`;
+        opt.innerHTML = `<span class="dd-tooltip-wrap"><span class="dd-option-label">${display}</span><span class="dd-tooltip-bubble">${buildDisabledAgentTooltip()}</span></span>`;
     });
 }
 
@@ -5034,7 +5251,9 @@ function updateReviewGenButton(reviewId) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.agent-dropdown .dd-option').forEach(ensureAgentOptionCanonical);
     initDisabledAgentTooltips();
+    syncAgentDropdownLabels();
     ensureAgentListsInPanel();
     if (localStorage.getItem('birdeye-demo-theme') === 'new') setDesignTheme('new');
     else syncCoworkerTabDisplay();
@@ -5105,7 +5324,7 @@ function syncHeaderAgentPill() {
     const avatarEl = document.getElementById('header-agent-avatar');
     const labelEl = document.getElementById('header-agent-label');
     if (avatarEl) avatarEl.src = HEADER_PILL_AVATARS[dept] || HEADER_PILL_AVATARS.Marketing;
-    if (labelEl) labelEl.textContent = currentAgent;
+    if (labelEl) labelEl.textContent = getAgentDisplayName(currentAgent);
 }
 
 function getAgentType() {
@@ -5121,7 +5340,7 @@ function getAgentType() {
 
 function selectAgent(name, el) {
     currentAgent = name;
-    document.getElementById('pill-label').textContent = name;
+    document.getElementById('pill-label').textContent = getAgentDisplayName(name);
     const dept = AGENT_DEPARTMENTS[name] || '';
     document.getElementById('pill-dept-label').textContent = dept;
     document.getElementById('agent-hint-text').textContent = AGENT_HINTS[name] || '';
@@ -5472,9 +5691,12 @@ const COMPACT_PROFILE_AGENT_TYPES = new Set([
 
 const TICKETING_MERGED_PROFILE_TYPES = new Set(['ticketing-survey', 'ticketing-review']);
 
+function isMergedProfileMode() {
+    return document.body.classList.contains('theme-new');
+}
+
 function isTicketingMergedProfileMode() {
-    return document.body.classList.contains('theme-new')
-        && TICKETING_MERGED_PROFILE_TYPES.has(getAgentType());
+    return isMergedProfileMode();
 }
 
 function isCxCompactProfileMode() {
@@ -5730,8 +5952,8 @@ function syncCompactProfileSummaries() {
 function applyCxCompactProfileLayout() {
     ensureMergedUserEditPlacement();
 
-    const merged = isTicketingMergedProfileMode();
-    const compact = isCxCompactProfileMode();
+    const merged = isMergedProfileMode();
+    const compact = !merged && isCxCompactProfileMode();
     const bizCard = document.getElementById('biz-profile-card');
     const userCard = document.getElementById('user-profile-card');
     const userFormGroup = document.getElementById('user-profile-form-group');
@@ -6773,6 +6995,8 @@ function runContinue() {
         document.getElementById('tsa-custom-trigger').classList.remove('expanded');
     } else if (type === 'ticketing-review') {
         renderTrvOutputSubtext(biz);
+        document.getElementById('trv-custom-form')?.classList.remove('open');
+        document.getElementById('trv-custom-trigger')?.classList.remove('expanded');
     }
 
     forceOpenAcc('output');
@@ -7093,6 +7317,58 @@ function getReviewResponseLabel(reviewId) {
     return `Response to ${first}`;
 }
 
+function buildReasoningStepsSnapshot(steps) {
+    return steps.map(step => `
+        <div class="reason-step show">
+            <div class="step-dot done">✓</div>
+            <span>${step.txt}</span>
+        </div>`).join('');
+}
+
+function buildReasoningAccHTML(stepsSnap) {
+    return `
+        <div class="reasoning-acc">
+            <div class="reasoning-acc-header" onclick="toggleReasoningAcc(this)">
+                <span>Agent reasoning</span>
+                <svg class="reasoning-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none">
+                    <path d="M3 5l4 4 4-4" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <div class="reasoning-acc-body">
+                <div class="reasoning-acc-inner">${stepsSnap}</div>
+            </div>
+        </div>`;
+}
+
+function buildReviewOutputHTML(reviewId) {
+    if (reviewOutputHtmlCache[reviewId]) return reviewOutputHtmlCache[reviewId];
+    const text = generatedCache[reviewId];
+    if (!text) return '';
+    const resp = RESPONSES[reviewId];
+    const reasoningHTML = resp?.steps ? buildReasoningAccHTML(buildReasoningStepsSnapshot(resp.steps)) : '';
+    return reasoningHTML + buildReviewAgentResponseHTML(text, reviewId);
+}
+
+function getReasoningAccReviewId(header) {
+    const rpBody = header?.closest('[id^="rp-body-"]');
+    if (!rpBody) return null;
+    return rpBody.id.replace(/^rp-body-/, '');
+}
+
+function applyReasoningAccState(reviewId) {
+    const rpBody = document.getElementById('rp-body-' + reviewId);
+    if (!rpBody || !reasoningAccOpenCache[reviewId]) return;
+    const accBody = rpBody.querySelector('.reasoning-acc-body');
+    const chevron = rpBody.querySelector('.reasoning-acc-header .reasoning-chevron');
+    if (accBody) accBody.classList.add('open');
+    if (chevron) chevron.classList.add('open');
+}
+
+function syncReasoningAccOpenCache(reviewId, isOpen) {
+    if (reviewId == null || reviewId === '') return;
+    reasoningAccOpenCache[reviewId] = isOpen;
+}
+
 // ---- RENDER REVIEWS ----
 function renderReviews() {
     const list = document.getElementById('reviews-list');
@@ -7117,8 +7393,7 @@ function renderReviews() {
         let expandHTML = '';
         if (isSelected && resp) {
             const hasOutput = hasGenerated || !!reviewOutputHtmlCache[r.id];
-            let outputHTML = reviewOutputHtmlCache[r.id]
-                || (hasGenerated ? buildResponseHTML(generatedCache[r.id], r.id, 'copy-' + r.id, getReviewResponseLabel(r.id), true) : '');
+            const outputHTML = hasOutput ? buildReviewOutputHTML(r.id) : '';
 
             if (hasOutput) {
                 expandHTML = `
@@ -7165,6 +7440,11 @@ function renderReviews() {
             ${expandHTML}
         `;
         list.appendChild(card);
+
+        const expand = card.querySelector('.review-card-expand');
+        if (expand) expand.addEventListener('click', e => e.stopPropagation());
+
+        if (isSelected && (hasGenerated || reviewOutputHtmlCache[r.id])) applyReasoningAccState(r.id);
 
         if (isSelected) updateReviewGenButton(r.id);
     });
@@ -7228,7 +7508,8 @@ async function generateResponse(reviewId) {
             const scrollY = window.scrollY;
             renderReviews();
             requestAnimationFrame(() => window.scrollTo(0, scrollY));
-        }
+        },
+        { reviewAgentLayout: true }
     );
 }
 
@@ -7236,21 +7517,24 @@ async function generateResponse(reviewId) {
 function renderStoredResponse(id) {
     const body = document.getElementById('rp-body-' + id);
     if (!body) return;
-    body.innerHTML = reviewOutputHtmlCache[id]
-        || buildResponseHTML(generatedCache[id], id, 'copy-' + id, getReviewResponseLabel(id), true);
+    body.innerHTML = reviewOutputHtmlCache[id] || buildReviewOutputHTML(id);
 }
 
 // ---- REASONING ACCORDION TOGGLE ----
-function toggleReasoningAcc(header) {
+function toggleReasoningAcc(header, event) {
+    if (event) event.stopPropagation();
     const body    = header.nextElementSibling;
     const chevron = header.querySelector('.reasoning-chevron');
     const isOpen  = body.classList.contains('open');
-    body.classList.toggle('open', !isOpen);
-    chevron.classList.toggle('open', !isOpen);
+    const nextOpen = !isOpen;
+    body.classList.toggle('open', nextOpen);
+    chevron.classList.toggle('open', nextOpen);
+    syncReasoningAccOpenCache(getReasoningAccReviewId(header), nextOpen);
 }
 
 // ---- SHARED REASONING FLOW ----
-async function runReasoningFlow(bodyId, steps, responseText, cacheKey, onDone) {
+async function runReasoningFlow(bodyId, steps, responseText, cacheKey, onDone, options = {}) {
+    const { reviewAgentLayout = false } = options;
     const rpBody = document.getElementById(bodyId);
 
     rpBody.innerHTML = `
@@ -7313,20 +7597,11 @@ async function runReasoningFlow(bodyId, steps, responseText, cacheKey, onDone) {
     const stepsSnap = container.innerHTML;
 
     // Replace live reasoning with collapsed accordion + response
-    rpBody.innerHTML = `
-        <div class="reasoning-acc">
-            <div class="reasoning-acc-header" onclick="toggleReasoningAcc(this)">
-                <span>Agent reasoning</span>
-                <svg class="reasoning-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none">
-                    <path d="M3 5l4 4 4-4" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            </div>
-            <div class="reasoning-acc-body">
-                <div class="reasoning-acc-inner">${stepsSnap}</div>
-            </div>
-        </div>
-        ${buildResponseHTML(responseText, cacheKey, 'copy-' + cacheKey, RESPONSES[cacheKey] ? getReviewResponseLabel(Number(cacheKey)) : null, !!RESPONSES[cacheKey])}
-    `;
+    rpBody.innerHTML = buildReasoningAccHTML(stepsSnap)
+        + (reviewAgentLayout
+            ? buildReviewAgentResponseHTML(responseText, cacheKey)
+            : buildResponseHTML(responseText, cacheKey, 'copy-' + cacheKey, RESPONSES[cacheKey] ? getReviewResponseLabel(Number(cacheKey)) : null));
+    syncReasoningAccOpenCache(cacheKey, false);
 
     await typeOut(`resp-body-${cacheKey}`, responseText, 14);
 
@@ -7334,21 +7609,30 @@ async function runReasoningFlow(bodyId, steps, responseText, cacheKey, onDone) {
     maybeRefreshOutputAcc(rpBody);
 }
 
-function buildResponseHTML(text, cacheKey, copyId, headLabel, reviewCompact) {
-    const headInner = reviewCompact
-        ? `<div class="meta-tags">
-                    <span class="meta-tag">Brand consistent</span>
-                    <span class="meta-tag">HIPAA safe</span>
-                </div>`
-        : `<span class="gen-label">${headLabel || 'AI-generated response'}</span>
+function buildReviewAgentResponseHTML(text, cacheKey) {
+    return `
+        <div class="gen-response gen-response-review fade-up">
+            <div class="gen-response-body" id="resp-body-${cacheKey}">${text || ''}</div>
+            <div class="gen-response-foot gen-response-foot-review">
+                <span class="time-saved-label">⏱ 6 min saved this response</span>
                 <div class="meta-tags">
                     <span class="meta-tag">Brand consistent</span>
                     <span class="meta-tag">HIPAA safe</span>
-                </div>`;
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+function buildResponseHTML(text, cacheKey, copyId, headLabel) {
     return `
         <div class="gen-response fade-up">
-            <div class="gen-response-head${reviewCompact ? ' gen-response-head-compact' : ''}">
-                ${headInner}
+            <div class="gen-response-head">
+                <span class="gen-label">${headLabel || 'AI-generated response'}</span>
+                <div class="meta-tags">
+                    <span class="meta-tag">Brand consistent</span>
+                    <span class="meta-tag">HIPAA safe</span>
+                </div>
             </div>
             <div class="gen-response-body" id="resp-body-${cacheKey}">${text || ''}</div>
             <div class="gen-response-foot">
@@ -7444,7 +7728,8 @@ async function generateCustomResponse() {
             crIsGenerating = false;
             setRegenerateButton(btn, 'Regenerate Response');
             btn.disabled = false;
-        }
+        },
+        { reviewAgentLayout: true }
     );
 }
 
@@ -7575,6 +7860,7 @@ let tsaSelectedType = 'nps';
 let tsaSelectedResponseId = null;
 let tsaTicketCache = {};
 let tsaCustomIsGenerating = false;
+let trvCustomIsGenerating = false;
 
 function tsaScoreTier(score, max) {
     const ratio = score / max;
@@ -7876,6 +8162,66 @@ async function generateTsaCustomTicket() {
         const outcomeBody = document.getElementById('body-outcome');
         if (outcomeBody.classList.contains('collapsed')) {
             recalcTsaROI();
+            forceOpenAcc('outcome');
+            setTimeout(() => {
+                document.getElementById('acc-outcome').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 150);
+        }
+    });
+}
+
+function toggleTrvCustomResponse() {
+    const trigger = document.getElementById('trv-custom-trigger');
+    const form    = document.getElementById('trv-custom-form');
+    const isOpen  = form.classList.toggle('open');
+    trigger.classList.toggle('expanded', isOpen);
+    refreshAccBodyHeight('output');
+}
+
+async function generateTrvCustomTicket() {
+    if (trvCustomIsGenerating) return;
+
+    const textInput = document.getElementById('trv-custom-text');
+    const scoreInput = document.getElementById('trv-custom-score');
+    const text = textInput.value.trim();
+    const score = scoreInput.value === '' ? NaN : parseInt(scoreInput.value, 10);
+
+    if (!text) {
+        textInput.style.borderColor = '#fca5a5';
+        setTimeout(() => { textInput.style.borderColor = ''; }, 2000);
+        return;
+    }
+
+    if (isNaN(score) || score < 1 || score > 5) {
+        scoreInput.style.borderColor = '#fca5a5';
+        setTimeout(() => { scoreInput.style.borderColor = ''; }, 2000);
+        return;
+    }
+
+    trvCustomIsGenerating = true;
+    const btn = document.getElementById('btn-trv-cr-gen');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="pulsing">⚙</span>&nbsp;Analyzing…';
+
+    const bizName = getSharedBizName() || 'your business';
+    const ticket = {
+        subject: `Google review flagged (${score}/5) — negative feedback at ${bizName}`,
+        team: score <= 2 ? 'Support' : 'Patient Experience Team',
+        summary: `A customer left a ${score}-star Google review with feedback requiring follow-up.`,
+        action: 'review the linked feedback and follow up with the customer directly.'
+    };
+
+    document.getElementById('trv-cr-response-area').innerHTML = `<div id="trv-cr-rp-body" style="margin-top:16px;"></div>`;
+
+    await runTsaTicketFlow('trv-cr-rp-body', TRV_STEPS, ticket, 'trv-custom-' + Date.now(), () => {
+        trvCustomIsGenerating = false;
+        trvGenerated = true;
+        btn.textContent = 'Assess for ticket';
+        btn.disabled = false;
+
+        const outcomeBody = document.getElementById('body-outcome');
+        if (outcomeBody.classList.contains('collapsed')) {
+            recalcTrvROI();
             forceOpenAcc('outcome');
             setTimeout(() => {
                 document.getElementById('acc-outcome').scrollIntoView({ behavior: 'smooth', block: 'start' });

@@ -2,8 +2,9 @@
   "name": "birdeye-agent-demos",
   "private": true,
   "scripts": {
-    "start": "python3 -m http.server 8080 --bind 127.0.0.1",
-    "dev": "python3 -m http.server 8080 --bind 127.0.0.1",
-    "open": "open http://127.0.0.1:8080/"
+    "start": "python3 serve.py",
+    "dev": "python3 serve.py",
+    "open": "open http://127.0.0.1:8080/",
+    "stop": "python3 -c \"import os; os.system('lsof -ti :8080 | xargs kill 2>/dev/null || true')\""
   }
 }
