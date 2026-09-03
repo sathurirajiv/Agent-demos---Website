@@ -1051,7 +1051,7 @@
             display: flex; align-items: center; gap: 10px; border: 1.5px solid #e2e8f0; border-radius: 10px;
             padding: 12px 14px; cursor: pointer; transition: border-color 0.15s;
         }
-        .rma-review-select:hover { border-color: #93c5fd; }
+        .rma-review-select:hover { border-color: #cdc4c0; }
         .rma-review-select-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
         .rma-review-select-count { font-size: 12.5px; font-weight: 500; color: #0f172a; }
         .rma-review-select-snippet { font-size: 12px; color: #94a3b8; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -1066,6 +1066,11 @@
         .rma-thumb-item { overflow: hidden; border: 2px solid #e2e8f0; }
         .rma-thumb-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
         .rma-thumb-item.active { border-color: #4d403a; }
+        .rma-thumb-item.sp-thumb-multi.active::after {
+            content: '✓'; position: absolute; bottom: 3px; right: 3px;
+            width: 16px; height: 16px; border-radius: 50%; background: #4d403a; color: #fff;
+            font-size: 10px; font-weight: 600; line-height: 16px; text-align: center;
+        }
         .rma-thumb-remove {
             position: absolute; top: 3px; right: 3px; width: 18px; height: 18px; border-radius: 50%;
             background: rgba(15,23,42,0.65); color: white; border: none; font-size: 12px; line-height: 1;
@@ -2326,10 +2331,12 @@
         body.theme-new .acc-toggle:hover { background: transparent; color: #212121; }
         body.theme-new .acc-toggle .acc-chevron { width: 16px; height: 16px; }
 
-        body.theme-new .resp-opt.selected { border-color: #4d403a; background: #f1f0ee; color: #4d403a; }
+        body.theme-new .resp-opt.selected { border-color: #4d403a; background: #f9f8f6; color: #212121; box-shadow: 0 0 0 3px rgba(77,64,58,0.12); }
         body.theme-new .resp-opt.selected .resp-opt-name { color: #212121; }
         body.theme-new .resp-opt.selected .resp-opt-desc { color: #646464; }
-        body.theme-new .resp-opt:hover { border-color: #4d403a; color: #4d403a; }
+        body.theme-new .resp-opt:hover { border-color: #cdc4c0; background: #f9f8f6; color: #212121; }
+        body.theme-new .resp-opt:hover .resp-opt-name { color: #212121; }
+        body.theme-new .resp-opt:hover .resp-opt-desc { color: #646464; }
         body.theme-new .more-options-label { color: #212121; }
         body.theme-new .more-options-toggle:hover .more-options-label { color: #000000; }
         body.theme-new .more-options-chevron path { stroke: #212121; }
@@ -2531,7 +2538,7 @@
         body.theme-new .survey-type-option {
             border-color: #e6e2e0; background: #ffffff;
         }
-        body.theme-new .survey-type-option.selected { border-color: #4d403a; background: #f9f8f6; }
+        body.theme-new .survey-type-option.selected { border-color: #4d403a; background: #f9f8f6; box-shadow: 0 0 0 3px rgba(77,64,58,0.12); }
 
         /* New design: pill form fields — Basic details, Outcomes, Output custom forms */
         body.theme-new #acc-basic input.form-input,
@@ -2869,6 +2876,78 @@
             background: #eeece7; border-color: #cdc4c0; transform: none; box-shadow: none;
         }
         body.theme-new .btn-drawer-refresh { width: auto; }
+
+        /* Muted / secondary text — warm gray-brown (no slate-blue) */
+        body.theme-new .rma-review-select-count {
+            color: #212121; font-family: 'Geist', sans-serif; font-weight: 500;
+        }
+        body.theme-new .rma-review-select-snippet,
+        body.theme-new .rma-review-select-chevron { color: #646464; font-family: 'Geist', sans-serif; }
+        body.theme-new .rma-review-pick .review-text,
+        body.theme-new .rma-review-pick .reviewer-name,
+        body.theme-new .review-text,
+        body.theme-new .reviewer-name { color: #212121; font-family: 'Geist', sans-serif; }
+        body.theme-new .rma-review-pick .reviewer-date,
+        body.theme-new .reviewer-date,
+        body.theme-new .reviewer-sep { color: #909090; font-family: 'Geist', sans-serif; }
+        body.theme-new .output-subtext,
+        body.theme-new .rec-detail,
+        body.theme-new .rec-summary-text,
+        body.theme-new .drawer-datetime,
+        body.theme-new .sr-drawer-section-text,
+        body.theme-new .sr-drawer-steps li { color: #646464; font-family: 'Geist', sans-serif; }
+        body.theme-new .rec-summary-text strong { color: #212121; }
+        body.theme-new .acc-subtitle,
+        body.theme-new .layout-preview span,
+        body.theme-new .rp-empty,
+        body.theme-new .outcomes-intro,
+        body.theme-new .roi-calc-sub,
+        body.theme-new .assumption-item,
+        body.theme-new .roi-row-top,
+        body.theme-new .resp-opt-desc,
+        body.theme-new .post-preview-time,
+        body.theme-new .post-preview-caption { color: #909090; font-family: 'Geist', sans-serif; }
+        body.theme-new .layout-name,
+        body.theme-new .plat-check-name { color: #212121; font-family: 'Geist', sans-serif; }
+        body.theme-new .resp-opt { color: #909090; border-color: #e6e2e0; background: #ffffff; }
+        body.theme-new .resp-opt-name { color: #646464; font-family: 'Geist', sans-serif; }
+
+        /* Unified selectable cards — match brand personality / dropdown hover & selected */
+        body.theme-new .layout-card,
+        body.theme-new .rt-card,
+        body.theme-new .survey-type-option,
+        body.theme-new .rma-review-select,
+        body.theme-new .rma-review-pick {
+            border-color: #e6e2e0;
+            background: #ffffff;
+            transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
+        }
+        body.theme-new .layout-card:hover,
+        body.theme-new .rt-card:hover,
+        body.theme-new .survey-type-option:hover,
+        body.theme-new .rma-review-select:hover,
+        body.theme-new .rma-review-pick:hover {
+            border-color: #cdc4c0;
+            background: #f9f8f6;
+        }
+        body.theme-new .layout-card.selected,
+        body.theme-new .rt-card.selected,
+        body.theme-new .survey-type-option.selected,
+        body.theme-new .rma-review-pick.selected {
+            border-color: #4d403a;
+            background: #f9f8f6;
+            box-shadow: 0 0 0 3px rgba(77,64,58,0.12);
+        }
+        body.theme-new .rt-card.selected .rt-card-label,
+        body.theme-new .rt-card:hover .rt-card-label,
+        body.theme-new .layout-name { color: #212121; }
+        body.theme-new .rt-card-icon { color: #909090; }
+        body.theme-new .rt-card.selected .rt-card-icon,
+        body.theme-new .rt-card:hover .rt-card-icon { color: #646464; }
+        body.theme-new .review-card:hover {
+            border-color: #cdc4c0; box-shadow: none; transform: none;
+        }
+        body.theme-new #review-marketing-fields .plat-check-opt:hover { border-color: #cdc4c0; }
     </style>
 </head>
 <body>
@@ -3358,53 +3437,50 @@
                             <option>Promotional and action-oriented</option>
                         </select>
                     </div>
-                    <div class="form-group" style="margin-bottom:12px;">
-                        <label class="form-label">Post length</label>
-                        <div class="post-len-group">
-                            <button class="post-len-opt" data-val="crisp" onclick="selectPostLen(this)">
-                                <span class="post-len-name">Crisp</span>
-                                <span class="post-len-desc">1–2 lines · punchy hook</span>
-                                <span class="post-len-eng low">Avg engagement</span>
-                            </button>
-                            <button class="post-len-opt selected" data-val="standard" onclick="selectPostLen(this)">
-                                <span class="post-len-name">Standard</span>
-                                <span class="post-len-desc">3–4 lines · clear message</span>
-                                <span class="post-len-eng med">Good engagement</span>
-                            </button>
-                            <button class="post-len-opt" data-val="story" onclick="selectPostLen(this)">
-                                <span class="post-len-name">Story</span>
-                                <span class="post-len-desc">5–7 lines · narrative arc</span>
-                                <span class="post-len-eng">Highest engagement ↑</span>
-                            </button>
+                    <div class="form-row" style="margin-bottom:12px;">
+                        <div class="form-group">
+                            <label class="form-label">Content focus <span class="req">*</span></label>
+                            <div class="cdd-anchor agent-multi-cdd" id="cdd-sp-content-focus">
+                                <div class="cdd-trigger" onclick="toggleCatDropdown('sp-content-focus', event)">
+                                    <span id="cdd-sp-content-focus-label">4 selected</span>
+                                    <span class="cdd-chevron"><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                                </div>
+                                <div class="cdd-panel">
+                                    <div class="dd-option-check" data-value="promotions" onclick="toggleAgentMultiSelect('sp-content-focus', this, event)"><span class="dd-check-box checked"></span>Promotions &amp; Offers</div>
+                                    <div class="dd-option-check" data-value="tips" onclick="toggleAgentMultiSelect('sp-content-focus', this, event)"><span class="dd-check-box checked"></span>Tips &amp; Education</div>
+                                    <div class="dd-option-check" data-value="products" onclick="toggleAgentMultiSelect('sp-content-focus', this, event)"><span class="dd-check-box checked"></span>Product Highlights</div>
+                                    <div class="dd-option-check" data-value="news" onclick="toggleAgentMultiSelect('sp-content-focus', this, event)"><span class="dd-check-box checked"></span>Company News</div>
+                                    <div class="dd-option-check" data-value="community" onclick="toggleAgentMultiSelect('sp-content-focus', this, event)"><span class="dd-check-box"></span>Community &amp; Events</div>
+                                    <div class="dd-option-check" data-value="stories" onclick="toggleAgentMultiSelect('sp-content-focus', this, event)"><span class="dd-check-box"></span>Customer Stories</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Target platforms <span class="req">*</span></label>
+                            <div class="cdd-anchor agent-multi-cdd" id="cdd-sp-platforms">
+                                <div class="cdd-trigger" onclick="toggleCatDropdown('sp-platforms', event)">
+                                    <span id="cdd-sp-platforms-label">All selected</span>
+                                    <span class="cdd-chevron"><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                                </div>
+                                <div class="cdd-panel">
+                                    <div class="dd-option-check dd-select-all" data-value="all" onclick="toggleAgentMultiSelect('sp-platforms', this, event)"><span class="dd-check-box checked"></span>Select all</div>
+                                    <div class="dd-option-check" data-value="fb" onclick="toggleAgentMultiSelect('sp-platforms', this, event)"><span class="dd-check-box checked"></span>Facebook</div>
+                                    <div class="dd-option-check" data-value="ig" onclick="toggleAgentMultiSelect('sp-platforms', this, event)"><span class="dd-check-box checked"></span>Instagram</div>
+                                    <div class="dd-option-check" data-value="li" onclick="toggleAgentMultiSelect('sp-platforms', this, event)"><span class="dd-check-box checked"></span>LinkedIn</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="form-group" style="margin-bottom:12px;">
-                        <label class="form-label">Content focus <span class="req">*</span></label>
-                        <div class="content-focus-grid">
-                            <div class="cf-opt checked" onclick="toggleCfOpt(this)"><div class="ao-checkbox checked"></div><span class="cf-opt-label">Promotions &amp; Offers</span></div>
-                            <div class="cf-opt checked" onclick="toggleCfOpt(this)"><div class="ao-checkbox checked"></div><span class="cf-opt-label">Tips &amp; Education</span></div>
-                            <div class="cf-opt checked" onclick="toggleCfOpt(this)"><div class="ao-checkbox checked"></div><span class="cf-opt-label">Product Highlights</span></div>
-                            <div class="cf-opt checked" onclick="toggleCfOpt(this)"><div class="ao-checkbox checked"></div><span class="cf-opt-label">Company News</span></div>
-                            <div class="cf-opt" onclick="toggleCfOpt(this)"><div class="ao-checkbox"></div><span class="cf-opt-label">Community &amp; Events</span></div>
-                            <div class="cf-opt" onclick="toggleCfOpt(this)"><div class="ao-checkbox"></div><span class="cf-opt-label">Customer Stories</span></div>
+                        <div class="field-label-row" style="margin-bottom:10px;">
+                            <label class="form-label" style="margin-bottom:0;">Post images</label>
+                            <span class="tooltip-wrap">
+                                <span class="tooltip-icon">i</span>
+                                <span class="tooltip-bubble">Select one or more images for your posts. All three nature images are selected by default. Add up to 2 more (5 total, under 1MB each).</span>
+                            </span>
                         </div>
-                    </div>
-                    <div class="form-group" style="margin-bottom:12px;">
-                        <label class="form-label">Target platforms <span class="req">*</span></label>
-                        <div class="plat-check-row">
-                            <div class="plat-check-opt checked" onclick="togglePlatCheck(this)">
-                                <div class="ao-checkbox checked"></div>
-                                <span class="plat-check-name">Facebook</span>
-                            </div>
-                            <div class="plat-check-opt checked" onclick="togglePlatCheck(this)">
-                                <div class="ao-checkbox checked"></div>
-                                <span class="plat-check-name">Instagram</span>
-                            </div>
-                            <div class="plat-check-opt checked" onclick="togglePlatCheck(this)">
-                                <div class="ao-checkbox checked"></div>
-                                <span class="plat-check-name">LinkedIn</span>
-                            </div>
-                        </div>
+                        <div class="rma-thumb-grid" id="sp-thumb-grid"></div>
+                        <input type="file" id="sp-thumb-file" accept="image/*" multiple style="display:none;" onchange="handleSpThumbUpload(event)">
                     </div>
                     <div class="more-options-toggle" onclick="toggleSpMoreOptions()" style="margin-top:8px;">
                         <span class="more-options-label">More options</span>
@@ -3416,7 +3492,7 @@
                             <div class="ao-text">
                                 <div class="ao-label">Posts per week</div>
                                 <div class="ao-desc">Number of posts the agent schedules across all platforms each week</div>
-                                <input type="number" class="ao-custom-input" id="sp-posts-per-week" value="14" min="1" max="50" onclick="event.stopPropagation()">
+                                <input type="number" class="ao-custom-input" id="sp-posts-per-week" value="7" min="1" max="50" onclick="event.stopPropagation()">
                             </div>
                         </div>
                         <div class="ao-item" id="sp-ht-item" onclick="toggleSpOpt(this)">
@@ -3463,19 +3539,6 @@
                             <option>Warm and personal</option>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label class="form-label">Auto response span</label>
-                        <select class="form-select" id="se-span" onchange="toggleSeCustomPrompt(this)">
-                            <option>24/7 — Monitor and respond around the clock</option>
-                            <option>Business hours — 9 AM to 6 PM (Mon–Fri)</option>
-                            <option>Extended hours — 8 AM to 8 PM (Mon–Sat)</option>
-                            <option>Custom schedule</option>
-                        </select>
-                    </div>
-                    <div id="se-custom-prompt-wrap" style="display:none;margin-top:12px;">
-                        <label class="form-label">Describe your custom schedule</label>
-                        <textarea class="form-input" id="se-custom-prompt" rows="3" placeholder="e.g. Weekdays 7 AM – 10 PM, Saturdays 9 AM – 5 PM, Sundays closed" style="resize:vertical;min-height:72px;"></textarea>
-                    </div>
                 </div>
 
                 <!-- ── Review Marketing Agent fields ── -->
@@ -3513,7 +3576,7 @@
                                 <div class="layout-check radio"></div>
                                 <div class="layout-preview layout-preview-spotlight">
                                     <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:6px;">
-                                        <span style="width:16px;height:16px;border-radius:50%;background:#c7d2fe;display:inline-block;flex-shrink:0;"></span>
+                                        <span style="width:16px;height:16px;border-radius:50%;background:#e6e2e0;display:inline-block;flex-shrink:0;"></span>
                                         <span style="font-size:10px;font-weight:500;color:#374151;">Mike R.</span>
                                         <span style="font-size:9px;color:#f59e0b;">★★★★★</span>
                                     </div>
@@ -3527,14 +3590,12 @@
                     <div class="form-group" style="margin-bottom:20px;">
                         <label class="form-label">Select channels <span class="req">*</span></label>
                         <div class="plat-check-row">
-                            <div class="plat-check-opt checked" onclick="togglePlatCheck(this)">
+                            <div class="plat-check-opt checked" data-channel="fb" onclick="togglePlatCheck(this)">
                                 <div class="ao-checkbox checked"></div>
-                                <span class="cplt cplt-fb"><svg width="9" height="9" viewBox="0 0 24 24" fill="white"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></span>
                                 <span class="plat-check-name">Facebook</span>
                             </div>
-                            <div class="plat-check-opt checked" onclick="togglePlatCheck(this)">
+                            <div class="plat-check-opt checked" data-channel="li" onclick="togglePlatCheck(this)">
                                 <div class="ao-checkbox checked"></div>
-                                <span class="cplt cplt-li"><svg width="9" height="9" viewBox="0 0 24 24" fill="white"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></span>
                                 <span class="plat-check-name">LinkedIn</span>
                             </div>
                         </div>
@@ -3552,7 +3613,7 @@
                                 <label class="form-label" style="margin-bottom:0;">Background image</label>
                                 <span class="tooltip-wrap">
                                     <span class="tooltip-icon">i</span>
-                                    <span class="tooltip-bubble">The first image is selected automatically based on your review. Add up to 4 more (under 1MB each) and click one to use it in the preview.</span>
+                                    <span class="tooltip-bubble">Pick a background for your post. The first image is selected by default. Add up to 2 more (5 total, under 1MB each).</span>
                                 </span>
                             </div>
                             <div class="rma-thumb-grid" id="rma-thumb-grid"></div>
@@ -4056,7 +4117,7 @@
                         <div class="roi-calc-inputs" style="margin-bottom:20px;">
                             <div class="form-group">
                                 <label class="form-label">Posts per week</label>
-                                <input type="number" class="form-input" id="sp-posts-pw" value="14" min="1" max="100" oninput="recalcSocialPub()">
+                                <input type="number" class="form-input" id="sp-posts-pw" value="7" min="1" max="100" oninput="recalcSocialPub()">
                             </div>
                             <div class="form-group">
                                 <label class="form-label">Staff cost ($/hr)</label>
@@ -4070,12 +4131,12 @@
                                 <div class="metric-sub">vs. manual creation</div>
                             </div>
                             <div class="metric-card green">
-                                <div class="metric-val" id="sp-m-hours">42 hrs</div>
+                                <div class="metric-val" id="sp-m-hours">21 hrs</div>
                                 <div class="metric-lbl">Saved monthly</div>
-                                <div class="metric-sub" id="sp-m-hours-sub">~56 posts/month</div>
+                                <div class="metric-sub" id="sp-m-hours-sub">~28 posts/month</div>
                             </div>
                             <div class="metric-card purple">
-                                <div class="metric-val" id="sp-m-cost">$1,050</div>
+                                <div class="metric-val" id="sp-m-cost">$525</div>
                                 <div class="metric-lbl">Cost saved/month</div>
                                 <div class="metric-sub" id="sp-m-cost-sub">@ $25/hr staff rate</div>
                             </div>
@@ -4935,16 +4996,13 @@ const RMA_BUSINESS_REVIEW_COUNTS = {
     'Premier Dental Care': 9
 };
 
-// Default cover photo per review (real photo, shown unless the user picks a color background or uploads their own)
-const RMA_DEFAULT_IMAGES = {
-    1: 'https://picsum.photos/id/1015/600/450',
-    2: 'https://picsum.photos/id/1016/600/450',
-    3: 'https://picsum.photos/id/1018/600/450',
-    4: 'https://picsum.photos/id/1019/600/450',
-    5: 'https://picsum.photos/id/1020/600/450',
-    6: 'https://picsum.photos/id/1021/600/450',
-    7: 'https://picsum.photos/id/1024/600/450'
-};
+// Stock background images for review marketing posts (first is default)
+const RMA_STOCK_IMAGES = [
+    'assets/rma-bg/rma-bg-1.png',
+    'assets/rma-bg/rma-bg-2.png',
+    'assets/rma-bg/rma-bg-3.png'
+];
+const RMA_MAX_GALLERY_IMAGES = 5;
 
 const RMA_FILL_PRESETS = ['#2563eb', '#0d9488', '#7c3aed', '#ea580c', '#db2777', '#334155'];
 
@@ -4959,6 +5017,9 @@ let customStarVal = 0;
 let crIsGenerating = false;
 let socialPubGenerated = false;
 let socialPubIsGenerating = false;
+let spUploadedImages = [];
+let spSelectedImageIdxs = [0, 1, 2];
+let spCalendarConfig = { images: [], platforms: [] };
 let selectedCommentId = null;
 let scIsGenerating = false;
 let socialCommentCache = {};
@@ -4974,8 +5035,8 @@ let trvIsGenerating = false;
 let rmaGenerated = false;
 let rmaIsGenerating = false;
 let rmaSelectedReviewId = 1;
-let rmaImages = [];
-let rmaSelectedImageIdx = -1;
+let rmaUploadedImages = [];
+let rmaSelectedImageIdx = 0;
 let rmaBgType = 'image';
 let rmaFillColor = RMA_FILL_PRESETS[0];
 let rmaAlign = 'center';
@@ -5627,6 +5688,8 @@ document.addEventListener('DOMContentLoaded', () => {
     recalcROI();
 
     renderRmaThumbGrid();
+    renderSpThumbGrid();
+    ['sp-content-focus', 'sp-platforms'].forEach(updateAgentMultiSelectLabel);
     renderServiceChips();
     enhanceAllFormSelects();
     populateManualAddressDropdowns();
@@ -6893,6 +6956,90 @@ function setAdditionalCategories(list) {
         o.querySelector('.dd-check-box').classList.toggle('checked', list.includes(label));
     });
     updateAdditionalCategoriesLabel();
+}
+
+// ---- AGENT MULTI-SELECT DROPDOWNS (content focus, platforms, etc.) ----
+function getAgentMultiSelectOptions(anchor, which) {
+    if (which === 'sp-platforms') {
+        return anchor.querySelectorAll('.dd-option-check:not(.dd-select-all)');
+    }
+    return anchor.querySelectorAll('.dd-option-check');
+}
+
+function syncPlatformSelectAll(anchor) {
+    const selectAllBox = anchor.querySelector('.dd-select-all .dd-check-box');
+    if (!selectAllBox) return;
+    const platformOpts = getAgentMultiSelectOptions(anchor, 'sp-platforms');
+    const allChecked = [...platformOpts].every(o => o.querySelector('.dd-check-box')?.classList.contains('checked'));
+    selectAllBox.classList.toggle('checked', allChecked);
+}
+
+function updateAgentMultiSelectLabel(which) {
+    const anchor = document.getElementById('cdd-' + which);
+    const label = document.getElementById('cdd-' + which + '-label');
+    if (!anchor || !label) return;
+    const options = getAgentMultiSelectOptions(anchor, which);
+    const checked = Array.from(options)
+        .filter(o => o.querySelector('.dd-check-box')?.classList.contains('checked'));
+    const total = options.length;
+    if (!checked.length) {
+        label.textContent = 'None selected';
+        label.classList.add('cdd-placeholder');
+    } else if (checked.length === total) {
+        label.textContent = 'All selected';
+        label.classList.remove('cdd-placeholder');
+    } else if (checked.length === 1) {
+        label.textContent = checked[0].textContent.trim();
+        label.classList.remove('cdd-placeholder');
+    } else {
+        label.textContent = `${checked[0].textContent.trim()}, +${checked.length - 1} more`;
+        label.classList.remove('cdd-placeholder');
+    }
+}
+
+function toggleAgentMultiSelect(which, el, event) {
+    if (event) event.stopPropagation();
+    const anchor = document.getElementById('cdd-' + which);
+    const box = el.querySelector('.dd-check-box');
+    if (!anchor || !box) return;
+
+    if (which === 'sp-platforms' && el.classList.contains('dd-select-all')) {
+        const platformOpts = [...getAgentMultiSelectOptions(anchor, which)];
+        const allChecked = platformOpts.every(o => o.querySelector('.dd-check-box')?.classList.contains('checked'));
+        if (allChecked) {
+            platformOpts.forEach((opt, i) => {
+                opt.querySelector('.dd-check-box')?.classList.toggle('checked', i === 0);
+            });
+            box.classList.remove('checked');
+        } else {
+            platformOpts.forEach(opt => opt.querySelector('.dd-check-box')?.classList.add('checked'));
+            box.classList.add('checked');
+        }
+    } else if (which === 'sp-platforms') {
+        const checkedCount = anchor.querySelectorAll('.dd-option-check:not(.dd-select-all) .dd-check-box.checked').length;
+        if (box.classList.contains('checked') && checkedCount <= 1) return;
+        box.classList.toggle('checked');
+        syncPlatformSelectAll(anchor);
+    } else {
+        const checkedCount = anchor.querySelectorAll('.dd-check-box.checked').length;
+        if (box.classList.contains('checked') && checkedCount <= 1) return;
+        box.classList.toggle('checked');
+    }
+
+    updateAgentMultiSelectLabel(which);
+    if (which === 'sp-platforms' && socialPubGenerated) {
+        snapshotSpCalendarConfig();
+        renderCalendar();
+    }
+}
+
+function getAgentMultiSelectValues(which) {
+    const anchor = document.getElementById('cdd-' + which);
+    if (!anchor) return [];
+    return Array.from(getAgentMultiSelectOptions(anchor, which))
+        .filter(o => o.querySelector('.dd-check-box')?.classList.contains('checked'))
+        .map(o => o.dataset.value)
+        .filter(Boolean);
 }
 
 // ---- SERVICES: CHIP INPUT ----
@@ -8557,11 +8704,21 @@ function getRmaSelectedReview() {
     return RMA_REVIEW_POOL.find(x => x.id === rmaSelectedReviewId) || RMA_REVIEW_POOL[0];
 }
 
+function getRmaGalleryImages() {
+    return RMA_STOCK_IMAGES.concat(rmaUploadedImages);
+}
+
+function getRmaSelectedImageUrl() {
+    const gallery = getRmaGalleryImages();
+    const idx = Math.min(Math.max(0, rmaSelectedImageIdx), gallery.length - 1);
+    return gallery[idx] || RMA_STOCK_IMAGES[0];
+}
+
 function computeRmaBg() {
     if (rmaBgType === 'color') {
         return { backgroundImage: 'none', backgroundColor: rmaFillColor, showTint: false };
     }
-    const url = (rmaSelectedImageIdx >= 0 && rmaImages[rmaSelectedImageIdx]) ? rmaImages[rmaSelectedImageIdx] : RMA_DEFAULT_IMAGES[getRmaSelectedReview().id];
+    const url = getRmaSelectedImageUrl();
     return { backgroundImage: `url('${url}')`, backgroundColor: 'transparent', showTint: true };
 }
 
@@ -8575,7 +8732,7 @@ function getRmaSelectedLayout() {
 function getRmaSelectedChannels() {
     const channels = [];
     document.querySelectorAll('#review-marketing-fields .plat-check-row .plat-check-opt').forEach(opt => {
-        if (opt.classList.contains('checked')) channels.push(opt.querySelector('.cplt-fb') ? 'fb' : 'li');
+        if (opt.classList.contains('checked') && opt.dataset.channel) channels.push(opt.dataset.channel);
     });
     return channels;
 }
@@ -8691,43 +8848,44 @@ function setRmaAlign(align) {
 }
 
 // ---- Background image gallery (Basic details) ----
-// Slot 0 is always the system default photo matched to the featured review — shown, selectable, but not removable
 function renderRmaThumbGrid() {
     const grid = document.getElementById('rma-thumb-grid');
     if (!grid) return;
-    const defaultUrl = RMA_DEFAULT_IMAGES[getRmaSelectedReview().id];
-    const defaultTile = `
-        <div class="rma-thumb-item${rmaSelectedImageIdx === -1 ? ' active' : ''}" onclick="selectRmaThumb(-1)" title="System default">
-            <img src="${defaultUrl}" alt="">
-        </div>`;
-    const items = rmaImages.map((url, idx) => `
-        <div class="rma-thumb-item${idx === rmaSelectedImageIdx ? ' active' : ''}" onclick="selectRmaThumb(${idx})">
+    const gallery = getRmaGalleryImages();
+    if (rmaSelectedImageIdx < 0 || rmaSelectedImageIdx >= gallery.length) rmaSelectedImageIdx = 0;
+    const stockCount = RMA_STOCK_IMAGES.length;
+    const tiles = gallery.map((url, idx) => {
+        const removeBtn = idx >= stockCount
+            ? `<button type="button" class="rma-thumb-remove" onclick="event.stopPropagation();removeRmaThumb(${idx})">&times;</button>`
+            : '';
+        return `
+        <div class="rma-thumb-item${idx === rmaSelectedImageIdx ? ' active' : ''}" onclick="selectRmaThumb(${idx})" title="Background option ${idx + 1}">
             <img src="${url}" alt="">
-            <button type="button" class="rma-thumb-remove" onclick="event.stopPropagation();removeRmaThumb(${idx})">&times;</button>
-        </div>
-    `).join('');
-    const addTile = rmaImages.length < 4 ? `
+            ${removeBtn}
+        </div>`;
+    }).join('');
+    const addTile = gallery.length < RMA_MAX_GALLERY_IMAGES ? `
         <div class="rma-thumb-add" onclick="document.getElementById('rma-thumb-file').click()">
             <span class="rma-thumb-add-icon">+</span>
             <span>Add</span>
         </div>` : '';
-    grid.innerHTML = defaultTile + items + addTile;
+    grid.innerHTML = tiles + addTile;
 }
 
-// Supports selecting several images at once, up to 4 additions on top of the default photo
 function handleRmaThumbUpload(event) {
     const files = Array.from(event.target.files || []);
     event.target.value = '';
-    const toAdd = files.slice(0, Math.max(0, 4 - rmaImages.length));
+    const slotsLeft = RMA_MAX_GALLERY_IMAGES - getRmaGalleryImages().length;
+    const toAdd = files.slice(0, Math.max(0, slotsLeft));
     if (!toAdd.length) return;
     let loaded = 0;
     toAdd.forEach(file => {
         const reader = new FileReader();
         reader.onload = (e) => {
-            rmaImages.push(e.target.result);
+            rmaUploadedImages.push(e.target.result);
             loaded++;
             if (loaded === toAdd.length) {
-                rmaSelectedImageIdx = rmaImages.length - 1;
+                rmaSelectedImageIdx = getRmaGalleryImages().length - 1;
                 renderRmaThumbGrid();
                 if (rmaGenerated) renderRmaPreview();
             }
@@ -8742,10 +8900,13 @@ function selectRmaThumb(idx) {
     if (rmaGenerated) renderRmaPreview();
 }
 
-function removeRmaThumb(idx) {
-    rmaImages.splice(idx, 1);
-    if (rmaSelectedImageIdx === idx) rmaSelectedImageIdx = rmaImages.length ? 0 : -1;
-    else if (rmaSelectedImageIdx > idx) rmaSelectedImageIdx--;
+function removeRmaThumb(galleryIdx) {
+    const stockCount = RMA_STOCK_IMAGES.length;
+    if (galleryIdx < stockCount) return;
+    const uploadIdx = galleryIdx - stockCount;
+    rmaUploadedImages.splice(uploadIdx, 1);
+    if (rmaSelectedImageIdx === galleryIdx) rmaSelectedImageIdx = 0;
+    else if (rmaSelectedImageIdx > galleryIdx) rmaSelectedImageIdx--;
     renderRmaThumbGrid();
     if (rmaGenerated) renderRmaPreview();
 }
@@ -8790,7 +8951,6 @@ function selectDrawerReview(reviewId) {
     rmaSelectedReviewId = reviewId;
     renderReviewDrawerContent();
     updateRmaSelectedReviewSnippet();
-    renderRmaThumbGrid();
     if (rmaGenerated) renderRmaPreview();
 }
 
@@ -8844,7 +9004,7 @@ function typeOut(id, text, speed) {
 
 // ---- SOCIAL PUBLISHING ROI ----
 function recalcSocialPub() {
-    const posts = parseInt(document.getElementById('sp-posts-pw')?.value) || 14;
+    const posts = parseInt(document.getElementById('sp-posts-pw')?.value) || 7;
     const rate  = parseInt(document.getElementById('sp-rate')?.value) || 25;
     const monthlyPosts = posts * 4;
     const totalHours = Math.round((monthlyPosts * 45) / 60);
@@ -8887,45 +9047,147 @@ function togglePlatCheck(el) {
 function pause(ms) { return new Promise(r => setTimeout(r, ms)); }
 
 // ===== SOCIAL PUBLISHING DATA =====
+const SP_STOCK_IMAGES = [
+    'assets/sp-post/sp-post-1.jpg',
+    'assets/sp-post/sp-post-2.jpg',
+    'assets/sp-post/sp-post-3.jpg'
+];
+const SP_MAX_GALLERY_IMAGES = 5;
+
+// One post per day (Sun–Sat)
 const SOCIAL_WEEK = [
-    { day: 'Sun', date: '1', isToday: false, posts: [
-        { tag: 'Promo', platforms: ['fb','ig','li'], time: '10:00 AM', copy: "Weekend special! Book your cleaning this month and save 20% on teeth whitening. Limited slots available — call us today!", imgBg: '#1877f2', imgLabel: 'Weekend\nSpecial!' },
-        { tag: 'Tip',   platforms: ['ig'], time: '3:00 PM', copy: "Tip: Flossing daily reduces gum disease risk by up to 40%. Start your healthy habit and share with a friend!", imgBg: '#bc1888', imgLabel: 'Dental\nTip' }
-    ]},
-    { day: 'Mon', date: '2', isToday: false, posts: [
-        { tag: 'Product', platforms: ['fb','ig','li'], time: '10:00 AM', copy: "Introducing our new Invisalign consultation. Straighten your smile discreetly — book a free consult today!", imgBg: '#0a66c2', imgLabel: 'Invisalign\nNow Available' },
-        { tag: 'Announcement', platforms: ['li'], time: '2:00 PM', copy: "Aspen Dental Group is proud to announce extended Saturday hours. Now open 9 AM–2 PM for your convenience.", imgBg: '#0f172a', imgLabel: 'New Hours\nAnnouncement' }
-    ]},
-    { day: 'Tue', date: '3', isToday: false, posts: [
-        { tag: 'Tip',   platforms: ['fb','ig'], time: '10:00 AM', copy: "Drinking water after meals helps rinse away bacteria and neutralize acids. Stay hydrated for a healthier smile!", imgBg: '#0891b2', imgLabel: 'Health\nTip Tuesday' },
-        { tag: 'Promo', platforms: ['ig','li'], time: '4:00 PM', copy: "Family discount — bring 2 family members and get 15% off your next visit. Good dental health runs in families!", imgBg: '#e6683c', imgLabel: 'Family\nDiscount' }
-    ]},
-    { day: 'Wed', date: '4', isToday: true, posts: [
-        { tag: 'Announcement', platforms: ['fb','ig','li'], time: '10:00 AM', copy: "We're thrilled to welcome Dr. Sarah Chen to our team! 12 years of experience in cosmetic and family dentistry.", imgBg: '#2563eb', imgLabel: 'Meet\nDr. Chen!' },
-        { tag: 'Product', platforms: ['fb','ig'], time: '1:00 PM', copy: "Transform your smile with our same-day crown service. Beautiful, durable crowns in a single appointment!", imgBg: '#7c3aed', imgLabel: 'Same-Day\nCrowns' }
-    ]},
-    { day: 'Thu', date: '5', isToday: false, posts: [
-        { tag: 'Promo', platforms: ['fb','ig','li'], time: '10:00 AM', copy: "First-time patients get a complimentary consultation + X-rays. Experience the Aspen Dental difference today.", imgBg: '#059669', imgLabel: 'New Patient\nOffer' },
-        { tag: 'Tip',   platforms: ['ig'], time: '5:00 PM', copy: "Replace your toothbrush every 3 months or after illness. Worn bristles are less effective at removing plaque!", imgBg: '#bc1888', imgLabel: 'Pro\nTip' }
-    ]},
-    { day: 'Fri', date: '6', isToday: false, posts: [
-        { tag: 'Product', platforms: ['fb','ig','li'], time: '10:00 AM', copy: "Our whitening treatment delivers up to 8 shades brighter in one session. Get ready to show off that weekend smile!", imgBg: '#d97706', imgLabel: 'Whitening\nSpecial' },
-        { tag: 'Other',   platforms: ['fb'], time: '3:00 PM', copy: "Thank you to all our incredible patients for your trust and support. We're grateful for every smile we help create!", imgBg: '#374151', imgLabel: 'Thank\nYou!' }
-    ]},
-    { day: 'Sat', date: '7', isToday: false, posts: [
-        { tag: 'Tip',   platforms: ['ig'], time: '11:00 AM', copy: "Even on weekends, don't skip brushing for 2 minutes twice a day. Your future self will thank you!", imgBg: '#bc1888', imgLabel: 'Weekend\nReminder' },
-        { tag: 'Promo', platforms: ['fb','ig'], time: '2:00 PM', copy: "Last chance for this week's whitening special! Book by Sunday and save 20%. Beautiful smiles don't wait!", imgBg: '#dc2626', imgLabel: 'Last\nChance!' }
-    ]}
+    { tag: 'Promo', platforms: ['fb','ig','li'], time: '10:00 AM', copy: "Weekend special! Book your cleaning this month and save 20% on teeth whitening. Limited slots available — call us today!" },
+    { tag: 'Product', platforms: ['fb','ig','li'], time: '10:00 AM', copy: "Introducing our new Invisalign consultation. Straighten your smile discreetly — book a free consult today!" },
+    { tag: 'Tip', platforms: ['fb','ig'], time: '10:00 AM', copy: "Drinking water after meals helps rinse away bacteria and neutralize acids. Stay hydrated for a healthier smile!" },
+    { tag: 'Announcement', platforms: ['fb','ig','li'], time: '10:00 AM', copy: "We're thrilled to welcome Dr. Sarah Chen to our team! 12 years of experience in cosmetic and family dentistry." },
+    { tag: 'Promo', platforms: ['fb','ig','li'], time: '10:00 AM', copy: "First-time patients get a complimentary consultation + X-rays. Experience the Aspen Dental difference today." },
+    { tag: 'Product', platforms: ['fb','ig','li'], time: '10:00 AM', copy: "Our whitening treatment delivers up to 8 shades brighter in one session. Get ready to show off that weekend smile!" },
+    { tag: 'Tip', platforms: ['ig'], time: '11:00 AM', copy: "Even on weekends, don't skip brushing for 2 minutes twice a day. Your future self will thank you!" }
 ];
 
 const SOCIAL_PUB_STEPS = [
     { txt: "Analyzing brand voice and content guidelines for the business", ms: 600 },
     { txt: "Scanning trending topics and competitor content this week", ms: 700 },
-    { txt: "Identifying optimal posting times for Facebook, Instagram, LinkedIn", ms: 650 },
-    { txt: "Generating platform-specific copy for 7 days across 3 channels", ms: 800 },
-    { txt: "Applying image creative recommendations and tag variations", ms: 700 },
-    { txt: "Scheduling 14 posts across the week — content calendar ready", ms: 750 }
+    { txt: "Identifying optimal posting times for your selected platforms", ms: 650 },
+    { txt: "Generating platform-specific copy for 7 days", ms: 800 },
+    { txt: "Applying your selected post images across the calendar", ms: 700 },
+    { txt: "Scheduling 7 posts across the week — content calendar ready", ms: 750 }
 ];
+
+function getSpGalleryImages() {
+    return SP_STOCK_IMAGES.concat(spUploadedImages);
+}
+
+function getSpActiveImages() {
+    const gallery = getSpGalleryImages();
+    const idxs = spSelectedImageIdxs.filter(i => i >= 0 && i < gallery.length);
+    if (!idxs.length) return [SP_STOCK_IMAGES[0]];
+    return idxs.map(i => gallery[i]);
+}
+
+function getSpSelectedPlatforms() {
+    const values = getAgentMultiSelectValues('sp-platforms');
+    return values.length ? values : ['fb', 'ig', 'li'];
+}
+
+function snapshotSpCalendarConfig() {
+    spCalendarConfig = {
+        images: getSpActiveImages(),
+        platforms: getSpSelectedPlatforms()
+    };
+}
+
+function getPostImageForDay(dayIndex) {
+    const imgs = spCalendarConfig.images.length ? spCalendarConfig.images : getSpActiveImages();
+    if (!imgs.length) return SP_STOCK_IMAGES[0];
+    return imgs[dayIndex % imgs.length];
+}
+
+function renderSpThumbGrid() {
+    const grid = document.getElementById('sp-thumb-grid');
+    if (!grid) return;
+    const gallery = getSpGalleryImages();
+    spSelectedImageIdxs = spSelectedImageIdxs.filter(i => i >= 0 && i < gallery.length);
+    if (!spSelectedImageIdxs.length) spSelectedImageIdxs = [0];
+    const stockCount = SP_STOCK_IMAGES.length;
+    const tiles = gallery.map((url, idx) => {
+        const isUploaded = idx >= stockCount;
+        const isSelected = spSelectedImageIdxs.includes(idx);
+        const removeBtn = isUploaded
+            ? `<button type="button" class="rma-thumb-remove" onclick="event.stopPropagation();removeSpThumb(${idx})">&times;</button>`
+            : '';
+        return `
+        <div class="rma-thumb-item sp-thumb-multi${isSelected ? ' active' : ''}" onclick="toggleSpThumb(${idx})" title="Post image ${idx + 1}">
+            <img src="${url}" alt="">
+            ${removeBtn}
+        </div>`;
+    }).join('');
+    const addTile = gallery.length < SP_MAX_GALLERY_IMAGES ? `
+        <div class="rma-thumb-add" onclick="document.getElementById('sp-thumb-file').click()">
+            <span class="rma-thumb-add-icon">+</span>
+            <span>Add</span>
+        </div>` : '';
+    grid.innerHTML = tiles + addTile;
+}
+
+function toggleSpThumb(idx) {
+    if (spSelectedImageIdxs.includes(idx)) {
+        if (spSelectedImageIdxs.length > 1) {
+            spSelectedImageIdxs = spSelectedImageIdxs.filter(i => i !== idx);
+        }
+    } else {
+        spSelectedImageIdxs.push(idx);
+        spSelectedImageIdxs.sort((a, b) => a - b);
+    }
+    renderSpThumbGrid();
+    if (socialPubGenerated) {
+        snapshotSpCalendarConfig();
+        renderCalendar();
+    }
+}
+
+function handleSpThumbUpload(event) {
+    const files = Array.from(event.target.files || []);
+    event.target.value = '';
+    const slotsLeft = SP_MAX_GALLERY_IMAGES - getSpGalleryImages().length;
+    const toAdd = files.slice(0, Math.max(0, slotsLeft));
+    if (!toAdd.length) return;
+    let loaded = 0;
+    toAdd.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            spUploadedImages.push(e.target.result);
+            loaded++;
+            if (loaded === toAdd.length) {
+                const newIdx = getSpGalleryImages().length - 1;
+                if (!spSelectedImageIdxs.includes(newIdx)) spSelectedImageIdxs.push(newIdx);
+                spSelectedImageIdxs.sort((a, b) => a - b);
+                renderSpThumbGrid();
+                if (socialPubGenerated) {
+                    snapshotSpCalendarConfig();
+                    renderCalendar();
+                }
+            }
+        };
+        reader.readAsDataURL(file);
+    });
+}
+
+function removeSpThumb(galleryIdx) {
+    const stockCount = SP_STOCK_IMAGES.length;
+    if (galleryIdx < stockCount) return;
+    const uploadIdx = galleryIdx - stockCount;
+    spUploadedImages.splice(uploadIdx, 1);
+    spSelectedImageIdxs = spSelectedImageIdxs
+        .filter(i => i !== galleryIdx)
+        .map(i => (i > galleryIdx ? i - 1 : i));
+    if (!spSelectedImageIdxs.length) spSelectedImageIdxs = [0];
+    renderSpThumbGrid();
+    if (socialPubGenerated) {
+        snapshotSpCalendarConfig();
+        renderCalendar();
+    }
+}
 
 function getPlatIconSVGSmall(p) {
     if (p === 'fb') return '<svg width="9" height="9" viewBox="0 0 24 24" fill="white"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>';
@@ -8984,77 +9246,49 @@ function renderCalendar() {
 
     const postsRow = document.getElementById('cal-posts-row');
     if (postsRow) {
-        postsRow.innerHTML = SOCIAL_WEEK.map((dayData, colIdx) =>
-            `<div class="cal-col">${dayData.posts.map((p, pIdx) => {
-                const seed = (Math.abs(weekOffset) * 14) + colIdx * 2 + pIdx + 10;
-                return `<div class="cal-post-card" style="cursor:pointer;" onclick="openPostDrawer(${colIdx},${pIdx})">
-                    <div class="cal-tag tag-${p.tag.toLowerCase()}">${p.tag}</div>
-                    <div class="cal-plats">${p.platforms.map(plt =>
+        const activePlatforms = spCalendarConfig.platforms.length
+            ? spCalendarConfig.platforms
+            : getSpSelectedPlatforms();
+        postsRow.innerHTML = SOCIAL_WEEK.map((post, colIdx) => {
+            const imgUrl = getPostImageForDay(colIdx);
+            const displayPlats = post.platforms.filter(p => activePlatforms.includes(p));
+            const platforms = displayPlats.length ? displayPlats : activePlatforms;
+            return `<div class="cal-col">
+                <div class="cal-post-card" style="cursor:pointer;" onclick="openPostDrawer(${colIdx})">
+                    <div class="cal-tag tag-${post.tag.toLowerCase()}">${post.tag}</div>
+                    <div class="cal-plats">${platforms.map(plt =>
                         `<div class="cplt cplt-${plt}">${getPlatIconSVGSmall(plt)}</div>`
                     ).join('')}</div>
-                    <div class="cal-time">${p.time}</div>
-                    <div class="cal-copy">${p.copy}</div>
-                    <div class="cal-img" style="overflow:hidden;border-radius:7px;height:54px;background:${p.imgBg};">
-                        <img src="https://picsum.photos/seed/${seed}/300/110"
-                             alt="" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy">
+                    <div class="cal-time">${post.time}</div>
+                    <div class="cal-copy">${post.copy}</div>
+                    <div class="cal-img" style="overflow:hidden;border-radius:7px;height:54px;">
+                        <img src="${imgUrl}" alt="" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy">
                     </div>
-                </div>`;
-            }).join('')}</div>`
-        ).join('');
+                </div>
+            </div>`;
+        }).join('');
     }
 }
 
 function prevWeek() { weekOffset--; renderCalendar(); }
 function nextWeek() { weekOffset++; renderCalendar(); }
 
-let drawerState = { colIdx: 0, pIdx: 0, activePlt: null, seedOffset: 0 };
+let drawerState = { colIdx: 0, activePlt: null, seedOffset: 0 };
 
-// Build copy for a post based on selected post-length option
-function buildPostCopy(baseCopy, tag, platform, seedOffset) {
-    const len = document.querySelector('.post-len-opt.selected')?.dataset.val || 'standard';
-    const platSuffix = {
-        fb: '',
-        ig: ' 📸 Double-tap if this resonates!',
-        li: ''
-    };
+function buildPostCopy(baseCopy, tag, platform) {
+    const platSuffix = { fb: '', ig: ' 📸', li: '' };
     const platPrefix = {
         fb: '',
         ig: '',
-        li: 'Sharing a professional perspective: '
+        li: platform === 'li' ? 'Sharing a professional perspective: ' : ''
     };
-
-    const crisp = {
-        Tip:          `Pro tip: ${baseCopy.split('.')[0]}.`,
-        Promo:        `${baseCopy.split('.')[0]}. Book now!`,
-        Product:      `${baseCopy.split('.')[0]}.`,
-        Announcement: `Big news: ${baseCopy.split('.')[0]}.`,
-        Other:        `${baseCopy.split('.')[0]}.`,
-    };
-
-    const story = {
-        Tip:          `Here's something we wish more people knew.\n\n${baseCopy}\n\nSmall habits like this compound over time. Share this with someone who needs to hear it. Your future self will thank you. 💙`,
-        Promo:        `We've been listening to you — and this one's for you.\n\n${baseCopy}\n\nLife gets busy. We've made it easier than ever to take care of what matters. Spots are limited — don't wait until it's too late. Tag a friend who needs this today! 🙌`,
-        Product:      `We're excited to share something that's been in the works.\n\n${baseCopy}\n\nWe built this because you asked for it. Because you deserve the best. Questions? Drop them below and our team will personally respond. ⬇️`,
-        Announcement: `This is a moment we've been looking forward to sharing with you.\n\n${baseCopy}\n\nEvery big change starts with a single decision. We made this one with you in mind. Stay tuned — there's more to come. 🎉`,
-        Other:        `Some things are worth saying out loud.\n\n${baseCopy}\n\nWe're grateful for every single one of you. The trust you place in us drives everything we do. Thank you for being part of our story. ❤️`,
-    };
-
-    let copy;
-    if (len === 'crisp') {
-        copy = crisp[tag] || baseCopy.split('.')[0] + '.';
-    } else if (len === 'story') {
-        copy = story[tag] || baseCopy;
-    } else {
-        copy = baseCopy; // standard — use base copy as-is
-    }
-
-    return (platPrefix[platform] || '') + copy + (platSuffix[platform] || '');
+    return (platPrefix[platform] || '') + baseCopy + (platSuffix[platform] || '');
 }
 
-function openPostDrawer(colIdx, pIdx) {
+function openPostDrawer(colIdx) {
     document.getElementById('drawer-title').textContent = 'Post details';
     document.getElementById('drawer-tabs').style.display = '';
-    drawerState = { colIdx, pIdx, activePlt: null, seedOffset: 0 };
+    drawerState = { colIdx, activePlt: null, seedOffset: 0 };
     renderDrawerContent();
     document.getElementById('drawer-overlay').classList.add('visible');
     document.getElementById('post-drawer').classList.remove('drawer-wide');
@@ -9063,42 +9297,45 @@ function openPostDrawer(colIdx, pIdx) {
 }
 
 function renderDrawerContent() {
-    const { colIdx, pIdx, seedOffset } = drawerState;
-    const p = SOCIAL_WEEK[colIdx].posts[pIdx];
+    const { colIdx, seedOffset } = drawerState;
+    const p = SOCIAL_WEEK[colIdx];
     const dates = getWeekDates(weekOffset);
     const d = dates[colIdx];
-    const baseSeed = (Math.abs(weekOffset) * 14) + colIdx * 2 + pIdx + 10 + seedOffset * 7;
     const platMap = { fb: 'Facebook', ig: 'Instagram', li: 'LinkedIn' };
+    const activePlatforms = spCalendarConfig.platforms.length
+        ? spCalendarConfig.platforms
+        : getSpSelectedPlatforms();
+    const postPlatforms = p.platforms.filter(pl => activePlatforms.includes(pl));
+    const platforms = postPlatforms.length ? postPlatforms : activePlatforms;
 
-    // Default to first platform
-    if (!drawerState.activePlt || !p.platforms.includes(drawerState.activePlt)) {
-        drawerState.activePlt = p.platforms[0];
+    if (!drawerState.activePlt || !platforms.includes(drawerState.activePlt)) {
+        drawerState.activePlt = platforms[0];
     }
     const active = drawerState.activePlt;
 
-    // Tabs — only the platforms this post targets (no "Initial content")
-    document.getElementById('drawer-tabs').innerHTML = p.platforms.map(plt =>
+    document.getElementById('drawer-tabs').innerHTML = platforms.map(plt =>
         `<div class="drawer-tab${plt === active ? ' active' : ''}" onclick="switchDrawerTab('${plt}')">${platMap[plt]}</div>`
     ).join('');
 
-    const displayCopy = buildPostCopy(p.copy, p.tag, active, seedOffset);
+    const displayCopy = buildPostCopy(p.copy, p.tag, active);
+    const calendarImages = spCalendarConfig.images.length ? spCalendarConfig.images : getSpActiveImages();
+    const drawerImages = [];
+    for (let i = 0; i < 3; i++) {
+        drawerImages.push(calendarImages[(colIdx + i + seedOffset) % calendarImages.length]);
+    }
+    const imageCount = calendarImages.length;
 
     const bpItems = [
-        `3 images attached — ${active === 'ig' ? 'carousel format boosts saves by 3×' : 'multi-image posts get higher reach'}`,
+        `${imageCount} image${imageCount === 1 ? '' : 's'} attached — ${active === 'ig' ? 'carousel format boosts saves by 3×' : 'multi-image posts get higher reach'}`,
         `Optimal posting time for ${platMap[active]} — ${p.time}`,
         `${p.tag} content drives higher ${p.tag === 'Tip' ? 'saves & shares' : p.tag === 'Promo' ? 'click-throughs' : p.tag === 'Product' ? 'profile visits' : 'reach'}`,
-        `Copy length optimised for ${document.querySelector('.post-len-opt.selected')?.dataset.val || 'standard'} format`,
         active === 'ig' ? 'Emoji used to increase tap-through on mobile' : 'Call-to-action included to drive next step',
     ];
 
     document.getElementById('drawer-body').innerHTML = `
         <div class="drawer-img-grid">
-            <img src="https://picsum.photos/seed/${baseSeed}/400/560" alt="Post image"
-                 onerror="this.style.background='${p.imgBg}';this.removeAttribute('src');">
-            <img src="https://picsum.photos/seed/${baseSeed+1}/400/280" alt=""
-                 onerror="this.style.background='${p.imgBg}';this.removeAttribute('src');">
-            <img src="https://picsum.photos/seed/${baseSeed+2}/400/280" alt=""
-                 onerror="this.style.background='${p.imgBg}';this.removeAttribute('src');">
+            ${drawerImages.map((src, i) => `
+            <img src="${src}" alt="Post image ${i + 1}" style="object-fit:cover;width:100%;height:100%;">`).join('')}
         </div>
         <div class="drawer-body-content">
             <p class="drawer-datetime">Planned for <strong>${d.month} ${d.date}, ${p.time}</strong></p>
@@ -9149,6 +9386,7 @@ async function runSocialPubGenerate() {
     socialPubIsGenerating = true;
 
     const showCalendar = () => {
+        snapshotSpCalendarConfig();
         renderCalendar();
         const calView = document.getElementById('cal-view');
         if (calView) { calView.style.display = 'block'; calView.classList.add('fade-up'); }
